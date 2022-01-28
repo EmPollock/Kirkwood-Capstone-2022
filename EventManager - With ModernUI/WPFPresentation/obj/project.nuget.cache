@@ -1,14 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "FiBOM76wzMiEvSvbnE6wWAtt09V+HZ+Ruwi86cyT3AatiJNm2TmUNY5+U76pnzEWHYQg4qD/avqpCB3R7Y5njA==",
+  "dgSpecHash": "SpatkcOsQ8GoWmMWchFF3QOmO5iOcERAeQNSioBuoJL2pfZ2wFMmnr8GDymWSJEPiYBwYnXVFiL52/IeSKj7xg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\WPFPresentation\\WPFPresentation.csproj",
+  "projectFilePath": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\WPFPresentation\\WPFPresentation.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\night\\.nuget\\packages\\microsoft.windows.sdk.contracts\\10.0.18362.2005\\microsoft.windows.sdk.contracts.10.0.18362.2005.nupkg.sha512",
-    "C:\\Users\\night\\.nuget\\packages\\modernwpfui\\0.9.4\\modernwpfui.0.9.4.nupkg.sha512",
-    "C:\\Users\\night\\.nuget\\packages\\system.runtime.windowsruntime\\4.6.0\\system.runtime.windowsruntime.4.6.0.nupkg.sha512",
-    "C:\\Users\\night\\.nuget\\packages\\system.runtime.windowsruntime.ui.xaml\\4.6.0\\system.runtime.windowsruntime.ui.xaml.4.6.0.nupkg.sha512",
-    "C:\\Users\\night\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
+    "C:\\Users\\drnag\\.nuget\\packages\\microsoft.windows.sdk.contracts\\10.0.18362.2005\\microsoft.windows.sdk.contracts.10.0.18362.2005.nupkg.sha512",
+    "C:\\Users\\drnag\\.nuget\\packages\\modernwpfui\\0.9.4\\modernwpfui.0.9.4.nupkg.sha512",
+    "C:\\Users\\drnag\\.nuget\\packages\\system.runtime.windowsruntime\\4.6.0\\system.runtime.windowsruntime.4.6.0.nupkg.sha512",
+    "C:\\Users\\drnag\\.nuget\\packages\\system.runtime.windowsruntime.ui.xaml\\4.6.0\\system.runtime.windowsruntime.ui.xaml.4.6.0.nupkg.sha512",
+    "C:\\Users\\drnag\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

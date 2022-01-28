@@ -15,3 +15,9 @@ C:\Users\drnag\Documents\Capstone\EventManager\DataObjects\obj\Debug\DataObjects
 C:\Users\drnag\Documents\Capstone\EventManager\DataObjects\obj\Debug\DataObjects.csproj.CoreCompileInputs.cache
 C:\Users\drnag\Documents\Capstone\EventManager\DataObjects\obj\Debug\DataObjects.dll
 C:\Users\drnag\Documents\Capstone\EventManager\DataObjects\obj\Debug\DataObjects.pdb
+C:\Users\drnag\Documents\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\bin\Debug\DataObjects.dll
+C:\Users\drnag\Documents\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\bin\Debug\DataObjects.pdb
+C:\Users\drnag\Documents\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\obj\Debug\DataObjects.csproj.AssemblyReference.cache
+C:\Users\drnag\Documents\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\obj\Debug\DataObjects.csproj.CoreCompileInputs.cache
+C:\Users\drnag\Documents\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\obj\Debug\DataObjects.dll
+C:\Users\drnag\Documents\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\obj\Debug\DataObjects.pdb

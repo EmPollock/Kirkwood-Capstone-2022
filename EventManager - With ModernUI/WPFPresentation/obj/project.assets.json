@@ -3481,24 +3481,27 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\night\\.nuget\\packages\\": {},
+    "C:\\Users\\drnag\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\WPFPresentation\\WPFPresentation.csproj",
+      "projectUniqueName": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\WPFPresentation\\WPFPresentation.csproj",
       "projectName": "WPFPresentation",
-      "projectPath": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\WPFPresentation\\WPFPresentation.csproj",
-      "packagesPath": "C:\\Users\\night\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\WPFPresentation\\obj\\",
+      "projectPath": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\WPFPresentation\\WPFPresentation.csproj",
+      "packagesPath": "C:\\Users\\drnag\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\WPFPresentation\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\night\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\drnag\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -3512,20 +3515,20 @@
       "frameworks": {
         "net472": {
           "projectReferences": {
-            "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\DataAccessFakes\\DataAccessFakes.csproj": {
-              "projectPath": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\DataAccessFakes\\DataAccessFakes.csproj"
+            "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\DataAccessFakes\\DataAccessFakes.csproj": {
+              "projectPath": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\DataAccessFakes\\DataAccessFakes.csproj"
             },
-            "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\DataAccessInterfaces\\DataAccessInterfaces.csproj": {
-              "projectPath": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\DataAccessInterfaces\\DataAccessInterfaces.csproj"
+            "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\DataAccessInterfaces\\DataAccessInterfaces.csproj": {
+              "projectPath": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\DataAccessInterfaces\\DataAccessInterfaces.csproj"
             },
-            "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\DataObjects\\DataObjects.csproj": {
-              "projectPath": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\DataObjects\\DataObjects.csproj"
+            "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\DataObjects\\DataObjects.csproj": {
+              "projectPath": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\DataObjects\\DataObjects.csproj"
             },
-            "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\LogicLayerInterfaces\\LogicLayerInterfaces.csproj": {
-              "projectPath": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\LogicLayerInterfaces\\LogicLayerInterfaces.csproj"
+            "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\LogicLayerInterfaces\\LogicLayerInterfaces.csproj": {
+              "projectPath": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\LogicLayerInterfaces\\LogicLayerInterfaces.csproj"
             },
-            "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\LogicLayer\\LogicLayer.csproj": {
-              "projectPath": "C:\\Users\\night\\Documents\\School\\Capstone\\Previous-Builds\\2022-01-23 View Events(Built with Create Events with Modern UI)\\EventManager - With ModernUI\\LogicLayer\\LogicLayer.csproj"
+            "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\LogicLayer\\LogicLayer.csproj": {
+              "projectPath": "C:\\Users\\drnag\\Documents\\Capstone\\Capstone-2022\\EventManager - With ModernUI\\LogicLayer\\LogicLayer.csproj"
             }
           }
         }
