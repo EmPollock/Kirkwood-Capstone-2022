@@ -70,7 +70,7 @@ CREATE TABLE [dbo].[Supplier] (
 	,CONSTRAINT [fk_SupplierTypeID] FOREIGN KEY([SupplierTypeID])
 		REFERENCES [SupplierType]([SupplierTypeID])
 	,CONSTRAINT [fk_UserID] FOREIGN KEY([UserID])
-		REFERENCES [UserTable]([UserID])
+		REFERENCES [Users]([UserID])
 	,CONSTRAINT [ak_SupplierEmail] UNIQUE([SupplierEmail])
 	,CONSTRAINT [ak_SupplierAddress1] UNIQUE([SupplierAddress1])
 )

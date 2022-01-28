@@ -62,6 +62,9 @@
     <Compile Include="Event\pgCreateEvent.xaml.cs">
       <DependentUpon>pgCreateEvent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Event\pgTaskListCreate.xaml.cs">
+      <DependentUpon>pgTaskListCreate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Event\pgViewEvents.xaml.cs">
       <DependentUpon>pgViewEvents.xaml</DependentUpon>
     </Compile>
@@ -72,6 +75,10 @@
       <DependentUpon>UpdatePasswordWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationHelpers.cs" />
+    <Page Include="Event\pgTaskListCreate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
