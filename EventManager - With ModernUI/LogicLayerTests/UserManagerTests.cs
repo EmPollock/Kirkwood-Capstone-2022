@@ -20,6 +20,15 @@ namespace LogicLayerTests
 
             userManager = new UserManager(new UserAccessorFake());
         }
+
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests that SHA-256 hashing works correctly
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestHashSha256ReturnsCorrectHashValue()
         {
@@ -35,6 +44,14 @@ namespace LogicLayerTests
             Assert.AreEqual(ExpectedResult, actualResult);
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests that authentication logic works
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestAuthenticateUserPassesWithCorrectUsernamePasswordHash()
         {
@@ -49,9 +66,17 @@ namespace LogicLayerTests
 
             // Assert
             Assert.AreEqual(ExpectedResult, actualResult);
-            
+
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests authentication logic rejects incorrect username
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestAuthenticateUserFailsWithIncorrectUsername()
         {
@@ -69,6 +94,14 @@ namespace LogicLayerTests
 
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests authentication logic rejects incorrect password
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestAuthenticateUserFailsWithIncorrectPasswordHash()
         {
@@ -86,6 +119,14 @@ namespace LogicLayerTests
 
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests authentication logic rejects cases where multiple users are returned from the same credentials
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestAuthenticateUserFailsWithDuplicateUsers()
         {
@@ -103,82 +144,108 @@ namespace LogicLayerTests
 
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests that user selection logic grabs correct user
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestSelectUserByEmailReturnsCorrectUser()
         {
             // Arrange
             User user = null;
-            const string expectedEmployeeEmail = "tess@company.com";
-            int expectedEmployeeId = 999999;
-            int actualEmployeeId = 0;
+            const string expectedUserEmail = "tess@company.com";
+            int expectedUserID = 999999;
+            int actualUserID = 0;
             // Act
-            user = userManager.GetUserByEmail(expectedEmployeeEmail);
-            actualEmployeeId = user.EmployeeID;
+            user = userManager.GetUserByEmail(expectedUserEmail);
+            actualUserID = user.UserID;
             // Assert
-            Assert.AreEqual(expectedEmployeeId, actualEmployeeId);
+            Assert.AreEqual(expectedUserID, actualUserID);
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests user selection logic throws an exception if there is no valid user.
+        /// 
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
         public void TestSelectUserByEmailReturnsApplicateExceptionForBadEmail()
         {
             // Arrange
             User user = null;
-            const string badEmployeeEmail = "xtess@company.com";
+            const string badUserEmail = "xtess@company.com";
             // Act
-            user = userManager.GetUserByEmail(badEmployeeEmail);
+            user = userManager.GetUserByEmail(badUserEmail);
             // Assert
             // Nothing to do, checking for exception.
         }
 
-        [TestMethod]
-        public void TestGetRolesForUserReturnsCorrectRoles()
-        {
-            // Arrange
-            List<string> actualResult = null;
-            List<string> expectedResult = new List<string>();
-            expectedResult.Add("Rental");
-            expectedResult.Add("Prep");
-            const int employeeID = 999999;
+        // Christopher Repko
+        // User role tests. We aren't using them right now, but this can be used for later templates.
+        //[TestMethod]
+        //public void TestGetRolesForUserReturnsCorrectRoles()
+        //{
+        //    // Arrange
+        //    List<string> actualResult = null;
+        //    List<string> expectedResult = new List<string>();
+        //    expectedResult.Add("Rental");
+        //    expectedResult.Add("Prep");
+        //    const int employeeID = 999999;
 
-            //Act
-            actualResult = userManager.GetRolesForUser(employeeID);
+        //    //Act
+        //    actualResult = userManager.GetRolesForUser(employeeID);
 
-            // Assert
-            CollectionAssert.AreEquivalent(expectedResult, actualResult);
-        }
+        //    // Assert
+        //    CollectionAssert.AreEquivalent(expectedResult, actualResult);
+        //}
 
-        [TestMethod]
-        public void TestGetRolesForUserFailsWithIncorrectList()
-        {
-            // Arrange
-            List<string> actualResult = null;
-            List<string> expectedResult = new List<string>();
-            expectedResult.Add("xRental");
-            expectedResult.Add("Prep");
-            const int employeeID = 999999;
+        //[TestMethod]
+        //public void TestGetRolesForUserFailsWithIncorrectList()
+        //{
+        //    // Arrange
+        //    List<string> actualResult = null;
+        //    List<string> expectedResult = new List<string>();
+        //    expectedResult.Add("xRental");
+        //    expectedResult.Add("Prep");
+        //    const int employeeID = 999999;
 
-            //Act
-            actualResult = userManager.GetRolesForUser(employeeID);
+        //    //Act
+        //    actualResult = userManager.GetRolesForUser(employeeID);
 
-            // Assert
-            CollectionAssert.AreNotEquivalent(expectedResult, actualResult);
-        }
+        //    // Assert
+        //    CollectionAssert.AreNotEquivalent(expectedResult, actualResult);
+        //}
 
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestGetRolesForUserThrowsApplicationExceptionForBadEmployeeID()
-        {
-            // Arrange
-            const int badEmployeeID = 999;
+        //[TestMethod]
+        //[ExpectedException(typeof(ApplicationException))]
+        //public void TestGetRolesForUserThrowsApplicationExceptionForBadUserID()
+        //{
+        //    // Arrange
+        //    const int badUserID = 999;
 
-            //Act
-            userManager.GetRolesForUser(badEmployeeID);
+        //    //Act
+        //    userManager.GetRolesForUser(badUserID);
 
-            // Assert
-            // Nothing to do here.
-        }
+        //    // Assert
+        //    // Nothing to do here.
+        //}
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests password reset logic works correctly
+        /// 
+        /// </summary>
         [TestMethod]
         public void TestResetPasswordWorksWithValidPasswords()
         {
@@ -197,6 +264,14 @@ namespace LogicLayerTests
 
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests password reset logic rejects passwords with incorrect old password.
+        /// 
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
         public void TestResetPasswordThrowsExceptionWithBadOldPassword()
@@ -214,6 +289,14 @@ namespace LogicLayerTests
 
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Tests password reset logic rejects bas email addresses
+        /// 
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
         public void TestResetPasswordThrowsExceptionWithBadEmail()

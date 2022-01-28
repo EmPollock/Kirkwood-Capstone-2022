@@ -22,5 +22,7 @@ namespace LogicLayerInterfaces
         List<String> GetRolesForUser(int employeeID);
 
         bool ResetPassword(string email, string oldPassword, string newPassword);
+
+        bool CreateUser(User user);
     }
 }

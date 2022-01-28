@@ -36,123 +36,164 @@ namespace WPFPresentation
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Click event for the login button. Logs the user in using input.
+        /// 
+        /// </summary>
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if(btnLogin.Content.ToString() == "Login")
+            var email = this.txtEmailAddress.Text;
+            var password = this.pwdPassword.Password;
+            if (!email.IsValidEmailAddress())
             {
-                var email = this.txtEmailAddress.Text;
-                var password = this.pwdPassword.Password;
-                if (!password.IsValidPassword())
+                MessageBox.Show("Bad email address.");
+                return;
+            }
+            else
+            {
+                try
                 {
-                    password = "";
-                }
-                if (!email.IsValidEmailAddress())
-                {
-                    MessageBox.Show("Bad email address.");
-                    return;
-                }
-                else
-                {
-                    try
+                    this._user = this._userManager.LoginUser(email, password);
+                    if (this._user != null)
                     {
-                        this._user = this._userManager.LoginUser(email, password);
-                        if (this._user != null)
+
+                        string instructions = "On first login, all new users must choose a password to continue.";
+                        if(password == "newuser")
                         {
+                            // force change password
+                            var updateWindow = new UpdatePasswordWindow(this._userManager, this._user, instructions, true);
 
-                            string instructions = "On first login, all new users must choose a password to continue.";
-                            if(password == "newuser")
+                            bool? result = updateWindow.ShowDialog();
+                            if(result == true)
                             {
-                                // force change password
-                                var updateWindow = new UpdatePasswordWindow(this._userManager, this._user, instructions, true);
 
-                                bool? result = updateWindow.ShowDialog();
-                                if(result == true)
-                                {
-
-                                    this.updateUIForUser();
-                                } else
-                                {
-                                    _user = null;
-                                    this.updateUIForLogout();
-                                    MessageBox.Show("You did not update your password. You will be logged out.");
-                                }
+                                this.updateUIForUser();
                             } else
                             {
-                                this.updateUIForUser();
+                                _user = null;
+                                this.updateUIForLogout();
+                                MessageBox.Show("You did not update your password. You will be logged out.");
                             }
+                        } else
+                        {
+                            this.updateUIForUser();
                         }
+                    }
 
 
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message, "Alert!", MessageBoxButton.OK, MessageBoxImage.Error);
-                        this.pwdPassword.Password = "";
-                        this.txtEmailAddress.Select(0, Int32.MaxValue);
-                        this.txtEmailAddress.Focus();
-                    }
                 }
-            } else
-            {
-                this.updateUIForLogout();
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message, "Alert!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.pwdPassword.Password = "";
+                    this.txtEmailAddress.Select(0, Int32.MaxValue);
+                    this.txtEmailAddress.Focus();
+                }
             }
             
         }
 
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/01/27
+        /// 
+        /// Description:
+        /// Method to handle UI transition from logged in to logged out states
+        /// 
+        /// </summary>
         private void updateUIForLogout()
         {
             this._user = null;
 
             this.txtGreeting.Content = "You are not logged in.";
             this.staMessage.Content = "Welcome, please log in to continue";
-            this.txtEmailAddress.Visibility = Visibility.Visible;
-            this.pwdPassword.Visibility = Visibility.Visible;
-            this.lblEmail.Visibility = Visibility.Visible;
-            this.lblPassword.Visibility = Visibility.Visible;
 
-            this.btnLogin.Content = "Login";
+            this.grdMainMenu.Visibility = Visibility.Collapsed;
+            this.grdLogin.Visibility = Visibility.Visible;
             txtEmailAddress.Focus();
             this.btnLogin.IsDefault = true;
 
         }
 
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/01/27
+        /// 
+        /// Description:
+        /// Method to handle UI transition from logged out to logged in states
+        /// 
+        /// </summary>
         private void updateUIForUser()
         {
-            string roles = "";
-            for(int i = 0; i < this._user.Roles.Count; i++)
-            {
-                roles += " " + this._user.Roles[i];
-                
-                if(i == this._user.Roles.Count - 2)
-                {
-                    if(this._user.Roles.Count > 2)
-                    {
-                        roles += ",";
-                    }
-                    roles += " and";
-                } else if (i < this._user.Roles.Count - 1)
-                {
-                    roles += ",";
-                }
-            }
-            this.txtGreeting.Content = "Welcome, " + this._user.GivenName + "! You are logged in as " + roles;
 
             this.staMessage.Content = "Logged in at " + DateTime.Now.ToLongDateString() + ", " + DateTime.Now.ToShortTimeString() + ". Please remember to log out before you leave.";
 
             this.txtEmailAddress.Text = "";
             this.pwdPassword.Password = "";
-            this.txtEmailAddress.Visibility = Visibility.Hidden;
-            this.pwdPassword.Visibility = Visibility.Hidden;
-            this.lblEmail.Visibility = Visibility.Hidden;
-            this.lblPassword.Visibility = Visibility.Hidden;
-
-            this.btnLogin.Content = "Log Out";
-            this.btnLogin.IsDefault = false;
+            this.mnuUser.Header = this._user.GivenName + " " + this._user.FamilyName + " ▼";
+            this.grdLogin.Visibility = Visibility.Collapsed;
+            this.grdMainMenu.Visibility = Visibility.Visible;
         }
 
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Loaded event for window. Focuses the email text input.
+        /// 
+        /// </summary>
         private void frmMainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.txtEmailAddress.Focus();
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/1/27
+        /// 
+        /// Description:
+        /// Click event for Logout option. Logs the user out.
+        /// 
+        /// </summary>
+        private void mnuLogOut_Click(object sender, RoutedEventArgs e)
+        {
+            this.updateUIForLogout();
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/1/27
+        /// 
+        /// Description:
+        /// Click event for "Create Event" button. Brings up the Create Event screen.
+        /// 
+        /// </summary>
+
+        private void btnCreateEvents_Click(object sender, RoutedEventArgs e)
+        {
+            Uri pageURI = new Uri("Event/pgCreateEvent.xaml", UriKind.Relative);
+            this.MainFrame.NavigationService.Navigate(pageURI);
+        }
+
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/1/27
+        /// 
+        /// Description:
+        /// Click event for "View My Events" button. Currently brings up the Event List screen
+        /// 
+        /// </summary>
+        private void btnViewEvents_Click(object sender, RoutedEventArgs e)
+        {
+            Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
+            this.MainFrame.NavigationService.Navigate(pageURI);
         }
     }
 }

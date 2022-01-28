@@ -8,29 +8,34 @@ namespace DataObjects
 {
     public class User
     {
-        public int EmployeeID { get; set; }
+        public int UserID { get; set; }
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
-        public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
-
-        public List<string> Roles { get; set; }
-
+        public string PasswordHash { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public int? Zip { get; set; }
+        public string UserPhoto { get; set; }
+        public string UserDescription { get; set; }
         public bool Active { get; set; }
+        public string DateCreated { get; set; }
 
         public User()
         {
 
         }
 
-        public User(int employeeID, string givenName, string familyName, string phoneNumber, string emailAddress, List<string> roles)
+        public User(int userID, string givenName, string familyName, string emailAddress, string state,
+            string city, int zip)
         {
-            EmployeeID = employeeID;
+            UserID = userID;
             GivenName = givenName;
             FamilyName = familyName;
-            PhoneNumber = phoneNumber;
             EmailAddress = emailAddress;
-            Roles = roles;
+            State = state;
+            City = city;
+            Zip = zip;
         }
 
 

@@ -30,6 +30,17 @@ namespace LogicLayer
             this._userAccessor = userAccessor;
         }
 
+        /// <summary>
+        /// 
+        /// Christopher Repko
+        /// Created: 2022/01/21
+        /// 
+        /// Description:
+        /// Method to authenticate the user's credentials
+        /// </summary>
+        /// <param name="email">Email to be used as credentials</param>
+        /// <param name="password">Password to be used as credentials</param>
+        /// <returns>true if the user is authenticated, otherwise false.</returns>
         public bool AuthenticateUser(string email, string password)
         {
             bool result = false;
@@ -43,7 +54,16 @@ namespace LogicLayer
             }
             return result;
         }
-
+        /// <summary>
+        /// 
+        /// Christopher Repko
+        /// Created: 2022/01/21
+        /// 
+        /// Description:
+        /// Method to get a SHA265 hash from a string 
+        /// </summary>
+        /// <param name="source">String to be hashed</param>
+        /// <returns>Hexidecimal string representing hash data</returns>
         public string HashSha256(string source)
         {
             string result = "";
@@ -52,15 +72,15 @@ namespace LogicLayer
             Byte[] data;
 
             //Create hash provider object
-            using(SHA256 sha256hasher = SHA256.Create())
+            using (SHA256 sha256hasher = SHA256.Create())
             {
                 data = sha256hasher.ComputeHash(Encoding.UTF8.GetBytes(source));
             }
             // create an output stringbuilder object.
             var s = new StringBuilder();
-            
+
             // loop through the hashed output making characters
-            for(int i = 0; i < data.Length; i++)
+            for (int i = 0; i < data.Length; i++)
             {
                 s.Append(data[i].ToString("x2"));
             }
@@ -68,7 +88,16 @@ namespace LogicLayer
 
             return result;
         }
-
+        /// <summary>
+        /// 
+        /// Christopher Repko
+        /// Created: 2022/01/21
+        /// 
+        /// Description:
+        /// Method to retrieve user data using an email address.
+        /// </summary>
+        /// <param name="email">Email to be used to retrieve user</param>
+        /// <returns>User with matching email.</returns>
         public User GetUserByEmail(string email)
         {
             User requestedUser = null;
@@ -85,12 +114,12 @@ namespace LogicLayer
             return requestedUser;
         }
 
-        public List<string> GetRolesForUser(int employeeID)
+        public List<string> GetRolesForUser(int userID)
         {
             List<String> roles = null;
             try
             {
-                roles = this._userAccessor.SelectRolesByEmployeeID(employeeID);
+                roles = this._userAccessor.SelectRolesByUserID(userID);
             }
             catch (Exception)
             {
@@ -99,7 +128,18 @@ namespace LogicLayer
             }
             return roles;
         }
-
+        /// <summary>
+        /// 
+        /// Christopher Repko
+        /// Created: 2022/01/21
+        /// 
+        /// Description:
+        /// Method to authenticate and retrieve a user
+        /// </summary>
+        /// <param name="email">Email to be used as credentials</param>
+        /// <param name="password">Password to be used as credentials</param>
+        /// <exception cref="ApplicationException">Thrown if the user cannot be found or if the user does not enter an email or password.</exception>
+        /// <returns>An object representing the user logged in. </returns>
         public User LoginUser(string email, string password)
         {
             User loggedInUser = null;
@@ -109,17 +149,18 @@ namespace LogicLayer
                 {
                     throw new ArgumentException("Missing email.");
                 }
-                if(password == "") // or fails complexity rules.
+                if (password == "") // or fails complexity rules.
                 {
-                    throw new ArgumentException("Bad or Missing password.");
+                    throw new ArgumentException("Missing password.");
                 }
-            
+
                 password = this.HashSha256(password);
-                if(this.AuthenticateUser(email, password))
+                if (this.AuthenticateUser(email, password))
                 {
                     loggedInUser = this.GetUserByEmail(email);
-                    loggedInUser.Roles = this.GetRolesForUser(loggedInUser.EmployeeID);
-                } else
+                    //loggedInUser.Roles = this.GetRolesForUser(loggedInUser.UserID);
+                }
+                else
                 {
                     throw new ApplicationException("Bad Email Address or Password.");
                 }
@@ -133,6 +174,20 @@ namespace LogicLayer
             return loggedInUser;
         }
 
+        /// <summary>
+        /// 
+        /// Christopher Repko
+        /// Created: 2022/01/21
+        /// 
+        /// Description:
+        /// Method to reset a user's password
+        /// 
+        /// </summary>
+        /// <param name="email">Email of user requesting password reset</param>
+        /// <param name="oldPassword">Old password to be changed</param>
+        /// <param name="newPassword">New password to change to</param>
+        /// <exception cref="ApplicationException">Thrown if something causes password reset to fail.</exception>
+        /// <returns>true if password reset works, otherwise false</returns>
         public bool ResetPassword(string email, string oldPassword, string newPassword)
         {
             bool result = false;
@@ -154,6 +209,29 @@ namespace LogicLayer
             }
 
 
+            return result;
+        }
+
+
+        /// <summary>
+        /// Ramiro Pena
+        /// Created: Unknown
+        /// 
+        /// Method to create user entry
+        /// </summary>
+        /// <param name="user">User object containing data of the user to create</param>
+        /// <returns>true if update goes through, false otherwise.</returns>
+        public bool CreateUser(User user)
+        {
+            bool result = false;
+            try
+            {
+                result = (1 == _userAccessor.InsertUser(user));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return result;
         }
     }

@@ -149,7 +149,7 @@ namespace LogicLayerTests
             const int expectedCount = 4;
             int actualCount;
             // act
-            actualCount = (_eventManager.RetrieveActiveEvents().Count);
+            actualCount = (_eventManager.RetreieveActiveEvents().Count);
 
             // assert
             Assert.AreEqual(expectedCount, actualCount);

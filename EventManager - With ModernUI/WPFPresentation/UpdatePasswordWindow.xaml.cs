@@ -29,6 +29,7 @@ namespace WPFPresentation
         User _user;
         bool _newUser;
 
+
         public UpdatePasswordWindow(IUserManager userManager, User user, string instructions, bool newUser = false)
         {
             this._userManager = userManager;
@@ -43,6 +44,14 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Method to set up newuser inputs.
+        /// 
+        /// </summary>
         private void newUserUpdate()
         {
             this.pwdOldPassword.Password = "newuser";
@@ -50,8 +59,24 @@ namespace WPFPresentation
             this.pwdNewPassword.Focus();
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// Click event for "Submit" button. Validates password, then attempts to set it as the new password.
+        /// 
+        /// </summary>
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
+            if(!pwdNewPassword.Password.IsValidPassword())
+            {
+                MessageBox.Show("Your new password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+                pwdNewPassword.Password = "";
+                this.pwdConfirmPassword.Password = "";
+                this.pwdNewPassword.Focus();
+                return;
+            }
             if(pwdNewPassword.Password != pwdConfirmPassword.Password )
             {
                 MessageBox.Show("New password and Retype password must match");

@@ -9,6 +9,15 @@ namespace WPFPresentation
 {
     public static class ValidationHelpers
     {
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// String validation method. Uses a simple regex to check for roughly-valid email addresses.
+        /// 
+        /// </summary>
         public static bool IsValidEmailAddress(this string email)
         {
             bool isValid = false;
@@ -20,6 +29,14 @@ namespace WPFPresentation
             return isValid;
         }
 
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/1/21
+        /// 
+        /// Description:
+        /// String validation method. Uses a few regexes to check for relatively simple password complexity.
+        /// 
+        /// </summary>
         public static bool IsValidPassword(this string password)
         {
             bool isValid = false;

@@ -98,7 +98,7 @@ namespace LogicLayer
         /// </summary>
         /// <returns>List of active events</returns>
 
-        public List<Event> RetrieveActiveEvents()
+        public List<Event> RetreieveActiveEvents()
         {
             List<Event> events = new List<Event>();
 
