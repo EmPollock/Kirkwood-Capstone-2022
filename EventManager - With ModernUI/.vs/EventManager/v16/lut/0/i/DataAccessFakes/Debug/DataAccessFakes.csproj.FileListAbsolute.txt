@@ -1,0 +1,4 @@
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\DataAccessFakes\bin\Debug\DataAccessFakes.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\DataAccessFakes\Debug\DataAccessFakes.csproj.CoreCompileInputs.cache
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\DataAccessFakes\Debug\DataAccessFakes.csproj.CopyComplete
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\DataAccessFakes\Debug\DataAccessFakes.dll

@@ -1,0 +1,44 @@
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\bin\Debug\DataAccessFakes.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\bin\Debug\DataAccessFakes.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\bin\Debug\DataAccessInterfaces.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\bin\Debug\DataObjects.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\bin\Debug\DataAccessInterfaces.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\bin\Debug\DataObjects.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\obj\Debug\DataAccessFakes.csprojAssemblyReference.cache
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.CoreCompileInputs.cache
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.CopyComplete
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\obj\Debug\DataAccessFakes.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\DataAccessFakes\obj\Debug\DataAccessFakes.pdb
+E:\Capstone\EventManager\EventManager\DataAccessFakes\bin\Debug\DataAccessFakes.dll
+E:\Capstone\EventManager\EventManager\DataAccessFakes\bin\Debug\DataAccessFakes.pdb
+E:\Capstone\EventManager\EventManager\DataAccessFakes\bin\Debug\DataAccessInterfaces.dll
+E:\Capstone\EventManager\EventManager\DataAccessFakes\bin\Debug\DataObjects.dll
+E:\Capstone\EventManager\EventManager\DataAccessFakes\bin\Debug\DataAccessInterfaces.pdb
+E:\Capstone\EventManager\EventManager\DataAccessFakes\bin\Debug\DataObjects.pdb
+E:\Capstone\EventManager\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.AssemblyReference.cache
+E:\Capstone\EventManager\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.CoreCompileInputs.cache
+E:\Capstone\EventManager\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.CopyComplete
+E:\Capstone\EventManager\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.dll
+E:\Capstone\EventManager\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\bin\Debug\DataAccessFakes.dll
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\bin\Debug\DataAccessFakes.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\bin\Debug\DataAccessInterfaces.dll
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\bin\Debug\DataObjects.dll
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\bin\Debug\DataAccessInterfaces.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\bin\Debug\DataObjects.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.AssemblyReference.cache
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.CoreCompileInputs.cache
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.CopyComplete
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.dll
+C:\Users\drnag\Documents\Capstone\EventManager\DataAccessFakes\obj\Debug\DataAccessFakes.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\bin\Debug\DataAccessFakes.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\bin\Debug\DataAccessFakes.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\bin\Debug\DataAccessInterfaces.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\bin\Debug\DataObjects.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\bin\Debug\DataAccessInterfaces.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\bin\Debug\DataObjects.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.AssemblyReference.cache
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.CoreCompileInputs.cache
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\obj\Debug\DataAccessFakes.csproj.CopyComplete
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\obj\Debug\DataAccessFakes.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\DataAccessFakes\obj\Debug\DataAccessFakes.pdb

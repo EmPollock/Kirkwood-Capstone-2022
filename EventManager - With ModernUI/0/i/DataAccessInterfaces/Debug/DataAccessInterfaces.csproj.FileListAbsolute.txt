@@ -1,0 +1,5 @@
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\b\DataAccessInterfaces\bin\Debug\DataAccessInterfaces.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\i\DataAccessInterfaces\Debug\DataAccessInterfaces.csprojAssemblyReference.cache
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\i\DataAccessInterfaces\Debug\DataAccessInterfaces.csproj.CoreCompileInputs.cache
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\i\DataAccessInterfaces\Debug\DataAccessInterfaces.csproj.CopyComplete
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\i\DataAccessInterfaces\Debug\DataAccessInterfaces.dll

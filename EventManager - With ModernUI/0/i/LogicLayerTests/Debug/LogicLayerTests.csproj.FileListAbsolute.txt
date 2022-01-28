@@ -1,0 +1,8 @@
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\b\LogicLayerTests\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\b\LogicLayerTests\bin\Debug\LogicLayerTests.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\i\LogicLayerTests\Debug\LogicLayerTests.csproj.CoreCompileInputs.cache
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\i\LogicLayerTests\Debug\LogicLayerTests.csproj.CopyComplete
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\0\i\LogicLayerTests\Debug\LogicLayerTests.dll

@@ -1,0 +1,106 @@
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\LogicLayerTests.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\LogicLayerTests.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\DataAccessFakes.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\DataAccessInterfaces.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\DataObjects.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\LogicLayer.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\DataAccessLayer.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\DataAccessFakes.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\DataAccessInterfaces.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\DataObjects.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\LogicLayer.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\bin\Debug\DataAccessLayer.pdb
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\obj\Debug\LogicLayerTests.csprojAssemblyReference.cache
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.CoreCompileInputs.cache
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.CopyComplete
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\obj\Debug\LogicLayerTests.dll
+E:\CIS-624\BicycleRentalAM\BicycleRentalAM\LogicLayerTests\obj\Debug\LogicLayerTests.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.AssemblyReference.cache
+E:\Capstone\EventManager\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.CoreCompileInputs.cache
+E:\Capstone\EventManager\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\LogicLayerTests.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\LogicLayerTests.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\DataAccessFakes.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\DataAccessInterfaces.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\DataObjects.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\LogicLayer.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\LogicLayerInterfaces.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\DataAccessLayer.dll
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\DataAccessFakes.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\DataAccessInterfaces.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\DataObjects.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\LogicLayerInterfaces.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\LogicLayer.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+E:\Capstone\EventManager\EventManager\LogicLayerTests\bin\Debug\DataAccessLayer.pdb
+E:\Capstone\EventManager\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.CopyComplete
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\LogicLayerTests.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\LogicLayerTests.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\DataAccessFakes.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\DataAccessInterfaces.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\DataObjects.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\LogicLayer.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\LogicLayerInterfaces.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\DataAccessLayer.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\DataAccessFakes.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\DataAccessInterfaces.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\DataObjects.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\LogicLayerInterfaces.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\LogicLayer.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\bin\Debug\DataAccessLayer.pdb
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.AssemblyReference.cache
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.CoreCompileInputs.cache
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.CopyComplete
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.dll
+C:\Users\drnag\Documents\Capstone\EventManager\LogicLayerTests\obj\Debug\LogicLayerTests.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\LogicLayerTests.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\LogicLayerTests.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\DataAccessFakes.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\DataAccessInterfaces.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\DataObjects.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\LogicLayer.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\LogicLayerInterfaces.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\DataAccessLayer.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\DataAccessFakes.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\DataAccessInterfaces.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\DataObjects.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\LogicLayerInterfaces.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\LogicLayer.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\bin\Debug\DataAccessLayer.pdb
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.AssemblyReference.cache
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.CoreCompileInputs.cache
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\obj\Debug\LogicLayerTests.csproj.CopyComplete
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\obj\Debug\LogicLayerTests.dll
+C:\Users\night\Documents\School\Capstone\EventManager - With ModernUI\LogicLayerTests\obj\Debug\LogicLayerTests.pdb
