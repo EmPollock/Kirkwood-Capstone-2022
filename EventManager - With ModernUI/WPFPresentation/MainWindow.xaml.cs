@@ -195,5 +195,11 @@ namespace WPFPresentation
             Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
             this.MainFrame.NavigationService.Navigate(pageURI);
         }
+
+        private void btnViewVolunteers_Click(object sender, RoutedEventArgs e)
+        {
+            Uri pageURI = new Uri("Volunteer/pgViewAllVolunteers.xaml", UriKind.Relative);
+            this.MainFrame.NavigationService.Navigate(pageURI);
+        }
     }
 }

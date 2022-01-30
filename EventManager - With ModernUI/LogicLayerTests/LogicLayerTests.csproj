@@ -54,6 +54,7 @@
     <Compile Include="TaskManagerTests.cs" />
     <Compile Include="UserManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VolunteerManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">

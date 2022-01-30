@@ -46,6 +46,7 @@
     <Compile Include="SupplierManager.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="UserManager.cs" />
+    <Compile Include="VolunteerManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">
