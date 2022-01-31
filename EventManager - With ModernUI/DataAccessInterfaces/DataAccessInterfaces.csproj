@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IEventAccessor.cs" />
+    <Compile Include="IEventDateAccessor.cs" />
     <Compile Include="ISupplierAccessor.cs" />
     <Compile Include="ITaskAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

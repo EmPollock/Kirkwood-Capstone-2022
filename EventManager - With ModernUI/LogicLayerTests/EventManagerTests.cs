@@ -155,5 +155,54 @@ namespace LogicLayerTests
             Assert.AreEqual(expectedCount, actualCount);
         }
 
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/30
+        /// 
+        /// Description:
+        /// Test that returns and event object and tests to see if it is the correct ID
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventByEventNameAndDescriptionReturnsCorrectEventID()
+        {
+            // arrange
+            const string eventName = "Test Event 1";
+            const string eventDescription = "A description of test event 1";
+            const int expectedEventID = 1000000;
+            Event actualEvent = null;
+            int actualEventID;
+
+            // act
+            actualEvent = _eventManager.RetrieveEventByEventNameAndDescription(eventName, eventDescription);
+            actualEventID = actualEvent.EventID;
+            // assert
+
+            Assert.AreEqual(expectedEventID, actualEventID);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/30
+        /// 
+        /// Description:
+        /// Test that returns and event object and tests to see if it is the correct ID
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestRetrieveEventByEventNameAndDescriptionThrowsExceptionWhenNotFound()
+        {
+            // arrange
+            const string eventName = "Test Event xxxxxxxxxx";
+            const string eventDescription = "A description of test event 1";
+            
+            // act
+            _eventManager.RetrieveEventByEventNameAndDescription(eventName, eventDescription);
+            
+            // assert
+            // notthing to assert, exception testing
+            
+        }
+
+
     }
 }

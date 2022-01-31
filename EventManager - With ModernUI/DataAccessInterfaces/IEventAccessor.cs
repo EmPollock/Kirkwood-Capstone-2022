@@ -11,6 +11,7 @@ namespace DataAccessInterfaces
     {
         int InsertEvent(string eventName, string eventDescription);
         List<Event> SelectActiveEvents();
+        Event SelectEventByEventNameAndDescription(string eventName, string eventDescription);
     }
 }
 
