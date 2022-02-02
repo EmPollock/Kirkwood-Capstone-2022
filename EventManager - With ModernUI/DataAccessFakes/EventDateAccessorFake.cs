@@ -79,17 +79,6 @@ namespace DataAccessFakes
             });
         }
 
-        public int DeactivateEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int DeleteEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID)
-        {
-            throw new NotImplementedException();
-        }
-
-
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/01/29
@@ -120,6 +109,17 @@ namespace DataAccessFakes
             return rowsAffected;
         }
 
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/29
+        /// 
+        /// Description:
+        /// Return list of fake data about the date of the event for testing
+        /// 
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns>Fake date list</returns>
         public List<EventDate> SelectEventDatesByEventID(int eventID)
         {
             List<EventDate> eventDates = new List<EventDate>();
@@ -135,9 +135,6 @@ namespace DataAccessFakes
             return eventDates;
         }
 
-        public int UpdateEventDateByEventDateIDAndEventID(DateTime eventDate, int eventID, DateTime oldStartDateTime, DateTime newStartDateTime, DateTime oldEndDateTime, DateTime newEndDateTime)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

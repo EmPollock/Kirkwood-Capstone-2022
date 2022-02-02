@@ -11,8 +11,9 @@ namespace LogicLayerInterfaces
     {
         bool CreateEventDate(EventDate eventDate);
         List<EventDate> RetrieveEventDatesByEventID(int eventID);
-        int UpdateEventDateByEventDateIDAndEventID(DateTime eventDate, int eventID, DateTime oldStartDateTime, DateTime newStartDateTime, DateTime oldEndDateTime, DateTime newEndDateTime);
-        int DeactivateEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID);
-        int DeleteEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID);
+        // just here until time to implement
+        //int UpdateEventDateByEventDateIDAndEventID(DateTime eventDate, int eventID, DateTime oldStartDateTime, DateTime newStartDateTime, DateTime oldEndDateTime, DateTime newEndDateTime);
+        //int DeactivateEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID);
+        //int DeleteEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID);
     }
 }

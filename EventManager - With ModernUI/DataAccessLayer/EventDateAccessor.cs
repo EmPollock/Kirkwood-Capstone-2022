@@ -13,15 +13,6 @@ namespace DataAccessLayer
 {
     public class EventDateAccessor : IEventDateAccessor
     {
-        public int DeactivateEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int DeleteEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Derrick Nagy
@@ -135,9 +126,5 @@ namespace DataAccessLayer
             return eventDates;
         }
 
-        public int UpdateEventDateByEventDateIDAndEventID(DateTime eventDate, int eventID, DateTime oldStartDateTime, DateTime newStartDateTime, DateTime oldEndDateTime, DateTime newEndDateTime)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
