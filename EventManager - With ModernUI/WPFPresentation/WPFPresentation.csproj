@@ -77,6 +77,9 @@
       <DependentUpon>UpdatePasswordWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationHelpers.cs" />
+    <Compile Include="Volunteer\pgViewAllVolunteers.xaml.cs">
+      <DependentUpon>pgViewAllVolunteers.xaml</DependentUpon>
+    </Compile>
     <Page Include="Event\pgTaskListCreate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,6 +109,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UpdatePasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Volunteer\pgViewAllVolunteers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

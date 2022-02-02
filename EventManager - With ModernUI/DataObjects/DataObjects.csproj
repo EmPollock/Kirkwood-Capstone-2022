@@ -48,6 +48,7 @@
     <Compile Include="Supplier.cs" />
     <Compile Include="Tasks.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Volunteer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

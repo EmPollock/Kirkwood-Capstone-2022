@@ -48,6 +48,7 @@
     <Compile Include="SupplierAccessor.cs" />
     <Compile Include="TaskAccessor.cs" />
     <Compile Include="UserAccessor.cs" />
+    <Compile Include="VolunteerAccessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessInterfaces\DataAccessInterfaces.csproj">

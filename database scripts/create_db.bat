@@ -11,11 +11,13 @@ sqlcmd -S localhost -E -i tables/event.sql
 sqlcmd -S localhost -E -i tables/event_date.sql
 sqlcmd -S localhost -E -i tables/user.sql
 sqlcmd -S localhost -E -i tables/supplier.sql
+sqlcmd -S localhost -E -i tables/volunteers.sql
 sqlcmd -S localhost -E -i tables/task.sql
 sqlcmd -S localhost -E -i stored_procedures/event_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/event_date_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/user_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/supplier_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/volunteer_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/tasks_stored_procedures.sql
 
 
