@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventAccessorFake.cs" />
+    <Compile Include="EventDateAccessorFake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SupplierAccessorFake.cs" />
     <Compile Include="TaskAccessorFakes.cs" />
