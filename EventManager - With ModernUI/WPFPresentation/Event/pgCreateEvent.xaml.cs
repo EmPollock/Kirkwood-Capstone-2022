@@ -33,6 +33,11 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Initializes component and sets up event manager with fake and default accessors
+        /// 
+        /// Update
+        /// Vinayak Deshpande
+        /// 2022/02/02
+        /// Added some logic for requesting volunteers
         /// </summary>
         public pgCreateEvent()
         {
@@ -49,10 +54,12 @@ namespace WPFPresentation
             // Looked up how to set the calendar to not display past dates
             // https://stackoverflow.com/questions/17401488/how-to-disable-past-days-in-calender-in-wpf/45780931
             datePickerEventDate.DisplayDateStart = DateTime.Today;
+            sldrNumVolunteers.Value = 25;
+            
 
             //disable tabs that should not be viewed
             tabAddEventDate.IsEnabled = false;
-
+            tabAddEventVolunteer.IsEnabled = false;
         }
 
         /// <summary>
@@ -67,17 +74,29 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Got rid of message box that was there for testing purposes and changed focus to next tab. Disabled Event tab.
+        /// 
+        /// Update:
+        /// Vinayak Deshpande
+        /// 2022/02/03
+        /// Description:
+        /// Changed the next button to cycle through the tabs in the set rather than just swtiching to a set tab.
         private void btnEventNext_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                _eventManager.CreateEvent(txtBoxEventName.Text, txtBoxEventDescription.Text);
+                
                 //MessageBox.Show("Added event.");
 
-                tabCreateEvent.IsEnabled = false;
-                tabAddEventDate.IsEnabled = true;
-
-                tabAddEventDate.Focus();
+                int newIndex = tabsetCreateEvent.SelectedIndex + 1;
+                if (newIndex >= tabsetCreateEvent.Items.Count)
+                {
+                    _eventManager.CreateEvent(txtBoxEventName.Text, txtBoxEventDescription.Text);
+                    newIndex = 0;
+                }
+                (tabsetCreateEvent.SelectedItem as TabItem).IsEnabled = false;
+                tabsetCreateEvent.SelectedIndex = newIndex;
+                (tabsetCreateEvent.SelectedItem as TabItem).IsEnabled = true;
+                
             }
             catch (Exception ex)
             {
@@ -338,6 +357,16 @@ namespace WPFPresentation
                     }
                 }
             }
+        }
+
+        private void chkBxNeedVolunteers_Checked(object sender, RoutedEventArgs e)
+        {
+            txtBlkNumVolunteers.Visibility = Visibility.Visible;
+            dcPnlNumVolunteers.Visibility = Visibility.Visible;
+            sldrNumVolunteers.Value = 25;
+            txtBlkNumVolunteerDescription.Visibility = Visibility.Visible;
+            txtBxNumVolunteerDescription.Visibility = Visibility.Visible;
+
         }
     }
 }
