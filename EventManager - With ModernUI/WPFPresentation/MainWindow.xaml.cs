@@ -201,5 +201,48 @@ namespace WPFPresentation
             Uri pageURI = new Uri("Volunteer/pgViewAllVolunteers.xaml", UriKind.Relative);
             this.MainFrame.NavigationService.Navigate(pageURI);
         }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/2/3
+        /// 
+        /// Description:
+        /// Click event for the "New User" button. Opens the User Creation screen. If the user is created, logs them in.
+        /// 
+        /// </summary>
+        /// <param name="sender">The "New User" button</param>
+        /// <param name="e">Arguments passed as part of the event</param>
+        private void btnCreateAccount_Click(object sender, RoutedEventArgs e)
+        {
+            var registerWindow = new RegisterUser(this._userManager);
+
+            bool? result = registerWindow.ShowDialog();
+            if(result == true)
+            {
+                try
+                {
+
+                    this._user = this._userManager.LoginUser(registerWindow.txtEmail.Text, registerWindow.pwdPassword.Password);
+                    if (this._user != null)
+                    {
+                        this.updateUIForUser();
+                    }
+                    else
+                    {
+                        throw new ApplicationException("Failed to create new user.");
+                    }
+                } catch(Exception ex)
+                {
+                    string message = "Failed to log in.\n\n";
+                    message += ex.Message;
+                    if(ex.InnerException != null)
+                    {
+                        message += "\n\n" + ex.InnerException.Message;
+                    }
+
+                    MessageBox.Show(message, "Alert!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
     }
 }

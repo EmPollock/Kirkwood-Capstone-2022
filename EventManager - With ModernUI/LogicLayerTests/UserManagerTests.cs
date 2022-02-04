@@ -62,7 +62,7 @@ namespace LogicLayerTests
             bool actualResult;
 
             // Act
-            actualResult = userManager.AuthenticateUser(email, passwordHash);
+            actualResult = userManager.AuthenticateUserByEmailAndPassword(email, passwordHash);
 
             // Assert
             Assert.AreEqual(ExpectedResult, actualResult);
@@ -87,7 +87,7 @@ namespace LogicLayerTests
             bool actualResult;
 
             // Act
-            actualResult = userManager.AuthenticateUser(email, passwordHash);
+            actualResult = userManager.AuthenticateUserByEmailAndPassword(email, passwordHash);
 
             // Assert
             Assert.AreEqual(ExpectedResult, actualResult);
@@ -112,7 +112,7 @@ namespace LogicLayerTests
             bool actualResult;
 
             // Act
-            actualResult = userManager.AuthenticateUser(email, passwordHash);
+            actualResult = userManager.AuthenticateUserByEmailAndPassword(email, passwordHash);
 
             // Assert
             Assert.AreEqual(ExpectedResult, actualResult);
@@ -137,7 +137,7 @@ namespace LogicLayerTests
             bool actualResult;
 
             // Act
-            actualResult = userManager.AuthenticateUser(email, passwordHash);
+            actualResult = userManager.AuthenticateUserByEmailAndPassword(email, passwordHash);
 
             // Assert
             Assert.AreEqual(ExpectedResult, actualResult);
@@ -161,7 +161,7 @@ namespace LogicLayerTests
             int expectedUserID = 999999;
             int actualUserID = 0;
             // Act
-            user = userManager.GetUserByEmail(expectedUserEmail);
+            user = userManager.RetrieveUserByEmail(expectedUserEmail);
             actualUserID = user.UserID;
             // Assert
             Assert.AreEqual(expectedUserID, actualUserID);
@@ -183,7 +183,7 @@ namespace LogicLayerTests
             User user = null;
             const string badUserEmail = "xtess@company.com";
             // Act
-            user = userManager.GetUserByEmail(badUserEmail);
+            user = userManager.RetrieveUserByEmail(badUserEmail);
             // Assert
             // Nothing to do, checking for exception.
         }
@@ -257,7 +257,7 @@ namespace LogicLayerTests
             bool actualResult;
 
             // Act
-            actualResult = userManager.ResetPassword(email, oldPassword, newPassword);
+            actualResult = userManager.UpdatePasswordHash(email, oldPassword, newPassword);
 
             // Assert
             Assert.AreEqual(expectedResult, actualResult);
@@ -282,7 +282,7 @@ namespace LogicLayerTests
             const string email = "tess@company.com";
 
             // Act
-            userManager.ResetPassword(email, oldPassword, newPassword);
+            userManager.UpdatePasswordHash(email, oldPassword, newPassword);
 
             // Assert
             // Nothing to do here
@@ -307,7 +307,7 @@ namespace LogicLayerTests
             const string email = "xtess@company.com";
 
             // Act
-            userManager.ResetPassword(email, oldPassword, newPassword);
+            userManager.UpdatePasswordHash(email, oldPassword, newPassword);
 
             // Assert
             // Nothing to do here

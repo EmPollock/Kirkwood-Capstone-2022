@@ -39,7 +39,7 @@
                 <ColumnDefinition Width="250">
 
                 </ColumnDefinition>
-                <ColumnDefinition Width="120">
+                <ColumnDefinition Width="150">
 
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -61,6 +61,8 @@
             <Label Grid.Row="1" Grid.Column="2" Content="Password"
                    VerticalAlignment="Top" HorizontalAlignment="Center" 
                    FontWeight="Bold" x:Name="lblPassword"/>
+
+            <Button x:Name="btnCreateAccount" Grid.Column="3" Grid.Row="1" Margin="5px 5px 20px 5px" Content="Register Account" IsDefault="True" Click="btnCreateAccount_Click"/>
         </Grid>
 
         <Grid x:Name="grdMainMenu" Grid.Row="0"  Background="#FF4388CC" Visibility="Hidden">

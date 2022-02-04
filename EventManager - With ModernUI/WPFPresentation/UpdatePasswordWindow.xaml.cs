@@ -90,7 +90,7 @@ namespace WPFPresentation
                 string oldPassword = this.pwdOldPassword.Password;
                 string newPassword = this.pwdNewPassword.Password;
 
-                if (this._userManager.ResetPassword(this._user.EmailAddress, oldPassword, newPassword))
+                if (this._userManager.UpdatePasswordHash(this._user.EmailAddress, oldPassword, newPassword))
                 {
                     MessageBox.Show("Password successfully updated");
                     this.DialogResult = true;
@@ -101,6 +101,19 @@ namespace WPFPresentation
 
                 MessageBox.Show("Update failed.\n\n" + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/2/03
+        /// 
+        /// Description:
+        /// Click event for "Cancel" button. Sets DialogueResult to false to close window and indicate failure in updating password.
+        /// 
+        /// </summary>
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
         }
     }
 }
