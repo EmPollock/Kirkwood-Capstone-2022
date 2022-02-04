@@ -115,5 +115,35 @@ namespace DataAccessFakes
             return events;
         
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/02
+        /// 
+        /// Description:
+        /// Updates an event in fake data list
+        /// 
+        /// </summary>
+        /// <returns>int number of records affected</returns>
+        /// 
+        public int UpdateEvent(Event oldEvent, Event newEvent)
+        {
+            int rowsAffected = 0;
+
+            foreach (var fakeEvent in _fakeEvents)
+            {
+                if (fakeEvent.EventID == newEvent.EventID && fakeEvent.EventName == oldEvent.EventName 
+                    && fakeEvent.EventDescription == oldEvent.EventDescription
+                    && fakeEvent.Active == oldEvent.Active)
+                {
+                    fakeEvent.EventName = newEvent.EventName;
+                    fakeEvent.EventDescription = newEvent.EventDescription;
+                    fakeEvent.Active = newEvent.Active;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
     }
 }

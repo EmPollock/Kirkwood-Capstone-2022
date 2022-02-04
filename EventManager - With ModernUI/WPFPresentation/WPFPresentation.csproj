@@ -62,12 +62,17 @@
     <Compile Include="Event\pgCreateEvent.xaml.cs">
       <DependentUpon>pgCreateEvent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Event\pgEventEditDetail.xaml.cs">
+      <DependentUpon>pgEventEditDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Event\pgTaskListCreate.xaml.cs">
       <DependentUpon>pgTaskListCreate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Event\pgViewEvents.xaml.cs">
       <DependentUpon>pgViewEvents.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IntegerValidationHelpers.cs" />
+    <Compile Include="StringValidationHelpers.cs" />
     <Compile Include="Supplier\pgViewSuppliers.xaml.cs">
       <DependentUpon>pgViewSuppliers.xaml</DependentUpon>
     </Compile>
@@ -78,6 +83,10 @@
     <Compile Include="Volunteer\pgViewAllVolunteers.xaml.cs">
       <DependentUpon>pgViewAllVolunteers.xaml</DependentUpon>
     </Compile>
+    <Page Include="Event\pgEventEditDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Event\pgTaskListCreate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -11,5 +11,6 @@ namespace LogicLayerInterfaces
     {
         int CreateEvent(string eventName, string eventDescription);
         List<Event> RetreieveActiveEvents();
+        bool UpdateEvent(Event oldEvent, Event newEvent);
     }
 }

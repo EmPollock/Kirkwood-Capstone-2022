@@ -26,7 +26,7 @@ Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
-print '' print '*** creating sp_insert_event'
+/*print '' print '*** creating sp_insert_event'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_event]
 (
@@ -44,7 +44,7 @@ AS
 		(@EventName, @EventDescription)		
 	END	
 GO
-
+*/
 /***************************************************************
 Jace Pettinger
 Created: 2022/01/23
@@ -57,6 +57,7 @@ Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
+/*
 print '' print '*** creating sp_select_active_events'
 GO
 CREATE PROCEDURE [dbo].[sp_select_active_events]
@@ -71,7 +72,7 @@ AS
 		WHERE [Active] = 1	
 	END	
 GO
-
+*/
 /***************************************************************
 Derrick Nagy
 Created: 2022/01/22
@@ -88,6 +89,7 @@ Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
+/*
 print '' print '*** creating sp_select_event_by_event_name_and_description'
 GO
 CREATE PROCEDURE [dbo].[sp_select_event_by_event_name_and_description] (
@@ -108,48 +110,78 @@ AS
 			AND [Active] = 1
 	END	
 GO
+*/
 
 /***************************************************************
-Jace Pettinger
-Created: 2022/02/03
+Derrick Nagy
+Created: 2022/01/30
 
 Description:
-Stored procedure to update an event from the Event table
-
+Stored procedure to insert an event date into the event date table
 **************************************************************
 <Updater Name>
 Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
-
-print '' print '*** creating sp_update_event_by_eventID ***'
+print '' print '*** creating sp_insert_event_date'
 GO
-CREATE PROCEDURE [dbo].[sp_update_event_by_eventID]
+CREATE PROCEDURE [dbo].[sp_insert_event_date]
 (
-	@EventID 				[int],
-	@OldEventName			[nvarchar](50),
-	@OldEventDescription	[nvarchar](1000),
-	@OldActive				[bit],
-	@NewEventName			[nvarchar](50),
-	@NewEventDescription	[nvarchar](1000),
-	@NewActive				[bit]
+	@EventDateID			[Date] 
+	,@EventID			[int] 
+	,@StartTime			[Time](0) 
+	,@EndTime			[Time](0) 
 )
 AS
 	BEGIN
-		UPDATE	[Event]
-		SET		
-			[EventName] = @NewEventName,
-			[EventDescription] = @NewEventDescription,
-			[Active] = @NewActive
-		WHERE 	
-			[EventID] = @EventID
-		  AND	
-			@OldEventName = [EventName]
-		  AND
-			@OldEventDescription = [EventDescription]
-		  AND
-			@OldActive = [Active]
-		RETURN @@ROWCOUNT
-	END
+		INSERT INTO [dbo].[EventDate]
+		(
+			[EventDateID]
+			,[EventID]	
+			,[StartTime] 
+			,[EndTime]	 
+		)
+		VALUES
+		(
+			@EventDateID
+			,@EventID
+			,@StartTime
+			,@EndTime
+		)
+	END	
+GO
+
+/*
+sp_select_event_dates_by_eventID	@EventID	int	IEventDateAccessor
+
+*/
+/***************************************************************
+Derrick Nagy
+Created: 2022/01/30
+
+Description:
+Stored procedure to select the information about the dates for events
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_event_dates_by_eventID'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_dates_by_eventID](
+	@EventID			[int] 
+)
+AS
+	BEGIN
+		SELECT 
+			[EventDateID]
+			,[EventID]	
+			,[StartTime] 
+			,[EndTime]			
+		FROM [dbo].[EventDate]
+		WHERE [Active] = 1	
+			AND [EventID] = @EventID
+	END	
 GO

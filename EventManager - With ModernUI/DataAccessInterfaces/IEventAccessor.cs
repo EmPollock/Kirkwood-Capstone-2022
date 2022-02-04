@@ -11,6 +11,7 @@ namespace DataAccessInterfaces
     {
         int InsertEvent(string eventName, string eventDescription);
         List<Event> SelectActiveEvents();
+        int UpdateEvent(Event oldEvent, Event newEvent);
     }
 }
 

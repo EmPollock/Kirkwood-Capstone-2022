@@ -29,7 +29,7 @@ Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
-
+/*
 print '' print '*** creating Event table'
 CREATE TABLE [dbo].[Event] (
 	[EventID]			[int] IDENTITY(100000,1)	NOT NULL
@@ -41,7 +41,7 @@ CREATE TABLE [dbo].[Event] (
 	CONSTRAINT [pk_EventID] PRIMARY KEY([EventID])
 )
 GO
-
+*/
 
 /***************************************************************
  Derrick Nagy
@@ -55,6 +55,7 @@ GO
 
  Description: 
 ****************************************************************/
+/*
 print '' print '*** test records for Event table'
 GO
 INSERT INTO [dbo].[Event] (
@@ -65,7 +66,7 @@ INSERT INTO [dbo].[Event] (
 	('Clean Up the Park','An event to organize a way to clean up the local park.'),
 	('Coachella in the Corridor','A music festival to raise money for local charities.')
 GO
-
+*/
 
 /***************************************************************
 Derrick Nagy
@@ -79,7 +80,7 @@ Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
-/*
+
 print '' print '*** creating Event Date'
 CREATE TABLE [dbo].[EventDate] (
 	[EventDateID]		[Date]						NOT NULL 
@@ -93,7 +94,7 @@ CREATE TABLE [dbo].[EventDate] (
 		REFERENCES [dbo].[Event]([EventID])
 )
 GO
-*/
+
 /***************************************************************
  Derrick Nagy
  Created: 2022/01/29
@@ -106,7 +107,6 @@ GO
 
  Description: 
 ****************************************************************/
-/*
 print '' print '*** test records for Event Dates'
 GO
 INSERT INTO [dbo].[EventDate] (
@@ -123,4 +123,3 @@ INSERT INTO [dbo].[EventDate] (
 	,('2022-06-02', 100002,'12:00', '11:00')
 	
 GO
-*/
