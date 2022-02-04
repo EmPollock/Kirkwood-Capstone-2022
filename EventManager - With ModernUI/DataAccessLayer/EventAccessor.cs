@@ -148,8 +148,60 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
             return rowsAffected;
+        }
+        public Event SelectEventByEventNameAndDescription(string eventName, string eventDescription)
+        {
+            Event eventToGet = null;
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_event_by_event_name_and_description";
+        var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
+
+            cmd.Parameters["@EventName"].Value = eventName;
+            cmd.Parameters["@EventDescription"].Value = eventDescription;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                         eventToGet = new Event()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            Active = true
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return eventToGet;
         }
     }
 }

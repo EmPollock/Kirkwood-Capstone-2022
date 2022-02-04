@@ -47,7 +47,6 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Calls insert event date
-
         /// </summary>
         /// <param name="eventDate"></param>
         /// <returns>True if added to database</returns>
@@ -72,25 +71,18 @@ namespace LogicLayer
             return result;
         }
 
-        public int DeactivateEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int DeleteEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/30
+        /// 
+        /// Description:
+        /// Retrieves a list of event dates that are associated with an event
+        /// </summary>
+        /// <param name="eventID">The EventID</param>
+        /// <returns>A list of EventDates</returns>
         public List<EventDate> RetrieveEventDatesByEventID(int eventID)
         {
             List<EventDate> eventDates = null;
-
-            ////Green
-            //eventDates = new List<EventDate>();
-            //eventDates.Add(new EventDate());
-            //eventDates.Add(new EventDate());
-            //eventDates.Add(new EventDate());
 
             try
             {
@@ -106,11 +98,6 @@ namespace LogicLayer
             }
 
             return eventDates;
-        }
-
-        public int UpdateEventDateByEventDateIDAndEventID(DateTime eventDate, int eventID, DateTime oldStartDateTime, DateTime newStartDateTime, DateTime oldEndDateTime, DateTime newEndDateTime)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -13,15 +13,6 @@ namespace DataAccessLayer
 {
     public class EventDateAccessor : IEventDateAccessor
     {
-        public int DeactivateEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int DeleteEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Derrick Nagy
@@ -49,15 +40,6 @@ namespace DataAccessLayer
             cmd.Parameters.Add("@EventID", SqlDbType.Int);
             cmd.Parameters.Add("@StartTime", SqlDbType.DateTime2);
             cmd.Parameters.Add("@EndTime", SqlDbType.DateTime2);
-
-            //oString("yyyy-MM-dd");
-            //var formatedDate = eventDate.EventDateID;
-
-            //DateTime x = formatedDate.Value;
-
-            //var y = x.ToString("yyyy-MM-dd");
-
-            //TimeSpan z = TimeSpan.Parse(y);
 
             cmd.Parameters["@EventDateID"].Value = eventDate.EventDateID;
             cmd.Parameters["@EventID"].Value = eventDate.EventID;
@@ -131,13 +113,12 @@ namespace DataAccessLayer
             {
                 throw;
             }
+            finally
+            {
+                conn.Close();
+            }
 
             return eventDates;
-        }
-
-        public int UpdateEventDateByEventDateIDAndEventID(DateTime eventDate, int eventID, DateTime oldStartDateTime, DateTime newStartDateTime, DateTime oldEndDateTime, DateTime newEndDateTime)
-        {
-            throw new NotImplementedException();
         }
     }
 }

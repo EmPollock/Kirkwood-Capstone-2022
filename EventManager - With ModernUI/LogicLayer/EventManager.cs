@@ -96,6 +96,11 @@ namespace LogicLayer
         /// Retrieves Active Events from data source
 
         /// </summary>
+        /// Derrick Nagy
+        /// Updated: 2022/01/30
+        /// 
+        /// Description:
+        /// Added variable "ex" so method throws ex
         /// <returns>List of active events</returns>
 
         public List<Event> RetreieveActiveEvents()
@@ -106,10 +111,10 @@ namespace LogicLayer
             {
                 events = _eventAccessor.SelectActiveEvents();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
 
             return events;
@@ -158,6 +163,27 @@ namespace LogicLayer
             }
 
             return result;
+        }
+
+        public Event RetrieveEventByEventNameAndDescription(string eventName, string eventDescription)
+        {
+            Event eventToGet = null;
+
+            try
+            {
+                eventToGet = _eventAccessor.SelectEventByEventNameAndDescription(eventName, eventDescription);
+                if (eventToGet == null)
+                {
+                    throw new ApplicationException("Could not find an event with that name and description.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventToGet;
         }
     }
 }
