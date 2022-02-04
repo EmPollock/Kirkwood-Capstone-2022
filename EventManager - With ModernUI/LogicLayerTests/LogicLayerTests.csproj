@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="EventDateManagerTests.cs" />
     <Compile Include="EventManagerTests.cs" />
+    <Compile Include="LocationManagerTests.cs" />
     <Compile Include="SupplierManagerTests.cs" />
     <Compile Include="TaskManagerTests.cs" />
     <Compile Include="UserManagerTests.cs" />

@@ -201,5 +201,11 @@ namespace WPFPresentation
             Uri pageURI = new Uri("Volunteer/pgViewAllVolunteers.xaml", UriKind.Relative);
             this.MainFrame.NavigationService.Navigate(pageURI);
         }
+
+        private void btnViewLocations_Click(object sender, RoutedEventArgs e)
+        {
+            Uri pageURI = new Uri("Location/pgViewLocations.xaml", UriKind.Relative);
+            this.MainFrame.NavigationService.Navigate(pageURI);
+        }
     }
 }

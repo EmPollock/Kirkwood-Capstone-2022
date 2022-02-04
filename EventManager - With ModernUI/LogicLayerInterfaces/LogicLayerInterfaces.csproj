@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="IEventDateManager.cs" />
     <Compile Include="IEventManager.cs" />
+    <Compile Include="ILocationManager.cs" />
     <Compile Include="ISupplierManager.cs" />
     <Compile Include="ITaskManager.cs" />
     <Compile Include="IUserManager.cs" />
