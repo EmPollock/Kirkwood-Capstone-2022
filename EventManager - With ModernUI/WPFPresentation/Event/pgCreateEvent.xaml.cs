@@ -80,6 +80,12 @@ namespace WPFPresentation
         /// 2022/02/03
         /// Description:
         /// Changed the next button to cycle through the tabs in the set rather than just swtiching to a set tab.
+        /// 
+        /// Update:
+        /// Vinayak Deshpande
+        /// 2022/02/04
+        /// Description:
+        /// Moved event creation back to first tab of event creation page.
         private void btnEventNext_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -88,9 +94,14 @@ namespace WPFPresentation
                 //MessageBox.Show("Added event.");
 
                 int newIndex = tabsetCreateEvent.SelectedIndex + 1;
-                if (newIndex >= tabsetCreateEvent.Items.Count)
+                if (sender.Equals(btnEventNext))
                 {
                     _eventManager.CreateEvent(txtBoxEventName.Text, txtBoxEventDescription.Text);
+                    MessageBox.Show("Event Created, please add additional details.");
+                }
+                if (newIndex >= tabsetCreateEvent.Items.Count)
+                {
+                    MessageBox.Show("Event modifiers added.");
                     newIndex = 0;
                 }
                 (tabsetCreateEvent.SelectedItem as TabItem).IsEnabled = false;
