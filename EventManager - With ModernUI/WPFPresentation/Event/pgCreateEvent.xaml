@@ -132,13 +132,13 @@
                         <TextBlock x:Name="txtBlkCurrentEventDates" Grid.Row="0" Grid.Column="0" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" Visibility="Hidden">Currently Selected Dates</TextBlock>
                         <DataGrid x:Name="datCurrentEventDates" Grid.Row="1" Grid.Column="0" Margin="10" SelectionMode="Single" ItemsSource="{Binding}" AutoGenerateColumns="False" Visibility="Hidden" IsReadOnly="True">
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn>
+                                <!--<DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button>Hey</Button>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                </DataGridTemplateColumn>-->
                                 <!--Found out how to do this here:-->
                                 <!--https://stackoverflow.com/questions/7978249/date-formatting-in-wpf-datagrid-->
 

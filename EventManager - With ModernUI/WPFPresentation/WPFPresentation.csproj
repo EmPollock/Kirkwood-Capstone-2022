@@ -71,15 +71,12 @@
     <Compile Include="Event\pgViewEvents.xaml.cs">
       <DependentUpon>pgViewEvents.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IntegerValidationHelpers.cs" />
-    <Compile Include="StringValidationHelpers.cs" />
     <Compile Include="Supplier\pgViewSuppliers.xaml.cs">
       <DependentUpon>pgViewSuppliers.xaml</DependentUpon>
     </Compile>
     <Compile Include="UpdatePasswordWindow.xaml.cs">
       <DependentUpon>UpdatePasswordWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ValidationHelpers.cs" />
     <Compile Include="Volunteer\pgViewAllVolunteers.xaml.cs">
       <DependentUpon>pgViewAllVolunteers.xaml</DependentUpon>
     </Compile>
