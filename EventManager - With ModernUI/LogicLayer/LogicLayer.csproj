@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityManager.cs" />
     <Compile Include="EventDateManager.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

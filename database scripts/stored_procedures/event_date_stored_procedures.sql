@@ -88,3 +88,35 @@ AS
 			AND [EventID] = @EventID
 	END	
 GO
+
+
+/***************************************************************
+Emma Pollock
+Created: 2022/02/02
+
+Description:
+Stored procedure to select the information about a specific date 
+	for an event
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_event_date_by_event_dateID_and_eventID'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_date_by_event_dateID_and_eventID](
+	@EventDateID		[Date]
+	,@EventID			[int] 
+)
+AS
+	BEGIN
+		SELECT 
+			[StartTime] 
+			,[EndTime]			
+		FROM [dbo].[EventDate]
+		WHERE [Active] = 1
+			AND [EventDateID] = @EventDateID
+			AND [EventID] = @EventID
+	END	
+GO

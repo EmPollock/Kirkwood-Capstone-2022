@@ -41,9 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityAccessorFake.cs" />
+    <Compile Include="ActivityResultAccessorFake.cs" />
     <Compile Include="EventAccessorFake.cs" />
     <Compile Include="EventDateAccessorFake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SublocationAccessorFake.cs" />
     <Compile Include="SupplierAccessorFake.cs" />
     <Compile Include="TaskAccessorFakes.cs" />
     <Compile Include="UserAccessorFake.cs" />
