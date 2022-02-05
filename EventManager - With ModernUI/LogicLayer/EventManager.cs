@@ -65,7 +65,7 @@ namespace LogicLayer
                 throw new ApplicationException("Name can not be over 50 characters.");
             }
 
-            if (eventDescription == ""|| eventDescription == null)
+            if (eventDescription == "" || eventDescription == null)
             {
                 throw new ApplicationException("Description can not empty.");
             }
@@ -96,6 +96,11 @@ namespace LogicLayer
         /// Retrieves Active Events from data source
 
         /// </summary>
+        /// Derrick Nagy
+        /// Updated: 2022/01/30
+        /// 
+        /// Description:
+        /// Added variable "ex" so method throws ex
         /// <returns>List of active events</returns>
 
         public List<Event> RetreieveActiveEvents()
@@ -106,13 +111,79 @@ namespace LogicLayer
             {
                 events = _eventAccessor.SelectActiveEvents();
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return events;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/02
+        /// 
+        /// Description:
+        /// Updates an Event record in data source
+
+        /// </summary>
+        /// <returns>List of active events</returns>
+        public bool UpdateEvent(Event oldEvent, Event newEvent)
+        {
+            bool result = false;
+
+            if (newEvent.EventName == "" || newEvent.EventName == null)
+            {
+                throw new ApplicationException("Name can not be empty.");
+            }
+            if (newEvent.EventName.Length >= 50)
+            {
+                throw new ApplicationException("Name can not be over 50 characters.");
+            }
+
+            if (newEvent.EventDescription == "" || newEvent.EventDescription == null)
+            {
+                throw new ApplicationException("Description can not empty.");
+            }
+
+            if (newEvent.EventDescription.Length >= 1000)
+            {
+                throw new ApplicationException("Description can not over 1000 characters.");
+            }
+
+            try
+            {
+                result = 1 == _eventAccessor.UpdateEvent(oldEvent, newEvent);
+            }
             catch (Exception)
             {
 
                 throw;
             }
 
-            return events;
+            return result;
+        }
+
+        public Event RetrieveEventByEventNameAndDescription(string eventName, string eventDescription)
+        {
+            Event eventToGet = null;
+
+            try
+            {
+                eventToGet = _eventAccessor.SelectEventByEventNameAndDescription(eventName, eventDescription);
+                if (eventToGet == null)
+                {
+                    throw new ApplicationException("Could not find an event with that name and description.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventToGet;
         }
     }
 }

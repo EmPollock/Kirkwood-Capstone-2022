@@ -115,5 +115,60 @@ namespace DataAccessFakes
             return events;
         
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/30
+        /// 
+        /// Description:
+        /// Select fake event for testing
+        /// 
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="eventDescription"></param>
+        /// <returns></returns>
+        public Event SelectEventByEventNameAndDescription(string eventName, string eventDescription)
+        {
+            Event fakeEvent = null;
+
+            if (_fakeEvents.Exists(e => (e.EventName == eventName) && (e.EventDescription == eventDescription)))
+            {
+                fakeEvent = _fakeEvents.First(e => (e.EventName == eventName) && (e.EventDescription == eventDescription));
+            }
+
+            return fakeEvent;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/02
+        /// 
+        /// Description:
+        /// Updates an event in fake data list
+        /// 
+        /// </summary>
+        /// <returns>int number of records affected</returns>
+        /// 
+        public int UpdateEvent(Event oldEvent, Event newEvent)
+        {
+            int rowsAffected = 0;
+
+            foreach (var fakeEvent in _fakeEvents)
+            {
+                if (fakeEvent.EventID == newEvent.EventID && fakeEvent.EventName == oldEvent.EventName
+                    && fakeEvent.EventDescription == oldEvent.EventDescription
+                    && fakeEvent.Active == oldEvent.Active)
+                {
+                    fakeEvent.EventName = newEvent.EventName;
+                    fakeEvent.EventDescription = newEvent.EventDescription;
+                    fakeEvent.Active = newEvent.Active;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
+
+
     }
 }

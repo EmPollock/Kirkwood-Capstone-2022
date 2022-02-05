@@ -194,6 +194,22 @@ namespace WPFPresentation
         {
             Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
             this.MainFrame.NavigationService.Navigate(pageURI);
+            
+            // For testing
+            //Event.pgViewActivities page = new Event.pgViewActivities(100000);
+            //this.MainFrame.NavigationService.Navigate(page);
+        }
+
+        private void btnViewVolunteers_Click(object sender, RoutedEventArgs e)
+        {
+            Uri pageURI = new Uri("Volunteer/pgViewAllVolunteers.xaml", UriKind.Relative);
+            this.MainFrame.NavigationService.Navigate(pageURI);
+        }
+
+        private void btnViewLocations_Click(object sender, RoutedEventArgs e)
+        {
+            Uri pageURI = new Uri("Location/pgViewLocations.xaml", UriKind.Relative);
+            this.MainFrame.NavigationService.Navigate(pageURI);
         }
     }
 }
