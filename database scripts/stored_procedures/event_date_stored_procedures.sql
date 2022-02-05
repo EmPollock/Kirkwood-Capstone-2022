@@ -27,7 +27,7 @@ Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
-print '' print '*** creating sp_insert_event_date'
+print '' print '*** creating sp_insert_event_date ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_event_date]
 (
@@ -55,10 +55,6 @@ AS
 	END	
 GO
 
-/*
-sp_select_event_dates_by_eventID	@EventID	int	IEventDateAccessor
-
-*/
 /***************************************************************
 Derrick Nagy
 Created: 2022/01/30
@@ -71,7 +67,7 @@ Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
-print '' print '*** creating sp_select_event_dates_by_eventID'
+print '' print '*** creating sp_select_event_dates_by_eventID ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_event_dates_by_eventID](
 	@EventID			[int] 

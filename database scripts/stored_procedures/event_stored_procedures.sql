@@ -74,7 +74,7 @@ GO
 
 /***************************************************************
 Derrick Nagy
-Created: 2022/01/30
+Created: 2022/01/22
 
 Description:
 Stored procedure to select an event from the Event table by the EventTitle and EventDescription
@@ -109,3 +109,47 @@ AS
 	END	
 GO
 
+/***************************************************************
+Jace Pettinger
+Created: 2022/02/03
+
+Description:
+Stored procedure to update an event from the Event table
+
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_update_event_by_eventID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_event_by_eventID]
+(
+	@EventID 				[int],
+	@OldEventName			[nvarchar](50),
+	@OldEventDescription	[nvarchar](1000),
+	@OldActive				[bit],
+	@NewEventName			[nvarchar](50),
+	@NewEventDescription	[nvarchar](1000),
+	@NewActive				[bit]
+)
+AS
+	BEGIN
+		UPDATE	[Event]
+		SET		
+			[EventName] = @NewEventName,
+			[EventDescription] = @NewEventDescription,
+			[Active] = @NewActive
+		WHERE 	
+			[EventID] = @EventID
+		  AND	
+			@OldEventName = [EventName]
+		  AND
+			@OldEventDescription = [EventDescription]
+		  AND
+			@OldActive = [Active]
+		RETURN @@ROWCOUNT
+	END
+GO

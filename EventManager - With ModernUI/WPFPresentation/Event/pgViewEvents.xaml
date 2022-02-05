@@ -9,6 +9,29 @@
       Title="pgViewEvents" Loaded="Page_Loaded">
 
     <Grid>
-        <DataGrid x:Name="datActiveEvents" SelectionMode="Single"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="txtBlkMyEvents" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}">My Events</TextBlock>
+
+        <DataGrid x:Name="datActiveEvents" Grid.Row="1" Grid.Column="1" SelectionMode="Single" IsReadOnly="True" 
+                  ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="datActiveEvents_MouseDoubleClick" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Event Name" Binding="{Binding EventName}"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding EventDescription}"/>
+                <DataGridTextColumn Header="Date Created" 
+                                    Binding="{Binding EventCreatedDate, StringFormat=\{0:MM/dd/yy\}}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="btnCreateEvent" Content="Create Event" Grid.Row="2" Grid.Column="1" Click="btnCreateEvent_Click" />
     </Grid>
 </Page>

@@ -67,7 +67,6 @@ namespace DataAccessLayer
         /// 
         /// </summary>
         /// <returns>List of active events</returns>
-
         public List<Event> SelectActiveEvents()
         {
             List<Event> events = new List<Event>();
@@ -106,6 +105,56 @@ namespace DataAccessLayer
             return events;
         }
 
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/02
+        /// 
+        /// Description:
+        /// Updates a record in the Event table
+        /// 
+        /// </summary>
+        /// <returns>int rows affected</returns>
+        public int UpdateEvent(Event oldEvent, Event newEvent)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_update_event_by_eventID";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@EventID", oldEvent.EventID);
+            cmd.Parameters.Add("@OldEventName", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@OldEventName"].Value = oldEvent.EventName;
+            cmd.Parameters.Add("@OldEventDescription", SqlDbType.NVarChar, 1000);
+            cmd.Parameters["@OldEventDescription"].Value = oldEvent.EventDescription;
+            cmd.Parameters.Add("@OldActive", SqlDbType.Bit);
+            cmd.Parameters["@OldActive"].Value = oldEvent.Active;
+            cmd.Parameters.Add("@NewEventName", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@NewEventName"].Value = newEvent.EventName;
+            cmd.Parameters.Add("@NewEventDescription", SqlDbType.NVarChar, 1000);
+            cmd.Parameters["@NewEventDescription"].Value = newEvent.EventDescription;
+            cmd.Parameters.Add("@NewActive", SqlDbType.Bit);
+            cmd.Parameters["@NewActive"].Value = newEvent.Active;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
+        }
         public Event SelectEventByEventNameAndDescription(string eventName, string eventDescription)
         {
             Event eventToGet = null;
@@ -114,7 +163,7 @@ namespace DataAccessLayer
             var conn = DBConnection.GetConnection();
 
             string cmdTxt = "sp_select_event_by_event_name_and_description";
-            var cmd = new SqlCommand(cmdTxt, conn);
+        var cmd = new SqlCommand(cmdTxt, conn);
 
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -123,7 +172,6 @@ namespace DataAccessLayer
 
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
-
 
             try
             {
@@ -144,7 +192,6 @@ namespace DataAccessLayer
                         };
                     }
                 }
-
             }
             catch (Exception ex)
             {

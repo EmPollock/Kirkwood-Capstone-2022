@@ -84,12 +84,6 @@ namespace LogicLayer
         {
             List<EventDate> eventDates = null;
 
-            ////Green
-            //eventDates = new List<EventDate>();
-            //eventDates.Add(new EventDate());
-            //eventDates.Add(new EventDate());
-            //eventDates.Add(new EventDate());
-
             try
             {
                 eventDates = _eventDateAccessor.SelectEventDatesByEventID(eventID);
@@ -105,7 +99,5 @@ namespace LogicLayer
 
             return eventDates;
         }
-
-
     }
 }

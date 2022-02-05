@@ -41,15 +41,6 @@ namespace DataAccessLayer
             cmd.Parameters.Add("@StartTime", SqlDbType.DateTime2);
             cmd.Parameters.Add("@EndTime", SqlDbType.DateTime2);
 
-            //oString("yyyy-MM-dd");
-            //var formatedDate = eventDate.EventDateID;
-
-            //DateTime x = formatedDate.Value;
-
-            //var y = x.ToString("yyyy-MM-dd");
-
-            //TimeSpan z = TimeSpan.Parse(y);
-
             cmd.Parameters["@EventDateID"].Value = eventDate.EventDateID;
             cmd.Parameters["@EventID"].Value = eventDate.EventID;
             cmd.Parameters["@StartTime"].Value = eventDate.StartTime;
@@ -177,9 +168,12 @@ namespace DataAccessLayer
             {
                 throw;
             }
+            finally
+            {
+                conn.Close();
+            }
 
             return eventDates;
         }
-
     }
 }

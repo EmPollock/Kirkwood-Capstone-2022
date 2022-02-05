@@ -79,13 +79,13 @@ namespace LogicLayerTests
             // arrange
             const string eventName = "jDWAAHKGh6r3JQwRW7IPVHDJunFb8b5tfgYfGz8vauaNJ2tM1z";
             const string eventDescription = "Test Description";
-            
+
             // act
             _eventManager.CreateEvent(eventName, eventDescription);
 
             // assert
             // nothing to assert, exception testing
-            
+
         }
 
         /// <summary>
@@ -156,11 +156,194 @@ namespace LogicLayerTests
         }
 
         /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/01/22
+        /// 
+        /// Description:
+        /// Test that throws an application exception if the event name for update is 
+        /// an empty string or null
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsApplicationExceptionIfNoName()
+        {
+            // arrange
+            Event oldEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                Active = true
+            };
+
+            Event newEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "",
+                EventDescription = "A description of test event 1",
+                Active = true
+            };
+
+            // act
+            _eventManager.UpdateEvent(oldEvent, newEvent);
+
+            // assert
+            // nothing to assert, exception testing
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// Test that throws an application exception if event name for update is too long
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsApplicationExceptionIfNameOver50Char()
+        {
+            // arrange
+            Event oldEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                Active = true
+            };
+
+            Event newEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "jDWAAHKGh6r3JQwRW7IPVHDJunFb8b5tfgYfGz8vauaNJ2tM1z",
+                EventDescription = "A description of test event 1",
+                Active = true
+            };
+
+            // act
+            _eventManager.UpdateEvent(oldEvent, newEvent);
+
+            // assert
+            // nothing to assert, exception testing
+
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// Test that throws an application exception if the description for update 
+        /// is an empty string or null
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsApplicationExceptionIfNoDescription()
+        {
+            // arrange
+            Event oldEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                Active = true
+            };
+
+            Event newEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "",
+                Active = true
+            };
+
+            // act
+            _eventManager.UpdateEvent(oldEvent, newEvent);
+
+            // assert
+            // nothing to assert, exception testing
+
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// Test that throws an application exception if the description for update 
+        /// is too long, over 1000 char
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsApplicationExceptionIfDescriptionTooLong()
+        {
+            // arrange
+            Event oldEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                Active = true
+            };
+
+            Event newEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "CG7RqtCb0qMq3CUwXSTQvuOKIVZgUdUS33qHKpKqXwHhdAJx1pVLwRWvWd2Y24v1RGQjMqwGMpbMhavquvuyitARU2Omrm4gIPSWaS0TCpbo4oI83WKvWSW2qOPk9SFUK77x48NVmp0QbCts1KrbDx01v4g1iSwumHHNmg33vo6GpUKhU3j2iYnaXyncIGiVrRoqDCVUhU7qwwioIMBuYASWnsWMMsKVNROFlwQkzdDWS5zRDpiEnKXMcXIcfbm9VIKbWYh2j1uozqNgRcxv6DbxDgC9CyVAToCuYuURoBrfK3k5ClHIGAmpeHM6S9aIwDJ3rtesuprRrjd4K2t5ZrtuRsLO8ZtnQz2SrZntqBRJqjf9d5GGjvM2tfq5Tq94AS075HGUXg7da1swsTgj8zRB31TcW4jZ98rXlyIiwsvJn06UJWybWveN2NM9LGqOyd6jL0IzkXYMBhm5wN8vqxvpUPYayChPgEDITBr0WVahkd8Ev0SVn89finbKKSCTcNLWMijRBZ5lo7pOiLz2j7RTwRDjIxPECGK5efJcicLU8E4hAwmaX5AJbtxXLEF5m1mkPbSinzsS4Nl5YvP7lDkhjdtGK9DwfGmXAsXMSPY42r2cTBpbSptU0w9XVgMNWUe9V4Use0aPu5ZahBLjwFy3gDCOW7L7vh75HawP1I4BctBgHc6csf8Kdhq70LKtTvkEPO7vdnmaQXTfSugSRgzQ2JZiTAmRrnT40nK4X5whoi63g7PKrXAuqVsgOrUkWlgtmWRjXfdTRWRPMewPoUCFwe6DuJ22okqUiQ0t1ZlvqlfzhZfyya4GPsZeZD7Fs5203eEZq3dvhJWZ6BpRgrJ168yZNBfHBDFKVdyBd0epClPSG4A0O38RVDkiuiFtuYwBtSs7o8VOfhGcxm01XzsTWIbcbXUc6HX4qfGCfXxBe4OfeC6pobrTpL2o8G6DGcOYExHjHHCSKyOs9Y4LT36lkiCOCet2Pp0ALA8r",
+            Active = true
+            };
+
+            // act
+            _eventManager.UpdateEvent(oldEvent, newEvent);
+
+            // assert
+            // nothing to assert, exception testing
+
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// Test that returns true if update successful
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEventReturnsTrueIfUpdateSuccessful()
+        {
+            // arrange
+            Event oldEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                Active = true
+            };
+
+            Event newEvent = new Event()
+            {
+                EventID = 1000000,
+                EventName = "Test Name",
+                EventDescription = "Description",
+                Active = false
+            };
+
+            bool expected = true;
+            bool actual;
+
+            // act
+            actual = _eventManager.UpdateEvent(oldEvent, newEvent);
+
+            // assert
+
+            Assert.AreEqual(expected, actual);
+        }
+
         /// Derrick Nagy
         /// Created: 2022/01/30
         /// 
         /// Description:
-        /// Test that returns and event object and tests to see if it is the correct ID
+        /// Test that returns an event object and tests to see if it is the correct ID
         /// </summary>
         [TestMethod]
         public void TestRetrieveEventByEventNameAndDescriptionReturnsCorrectEventID()
@@ -202,7 +385,5 @@ namespace LogicLayerTests
             // notthing to assert, exception testing
             
         }
-
-
     }
 }
