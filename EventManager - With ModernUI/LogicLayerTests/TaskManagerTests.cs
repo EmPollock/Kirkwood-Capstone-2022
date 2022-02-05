@@ -239,7 +239,7 @@ namespace LogicLayerTests
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
-        public void TestInsertTaskThrowsExceptionIfDueDateIsSetToPreviouMinute()
+        public void TestInsertTaskThrowsExceptionIfDueDateIsSetToPreviousMinute()
         {
             //arrange
             Tasks task = new Tasks()
@@ -256,6 +256,76 @@ namespace LogicLayerTests
 
             //assert
             //checking for exception
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/01/31
+        /// 
+        /// Description:
+        /// Test that checks if the correct number of items in a list of tasks will be returned
+        /// Should be four according to TaskAccessorFakes
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllActiveTasksByEventIDReturnsCorrectNumberOfListItems()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int expectedCount = 3;
+            int actualCount;
+
+            // act
+            actualCount = taskManager.RetrieveAllActiveTasksByEventID(eventID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/01/31
+        /// 
+        /// Description:
+        /// Test that checks if the method returned the correct number of list items
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllActiveTasksByEventIDFailsWithIncorrectNumberOfListItems()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int expectedCount = 2;
+            int actualCount;
+
+
+            // act
+            actualCount = taskManager.RetrieveAllActiveTasksByEventID(eventID).Count;
+
+            // assert
+            Assert.AreNotEqual(expectedCount, actualCount);
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/01/31
+        /// 
+        /// Description: 
+        /// Test that fails because an incorrect list was passed
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllActiveTasksByEventIDFailsWithIncorrectListBeingReturned()
+        {
+            // arrange
+            const int badEventID = 100001;
+            const int expectedCount = 3;
+            int actualCount;
+
+            // act
+            actualCount = taskManager.RetrieveAllActiveTasksByEventID(badEventID).Count;
+
+            // assert
+            Assert.AreNotEqual(expectedCount, actualCount);
 
         }
 

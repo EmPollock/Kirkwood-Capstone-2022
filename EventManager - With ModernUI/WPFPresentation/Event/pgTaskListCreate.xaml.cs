@@ -29,9 +29,9 @@ namespace WPFPresentation
     public partial class pgTaskListCreate : Page
     {
         
-           ITaskManager _taskManager = null;
+        ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
-        Event _event = null;
+        DataObjects.Event _event = null;
 
         // priority values to populate cboPriority
         List<Priority> _priorities = new List<Priority>();
@@ -67,6 +67,7 @@ namespace WPFPresentation
         /// <param name="e"></param>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+
             // txtBlkEventName.Text = _event.EventName;
             try
             {
@@ -91,9 +92,18 @@ namespace WPFPresentation
         /// </summary>
         private void btnSaveTask_Click(object sender, RoutedEventArgs e)
         {
+            // hard coding this in for testing purposes, please delete when passing event id through pages
+            // is implemented.
+            int eventID = 100000;
+
             string taskName = txtTaskName.Text.ToString();
 
             string taskDescription = txtTaskDescription.Text.ToString();
+
+            if(dtpTaskDueDate.SelectedDate == null)
+            {
+                dtpTaskDueDate.SelectedDate = DateTime.Now;
+            }
 
             DateTime taskDueDate = (DateTime)dtpTaskDueDate.SelectedDate;
 
@@ -107,6 +117,7 @@ namespace WPFPresentation
 
             var task = new Tasks()
             {
+                EventID = eventID,
                 Name = taskName,
                 Description = taskDescription,
                 DueDate = taskDueDate,
@@ -116,6 +127,8 @@ namespace WPFPresentation
             {
                 _taskManager.AddTask(task);
                 MessageBox.Show("Task has been added.");
+                Uri pageUri = new Uri("Event/pgTaskListView.xaml", UriKind.Relative);
+                this.NavigationService.Navigate(pageUri);
             }
             catch (Exception ex)
             {
@@ -123,6 +136,34 @@ namespace WPFPresentation
             }
         }
 
-        
+        /// <summary>
+        /// Mike Cahow
+        /// Create: 2022/02/04
+        /// 
+        /// Description:
+        /// Event handler for the cancel button. If the yes is clicked in the dialog box
+        /// it sends user back to pgTaskListView. If no is clicked then user remains on 
+        /// current page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancelTask_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Task will not be saved if you stop now.";
+            string title = "Stop creating Task?";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            var result = MessageBox.Show(message, title, buttons, image);
+
+            if(result == MessageBoxResult.No)
+            {
+                return;
+            }
+            else
+            {
+                Uri pageUri = new Uri("Event/pgTaskListView.xaml", UriKind.Relative);
+                this.NavigationService.Navigate(pageUri);
+            }
+        }
     }
 }

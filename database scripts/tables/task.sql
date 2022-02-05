@@ -72,6 +72,29 @@ GO
 
 /***************************************************************
 / Mike Cahow
+/ Created: 2022/01/31
+/ 
+/ Description: Creating Task Table records
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print '*** creating sample Task records...'
+GO
+INSERT INTO [dbo].[Task]
+		([Name], [Description], [Priority], [EventID])
+	VALUES
+		('Mop', 'Mop up a spilled drink in the bathroom', 2, 100000),
+		('Sweep', 'Sweep up some broken glass by staging area', 1, 100000),
+		('Wipe Tables', 'Wipe down tables after lunch ends', 3, 100000)
+GO
+
+/***************************************************************
+/ Mike Cahow
 / Created: 2022/01/22
 / 
 / Description: Creating the TaskAssignment table

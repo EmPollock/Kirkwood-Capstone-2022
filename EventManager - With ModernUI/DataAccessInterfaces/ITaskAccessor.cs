@@ -27,6 +27,7 @@ namespace DataAccessInterfaces
         /// <param name="newTask"></param>
         /// <returns>int</returns>
         int InsertTasks(Tasks newTask);
+
         /// <summary>
         /// Mike Cahow
         /// Created: 2022/01/23
@@ -36,5 +37,15 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <returns></returns>
         List<Priority> SelectAllPriorities();
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/01/31
+        /// 
+        /// Description:
+        /// Select method that grabs a list of all tasks for an event
+        /// </summary>
+        /// <returns>List Tasks</returns>
+        List<TasksVM> SelectAllActiveTasksByEventID(int eventID);
     }
 }

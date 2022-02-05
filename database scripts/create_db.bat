@@ -10,7 +10,7 @@ sqlcmd -S localhost -E -i tables/task.sql
 sqlcmd -S localhost -E -i stored_procedures/event_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/user_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/supplier_stored_procedures.sql
-sqlcmd -S localhost -E -i stored_procedures/tasks_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/task_stored_procedures.sql
 
 
 
