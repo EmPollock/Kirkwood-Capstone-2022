@@ -138,20 +138,51 @@ namespace LogicLayerTests
         /// Description:
         /// Test that shows that retrieve event dates by event id throws an exception if the event dates list is empty
         /// </summary>
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/02/06/2022
+        /// 
+        /// Description:
+        /// Throwing an exception is not the desired behavior
+        //[TestMethod]
+        //[ExpectedException(typeof(ApplicationException))]
+        //public void TestRetrieveEventDatesByEventIDThrowsExceptionForEmptyList()
+        //{
+        //    // arrange
+        //    const int eventID = -1;
+
+
+        //    // act
+        //    _eventDateManager.RetrieveEventDatesByEventID(eventID);
+
+        //    // assert
+        //    // exception testing, nothing to assert
+
+        //}
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/29
+        /// 
+        /// Description:
+        /// Test that shows that retrieve event dates by event id throws an exception if the event dates list is empty
+        /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestRetrieveEventDatesByEventIDThrowsExceptionForEmptyList()
+        public void TestRetrieveEventDatesByEventIDReturnsEmptyListForEmptyList()
         {
             // arrange
             const int eventID = -1;
-                        
-            
+            const int expectedCount = 0;
+            List<EventDate> eventDateList = null;
+            int actualCount;
 
             // act
-            _eventDateManager.RetrieveEventDatesByEventID(eventID);
+            eventDateList = _eventDateManager.RetrieveEventDatesByEventID(eventID);
+            actualCount = eventDateList.Count;
 
             // assert
-            // exception testing, nothing to assert
+            Assert.AreEqual(expectedCount, actualCount);
 
         }
 
