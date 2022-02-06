@@ -13,6 +13,8 @@ sqlcmd -S localhost -E -i tables/sublocation.sql
 sqlcmd -S localhost -E -i tables/activity.sql
 sqlcmd -S localhost -E -i tables/activity_result.sql
 sqlcmd -S localhost -E -i tables/volunteer_request.sql
+sqlcmd -S localhost -E -i tables/location_image.sql
+sqlcmd -S localhost -E -i tables/review.sql
 sqlcmd -S localhost -E -i stored_procedures/event_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/event_date_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/user_stored_procedures.sql
@@ -24,6 +26,8 @@ sqlcmd -S localhost -E -i stored_procedures/activity_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/sublocation_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/activity_result_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/volunteer_request_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/location_image_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/review_stored_procedures.sql
 
 
 

@@ -272,7 +272,7 @@ namespace LogicLayerTests
         {
             // arrange
             const int eventID = 100000;
-            const int expectedCount = 3;
+            const int expectedCount = 0;
             int actualCount;
 
             // act

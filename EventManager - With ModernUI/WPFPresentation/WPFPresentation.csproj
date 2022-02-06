@@ -70,12 +70,15 @@
     </Compile>
     <Compile Include="Event\pgTaskListView.xaml.cs">
       <DependentUpon>pgTaskListView.xaml</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Event\pgViewActivities.xaml.cs">
       <DependentUpon>pgViewActivities.xaml</DependentUpon>
     </Compile>
     <Compile Include="Event\pgViewEvents.xaml.cs">
       <DependentUpon>pgViewEvents.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgViewLocationDetails.xaml.cs">
+      <DependentUpon>pgViewLocationDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Location\pgViewLocations.xaml.cs">
       <DependentUpon>pgViewLocations.xaml</DependentUpon>
@@ -98,7 +101,11 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Event\pgTaskListView.xaml">
-	  <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgViewLocationDetails.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Location\pgViewLocations.xaml">

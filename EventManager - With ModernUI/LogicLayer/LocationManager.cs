@@ -63,5 +63,98 @@ namespace LogicLayer
 
             return locations;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// Method to retrieve a location by its LocationID
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Updater Name
+        /// Updated: yyyy/mm/dd
+        /// </remarks>
+        /// <param name="locationID"></param>
+        /// <returns>A Location object</returns>
+        public Location RetrieveLocationByLocationID(int locationID)
+        {
+            Location location = new Location();
+
+            try
+            {
+                location = _locationAccessor.SelectLocationByLocationID(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return location;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// Method to retrieve location images by its LocationID
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Updater Name
+        /// Updated: yyyy/mm/dd
+        /// </remarks>
+        /// <param name="locationID"></param>
+        /// <returns>A list of LocationImage objects</returns>
+        public List<LocationImage> RetrieveLocationImages(int locationID)
+        {
+            List<LocationImage> locationImages = new List<LocationImage>();
+
+            try
+            {
+                locationImages = _locationAccessor.SelectLocationImages(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return locationImages;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/05
+        /// 
+        /// Description:
+        /// Method to retrieve location reviews by its LocationID
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Updater Name
+        /// Updated: yyyy/mm/dd
+        /// </remarks>
+        /// <param name="locationID"></param>
+        /// <returns>A list of LocationReview objects</returns>
+        public List<LocationReview> RetrieveLocationReviews(int locationID)
+        {
+            List<LocationReview> locationReviews = new List<LocationReview>();
+
+            try
+            {
+                locationReviews = _locationAccessor.SelectLocationReviews(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return locationReviews;
+        }
     }
 }
