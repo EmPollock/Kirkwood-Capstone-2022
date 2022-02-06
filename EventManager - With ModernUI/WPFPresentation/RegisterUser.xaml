@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFPresentation"
         mc:Ignorable="d"
-        Title="RegisterUser" Height="475" Width="440" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="RegisterUser" Height="475" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -49,7 +49,59 @@
         <TextBox x:Name="txtCity" Grid.Row="6" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,5,30,5" Grid.ColumnSpan="2" />
 
         <Label Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,10,10,10" FontFamily="Yu Gothic UI" Content="State:"/>
-        <TextBox x:Name="txtState" Grid.Row="7" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,5,30,5" Grid.ColumnSpan="2" />
+        <ComboBox x:Name="cboState" Grid.Row="7" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,5,0,0" Width="245" >
+            <ComboBoxItem Content="Alabama" Tag="AL"/>
+            <ComboBoxItem Content="Alaska" Tag="AK" />
+            <ComboBoxItem Content="Arizona" Tag="AZ"/>
+            <ComboBoxItem Content="Arkansas" Tag="AR"/>
+            <ComboBoxItem Content="California" Tag="CA"/>
+            <ComboBoxItem Content="Colorado" Tag="CO"/>
+            <ComboBoxItem Content="Cennecticut" Tag="CT"/>
+            <ComboBoxItem Content="Delaware" Tag="DE"/>
+            <ComboBoxItem Content="District of Columbia" Tag="DC"/>
+            <ComboBoxItem Content="Florida" Tag="FL"/>
+            <ComboBoxItem Content="Georgia" Tag="GA"/>
+            <ComboBoxItem Content="Hawaii" Tag="HI"/>
+            <ComboBoxItem Content="Idaho" Tag="ID"/>
+            <ComboBoxItem Content="Illinois" Tag="IL"/>
+            <ComboBoxItem Content="Indiana" Tag="IN"/>
+            <ComboBoxItem Content="Iowa" Tag="IA"/>
+            <ComboBoxItem Content="Kansas" Tag="KS"/>
+            <ComboBoxItem Content="Kentucky" Tag="KY"/>
+            <ComboBoxItem Content="Louisiana" Tag="LA"/>
+            <ComboBoxItem Content="Maine" Tag="ME"/>
+            <ComboBoxItem Content="Maryland" Tag="MD"/>
+            <ComboBoxItem Content="Massachusetts" Tag="MA"/>
+            <ComboBoxItem Content="Michigan" Tag="MI"/>
+            <ComboBoxItem Content="Minnesota" Tag="MN"/>
+            <ComboBoxItem Content="Mississippi" Tag="MS"/>
+            <ComboBoxItem Content="Missouri" Tag="MO"/>
+            <ComboBoxItem Content="Montana" Tag="MT"/>
+            <ComboBoxItem Content="Nebraska" Tag="NE"/>
+            <ComboBoxItem Content="Nevada" Tag="NV"/>
+            <ComboBoxItem Content="New Hampshire" Tag="NH"/>
+            <ComboBoxItem Content="New Jersey" Tag="NJ"/>
+            <ComboBoxItem Content="New Mexico" Tag="NM"/>
+            <ComboBoxItem Content="New York" Tag="NY"/>
+            <ComboBoxItem Content="North Carolina" Tag="NC"/>
+            <ComboBoxItem Content="North Dakota" Tag="ND"/>
+            <ComboBoxItem Content="Ohio" Tag="OH"/>
+            <ComboBoxItem Content="Oklahoma" Tag="OK"/>
+            <ComboBoxItem Content="Oregan" Tag="OR"/>
+            <ComboBoxItem Content="Pennsylvania" Tag="PA"/>
+            <ComboBoxItem Content="Rhode Island" Tag="RI"/>
+            <ComboBoxItem Content="South Carolina" Tag="SC"/>
+            <ComboBoxItem Content="South Dakota" Tag="SD"/>
+            <ComboBoxItem Content="Tennessee" Tag="TN"/>
+            <ComboBoxItem Content="Texas" Tag="TX"/>
+            <ComboBoxItem Content="Utah" Tag="UT"/>
+            <ComboBoxItem Content="Vermont" Tag="VT"/>
+            <ComboBoxItem Content="Virginia" Tag="VA"/>
+            <ComboBoxItem Content="Washington" Tag="WA"/>
+            <ComboBoxItem Content="West Virginia" Tag="WV"/>
+            <ComboBoxItem Content="Wisconsin" Tag="WI"/>
+            <ComboBoxItem Content="Wyoming" Tag="WY"/>
+        </ComboBox>
 
         <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,10,10,10" FontFamily="Yu Gothic UI" Content="Zip Code:"/>
         <TextBox x:Name="txtZipCode" Grid.Row="8" Grid.Column="1" VerticalContentAlignment="Center" Margin="10,5,30,5" Grid.ColumnSpan="2" />
@@ -62,7 +114,7 @@
 
             <Button x:Name="btnCancel" Grid.Column="1" Content="Cancel Account" Margin="0 5 30 10" Click="btnCancel_Click"/>
 
-            <Button x:Name="btnSubmit" Grid.Column="0" Content="Create Account" Margin="10 5 20 10" Click="btnSubmit_Click"/>
+            <Button x:Name="btnSubmit" Grid.Column="0" Content="Create Account" Margin="10 5 20 10" Click="btnSubmit_Click" IsDefault="True"/>
         </Grid>
 
     </Grid>

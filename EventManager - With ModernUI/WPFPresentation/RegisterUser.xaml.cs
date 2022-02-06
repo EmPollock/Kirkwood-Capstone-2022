@@ -80,10 +80,10 @@ namespace WPFPresentation
                 this.txtCity.Focus();
                 return;
             }
-            if (!this.txtState.Text.IsValidStateName())
+            if (!this.cboState.Text.IsValidStateName())
             {
-                MessageBox.Show("You must enter a state.");
-                this.txtState.Focus();
+                MessageBox.Show("You must select a state.");
+                this.cboState.Focus();
                 return;
             }
             if (!this.txtZipCode.Text.IsValidZipCode())
@@ -99,7 +99,7 @@ namespace WPFPresentation
                     GivenName = this.txtGivenName.Text,
                     FamilyName = this.txtFamilyName.Text,
                     EmailAddress = this.txtEmail.Text,
-                    State = this.txtState.Text,
+                    State = ((ComboBoxItem)cboState.SelectedItem).Tag.ToString(),
                     City = this.txtCity.Text,
                     Zip = Int32.Parse(this.txtZipCode.Text.Replace("-", "")) // Already has to be numeric to get this far.
                 };

@@ -313,5 +313,34 @@ namespace LogicLayerTests
             // Nothing to do here
 
         }
+
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/2/4
+        /// 
+        /// Description:
+        /// Tests password reset logic rejects bas email addresses
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestCreateUserReturnsTrue()
+        {
+            // Arrange
+            const bool expected = true;
+            bool result;
+            User user = new User()
+            {
+                UserID = 0,
+                GivenName = "Testy",
+                FamilyName = "McTest",
+            };
+
+            // Act
+            result =  userManager.CreateUser(user);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
     }
 }

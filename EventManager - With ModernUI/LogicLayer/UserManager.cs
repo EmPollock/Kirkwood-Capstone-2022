@@ -226,7 +226,7 @@ namespace LogicLayer
             bool result = false;
             try
             {
-                result = (1 == _userAccessor.InsertUser(user));
+                result = 1 == _userAccessor.InsertUser(user);
             }
             catch (Exception ex)
             {
