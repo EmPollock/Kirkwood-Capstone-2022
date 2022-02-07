@@ -74,6 +74,9 @@
     <Compile Include="Event\pgViewActivities.xaml.cs">
       <DependentUpon>pgViewActivities.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Event\pgViewEventDateActivities.xaml.cs">
+      <DependentUpon>pgViewEventDateActivities.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Event\pgViewEvents.xaml.cs">
       <DependentUpon>pgViewEvents.xaml</DependentUpon>
     </Compile>
@@ -101,6 +104,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Event\pgTaskListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Event\pgViewEventDateActivities.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -194,10 +194,16 @@ namespace WPFPresentation
         {
             Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
             this.MainFrame.NavigationService.Navigate(pageURI);
-            
+
             // For testing
-            //Event.pgViewActivities page = new Event.pgViewActivities(100000);
-            //this.MainFrame.NavigationService.Navigate(page);
+
+            /* tests for pgViewActivities fake and real */
+            //Event.pgViewActivities page = new Event.pgViewActivities(new DataObjects.Event() { EventID = 1, EventName = "Test Event" });
+            //Event.pgViewActivities page = new Event.pgViewActivities(new DataObjects.Event() { EventID = 100000, EventName = "Scottish Highland Games" });
+
+            /* tests for pgViewEventDateActivities fake and real */
+            //Event.pgViewEventDateActivities page = new Event.pgViewEventDateActivities(new DataObjects.Event() { EventID = 1, EventName = "Test Event" }, new EventDate() { EventDateID = new DateTime(2022, 01, 01) });
+            Event.pgViewEventDateActivities page = new Event.pgViewEventDateActivities(new DataObjects.Event() { EventID = 100000, EventName = "Scottish Highland Games" }, new EventDate() { EventDateID = new DateTime(2022, 01, 29) });
         }
 
         private void btnViewVolunteers_Click(object sender, RoutedEventArgs e)

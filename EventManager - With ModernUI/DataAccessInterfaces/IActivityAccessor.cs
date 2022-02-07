@@ -9,6 +9,8 @@ namespace DataAccessInterfaces
 {
     public interface IActivityAccessor
     {
+        int InsertActivity(Activity activity);
         List<Activity> SelectActivitiesByEventID(int eventID);
+        List<Activity> SelectActivitiesByEventIDAndEventDateID(int eventID, DateTime? eventDateID);
     }
 }

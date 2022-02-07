@@ -68,5 +68,83 @@ namespace LogicLayerTests
             //assert
             //error testing, nothing to do here
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/02/05
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitesByEventID returns a list of the
+        ///     expected size.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesByEventIDAndEventDateIDRetrievesListWithCorrectEventIDAndEventDate()
+        {
+            //arrange   
+            const int eventID = 2;
+            DateTime eventDateID = new DateTime(2022, 01, 01);
+            const int expectedCount = 2;
+            List<ActivityVM> activities;
+            int actualCount;
+
+            //act
+            activities = _activityManager.RetrieveActivitiesByEventIDAndEventDateID(eventID, eventDateID);
+            actualCount = activities.Count;
+
+            //assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/02/05
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitesByEventID returns a list of the
+        ///     expected size.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesByEventIDAndEventDateIDRetrievesEmptyListWithInCorrectEventID()
+        {
+            //arrange   
+            const int eventID = 20;
+            DateTime eventDateID = new DateTime(2022, 01, 01);
+            const int expectedCount = 0;
+            List<ActivityVM> activities;
+            int actualCount;
+
+            //act
+            activities = _activityManager.RetrieveActivitiesByEventIDAndEventDateID(eventID, eventDateID);
+            actualCount = activities.Count;
+
+            //assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/02/05
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitesByEventID returns a list of the
+        ///     expected size.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesByEventIDAndEventDateIDRetrievesEmptyListWithInCorrectEventDateID()
+        {
+            //arrange   
+            const int eventID = 1;
+            DateTime eventDateID = new DateTime(2022, 12, 01);
+            const int expectedCount = 0;
+            List<ActivityVM> activities;
+            int actualCount;
+
+            //act
+            activities = _activityManager.RetrieveActivitiesByEventIDAndEventDateID(eventID, eventDateID);
+            actualCount = activities.Count;
+
+            //assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
     }
 }
