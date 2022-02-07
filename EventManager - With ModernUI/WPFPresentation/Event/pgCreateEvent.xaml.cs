@@ -132,8 +132,8 @@ namespace WPFPresentation
         /// <param name="e"></param>
         private void btnEventCancel_Click(object sender, RoutedEventArgs e)
         {
-            Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
-            this.NavigationService.Navigate(pageURI);
+            Page page = new pgViewEvents();
+            this.NavigationService.Navigate(page);
         }
 
         /// <summary>

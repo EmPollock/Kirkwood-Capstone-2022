@@ -54,5 +54,71 @@ namespace WPFPresentation
 
             return isValid;
         }
+
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/2/03
+        /// 
+        /// Description:
+        /// String validation method. Checks if string is empty. 
+        /// 
+        /// </summary>
+        /// <param name="name">A string to be checked for validity as a name</param>
+        /// <returns></returns>
+        public static bool IsValidName(this string name)
+        {
+            return name.Length > 0;
+        }
+
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/2/03
+        /// 
+        /// Description:
+        /// String validation method. Checks if string is empty. 
+        /// 
+        /// </summary>
+        /// <param name="city">A string to be checked for validity as a name</param>
+        /// <returns></returns>
+        public static bool IsValidCityName(this string city)
+        {
+            return city.Length > 0;
+        }
+
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/2/03
+        /// 
+        /// Description:
+        /// String validation method. Just checks if the string is empty for now.
+        /// 
+        /// </summary>
+        /// <param name="state">A string to be checked for validity as a name</param>
+        /// <returns></returns>
+        public static bool IsValidStateName(this string state)
+        {
+            return state.Length > 0;
+        }
+
+        /// <summary>
+        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
+        /// Created: 2022/2/03
+        /// 
+        /// Description:
+        /// String validation method. Uses regex to check for zip code validity
+        /// 
+        /// </summary>
+        /// <param name="zip"></param>
+        /// <returns></returns>
+        public static bool IsValidZipCode(this string zip)
+        {
+            bool isValid = false;
+            Regex rx = new Regex(@"^[0-9\-]{5,12}");
+            if (rx.IsMatch(zip))
+            {
+                isValid = true;
+            }
+            return isValid;
+        }
     }
 }
