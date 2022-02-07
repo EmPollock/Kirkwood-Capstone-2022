@@ -40,6 +40,7 @@ namespace LogicLayer
         }
 
 
+
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/01/22
@@ -51,7 +52,7 @@ namespace LogicLayer
         /// <param name="eventName"></param>
         /// <param name="eventDescription"></param>
         /// <returns>Number of rows added</returns>
-        public int CreateEvent(string eventName, string eventDescription)
+        public int CreateEvent(string eventName, string eventDescription, int locationID)
         {
             int rowsAffected = 0;
 
@@ -74,11 +75,14 @@ namespace LogicLayer
             {
                 throw new ApplicationException("Description can not over 1000 characters.");
             }
-
+            if (locationID < 99999)
+            {
+                throw new ApplicationException("Invalid Location");
+            }
 
             try
             {
-                rowsAffected = _eventAccessor.InsertEvent(eventName, eventDescription);
+                rowsAffected = _eventAccessor.InsertEvent(eventName, eventDescription, locationID);
             }
             catch (Exception ex)
             {

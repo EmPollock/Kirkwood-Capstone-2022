@@ -28,16 +28,16 @@ namespace DataAccessFakes
             {
                 LocationID = 100000,
                 UserID = 100000,
-                Name = "Test Location 1",
-                Description = "Description of Test Location 1 goes here.",
-                PricingInfo = "Pricing information for renting Test Location 1 goes here.",
-                Phone = "111-111-1111",
-                Email = "testLocation1@locations.com",
-                Address1 = "Test Location 1 Street",
-                City = "Iowa City",
-                State = "Iowa",
-                ZipCode = "52240",
-                ImagePath = "http://imagehost.com/testlocation1.png",
+                LocationName = "Test Location 1",
+                LocationDescription = "Description of Test Location 1 goes here.",
+                LocationPricingText = "Pricing information for renting Test Location 1 goes here.",
+                LocationPhone = "111-111-1111",
+                LocationEmail = "testLocation1@locations.com",
+                LocationAddress1 = "Test Location 1 Street",
+                LocationCity = "Iowa City",
+                LocationState = "Iowa",
+                LocationZipCode = "52240",
+                LocationImagePath = "http://imagehost.com/testlocation1.png",
                 Active = true
             });
 
@@ -45,17 +45,17 @@ namespace DataAccessFakes
             {
                 LocationID = 100001,
                 UserID = 100000,
-                Name = "Test Location 2",
-                Description = "Description of Test Location 2 goes here.",
-                PricingInfo = "Pricing information for renting Test Location 2 goes here.",
-                Phone = "222-222-2222",
-                Email = "testLocation2@locations.com",
-                Address1 = "Test Location 2 Street",
-                Address2 = "Apt 2",
-                City = "Cedar Rapids",
-                State = "Iowa",
-                ZipCode = "52404",
-                ImagePath = "http://imagehost.com/testlocation2.png",
+                LocationName = "Test Location 2",
+                LocationDescription = "Description of Test Location 2 goes here.",
+                LocationPricingText = "Pricing information for renting Test Location 2 goes here.",
+                LocationPhone = "222-222-2222",
+                LocationEmail = "testLocation2@locations.com",
+                LocationAddress1 = "Test Location 2 Street",
+                LocationAddress2 = "Apt 2",
+                LocationCity = "Cedar Rapids",
+                LocationState = "Iowa",
+                LocationZipCode = "52404",
+                LocationImagePath = "http://imagehost.com/testlocation2.png",
                 Active = true
             });
 
@@ -63,17 +63,17 @@ namespace DataAccessFakes
             {
                 LocationID = 100002,
                 UserID = 100000,
-                Name = "Test Location 3",
-                Description = "Description of Test Location 3 goes here.",
-                PricingInfo = "Pricing information for renting Test Location 3 goes here.",
-                Phone = "333-333-3333",
-                Email = "testLocation3@locations.com",
-                Address1 = "Test Location 3 Street",
-                Address2 = "Apt 33",
-                City = "Chicago",
-                State = "Illinois",
-                ZipCode = "60007",
-                ImagePath = "http://imagehost.com/testlocation3.png",
+                LocationName = "Test Location 3",
+                LocationDescription = "Description of Test Location 3 goes here.",
+                LocationPricingText = "Pricing information for renting Test Location 3 goes here.",
+                LocationPhone = "333-333-3333",
+                LocationEmail = "testLocation3@locations.com",
+                LocationAddress1 = "Test Location 3 Street",
+                LocationAddress2 = "Apt 33",
+                LocationCity = "Chicago",
+                LocationState = "Illinois",
+                LocationZipCode = "60007",
+                LocationImagePath = "http://imagehost.com/testlocation3.png",
                 Active = true
             });
 
@@ -81,17 +81,17 @@ namespace DataAccessFakes
             {
                 LocationID = 100003,
                 UserID = 100000,
-                Name = "Test Location 4",
-                Description = "Description of Test Location 4 goes here.",
-                PricingInfo = "Pricing information for renting Test Location 4 goes here.",
-                Phone = "444-444-4444",
-                Email = "testLocation4@locations.com",
-                Address1 = "Test Location 4 Street",
-                Address2 = "Apt 44",
-                City = "New York City",
-                State = "New York",
-                ZipCode = "10036",
-                ImagePath = "http://imagehost.com/testlocation4.png",
+                LocationName = "Test Location 4",
+                LocationDescription = "Description of Test Location 4 goes here.",
+                LocationPricingText = "Pricing information for renting Test Location 4 goes here.",
+                LocationPhone = "444-444-4444",
+                LocationEmail = "testLocation4@locations.com",
+                LocationAddress1 = "Test Location 4 Street",
+                LocationAddress2 = "Apt 44",
+                LocationCity = "New York City",
+                LocationState = "New York",
+                LocationZipCode = "10036",
+                LocationImagePath = "http://imagehost.com/testlocation4.png",
                 Active = true
             });
 
@@ -99,28 +99,28 @@ namespace DataAccessFakes
             {
                 LocationID = 100004,
                 UserID = 100000,
-                Name = "Test Location 5 Inactive",
-                Description = "Description of Inactive Test Location 5 goes here.",
-                PricingInfo = "Pricing information for renting inactive Test Location 5 goes here.",
-                Phone = "555-555-5555",
-                Email = "testLocation5@locations.com",
-                Address1 = "Test Location 5 Street",
-                Address2 = "Apt 55",
-                City = "Detroit",
-                State = "Michigan",
-                ZipCode = "48202",
-                ImagePath = "http://imagehost.com/testlocation5.png",
+                LocationName = "Test Location 5 Inactive",
+                LocationDescription = "Description of Inactive Test Location 5 goes here.",
+                LocationPricingText = "Pricing information for renting inactive Test Location 5 goes here.",
+                LocationPhone = "555-555-5555",
+                LocationEmail = "testLocation5@locations.com",
+                LocationAddress1 = "Test Location 5 Street",
+                LocationAddress2 = "Apt 55",
+                LocationCity = "Detroit",
+                LocationState = "Michigan",
+                LocationZipCode = "48202",
+                LocationImagePath = "http://imagehost.com/testlocation5.png",
                 Active = false
             });
 
             _fakeLocations.Add(new Location()
             {
                 LocationID = 100005,
-                Name = "Test Location 6 Min Info",
-                Address1 = "Test Location 6 Street",
-                City = "Detroit",
-                State = "Michigan",
-                ZipCode = "48202",
+                LocationName = "Test Location 6 Min Info",
+                LocationAddress1 = "Test Location 6 Street",
+                LocationCity = "Detroit",
+                LocationState = "Michigan",
+                LocationZipCode = "48202",
                 Active = true
             });
 
@@ -270,6 +270,66 @@ namespace DataAccessFakes
             }
 
             return locationReviews;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/01/26
+        /// 
+        /// Description:
+        /// Insert fake location for testing
+        /// 
+        /// </summary>
+        /// <param name="LocationName">Name of the event</param>
+        /// <param name="address">name of the address</param>
+        /// <param name="locationCity">address of the location</param>
+        /// <param name="locationState">address of the location</param>
+        /// <param name="locationZipCode">address of the location</param>
+        /// <returns>Number of rows inserted</returns>
+        public int InsertLocation(string locationName, string address, string locationCity, string locationState, string locationZip)
+        {
+            int rowsAffected = 0;
+            _fakeLocations.Add(new Location()
+            {
+                LocationName = locationName,
+                LocationAddress1 = address,
+                LocationCity = locationCity,
+                LocationState = locationState,
+                LocationZipCode = locationZip
+            });
+
+            rowsAffected++;
+
+            return rowsAffected;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/01/26
+        /// 
+        /// Description:
+        /// Select matching location for testing
+        /// 
+        /// </summary>
+        /// <param name="LocationName">Name of the location</param>
+        /// <param name="address">Name of the address/param>
+        /// <returns>matching location if it exists</returns>
+        public Location SelectLocationByLocationNameAndAddress(string locationName, string address)
+        {
+            Location _eventLocation = new Location();
+            _eventLocation.LocationName = locationName;
+            _eventLocation.LocationAddress1 = address;
+
+            foreach (Location location in _fakeLocations)
+            {
+                if (location.LocationName == _eventLocation.LocationName &&
+                    location.LocationAddress1 == _eventLocation.LocationAddress1)
+                {
+                    _eventLocation = location;
+                }
+
+            }
+            return _eventLocation;
+
         }
     }
 }

@@ -33,6 +33,7 @@ Description:
 print '' print '*** creating Event table'
 CREATE TABLE [dbo].[Event] (
 	[EventID]			[int] IDENTITY(100000,1)	NOT NULL
+	,[LocationID]		[int]						NOT NULL
 	,[EventName]		[nvarchar](50)				NOT NULL
 	,[EventDescription]	[nvarchar](1000)			NOT NULL
 	,[DateCreated]		[DateTime]					NOT NULL DEFAULT CURRENT_TIMESTAMP 
@@ -59,11 +60,12 @@ print '' print '*** test records for Event table'
 GO
 INSERT INTO [dbo].[Event] (
 	[EventName],
-	[EventDescription]	
+	[EventDescription],	
+	[LocationID]
 )VALUES 
-	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA'),
-	('Clean Up the Park','An event to organize a way to clean up the local park.'),
-	('Coachella in the Corridor','A music festival to raise money for local charities.')
+	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA',100000),
+	('Clean Up the Park','An event to organize a way to clean up the local park.', 100001),
+	('Coachella in the Corridor','A music festival to raise money for local charities.', 100002)
 GO
 
 

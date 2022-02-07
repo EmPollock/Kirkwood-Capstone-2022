@@ -2,11 +2,11 @@
 ECHO off
 
 sqlcmd -S localhost -E -i drop_and_create_db.sql
-sqlcmd -S localhost -E -i tables/event.sql
-sqlcmd -S localhost -E -i tables/event_date.sql
 sqlcmd -S localhost -E -i tables/user.sql
 sqlcmd -S localhost -E -i tables/supplier.sql
 sqlcmd -S localhost -E -i tables/location.sql
+sqlcmd -S localhost -E -i tables/event.sql
+sqlcmd -S localhost -E -i tables/event_date.sql
 sqlcmd -S localhost -E -i tables/volunteers.sql
 sqlcmd -S localhost -E -i tables/task.sql
 sqlcmd -S localhost -E -i tables/sublocation.sql
@@ -40,6 +40,8 @@ rem activity.sql requires event.sql, event_date.sql, and sublocation.sql
 rem activity_result.sql requires activity.sql
 rem supplier.sql requires user.sql
 rem location.sql requires user.sql
+rem event.sql requires location.sql
+
 
 ECHO .
 ECHO if no errors appear DB was created

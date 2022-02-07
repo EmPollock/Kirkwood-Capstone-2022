@@ -21,9 +21,11 @@ namespace DataAccessFakes
         /// </summary>
         public EventAccessorFake()
         {
-            _fakeEvents.Add(new Event()
+            
+               _fakeEvents.Add(new Event()
             {
                 EventID = 1000000,
+                LocationID = 100000,
                 EventName = "Test Event 1",
                 EventDescription = "A description of test event 1",
                 EventCreatedDate = DateTime.Now,
@@ -33,6 +35,7 @@ namespace DataAccessFakes
             _fakeEvents.Add(new Event()
             {
                 EventID = 1000001,
+                LocationID = 100001,
                 EventName = "Test Event 2",
                 EventDescription = "A description of test event 2",
                 EventCreatedDate = DateTime.Now.AddMinutes(1),
@@ -42,6 +45,7 @@ namespace DataAccessFakes
             _fakeEvents.Add(new Event()
             {
                 EventID = 1000002,
+                LocationID = 100002,
                 EventName = "Test Event 3",
                 EventDescription = "A description of test event 3",
                 EventCreatedDate = DateTime.Now.AddMinutes(2),
@@ -52,6 +56,7 @@ namespace DataAccessFakes
             _fakeEvents.Add(new Event()
             {
                 EventID = 1000003,
+                LocationID = 100004,
                 EventName = "Test Event 4",
                 EventDescription = "A description of test event 4",
                 EventCreatedDate = DateTime.Now.AddMinutes(3),
@@ -70,7 +75,7 @@ namespace DataAccessFakes
         /// <param name="eventName">Name of the event</param>
         /// <param name="eventDescription">Description fo the event</param>
         /// <returns>Number of rows inserted</returns>
-        public int InsertEvent(string eventName, string eventDescription)
+        public int InsertEvent(string eventName, string eventDescription, int locationID)
         {
             int rowsAffected = 0;
             int eventID = _fakeEvents.Last().EventID + 1;
@@ -79,6 +84,7 @@ namespace DataAccessFakes
             _fakeEvents.Add(new Event()
             {
                 EventID = eventID,
+                LocationID = locationID,
                 EventName = eventName,
                 EventDescription = eventDescription,
                 EventCreatedDate = DateTime.Now,

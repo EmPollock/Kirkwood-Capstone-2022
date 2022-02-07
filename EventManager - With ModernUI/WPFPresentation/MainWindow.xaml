@@ -8,8 +8,7 @@
         x:Name="frmMainWindow"
         Title="Tadpole" Height="900" Width="1350" WindowStartupLocation="CenterScreen" Loaded="frmMainWindow_Loaded"
         xmlns:ui="http://schemas.modernwpf.com/2019"
-        ui:WindowHelper.UseModernWindowStyle="True"  
-        >
+        ui:WindowHelper.UseModernWindowStyle="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
