@@ -199,7 +199,7 @@ namespace DataAccessLayer
             var conn = DBConnection.GetConnection();
 
             // next, we need command text.
-            var cmdText = "sp_retrieve_user_by_email";
+            var cmdText = "sp_select_user_by_email";
 
             // we create a command object;
             var cmd = new SqlCommand(cmdText, conn);

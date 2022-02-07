@@ -56,7 +56,7 @@
             <ComboBoxItem Content="Arkansas" Tag="AR"/>
             <ComboBoxItem Content="California" Tag="CA"/>
             <ComboBoxItem Content="Colorado" Tag="CO"/>
-            <ComboBoxItem Content="Cennecticut" Tag="CT"/>
+            <ComboBoxItem Content="Connecticut" Tag="CT"/>
             <ComboBoxItem Content="Delaware" Tag="DE"/>
             <ComboBoxItem Content="District of Columbia" Tag="DC"/>
             <ComboBoxItem Content="Florida" Tag="FL"/>
