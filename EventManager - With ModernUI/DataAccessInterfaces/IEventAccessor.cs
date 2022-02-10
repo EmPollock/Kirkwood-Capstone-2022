@@ -13,6 +13,15 @@ namespace DataAccessInterfaces
         List<Event> SelectActiveEvents();
         int UpdateEvent(Event oldEvent, Event newEvent);
         Event SelectEventByEventNameAndDescription(string eventName, string eventDescription);
+        
+        List<EventVM> SelectEventsUpcomingDates();
+        List<EventVM> SelectEventsUpcomingAndPastDates();
+        List<EventVM> SelectEventsPastDates();
+
+        List<EventVM> SelectUserEventsForUpcomingDates(int userID);
+        List<EventVM> SelectUserEventsForPastDates(int userID);
+        List<EventVM> SelectUserEventsForPastAndUpcomingDates(int userID);
+
     }
 }
 

@@ -50,10 +50,11 @@ GO
  Description:
  Test records for event table
 ***************************************************************
- <Updater Name>
- Updated: yyyy/mm/dd
+ Derrick Nagy
+ Updated: 2202/02/06
 
  Description: 
+ Added more events
 ****************************************************************/
 print '' print '*** test records for Event table'
 GO
@@ -63,64 +64,10 @@ INSERT INTO [dbo].[Event] (
 )VALUES 
 	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA'),
 	('Clean Up the Park','An event to organize a way to clean up the local park.'),
-	('Coachella in the Corridor','A music festival to raise money for local charities.')
+	('Coachella in the Corridor','A music festival to raise money for local charities.'),
+	('Meeting of the C-Sharpians','Convention for C# coding enthusiasts.'),
+	('Ragbrai Stop Mason City','The event plans for Ragbrai in Mason City 2022.'),
+	('Jazzfest','Live jazz performances and food vendors downtown Iowa City.'),
+	('Bix7 2021','7 mile race in Davenport, Iowa '),
+	('Spelling Bee for the Bees','A spelling bee contest to raise money for a bee sanctuary.')
 GO
-
-
-/***************************************************************
-Derrick Nagy
-Created: 2022/01/29
-
-Description:
-Event Date table
-**************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
-
-Description: 
-****************************************************************/
-/*
-print '' print '*** creating Event Date'
-CREATE TABLE [dbo].[EventDate] (
-	[EventDateID]		[Date]						NOT NULL 
-	,[EventID]			[int] 						NOT NULL
-	,[StartTime]		[Time](0)					NOT NULL 
-	,[EndTime]			[Time](0)					NOT NULL 
-	,[Active]			[bit]						NOT NULL DEFAULT 1
-
-	CONSTRAINT [pk_EventDateID_EventID] PRIMARY KEY([EventDateID],[EventID])
-	, CONSTRAINT [fk_EventDate_EventID] FOREIGN KEY([EventID])
-		REFERENCES [dbo].[Event]([EventID])
-)
-GO
-*/
-/***************************************************************
- Derrick Nagy
- Created: 2022/01/29
- 
- Description:
- Test records for event dates
-***************************************************************
- <Updater Name>
- Updated: yyyy/mm/dd
-
- Description: 
-****************************************************************/
-/*
-print '' print '*** test records for Event Dates'
-GO
-INSERT INTO [dbo].[EventDate] (
-	[EventDateID]
-	,[EventID]
-	,[StartTime]
-	,[EndTime]
-)VALUES 
-	('2022-01-29', 100000,'08:30', '20:30')
-	,('2022-01-30', 100000,'08:30', '20:30')
-	,('2022-01-31', 100000,'08:30', '20:30')
-	,('2022-04-29', 100001,'06:15', '10:45')	
-	,('2022-06-01', 100002,'12:00', '11:00')
-	,('2022-06-02', 100002,'12:00', '11:00')
-	
-GO
-*/

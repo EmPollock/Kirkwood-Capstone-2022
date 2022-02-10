@@ -35,10 +35,10 @@ namespace WPFPresentation.Location
         public pgViewLocations()
         {
             // fake accessor
-            _locationManager = new LocationManager(new LocationAccessorFake());
+            //_locationManager = new LocationManager(new LocationAccessorFake());
 
             // live data accessor
-            // _locationManager = new LocationManager();
+            _locationManager = new LocationManager();
 
             InitializeComponent();
         }

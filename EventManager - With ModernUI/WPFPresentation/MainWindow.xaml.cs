@@ -189,11 +189,28 @@ namespace WPFPresentation
         /// Description:
         /// Click event for "View My Events" button. Currently brings up the Event List screen
         /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/02/08
+        /// 
+        /// Description:
+        /// Added option to send user information to the view events page
+        /// 
         /// </summary>
         private void btnViewEvents_Click(object sender, RoutedEventArgs e)
         {
             Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
-            this.MainFrame.NavigationService.Navigate(pageURI);
+
+            if (_user != null)
+            {
+                pgViewEvents pgViewEvents = new pgViewEvents(_user);
+                this.MainFrame.NavigationService.Navigate(pgViewEvents);
+            }
+            else
+            {
+                this.MainFrame.NavigationService.Navigate(pageURI);
+            }
+
         }
 
         private void btnViewVolunteers_Click(object sender, RoutedEventArgs e)

@@ -37,10 +37,10 @@ namespace DataAccessLayer
 
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
-            
+
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
-            
+
 
             try
             {
@@ -70,10 +70,10 @@ namespace DataAccessLayer
         public List<Event> SelectActiveEvents()
         {
             List<Event> events = new List<Event>();
-           
+
             var conn = DBConnection.GetConnection();
             var cmdText = "sp_select_active_events";
-            
+
             var cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -155,6 +155,18 @@ namespace DataAccessLayer
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/30
+        /// 
+        /// Description:
+        /// Retrieve an event object by its nabe and Description
+        /// 
+        /// </summary>
+        /// <param name="eventName">The name of the event</param>
+        /// <param name="eventDescription">The description of the event</param>
+        /// <returns></returns>
         public Event SelectEventByEventNameAndDescription(string eventName, string eventDescription)
         {
             Event eventToGet = null;
@@ -163,7 +175,7 @@ namespace DataAccessLayer
             var conn = DBConnection.GetConnection();
 
             string cmdTxt = "sp_select_event_by_event_name_and_description";
-        var cmd = new SqlCommand(cmdTxt, conn);
+            var cmd = new SqlCommand(cmdTxt, conn);
 
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -182,7 +194,7 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                         eventToGet = new Event()
+                        eventToGet = new Event()
                         {
                             EventID = reader.GetInt32(0),
                             EventName = reader.GetString(1),
@@ -203,5 +215,405 @@ namespace DataAccessLayer
             }
             return eventToGet;
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/04
+        /// 
+        /// Description:
+        /// Select list of upcoming dates
+        /// 
+        /// </summary>
+        /// <returns>Event view models</returns>
+        public List<EventVM> SelectEventsUpcomingDates()
+        {            
+            List<EventVM> eventListRef = new List<EventVM>();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_events_for_upcoming_dates";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
+                                        {
+                                            EventDateID = reader.GetDateTime(4),
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+                                        }
+                                    },
+                            Active = true
+                        });
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventDateVMHelper(eventListRef);
+
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Select list of upcoming and past dates
+        /// 
+        /// </summary>
+        /// <returns>Event view models</returns>
+        public List<EventVM> SelectEventsUpcomingAndPastDates()
+        {
+            List<EventVM> eventListRef = new List<EventVM>();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_events_for_past_and_future_event_dates";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
+                                        {
+                                            EventDateID = reader.GetDateTime(4),
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+                                        }
+                                    },
+                            Active = true
+                        });
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventDateVMHelper(eventListRef);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Select list of past dates
+        /// 
+        /// </summary>
+        /// <returns>Event view models</returns>
+        public List<EventVM> SelectEventsPastDates()
+        {
+            List<EventVM> eventListRef = new List<EventVM>();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_events_for_past_dates";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
+                                        {
+                                            EventDateID = reader.GetDateTime(4),
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+                                        }
+                                    },
+                            Active = true
+                        });
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventDateVMHelper(eventListRef);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Select list of upcoming dates for a user
+        /// 
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>Event view models</returns>
+        public List<EventVM> SelectUserEventsForUpcomingDates(int userID)
+        {
+            List<EventVM> eventListRef = new List<EventVM>();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_events_for_upcoming_dates_for_user";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            EventDates = new List<EventDate>()
+                                        {
+                                            new EventDate()
+                                            {
+                                                EventDateID = reader.GetDateTime(4),
+                                                EventID = reader.GetInt32(0),
+                                                Active = true
+                                            }
+                                        },
+                            Active = true
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventDateVMHelper(eventListRef);
+
+
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Select list of past dates for a user
+        /// 
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>Event view models</returns>
+        public List<EventVM> SelectUserEventsForPastDates(int userID)
+        {
+            List<EventVM> eventListRef = new List<EventVM>();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_events_for_past_dates_for_user";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            EventDates = new List<EventDate>()
+                                        {
+                                            new EventDate()
+                                            {
+                                                EventDateID = reader.GetDateTime(4),
+                                                EventID = reader.GetInt32(0),
+                                                Active = true
+                                            }
+                                        },
+                            Active = true
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventDateVMHelper(eventListRef);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Select list of past and upcoming dates for a user
+        /// 
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>Event view models</returns>
+        public List<EventVM> SelectUserEventsForPastAndUpcomingDates(int userID)
+        {
+            List<EventVM> eventListRef = new List<EventVM>();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_events_for_past_and_upcoming_dates_for_user";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            EventDates = new List<EventDate>()
+                                        {
+                                            new EventDate()
+                                            {
+                                                EventDateID = reader.GetDateTime(4),
+                                                EventID = reader.GetInt32(0),
+                                                Active = true
+                                            }
+                                        },
+                            Active = true
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventDateVMHelper(eventListRef);
+
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Removes duplicates and adds the dates to the appropriate event
+        /// </summary>
+        /// <param name="eventListRef">Takes an eventvm list</param>
+        /// <returns>A list of Events with no duplicate EventIDs and all the EventDates in a list in the Event object</returns>
+        private List<EventVM> eventDateVMHelper(List<EventVM> eventListRef)
+        {
+            List<EventVM> eventList = new List<EventVM>();
+            List<EventDate> allDates = new List<EventDate>();
+            if (eventListRef.Count > 0)
+            {
+                foreach (EventVM item in eventListRef)
+                {
+                    allDates.Add(item.EventDates[0]);
+
+                    eventList.Add(new EventVM()
+                    {
+                        EventID = item.EventID,
+                        EventName = item.EventName,
+                        EventDescription = item.EventDescription,
+                        EventCreatedDate = item.EventCreatedDate,
+                        EventDates = new List<EventDate>()
+                    });
+                }
+            }
+
+            //remove duplicates
+            List<EventVM> noDuplicates = eventList.GroupBy(e => e.EventID).Select(e => e.First()).ToList();
+
+            foreach (EventVM item in eventList)
+            {
+                for (int i = 0; i < allDates.Count; i++)
+                {
+                    if (item.EventID == allDates[i].EventID)
+                    {
+                        item.EventDates.Add(allDates[i]);
+                    }
+                }
+            }
+
+            // sort by earliest date
+            noDuplicates.Sort((ev1, ev2) => ev1.EventDates[0].EventDateID.CompareTo(ev2.EventDates[0].EventDateID));
+
+            return noDuplicates;
+        }
+
     }
 }

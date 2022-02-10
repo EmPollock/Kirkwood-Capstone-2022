@@ -129,11 +129,14 @@ GO
  Description:
  Role table
 ***************************************************************
- <Updater Name>
- Updated: yyyy/mm/dd
+ <Derrick Nagy>
+ Updated: 2022/02/10
 
  Description: 
+ Commented this table out of this file and created a new file called role.sql
+ in this directory that contains the same code.
 ****************************************************************/
+/*
 print '' print '*** creating Role table'
 GO
 CREATE TABLE [dbo].[Role] (
@@ -143,7 +146,7 @@ CREATE TABLE [dbo].[Role] (
 	CONSTRAINT [pk_RoleID] PRIMARY KEY([RoleID])
 )
 GO
-
+*/
 
 
 /***************************************************************
@@ -153,11 +156,14 @@ GO
  Description:
  Test records for Role table
 ***************************************************************
- <Updater Name>
- Updated: yyyy/mm/dd
+ <Derrick Nagy>
+ Updated: 2022/02/10
 
  Description: 
+ Commented this insert out of this file and created a new file called role.sql
+ in this directory that contains the same code.
 ****************************************************************/
+/*
 print '' print '*** test records for Role table'
 GO
 INSERT INTO [dbo].[Role] (
@@ -168,7 +174,7 @@ INSERT INTO [dbo].[Role] (
 	("Specific Volunteer", "Volunteer role used when a volunteer only is used for specific skills"),
 	("Supply Donor", "Volunteer role used when a volunteer donates specific materials")
 GO
-
+*/
 
 /***************************************************************
  Austin Timmerman
