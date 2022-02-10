@@ -19,6 +19,7 @@ namespace DataObjects
     public class Event
     {
         public int EventID { get; set; }
+        public int LocationID { get; set; }
         public string EventName { get; set; }
         public string EventDescription { get; set; }
         public DateTime EventCreatedDate { get; set; }

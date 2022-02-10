@@ -35,7 +35,17 @@ namespace LogicLayerInterfaces
         /// Description:
         /// Method that retrieves all priorities to populate cboPriorities
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List Priority</returns>
         List<Priority> RetrieveAllPriorities();
+
+        /// <summary>
+        /// Mike Cahow
+        /// 2022/01/31
+        /// 
+        /// Description:
+        /// Method that retrieves all tasks for an event
+        /// </summary>
+        /// <returns>list Tasks</returns>
+        List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID = 100000);
     }
 }

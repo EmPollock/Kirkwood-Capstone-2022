@@ -49,20 +49,20 @@
 
                         <TextBlock x:Name="txtBlkTaskName" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
                                    HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Task Name:</TextBlock>
-                        <TextBox x:Name="txtTaskName" Grid.Row="1" Grid.Column="1" Margin="10" Padding="5 5 0 0" />
+                        <TextBox x:Name="txtTaskName" Grid.Row="1" Grid.Column="1" Margin="10px" Padding="5" />
 
                         <TextBlock x:Name="txtBlkTaskDescription" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
                                    HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Description:</TextBlock>
                         <TextBox x:Name="txtTaskDescription" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" TextWrapping="Wrap"
-                                 Margin="10" Padding="5 5 0 0" VerticalScrollBarVisibility="Auto"/>
+                                 Margin="10px" Padding="5" VerticalScrollBarVisibility="Auto"/>
 
                         <TextBlock x:Name="txtBlkTaskDueDate" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
                                    HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Due Date:</TextBlock>
-                        <DatePicker x:Name="dtpTaskDueDate" Grid.Row="4" Grid.Column="1" Margin="10" />
+                        <DatePicker x:Name="dtpTaskDueDate" Grid.Row="4" Grid.Column="1" Margin="10px" />
 
                         <TextBlock x:Name="txtBlkPriority" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
                                    HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Task Priority:</TextBlock>
-                        <ComboBox x:Name="cboPriority" Grid.Row="5" Grid.Column="1" Margin="10" Padding="5 5 170 0" />
+                        <ComboBox x:Name="cboPriority" Grid.Row="5" Grid.Column="1" Margin="10px" Padding="5 5 170 0" />
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -73,7 +73,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Button x:Name="btnSaveTask" Grid.Row="0" Grid.Column="0" Margin="100 10 20 10" Click="btnSaveTask_Click">Save Task</Button>
-                        <Button x:Name="btnCancelTask" Grid.Row="0" Grid.Column="1" Margin="20 10" Padding="15 5 15 5">Cancel</Button>
+                        <Button x:Name="btnCancelTask" Grid.Row="0" Grid.Column="1" Margin="20 10" Padding="15 5 15 5" Click="btnCancelTask_Click">Cancel</Button>
                     </Grid>
                 </Grid>
             </TabItem>

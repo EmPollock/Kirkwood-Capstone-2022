@@ -11,6 +11,7 @@ namespace DataAccessInterfaces
     {
         int InsertEventDate(EventDate eventDate);
         List<EventDate> SelectEventDatesByEventID(int eventID);
+        EventDate SelectEventDateByEventDateIDAndEventID(DateTime eventDateID, int eventID);
         // copied over and waiting to implement when appropriate
         //int UpdateEventDateByEventDateIDAndEventID(DateTime eventDate, int eventID, DateTime oldStartDateTime, DateTime newStartDateTime, DateTime oldEndDateTime, DateTime newEndDateTime);
         //int DeactivateEventDateByEventDateIDandEventID(DateTime eventDateID, int eventID);

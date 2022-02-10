@@ -64,6 +64,61 @@ namespace DataAccessLayer
         }
 
         /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/02/02
+        /// 
+        /// Description:
+        /// Returna specific date for an event
+        /// 
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <param name="eventDateID"></param>
+        /// <returns>An EventDate object</returns>
+        public EventDate SelectEventDateByEventDateIDAndEventID(DateTime eventDateID, int eventID)
+        {
+            EventDate result = null;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_event_date_by_event_dateID_and_eventID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventDateID", SqlDbType.Date);
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+
+            cmd.Parameters["@EventID"].Value = eventID;
+            cmd.Parameters["@EventDateID"].Value = eventDateID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {                  
+                    while (reader.Read())
+                    {
+                        result = new EventDate()
+                        {
+                            EventDateID = eventDateID,
+                            EventID = eventID,
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            Active = true
+                        };
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Derrick Nagy
         /// Created: 2022/01/30
         /// 

@@ -17,6 +17,7 @@ using LogicLayer;
 using DataAccessFakes;
 using DataObjects;
 using LogicLayerInterfaces;
+using WPFPresentation.Location;
 
 namespace WPFPresentation
 {
@@ -27,6 +28,7 @@ namespace WPFPresentation
     {
         IUserManager _userManager = null;
         User _user = null;
+        
         public MainWindow()
         {
 
@@ -34,67 +36,16 @@ namespace WPFPresentation
             //this._userManager = new UserManager(new UserAccessorFake());
             // Keep this always safe! 
             InitializeComponent();
+            this.btnBack.IsEnabled = false;
         }
 
-        /// <summary>
-        /// Christopher Repko (Based on Jim Glasgow's in-class examples)
-        /// Created: 2022/1/21
-        /// 
-        /// Description:
-        /// Click event for the login button. Logs the user in using input.
-        /// 
-        /// </summary>
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        public MainWindow(User user, IUserManager userManager)
         {
-            var email = this.txtEmailAddress.Text;
-            var password = this.pwdPassword.Password;
-            if (!email.IsValidEmailAddress())
-            {
-                MessageBox.Show("Bad email address.");
-                return;
-            }
-            else
-            {
-                try
-                {
-                    this._user = this._userManager.LoginUser(email, password);
-                    if (this._user != null)
-                    {
-
-                        string instructions = "On first login, all new users must choose a password to continue.";
-                        if(password == "newuser")
-                        {
-                            // force change password
-                            var updateWindow = new UpdatePasswordWindow(this._userManager, this._user, instructions, true);
-
-                            bool? result = updateWindow.ShowDialog();
-                            if(result == true)
-                            {
-
-                                this.updateUIForUser();
-                            } else
-                            {
-                                _user = null;
-                                this.updateUIForLogout();
-                                MessageBox.Show("You did not update your password. You will be logged out.");
-                            }
-                        } else
-                        {
-                            this.updateUIForUser();
-                        }
-                    }
-
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message, "Alert!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.pwdPassword.Password = "";
-                    this.txtEmailAddress.Select(0, Int32.MaxValue);
-                    this.txtEmailAddress.Focus();
-                }
-            }
-            
+            InitializeComponent();
+            this._user = user;
+            this._userManager = userManager;
+            this.btnBack.IsEnabled = false;
+            this.mnuUser.Header = user.GivenName + " ▼";
         }
 
         /// <summary>
@@ -109,48 +60,9 @@ namespace WPFPresentation
         {
             this._user = null;
 
-            this.txtGreeting.Content = "You are not logged in.";
-            this.staMessage.Content = "Welcome, please log in to continue";
-
-            this.grdMainMenu.Visibility = Visibility.Collapsed;
-            this.grdLogin.Visibility = Visibility.Visible;
-            txtEmailAddress.Focus();
-            this.btnLogin.IsDefault = true;
-
-        }
-
-        /// <summary>
-        /// Christopher Repko 
-        /// Created: 2022/01/27
-        /// 
-        /// Description:
-        /// Method to handle UI transition from logged out to logged in states
-        /// 
-        /// </summary>
-        private void updateUIForUser()
-        {
-
-            this.staMessage.Content = "Logged in at " + DateTime.Now.ToLongDateString() + ", " + DateTime.Now.ToShortTimeString() + ". Please remember to log out before you leave.";
-
-            this.txtEmailAddress.Text = "";
-            this.pwdPassword.Password = "";
-            this.mnuUser.Header = this._user.GivenName + " " + this._user.FamilyName + " ▼";
-            this.grdLogin.Visibility = Visibility.Collapsed;
-            this.grdMainMenu.Visibility = Visibility.Visible;
-        }
-
-
-        /// <summary>
-        /// Christopher Repko 
-        /// Created: 2022/1/21
-        /// 
-        /// Description:
-        /// Loaded event for window. Focuses the email text input.
-        /// 
-        /// </summary>
-        private void frmMainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.txtEmailAddress.Focus();
+            SplashScreen splash = new SplashScreen();
+            splash.Show();
+            this.Close();
         }
 
         /// <summary>
@@ -177,8 +89,8 @@ namespace WPFPresentation
 
         private void btnCreateEvents_Click(object sender, RoutedEventArgs e)
         {
-            Uri pageURI = new Uri("Event/pgCreateEvent.xaml", UriKind.Relative);
-            this.MainFrame.NavigationService.Navigate(pageURI);
+            Page page = new pgCreateEvent();
+            this.MainFrame.NavigationService.Navigate(page);
         }
 
 
@@ -199,6 +111,7 @@ namespace WPFPresentation
         /// </summary>
         private void btnViewEvents_Click(object sender, RoutedEventArgs e)
         {
+
             Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
 
             if (_user != null)
@@ -208,6 +121,7 @@ namespace WPFPresentation
             }
             else
             {
+                Page page = new pgViewEvents();
                 this.MainFrame.NavigationService.Navigate(pageURI);
             }
 
@@ -215,14 +129,47 @@ namespace WPFPresentation
 
         private void btnViewVolunteers_Click(object sender, RoutedEventArgs e)
         {
-            Uri pageURI = new Uri("Volunteer/pgViewAllVolunteers.xaml", UriKind.Relative);
-            this.MainFrame.NavigationService.Navigate(pageURI);
+            Page page = new pgViewAllVolunteers();
+            this.MainFrame.NavigationService.Navigate(page);
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/2/4
+        /// 
+        /// Description:
+        /// Click event for the back button. Navigates to the previous screen and handles button enabling.
+        /// 
+        /// </summary>
+        /// <param name="sender">The back button</param>
+        /// <param name="e">Arguments passed as part of the event</param>
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            if(this.MainFrame.NavigationService.CanGoBack)
+            {
+                this.MainFrame.GoBack();
+                if(!this.MainFrame.NavigationService.CanGoBack)
+                {
+                    this.btnBack.IsEnabled = false;
+                }
+            } else
+            {
+                this.btnBack.IsEnabled = false;
+            }
+        }
+
+        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            if(this.MainFrame.NavigationService.CanGoBack)
+            {
+                this.btnBack.IsEnabled = true;
+            }
         }
 
         private void btnViewLocations_Click(object sender, RoutedEventArgs e)
         {
-            Uri pageURI = new Uri("Location/pgViewLocations.xaml", UriKind.Relative);
-            this.MainFrame.NavigationService.Navigate(pageURI);
+            var page = new pgViewLocations();
+            this.MainFrame.NavigationService.Navigate(page);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace LogicLayer
         /// <param name="taskAccessor"></param>
         public TaskManager(ITaskAccessor taskAccessor)
         {
-            _taskAccessor = new TaskAccessor();
+            _taskAccessor = taskAccessor;
         }
 
         /// <summary>
@@ -75,6 +75,10 @@ namespace LogicLayer
             if(newtask.Description.Length >= 255)
             {
                 throw new ApplicationException("Task description cannot exceed 255 characters.");
+            }
+            if(newtask.DueDate == null)
+            {
+                throw new ApplicationException("Please set a due date for this task.");
             }
             if(newtask.DueDate == DateTime.Today.AddDays(-1))
             {
@@ -125,6 +129,31 @@ namespace LogicLayer
             }
 
             return priorities;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// 2022/01/31
+        /// 
+        /// Description:
+        /// Method that retrieves all tasks for an event
+        /// </summary>
+        /// <returns>list Tasks</returns>
+        public List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID = 100000)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            try
+            {
+                tasks = _taskAccessor.SelectAllActiveTasksByEventID(eventID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return tasks;
         }
     }
 }

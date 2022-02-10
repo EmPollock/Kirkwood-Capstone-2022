@@ -22,8 +22,9 @@ namespace DataAccessLayer
         /// </summary>
         /// <param name="eventName">Name of the event</param>
         /// <param name="eventDescription">Description fo the event</param>
+        /// <param name="locationID">Description fo the event</param>
         /// <returns>Number of rows inserted</returns>
-        public int InsertEvent(string eventName, string eventDescription)
+        public int InsertEvent(string eventName, string eventDescription, int locationID)
         {
             int rowsAffected = 0;
 
@@ -37,9 +38,11 @@ namespace DataAccessLayer
 
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
 
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
+            cmd.Parameters["@LocationID"].Value = locationID;
 
 
             try

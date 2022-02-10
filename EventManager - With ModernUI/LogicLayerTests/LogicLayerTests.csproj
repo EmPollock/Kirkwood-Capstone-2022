@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityManagerTests.cs" />
     <Compile Include="EventDateManagerTests.cs" />
     <Compile Include="EventManagerTests.cs" />
     <Compile Include="LocationManagerTests.cs" />

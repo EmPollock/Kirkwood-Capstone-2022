@@ -61,5 +61,17 @@ namespace WPFPresentation.Location
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void datLocationsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(datLocationsList.SelectedItem == null)
+            {
+                return;
+            }
+            DataObjects.Location location = (DataObjects.Location)datLocationsList.SelectedItem;
+
+            pgViewLocationDetails page = new pgViewLocationDetails(location.LocationID, _locationManager);
+            this.NavigationService.Navigate(page);
+        }
     }
 }

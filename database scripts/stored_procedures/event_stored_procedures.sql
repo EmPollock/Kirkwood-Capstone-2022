@@ -32,6 +32,7 @@ CREATE PROCEDURE [dbo].[sp_insert_event]
 (
 	@EventName			nvarchar(50)
 	,@EventDescription	nvarchar(1000)
+	,@LocationID		int
 )
 AS
 	BEGIN
@@ -39,9 +40,10 @@ AS
 		(
 			[EventName]				
 			,[EventDescription]	
+			,[LocationID]
 		)
 		VALUES
-		(@EventName, @EventDescription)		
+		(@EventName, @EventDescription, @LocationID)		
 	END	
 GO
 

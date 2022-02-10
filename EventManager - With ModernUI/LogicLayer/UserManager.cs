@@ -41,7 +41,7 @@ namespace LogicLayer
         /// <param name="email">Email to be used as credentials</param>
         /// <param name="password">Password to be used as credentials</param>
         /// <returns>true if the user is authenticated, otherwise false.</returns>
-        public bool AuthenticateUser(string email, string password)
+        public bool AuthenticateUserByEmailAndPassword(string email, string password)
         {
             bool result = false;
             try
@@ -98,7 +98,7 @@ namespace LogicLayer
         /// </summary>
         /// <param name="email">Email to be used to retrieve user</param>
         /// <returns>User with matching email.</returns>
-        public User GetUserByEmail(string email)
+        public User RetrieveUserByEmail(string email)
         {
             User requestedUser = null;
 
@@ -114,7 +114,7 @@ namespace LogicLayer
             return requestedUser;
         }
 
-        public List<string> GetRolesForUser(int userID)
+        public List<string> RetrieveUserRolesByUserID(int userID)
         {
             List<String> roles = null;
             try
@@ -155,9 +155,9 @@ namespace LogicLayer
                 }
 
                 password = this.HashSha256(password);
-                if (this.AuthenticateUser(email, password))
+                if (this.AuthenticateUserByEmailAndPassword(email, password))
                 {
-                    loggedInUser = this.GetUserByEmail(email);
+                    loggedInUser = this.RetrieveUserByEmail(email);
                     //loggedInUser.Roles = this.GetRolesForUser(loggedInUser.UserID);
                 }
                 else
@@ -188,7 +188,7 @@ namespace LogicLayer
         /// <param name="newPassword">New password to change to</param>
         /// <exception cref="ApplicationException">Thrown if something causes password reset to fail.</exception>
         /// <returns>true if password reset works, otherwise false</returns>
-        public bool ResetPassword(string email, string oldPassword, string newPassword)
+        public bool UpdatePasswordHash(string email, string oldPassword, string newPassword)
         {
             bool result = false;
 
@@ -226,7 +226,7 @@ namespace LogicLayer
             bool result = false;
             try
             {
-                result = (1 == _userAccessor.InsertUser(user));
+                result = 1 == _userAccessor.InsertUser(user);
             }
             catch (Exception ex)
             {

@@ -81,13 +81,15 @@ GO
 /					the eventID
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ <Mike Cahow>
+/ Updated: 2022/01/31
 /
-/ Description: 
+/ Description: Updating to display TasksVM so numbers aren't 
+/				the only things displayed
+/
 ****************************************************************/
 
-print '' print '*** creating sp_select_tasks_by_eventID...'
+print '' print '*** creating sp_select_active_tasks_by_eventID...'
 GO
 CREATE PROCEDURE [dbo].[sp_select_active_tasks_by_eventID]
 (
@@ -97,8 +99,7 @@ AS
 	BEGIN
 	
 		SELECT	[TaskID], [Name], [Task].[Description], [DueDate],
-				[Priority].[Description], [CompletionDate], [Task].[Active],
-				[ProofID], [IsDone], [TaskAssignmentID], [Event].[EventID]
+				[Priority].[Description], [Event].[EventName]
 		FROM	[dbo].[Task] JOIN [dbo].[Priority]
 					ON [Task].[Priority] = [Priority].[PriorityID]
 				JOIN [dbo].[Event]
@@ -161,7 +162,7 @@ GO
 
 print '' print '*** creating sp_select_active_tasks_by_priority...'
 GO
-CREATE PROCEDURE [dbo].[sp_select_tasks_by_priority]
+CREATE PROCEDURE [dbo].[sp_select_active_tasks_by_priority]
 (
 	@Priority			[int]
 )

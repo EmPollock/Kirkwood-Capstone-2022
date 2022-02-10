@@ -33,6 +33,7 @@ Description:
 print '' print '*** creating Event table'
 CREATE TABLE [dbo].[Event] (
 	[EventID]			[int] IDENTITY(100000,1)	NOT NULL
+	,[LocationID]		[int]						NOT NULL
 	,[EventName]		[nvarchar](50)				NOT NULL
 	,[EventDescription]	[nvarchar](1000)			NOT NULL
 	,[DateCreated]		[DateTime]					NOT NULL DEFAULT CURRENT_TIMESTAMP 
@@ -55,19 +56,28 @@ GO
 
  Description: 
  Added more events
+ ***************************************************************
+ Derrick Nagy
+ Updated: 2202/02/10
+
+ Description: 
+ Added event id to inserts
 ****************************************************************/
+
 print '' print '*** test records for Event table'
 GO
 INSERT INTO [dbo].[Event] (
 	[EventName],
-	[EventDescription]	
+	[EventDescription],	
+	[LocationID]
 )VALUES 
-	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA'),
-	('Clean Up the Park','An event to organize a way to clean up the local park.'),
-	('Coachella in the Corridor','A music festival to raise money for local charities.'),
-	('Meeting of the C-Sharpians','Convention for C# coding enthusiasts.'),
-	('Ragbrai Stop Mason City','The event plans for Ragbrai in Mason City 2022.'),
-	('Jazzfest','Live jazz performances and food vendors downtown Iowa City.'),
-	('Bix7 2021','7 mile race in Davenport, Iowa '),
-	('Spelling Bee for the Bees','A spelling bee contest to raise money for a bee sanctuary.')
+	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA',100000),
+	('Clean Up the Park','An event to organize a way to clean up the local park.',100000),
+	('Coachella in the Corridor','A music festival to raise money for local charities.',100000),
+	('Meeting of the C-Sharpians','Convention for C# coding enthusiasts.',100000),
+	('Ragbrai Stop Mason City','The event plans for Ragbrai in Mason City 2022.',100000),
+	('Jazzfest','Live jazz performances and food vendors downtown Iowa City.',100000),
+	('Bix7 2021','7 mile race in Davenport, Iowa ',100000),
+	('Spelling Bee for the Bees','A spelling bee contest to raise money for a bee sanctuary.',100000)
 GO
+

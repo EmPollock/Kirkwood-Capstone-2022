@@ -18,35 +18,79 @@ namespace DataAccessFakes
     /// </summary>
     public class TaskAccessorFakes : ITaskAccessor
     {
-        private List<Tasks> FakeTasks = new List<Tasks>();
+        private List<TasksVM> _fakeTasks = new List<TasksVM>();
+        private List<Priority> _priorities = new List<Priority>();
 
         public TaskAccessorFakes()
         {
-            FakeTasks.Add(new Tasks()
+            _fakeTasks.Add(new TasksVM()
             {
-                EventID = 999999,
-                Name = "Sweep up",
-                Description = "Sweep up a mess pls",
-                DueDate = DateTime.Now,
-                Priority = 1
-            });
-
-            FakeTasks.Add(new Tasks()
-            {
-                EventID = 999999,
+                EventID = 1000000,
+                TaskEventName = "Test Event 1",
                 Name = "Mop",
                 Description = "Mop up spilled drink",
                 DueDate = DateTime.Now,
-                Priority = 3
+                Priority = 3,
+                TaskPriority = "High",
+                Active = true
             });
 
-            FakeTasks.Add(new Tasks()
+            _fakeTasks.Add(new TasksVM()
             {
-                EventID = 999999,
-                Name = "Vaccum",
-                Description = "Someone dropped food on the carpet again. Vaccum please.",
+                EventID = 1000000,
+                TaskEventName = "Test Event 1",
+                Name = "Wash Towels",
+                Description = "Wash Towels after Events",
                 DueDate = DateTime.Now,
-                Priority = 1
+                Priority = 1,
+                TaskPriority = "Low",
+                Active = true
+            });
+
+            _fakeTasks.Add(new TasksVM()
+            {
+                EventID = 1000000,
+                TaskEventName = "Test Event 1",
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                TaskPriority = "High",
+                Active = true
+            });
+            _fakeTasks.Add(new TasksVM()
+            {
+                EventID = 1000000,
+                TaskEventName = "Test Event 1",
+                Name = "Clean Trash",
+                Description = "Make sure trash is cleared from spectator area",
+                DueDate = DateTime.Now,
+                Priority = 2,
+                TaskPriority = "Medium",
+                Active = false
+            });
+
+            /// <summary>
+            /// Mike Cahow
+            /// Created: 2022/01/24
+            /// 
+            /// Description:
+            /// Creating a "fake" list of priorities to use for testing purposes
+            /// </summary>
+            _priorities.Add(new Priority()
+            {
+                PriorityID = 1,
+                Description = "Low"
+            });
+            _priorities.Add(new Priority()
+            {
+                PriorityID = 2,
+                Description = "Medium"
+            });
+            _priorities.Add(new Priority()
+            {
+                PriorityID = 3,
+                Description = "High"
             });
         }
 
@@ -65,7 +109,7 @@ namespace DataAccessFakes
 
             try
             {
-                FakeTasks.Add(new Tasks()
+                _fakeTasks.Add(new TasksVM()
                 {
                     EventID = 999999,
                     Name = "Clean",
@@ -94,7 +138,30 @@ namespace DataAccessFakes
         /// <returns>List Priority</returns>
         public List<Priority> SelectAllPriorities()
         {
-            throw new NotImplementedException();
+            return null;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/01/31
+        /// 
+        /// Description:
+        /// Select method that grabs a fake list of all tasks for an event
+        /// </summary>
+        /// <returns>List Tasks</returns>
+        public List<TasksVM> SelectAllActiveTasksByEventID(int eventID)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            foreach(var task in _fakeTasks)
+            {
+                if(task.EventID == eventID && task.Active == true)
+                {
+                    tasks.Add(task);
+                }
+            }
+
+            return tasks;
         }
     }
 }

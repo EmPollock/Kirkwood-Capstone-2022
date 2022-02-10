@@ -110,6 +110,35 @@ namespace DataAccessFakes
         }
 
         /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/02/02
+        /// 
+        /// Description:
+        /// Returns an EventDate with a specific eventDateID and eventID
+        /// 
+        /// </summary>
+        /// <param name="eventDateID">A DateTime object</param>
+        /// <param name="eventID">an int</param>
+        /// <returns>fake EventDate object</returns>
+        public EventDate SelectEventDateByEventDateIDAndEventID(DateTime eventDateID, int eventID)
+        {
+            try{
+                foreach (EventDate eventDate in _fakeEventDate)
+                {
+                    if (eventDate.EventDateID == eventDateID && eventDate.EventID == eventID)
+                    {
+                        return eventDate;
+                    }
+                }
+                throw new ApplicationException();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Derrick Nagy
         /// Created: 2022/01/29
         /// 

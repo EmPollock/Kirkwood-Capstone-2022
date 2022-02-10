@@ -25,7 +25,7 @@
         <DataGrid x:Name="datLocationsList" SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="False"
                   ItemsSource="{Binding}" HorizontalAlignment="Left" HorizontalContentAlignment="Center" 
                   MinColumnWidth="100" CanUserResizeColumns="False"
-                  Grid.Row="1" Grid.Column="1">
+                  Grid.Row="1" Grid.Column="1" MouseDoubleClick="datLocationsList_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>

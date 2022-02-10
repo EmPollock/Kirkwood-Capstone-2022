@@ -105,5 +105,56 @@ namespace DataAccessLayer
 
             return priorities;
         }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/01/31
+        /// 
+        /// Description:
+        /// Select method that grabs a list of all tasks for an event
+        /// </summary>
+        /// <returns>List Tasks</returns>
+        public List<TasksVM> SelectAllActiveTasksByEventID(int eventID)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_active_tasks_by_eventID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+            cmd.Parameters["@EventID"].Value = eventID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        tasks.Add(new TasksVM()
+                        {
+                            TaskID = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Description = reader.GetString(2),
+                            DueDate = reader.GetDateTime(3),
+                            TaskPriority = reader.GetString(4),
+                            TaskEventName = reader.GetString(5),
+                            Active = true
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return tasks;
+        }
     }
 }

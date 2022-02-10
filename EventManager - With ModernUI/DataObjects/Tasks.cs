@@ -27,4 +27,17 @@ namespace DataObjects
         public int EventID { get; set; }
         public bool Active { get; set; }
     }
+
+    /// <summary>
+    /// Mike Cahow
+    /// Created: 2022/01/31
+    /// 
+    /// Description:
+    /// Data object for a Task View Model 
+    /// </summary>
+    public class TasksVM : Tasks
+    {
+        public string TaskPriority { get; set; }
+        public string TaskEventName { get; set; }
+    }
 }
