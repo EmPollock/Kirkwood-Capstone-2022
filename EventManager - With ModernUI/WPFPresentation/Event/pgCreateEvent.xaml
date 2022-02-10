@@ -245,7 +245,7 @@
 
 
                     <Button x:Name="btnEventLocationAdd" Grid.Row="3"  Grid.Column="1" Margin="0,27,80,8" HorizontalAlignment="Right" Content="Next"  Height="32" Width="60" Grid.RowSpan="2" Click="btnEventLocationAdd_Click"/>
-                    <Button x:Name="btnEventLocationCancel" Grid.Row="3"  Grid.Column="2"  HorizontalAlignment="Left" Margin="40,27,0,8" Content="Cancel" Height="32" Width="60" Grid.RowSpan="2"/>
+                    <Button x:Name="btnEventLocationCancel" Grid.Row="3"  Grid.Column="2"  HorizontalAlignment="Left" Margin="40,27,0,8" Content="Cancel" Height="32" Width="60" Grid.RowSpan="2" Click="btnEventCancel_Click"/>
                 </Grid>
             </TabItem>
 

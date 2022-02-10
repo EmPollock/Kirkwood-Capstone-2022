@@ -22,9 +22,8 @@ namespace DataAccessLayer
         /// </summary>
         /// <param name="eventName">Name of the event</param>
         /// <param name="eventDescription">Description fo the event</param>
-        /// <param name="locationID">Description fo the event</param>
         /// <returns>Number of rows inserted</returns>
-        public int InsertEvent(string eventName, string eventDescription, int locationID)
+        public int InsertEvent(string eventName, string eventDescription)
         {
             int rowsAffected = 0;
 
@@ -38,12 +37,10 @@ namespace DataAccessLayer
 
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
-            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
-
+            
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
-            cmd.Parameters["@LocationID"].Value = locationID;
-
+            
 
             try
             {
@@ -205,6 +202,66 @@ namespace DataAccessLayer
                 conn.Close();
             }
             return eventToGet;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Updates the location of an event record
+        /// </summary>
+        /// <param name="eventID">ID of the event</param>
+        /// <param name="oldLocationID">The ID of the old location</param>
+        /// <param name="newLocationID">The ID of the new location</param>
+        /// <returns>int - rows affected</returns>
+        public int UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_update_event_location_by_event_id";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@EventID", eventID);
+            if(oldLocationID is null)
+            {
+                cmd.Parameters.Add("@OldLocationID", SqlDbType.Int);
+                cmd.Parameters["@OldLocationID"].Value = DBNull.Value;
+            } else
+            {
+                cmd.Parameters.Add("@OldLocationID", SqlDbType.Int);
+                cmd.Parameters["@OldLocationID"].Value = oldLocationID;
+            }
+            if(newLocationID is null)
+            {
+
+                cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+                cmd.Parameters["@LocationID"].Value = DBNull.Value;
+            } else
+            {
+                cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+                cmd.Parameters["@LocationID"].Value = newLocationID;
+            }
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
         }
     }
 }

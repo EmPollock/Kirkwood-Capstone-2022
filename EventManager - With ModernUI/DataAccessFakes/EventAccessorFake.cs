@@ -75,7 +75,7 @@ namespace DataAccessFakes
         /// <param name="eventName">Name of the event</param>
         /// <param name="eventDescription">Description fo the event</param>
         /// <returns>Number of rows inserted</returns>
-        public int InsertEvent(string eventName, string eventDescription, int locationID)
+        public int InsertEvent(string eventName, string eventDescription)
         {
             int rowsAffected = 0;
             int eventID = _fakeEvents.Last().EventID + 1;
@@ -84,7 +84,6 @@ namespace DataAccessFakes
             _fakeEvents.Add(new Event()
             {
                 EventID = eventID,
-                LocationID = locationID,
                 EventName = eventName,
                 EventDescription = eventDescription,
                 EventCreatedDate = DateTime.Now,
@@ -175,6 +174,29 @@ namespace DataAccessFakes
             return rowsAffected;
         }
 
-
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Updates the location of a fake event record.
+        /// </summary>
+        /// <param name="eventID">Event ID of the event</param>
+        /// <param name="oldLocationID">ID of the old location</param>
+        /// <param name="newLocationID">ID of the new location</param>
+        /// <returns>int - rows affected</returns>
+        public int UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID)
+        {
+            int rowsAffected = 0;
+            foreach (var fakeEvent in _fakeEvents)
+            {
+                if (fakeEvent.EventID == eventID && fakeEvent.LocationID == oldLocationID)
+                {
+                    fakeEvent.LocationID = newLocationID;
+                    rowsAffected++;
+                }
+            }
+            return rowsAffected;
+        }
     }
 }

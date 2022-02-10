@@ -24,6 +24,11 @@ Created: 2022/01/22
 Description:
 Event table
 **************************************************************
+Christopher Repko
+Updated: 2022/02/09
+
+Description: Made LocationID nullable
+**************************************************************
 <Updater Name>
 Updated: yyyy/mm/dd
 
@@ -33,7 +38,7 @@ Description:
 print '' print '*** creating Event table'
 CREATE TABLE [dbo].[Event] (
 	[EventID]			[int] IDENTITY(100000,1)	NOT NULL
-	,[LocationID]		[int]						NOT NULL
+	,[LocationID]		[int]						NULL
 	,[EventName]		[nvarchar](50)				NOT NULL
 	,[EventDescription]	[nvarchar](1000)			NOT NULL
 	,[DateCreated]		[DateTime]					NOT NULL DEFAULT CURRENT_TIMESTAMP 

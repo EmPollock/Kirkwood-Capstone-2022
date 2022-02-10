@@ -32,7 +32,6 @@ CREATE PROCEDURE [dbo].[sp_insert_event]
 (
 	@EventName			nvarchar(50)
 	,@EventDescription	nvarchar(1000)
-	,@LocationID		int
 )
 AS
 	BEGIN
@@ -40,10 +39,9 @@ AS
 		(
 			[EventName]				
 			,[EventDescription]	
-			,[LocationID]
 		)
 		VALUES
-		(@EventName, @EventDescription, @LocationID)		
+		(@EventName, @EventDescription)		
 	END	
 GO
 
@@ -152,6 +150,47 @@ AS
 			@OldEventDescription = [EventDescription]
 		  AND
 			@OldActive = [Active]
+		RETURN @@ROWCOUNT
+	END
+GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/02/09
+
+Description:
+Stored procedure to update an event's location data
+
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_update_event_location_by_event_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_event_location_by_event_id]
+(
+	@EventID 				[int],
+	@OldLocationID			[int],
+	@LocationID				[int]
+)
+AS
+	BEGIN
+		UPDATE	[Event]
+		SET		
+			[LocationID] = @LocationID
+		WHERE 	
+			[EventID] = @EventID
+		  AND	
+			(
+				@OldLocationID = [LocationID] OR
+				(
+					@OldLocationID IS NULL AND
+					[LocationID] IS NULL
+				)
+			)
 		RETURN @@ROWCOUNT
 	END
 GO
