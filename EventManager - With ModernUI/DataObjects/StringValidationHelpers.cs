@@ -24,7 +24,7 @@ namespace WPFPresentation
             foreach (char item in testString)
             {
                 // check to see if it is a number
-                if ((int)item > 47 && (int)item < 57)
+                if ((int)item > 47 && (int)item <= 57)
                 {
                     result = true;
                 }
