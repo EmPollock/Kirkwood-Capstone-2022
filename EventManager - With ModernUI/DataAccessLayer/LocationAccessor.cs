@@ -50,17 +50,17 @@ namespace DataAccessLayer
                         {
                             LocationID = reader.GetInt32(0),
                             UserID = reader.IsDBNull(1) ? null : (int?)reader.GetInt32(1),
-                            LocationName = reader.GetString(2),
-                            LocationDescription = reader.IsDBNull(3) ? null : reader.GetString(3),
-                            LocationPricingText = reader.IsDBNull(4) ? null : reader.GetString(4),
-                            LocationPhone = reader.IsDBNull(5) ? null : reader.GetString(5),
-                            LocationEmail = reader.IsDBNull(6) ? null : reader.GetString(6),
-                            LocationAddress1 = reader.GetString(7),
-                            LocationAddress2 = reader.IsDBNull(8) ? null : reader.GetString(8),
-                            LocationCity = reader.GetString(9),
-                            LocationState = reader.GetString(10),
-                            LocationZipCode = reader.GetString(11),
-                            LocationImagePath = reader.IsDBNull(12) ? null : reader.GetString(12),
+                            Name = reader.GetString(2),
+                            Description = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            PricingInfo = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            Phone = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            Email = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            Address1 = reader.GetString(7),
+                            Address2 = reader.IsDBNull(8) ? null : reader.GetString(8),
+                            City = reader.GetString(9),
+                            State = reader.GetString(10),
+                            ZipCode = reader.GetString(11),
+                            ImagePath = reader.IsDBNull(12) ? null : reader.GetString(12),
                             Active = true
                         });
                     }
@@ -117,17 +117,17 @@ namespace DataAccessLayer
                         {
                             LocationID = locationID,
                             UserID = reader.GetInt32(0),
-                            LocationName = reader.GetString(1),
-                            LocationDescription = reader.IsDBNull(2) ? null : reader.GetString(2),
-                            LocationPricingText = reader.IsDBNull(3) ? null : reader.GetString(3),
-                            LocationPhone = reader.IsDBNull(4) ? null : reader.GetString(4),
-                            LocationEmail = reader.IsDBNull(5) ? null : reader.GetString(5),
-                            LocationAddress1 = reader.GetString(6),
-                            LocationAddress2 = reader.IsDBNull(7) ? null : reader.GetString(7),
-                            LocationCity = reader.IsDBNull(8) ? null : reader.GetString(8),
-                            LocationState = reader.IsDBNull(9) ? null : reader.GetString(9),
-                            LocationZipCode = reader.IsDBNull(10) ? null : reader.GetString(10),
-                            LocationImagePath = reader.IsDBNull(11) ? null : reader.GetString(11),
+                            Name = reader.GetString(1),
+                            Description = reader.IsDBNull(2) ? null : reader.GetString(2),
+                            PricingInfo = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Phone = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            Email = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            Address1 = reader.GetString(6),
+                            Address2 = reader.IsDBNull(7) ? null : reader.GetString(7),
+                            City = reader.IsDBNull(8) ? null : reader.GetString(8),
+                            State = reader.IsDBNull(9) ? null : reader.GetString(9),
+                            ZipCode = reader.IsDBNull(10) ? null : reader.GetString(10),
+                            ImagePath = reader.IsDBNull(11) ? null : reader.GetString(11),
                             Active = reader.GetBoolean(12)
                         };
                     }
@@ -160,7 +160,7 @@ namespace DataAccessLayer
         /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A List of LocationImage objects</returns>
-        public List<LocationImage> SelectLocationImages(int locationID)
+        public List<LocationImage> SelectLocationImagesByLocationID(int locationID)
         {
             List<LocationImage> locationImages = new List<LocationImage>();
 
@@ -345,12 +345,12 @@ namespace DataAccessLayer
                         _matchingLocation = new Location()
                         {
                             LocationID = reader.GetInt32(0),
-                            LocationName = reader.GetString(1),
-                            LocationDescription = reader.IsDBNull(2) ? null : reader.GetString(2),
-                            LocationPricingText = reader.IsDBNull(3) ? null : reader.GetString(3),
-                            LocationPhone = reader.IsDBNull(4) ? null : reader.GetString(4),
-                            LocationEmail = reader.IsDBNull(5) ? null : reader.GetString(5),
-                            LocationAddress1 = reader.GetString(6),
+                            Name = reader.GetString(1),
+                            Description = reader.IsDBNull(2) ? null : reader.GetString(2),
+                            PricingInfo = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Phone = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            Email = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            Address1 = reader.GetString(6),
                             Active = true
                         };
                     }

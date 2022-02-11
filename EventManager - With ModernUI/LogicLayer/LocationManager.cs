@@ -46,7 +46,6 @@ namespace LogicLayer
             /// 
             /// Description:
             /// Creates a Location
-
             /// </summary>
             /// <param name="locationName"></param>
             /// <param name="address"></param>
@@ -109,7 +108,6 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Retrieves all active locations from database
-
         /// </summary>
         /// <returns>List of all active locations</returns>
         public List<Location> RetrieveActiveLocations()
@@ -165,7 +163,6 @@ namespace LogicLayer
         /// 
         /// Description:
         /// returns a matching LocationVM object
-
         /// </summary>
         /// <param name="locationName"></param>
         /// <param name="address"></param>
@@ -212,13 +209,13 @@ namespace LogicLayer
         /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A list of LocationImage objects</returns>
-        public List<LocationImage> RetrieveLocationImages(int locationID)
+        public List<LocationImage> RetrieveLocationImagesByLocationID(int locationID)
         {
             List<LocationImage> locationImages = new List<LocationImage>();
 
             try
             {
-                locationImages = _locationAccessor.SelectLocationImages(locationID);
+                locationImages = _locationAccessor.SelectLocationImagesByLocationID(locationID);
             }
             catch (Exception)
             {

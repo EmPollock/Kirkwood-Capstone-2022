@@ -43,7 +43,8 @@ CREATE TABLE [dbo].[Event] (
 	,[EventDescription]	[nvarchar](1000)			NOT NULL
 	,[DateCreated]		[DateTime]					NOT NULL DEFAULT CURRENT_TIMESTAMP 
 	,[Active]			[bit]						NOT NULL DEFAULT 1
-
+	CONSTRAINT [fk_LocationID_Event] FOREIGN KEY([LocationID])
+		REFERENCES [Location]([LocationID])
 	CONSTRAINT [pk_EventID] PRIMARY KEY([EventID])
 )
 GO
@@ -69,8 +70,8 @@ INSERT INTO [dbo].[Event] (
 	[LocationID]
 )VALUES 
 	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA',100000),
-	('Clean Up the Park','An event to organize a way to clean up the local park.', 100001),
-	('Coachella in the Corridor','A music festival to raise money for local charities.', 100002)
+	('Clean Up the Park','An event to organize a way to clean up the local park.', 100000),
+	('Coachella in the Corridor','A music festival to raise money for local charities.', 100001)
 GO
 
 

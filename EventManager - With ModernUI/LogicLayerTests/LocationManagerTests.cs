@@ -63,15 +63,15 @@ namespace LogicLayerTests
             {
                 LocationID = 100000,
                 UserID = 100000,
-                LocationName = "Fake Location One",
-                LocationDescription = "The number one fake location around",
-                LocationPricingText = "One day rent: $20",
-                LocationPhone = "3193193193",
-                LocationEmail = "fakeLocation@gmail.com",
-                LocationAddress1 = "Fake Address Number 1",
-                LocationCity = "Fake City",
-                LocationState = "IA",
-                LocationZipCode = "52206",
+                Name = "Fake Location One",
+                Description = "The number one fake location around",
+                PricingInfo = "One day rent: $20",
+                Phone = "3193193193",
+                Email = "fakeLocation@gmail.com",
+                Address1 = "Fake Address Number 1",
+                City = "Fake City",
+                State = "IA",
+                ZipCode = "52206",
                 Active = true
             };
             Location actualResult;
@@ -124,7 +124,7 @@ namespace LogicLayerTests
             int expectedCount = 2;
             int actualCount;
 
-            actualCount = _locationManager.RetrieveLocationImages(locationID).Count;
+            actualCount = _locationManager.RetrieveLocationImagesByLocationID(locationID).Count;
 
             Assert.AreEqual(expectedCount, actualCount);
         }
