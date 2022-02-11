@@ -4,6 +4,7 @@ using DataObjects;
 using LogicLayerInterfaces;
 using DataAccessFakes;
 using LogicLayer;
+using System.Collections.Generic;
 
 namespace LogicLayerTests
 {
@@ -339,6 +340,7 @@ namespace LogicLayerTests
             Assert.AreEqual(expected, actual);
         }
 
+        /// <summary>
         /// Derrick Nagy
         /// Created: 2022/01/30
         /// 
@@ -384,6 +386,287 @@ namespace LogicLayerTests
             // assert
             // notthing to assert, exception testing
             
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/06
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for upcoming events
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMUpcomingEvents()
+        {
+            // arrange
+            const int expectedCount = 3;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForUpcomingDates();
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);            
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/06
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for upcoming and past events
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMUpcomingAndPastEvents()
+        {
+            // arrange
+            const int expectedCount = 4;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForUpcomingAndPastDates();
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for past events
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMUpcomingPastEvents()
+        {
+            // arrange
+            const int expectedCount = 1;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForPastDates();
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for upcoming events for a user
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMUpcomingEventsForUser()
+        {
+            // arrange
+            const int userID = 100000;
+            const int expectedCount = 3;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForUpcomingDatesForUser(userID);
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for upcoming events for a user with no events
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMUpcomingEventsForUserWithNoEvents()
+        {
+            // arrange
+            const int userID = -1;
+            const int expectedCount = 0;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForUpcomingDatesForUser(userID);
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for past events for a user
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMPastEventsForUser()
+        {
+            // arrange
+            const int userID = 100001;
+            const int expectedCount = 1;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForPastDatesForUser(userID);
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for upcoming events for a user with no events
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMPastEventsForUserWithNoEvents()
+        {
+            // arrange
+            const int userID = -1;
+            const int expectedCount = 0;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForPastDatesForUser(userID);
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for past and upcoming events for a user
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMPastAndUpcomingEventsForUser()
+        {
+            // arrange
+            const int userID = 100001;
+            const int expectedCount = 3;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForPastAndUpcomingDatesForUser(userID);
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for past and upcoming events for a user with no events
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMPastAndUpcomingEventsForUserWithNoEvents()
+        {
+            // arrange
+            const int userID = -1;
+            const int expectedCount = 0;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForPastAndUpcomingDatesForUser(userID);
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Test that updates event location and makes sure the method returns true when doing so.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEventLocationByLocationIDReturnsTrue()
+        {
+            // arrange
+            const int eventID = 1000000;
+            const int oldLocationID = 100000;
+            const int newLocationID = 1500000;
+
+            const bool expected = true;
+
+            // act
+            bool actual = _eventManager.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Test that updates event location and makes sure the method returns false when provided a bad event ID.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEventLocationByLocationIDReturnsFalseForBadEventID()
+        {
+            // arrange
+            const int eventID = 2000;
+            const int oldLocationID = 100000;
+            const int newLocationID = 1500000;
+
+            const bool expected = false;
+
+            // act
+            bool actual = _eventManager.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Test that updates event location and makes sure the method returns false when provided a bad old location ID.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEventLocationByLocationIDReturnsFalseForBadOldLocationID()
+        {
+            // arrange
+            const int eventID = 1000000;
+            const int oldLocationID = 200;
+            const int newLocationID = 1500000;
+
+            const bool expected = false;
+
+            // act
+            bool actual = _eventManager.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }

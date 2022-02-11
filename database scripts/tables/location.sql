@@ -65,5 +65,6 @@ INSERT INTO [dbo].[Location] (
 	,[LocationZipCode]		
 	,[LocationImagePath]
 )VALUES 
-	(100000, "Locations R Us", "I'm a Locations R Us kid.", "5 bucks a night.", "888-888-8888", "locationsrus@locations.com", "123 Location Ave", null, "Cedar Rapids", "Iowa", "52404", "http://imagehost.com/locationsrus.png")
+	(100000, "Locations R Us", "I'm a Locations R Us kid.", "5 bucks a night.", "888-888-8888", "locationsrus@locations.com", "123 Location Ave", null, "Cedar Rapids", "Iowa", "52404", "http://imagehost.com/locationsrus.png"),
+	(100000, "Testy2", "This is a testy place.", "Why pay for a test?", "888-883-8888", "test@locations.com", "123 Test Ave", null, "Cedar Rapids", "Iowa", "52404", "http://imagehost.com/testy.png")
 GO

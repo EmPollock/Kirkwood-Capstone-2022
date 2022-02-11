@@ -48,24 +48,34 @@ namespace LogicLayer
         /// Description:
         /// Calls insert event date
         /// </summary>
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Tests for default value of DateTime.Min and throws exception.
+        /// Default construtor for EventDate sets the date to DateTime.Min if not given
         /// <param name="eventDate"></param>
         /// <returns>True if added to database</returns>
         public bool CreateEventDate(EventDate eventDate)
         {
             bool result = false;
 
-            if (eventDate.EventDateID == null)
+            // The default value is DateTime.MinVause for new objects so it throws an exception if not set
+            if (eventDate.EventDateID == DateTime.MinValue)
             {
                 throw new ApplicationException("Event date can not be empty.");
             }
-
-            try
+            else
             {
-                result = ( 1 == _eventDateAccessor.InsertEventDate(eventDate));
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                try
+                {
+                    result = (1 == _eventDateAccessor.InsertEventDate(eventDate));
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
 
             return result;
@@ -83,7 +93,7 @@ namespace LogicLayer
         public List<EventDate> RetrieveEventDatesByEventID(int eventID)
         {
             List<EventDate> eventDates = null;
-
+            
             try
             {
                 eventDates = _eventDateAccessor.SelectEventDatesByEventID(eventID);

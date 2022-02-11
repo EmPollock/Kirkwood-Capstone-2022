@@ -160,7 +160,7 @@ namespace DataAccessLayer
         /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A List of LocationImage objects</returns>
-        public List<LocationImage> SelectLocationImages(int locationID)
+        public List<LocationImage> SelectLocationImagesByLocationID(int locationID)
         {
             List<LocationImage> locationImages = new List<LocationImage>();
 
@@ -259,6 +259,109 @@ namespace DataAccessLayer
             }
 
             return locationReviews;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/01/23
+        /// 
+        /// Description:
+        /// Insert event into tadpole_db
+        /// 
+        /// </summary>
+        /// <param name="locationName">Name of the Location</param>
+        /// <param name="address">address of the location</param>
+        /// <param name="locationCity">address of the location</param>
+        /// <param name="locationState">address of the location</param>
+        /// <param name="locationZipCode">address of the location</param>
+        /// <returns>Number of rows inserted</returns>
+        public int InsertLocation(string locationName, string address, string locationCity, string locationState, string locationZipCode)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_location_by_name_address_city_state_zip";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LocationName", SqlDbType.NVarChar, 160);
+            cmd.Parameters.Add("@LocationAddress1", SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@locationCity", SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@locationState", SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@locationZipCode", SqlDbType.NVarChar, 100);
+
+            cmd.Parameters["@LocationName"].Value = locationName;
+            cmd.Parameters["@LocationAddress1"].Value = address;
+            cmd.Parameters["@locationCity"].Value = locationCity;
+            cmd.Parameters["@locationState"].Value = locationState;
+            cmd.Parameters["@locationZipCode"].Value = locationZipCode;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex) { throw ex; }
+            finally
+            {
+                conn.Close();
+            }
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/01/23
+        /// 
+        /// Description:
+        /// Returns a matching location record
+        /// 
+        /// </summary>
+        /// <param name="locationName">Name of the Location</param>
+        /// <param name="address">address of the location</param>
+        public Location SelectLocationByLocationNameAndAddress(string locationName, string address)
+        {
+            Location _matchingLocation = new Location();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_location_by_name_and_address";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LocationName", SqlDbType.NVarChar, 160);
+            cmd.Parameters.Add("@LocationAddress1", SqlDbType.NVarChar, 100);
+
+            cmd.Parameters["@LocationName"].Value = locationName;
+            cmd.Parameters["@LocationAddress1"].Value = address;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        _matchingLocation = new Location()
+                        {
+                            LocationID = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Description = reader.IsDBNull(2) ? null : reader.GetString(2),
+                            PricingInfo = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Phone = reader.IsDBNull(4) ? null : reader.GetString(4),
+                            Email = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            Address1 = reader.GetString(6),
+                            Active = true
+                        };
+                    }
+                }
+            }
+            catch (Exception ex) { throw ex; }
+            finally
+            {
+                conn.Close();
+            }
+            return _matchingLocation;
         }
     }
 }

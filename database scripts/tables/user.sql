@@ -7,14 +7,13 @@ GO
 / 
 / Description: Creating Users Table
 /
-/
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Updates:
+/ Derrick Nagy
+/ Updated: 2022/02/07
 /
 / Description: 
+/ Added the test records for "Finn" and "River"
 ****************************************************************/
-
-
 print '' print '*** creating Users Table ...'
 /* Whatever you're adding goes here. */
 
@@ -46,4 +45,6 @@ INSERT INTO [dbo].[Users]
 		([GivenName], [FamilyName], [Email], [UserState], [City], [Zip], [UserPhoto], [UserDescription])
 	VALUES
 		('Joanne', 'Smith', 'joanne@company.com', 'IA', 'Cedar Rapids', 52402, NULL, NULL)
+		,('Finn', 'Human', 'finn@company.com', 'IA', 'Coralville', 52241, NULL, NULL)
+		,('River', 'Blueberry Rainbow', 'river@company.com', 'IA', 'Boone', 50036, NULL, NULL)
 GO

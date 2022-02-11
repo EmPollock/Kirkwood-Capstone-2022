@@ -64,11 +64,25 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            datViewAllTasksForEvent.ItemsSource = _taskManager.RetrieveAllActiveTasksByEventID(100000);
+            updateTaskList();
+
+        }
+
+        private void updateTaskList()
+        {
+            try
+            {
+                datViewAllTasksForEvent.ItemsSource = _taskManager.RetrieveAllActiveTasksByEventID(100000);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
             datViewAllTasksForEvent.RowHeaderWidth = 0;
 
 
-            foreach(DataGridColumn column in datViewAllTasksForEvent.Columns)
+            foreach (DataGridColumn column in datViewAllTasksForEvent.Columns)
             {
                 if (column.Header.ToString() == "Name")
                 {
@@ -89,7 +103,6 @@ namespace WPFPresentation.Event
                     column.Visibility = Visibility.Hidden;
                 }
             }
-            
         }
 
         /// <summary>
@@ -120,12 +133,11 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void datViewAllTasksForEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var task = (TasksVM)datViewAllTasksForEvent.SelectedItem;
+            TasksVM selectedTask = (TasksVM)datViewAllTasksForEvent.SelectedItem;
+            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask);
+            this.NavigationService.Navigate(taskEditPage);
 
-            MessageBox.Show("Task Name: " + task.Name + "\n\n" +
-                            "Description: " + task.Description + "\n\n" +
-                            "Due Date: " + task.DueDate + "\n\n" +
-                            "Priority: " + task.TaskPriority);
+            updateTaskList();
         }
     }
 }

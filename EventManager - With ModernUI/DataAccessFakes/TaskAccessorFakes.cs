@@ -26,6 +26,7 @@ namespace DataAccessFakes
             _fakeTasks.Add(new TasksVM()
             {
                 EventID = 1000000,
+                TaskID = 999999,
                 TaskEventName = "Test Event 1",
                 Name = "Mop",
                 Description = "Mop up spilled drink",
@@ -38,6 +39,7 @@ namespace DataAccessFakes
             _fakeTasks.Add(new TasksVM()
             {
                 EventID = 1000000,
+                TaskID = 999998,
                 TaskEventName = "Test Event 1",
                 Name = "Wash Towels",
                 Description = "Wash Towels after Events",
@@ -50,6 +52,7 @@ namespace DataAccessFakes
             _fakeTasks.Add(new TasksVM()
             {
                 EventID = 1000000,
+                TaskID = 999997,
                 TaskEventName = "Test Event 1",
                 Name = "Sweep",
                 Description = "Sweep broken glass",
@@ -61,6 +64,7 @@ namespace DataAccessFakes
             _fakeTasks.Add(new TasksVM()
             {
                 EventID = 1000000,
+                TaskID = 999996,
                 TaskEventName = "Test Event 1",
                 Name = "Clean Trash",
                 Description = "Make sure trash is cleared from spectator area",
@@ -130,6 +134,39 @@ namespace DataAccessFakes
 
         /// <summary>
         /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Fake update tasks method for testing
+        /// </summary>
+        /// <param name="oldTask"></param>
+        /// <param name="newTask"></param>
+        /// <returns></returns>
+        public int UpdateTasks(Tasks oldTask, Tasks newTask)
+        {
+            int rowsAffected = 0;
+
+            for(int i = 0; i < _fakeTasks.Count; i++)
+            {
+                if(_fakeTasks[i].TaskID == oldTask.TaskID && _fakeTasks[i].Name == oldTask.Name
+                    && _fakeTasks[i].Description == oldTask.Description && _fakeTasks[i].DueDate == oldTask.DueDate
+                    && _fakeTasks[i].Priority == oldTask.Priority && _fakeTasks[i].Active == oldTask.Active)
+                {
+                    _fakeTasks[i].Name = newTask.Name;
+                    _fakeTasks[i].Description = newTask.Description;
+                    _fakeTasks[i].DueDate = newTask.DueDate;
+                    _fakeTasks[i].Priority = newTask.Priority;
+                    _fakeTasks[i].Active = newTask.Active;
+                    rowsAffected = 1;
+                    break;
+                }
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Mike Cahow
         /// Created: 2022/01/24
         /// 
         /// Description:
@@ -138,7 +175,14 @@ namespace DataAccessFakes
         /// <returns>List Priority</returns>
         public List<Priority> SelectAllPriorities()
         {
-            return null;
+            List<Priority> priorities = new List<Priority>();
+
+            foreach (var priority in _priorities)
+            {
+                priorities.Add(priority);
+            }
+
+            return priorities;
         }
 
         /// <summary>
@@ -163,5 +207,6 @@ namespace DataAccessFakes
 
             return tasks;
         }
+
     }
 }

@@ -228,7 +228,7 @@ namespace DataAccessFakes
         /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A list of LocationImage object that matches the provided locationID or a null location if not there</returns>
-        public List<LocationImage> SelectLocationImages(int locationID)
+        public List<LocationImage> SelectLocationImagesByLocationID(int locationID)
         {
             List<LocationImage> locationImages = new List<LocationImage>();
 
@@ -270,6 +270,66 @@ namespace DataAccessFakes
             }
 
             return locationReviews;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/01/26
+        /// 
+        /// Description:
+        /// Insert fake location for testing
+        /// 
+        /// </summary>
+        /// <param name="LocationName">Name of the event</param>
+        /// <param name="address">name of the address</param>
+        /// <param name="locationCity">address of the location</param>
+        /// <param name="locationState">address of the location</param>
+        /// <param name="locationZipCode">address of the location</param>
+        /// <returns>Number of rows inserted</returns>
+        public int InsertLocation(string locationName, string address, string locationCity, string locationState, string locationZip)
+        {
+            int rowsAffected = 0;
+            _fakeLocations.Add(new Location()
+            {
+                Name = locationName,
+                Address1 = address,
+                City = locationCity,
+                State = locationState,
+                ZipCode = locationZip
+            });
+
+            rowsAffected++;
+
+            return rowsAffected;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/01/26
+        /// 
+        /// Description:
+        /// Select matching location for testing
+        /// 
+        /// </summary>
+        /// <param name="LocationName">Name of the location</param>
+        /// <param name="address">Name of the address/param>
+        /// <returns>matching location if it exists</returns>
+        public Location SelectLocationByLocationNameAndAddress(string locationName, string address)
+        {
+            Location _eventLocation = new Location();
+            _eventLocation.Name = locationName;
+            _eventLocation.Address1 = address;
+
+            foreach (Location location in _fakeLocations)
+            {
+                if (location.Name == _eventLocation.Name &&
+                    location.Address1 == _eventLocation.Address1)
+                {
+                    _eventLocation = location;
+                }
+
+            }
+            return _eventLocation;
+
         }
     }
 }

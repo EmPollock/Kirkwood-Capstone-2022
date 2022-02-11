@@ -39,14 +39,12 @@ namespace LogicLayer
             _eventAccessor = eventAccessor;
         }
 
-
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/01/22
         /// 
         /// Description:
         /// Creates an event
-
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="eventDescription"></param>
@@ -94,7 +92,6 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Retrieves Active Events from data source
-
         /// </summary>
         /// Derrick Nagy
         /// Updated: 2022/01/30
@@ -102,7 +99,6 @@ namespace LogicLayer
         /// Description:
         /// Added variable "ex" so method throws ex
         /// <returns>List of active events</returns>
-
         public List<Event> RetreieveActiveEvents()
         {
             List<Event> events = new List<Event>();
@@ -166,6 +162,16 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/30
+        /// 
+        /// Description:
+        /// Retrieve an event id based on the name and description
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="eventDescription"></param>
+        /// <returns>EventID</returns>
         public Event RetrieveEventByEventNameAndDescription(string eventName, string eventDescription)
         {
             Event eventToGet = null;
@@ -185,6 +191,220 @@ namespace LogicLayer
             }
 
             return eventToGet;
+        }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/06
+        /// 
+        /// Description:
+        /// Retrieve a list of event view models
+        /// </summary>
+        /// <returns>List of event view models</returns>
+        public List<EventVM> RetrieveEventListForUpcomingDates()
+        {
+            List<EventVM> eventVMs = new List<EventVM>();
+
+            // Green
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+
+            try
+            {
+                eventVMs = _eventAccessor.SelectEventsUpcomingDates();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return eventVMs;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Retrieve a list of event view models for both past and upcoming dates
+        /// </summary>
+        /// <returns>List of event view models</returns>
+        public List<EventVM> RetrieveEventListForUpcomingAndPastDates()
+        {
+
+            List<EventVM> eventVMs = new List<EventVM>();
+
+            // Green
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+
+            try
+            {
+                eventVMs = _eventAccessor.SelectEventsUpcomingAndPastDates();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return eventVMs;
+
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Retrieve a list of event view models for both past dates
+        /// </summary>
+        /// <returns>List of event view models</returns>
+        public List<EventVM> RetrieveEventListForPastDates()
+        {
+            List<EventVM> eventVMs = new List<EventVM>();
+
+            //Green
+            //eventVMs.Add(new EventVM());
+
+            try
+            {
+                eventVMs = _eventAccessor.SelectEventsPastDates();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return eventVMs;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Retrieve a list of event view models for future dates for a user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>List of event view models</returns>
+        /// <summary>
+        public List<EventVM> RetrieveEventListForUpcomingDatesForUser(int userID)
+        {
+            List<EventVM> eventVMs = new List<EventVM>();
+
+            // Green
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+
+            try
+            {
+                eventVMs = _eventAccessor.SelectUserEventsForUpcomingDates(userID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return eventVMs;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Retrieve a list of event view models for past dates for a user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>List of event view models</returns>
+        /// <summary>
+        public List<EventVM> RetrieveEventListForPastDatesForUser(int userID)
+        {
+            List<EventVM> eventVMs = new List<EventVM>();
+
+            // Green
+            eventVMs.Add(new EventVM());
+
+            try
+            {
+                eventVMs = _eventAccessor.SelectUserEventsForPastDates(userID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return eventVMs;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Retrieve a list of event view models for past and upcoming dates for a user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>List of event view models</returns>
+        /// <summary>
+        public List<EventVM> RetrieveEventListForPastAndUpcomingDatesForUser(int userID)
+        {
+            List<EventVM> eventVMs = new List<EventVM>();
+
+            // Green
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+
+
+            try
+            {
+                eventVMs = _eventAccessor.SelectUserEventsForPastAndUpcomingDates(userID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return eventVMs;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Updates the locationID of an event
+        /// </summary>
+        /// <param name="eventID">EventID of the event to be updated</param>
+        /// <param name="oldLocationID">The event's current locationID</param>
+        /// <param name="newLocationID">The new location ID</param>
+        /// <returns>bool - One row affected</returns>
+        public bool UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = 1 == _eventAccessor.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to update event location", ex);
+            }
+
+            return result;
+
         }
     }
 }

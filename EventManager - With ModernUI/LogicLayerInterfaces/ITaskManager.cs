@@ -30,6 +30,18 @@ namespace LogicLayerInterfaces
 
         /// <summary>
         /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Method that updates a task in the database
+        /// </summary>
+        /// <param name="oldTask"></param>
+        /// <param name="newTasks"></param>
+        /// <returns></returns>
+        bool EditTask(Tasks oldTask, Tasks newTasks);
+
+        /// <summary>
+        /// Mike Cahow
         /// Created: 2022/01/24
         /// 
         /// Description:

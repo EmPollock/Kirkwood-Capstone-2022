@@ -78,21 +78,31 @@ namespace LogicLayerTests
 
         }
 
+
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/01/29
         /// 
         /// Description:
         /// Test that that show manager throws an application exception if the EventDateID is null
+        /// 
+        /// Updates:
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test now throw exception if the EventDateID field isn't set
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
-        public void TestCreateEvenDateThrowsExceptionForNullEventDateID()
+        public void TestCreateEventDateNoDateDateEventDateIDThrowsException()
         {
             // arrange            
             EventDate eventDate = new EventDate()
             {
-                //EventDateID not set and is therefor null
+                // EventDateID not set and is therefor null
+                // Default is DateTime.Min 
+                // Logic layer is checking for that time
                 EventID = 1,
                 StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
                 EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
@@ -103,7 +113,7 @@ namespace LogicLayerTests
             _eventDateManager.CreateEventDate(eventDate);
 
             // assert
-            // exception testing, nothing to assert
+            // nothing to assert, exception testing
 
         }
 

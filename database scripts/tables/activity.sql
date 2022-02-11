@@ -60,10 +60,12 @@ GO
  Description:
  Test records for activities
 ***************************************************************
- <Updater Name>
- Updated: yyyy/mm/dd
+ Derrick Nagy
+ Updated: 2022/02/10
 
  Description: 
+ Changed the dates and times on sample EventDate records which caused
+ a conflict with the foreign key restraints. Changed the sample records.
 ****************************************************************/
 print '' print '*** test records for Activities'
 
@@ -78,11 +80,20 @@ INSERT INTO [dbo].[Activity] (
     ,[EventDateID]			
     ,[EventID]				
 )VALUES 
+/*
 	('Activity 1', 'The first activity', 1, '08:30', '20:30', 100000, '2022-01-29', 100000)
 	,('Activity 2', 'The second activity', 1, '10:30', '12:30', 100001, '2022-01-30', 100000)
 	,('Activity 3', 'The third activity', 1, '11:00', '18:45', 100000, '2022-01-31', 100000)
 	,('Activity 4', 'The fourth activity', 1, '06:15', '10:45', 100002, '2022-04-29', 100001)
 	,('Activity 5', 'The fith activity', 1, '12:00', '11:00', 100003, '2022-06-01', 100002)
 	,('Activity 6', 'The sixth activity', 1, '12:30', '11:00', 100001, '2022-06-02', 100002)
+	
+*/
+	('Activity 1', 'The first activity', 1, '08:30', '20:30', 100000, '2022-06-29', 100000)
+	,('Activity 2', 'The second activity', 1, '08:30', '20:30', 100001, '2022-06-30', 100000)
+	,('Activity 3', 'The third activity', 1, '11:00', '18:45', 100000, '2022-06-28', 100000)
+	,('Activity 4', 'The fourth activity', 1, '06:15', '10:45', 100002, '2022-04-29', 100001)
+	,('Activity 5', 'The fith activity', 1, '10:00', '11:00', 100003, '2022-05-01', 100002)
+	,('Activity 6', 'The sixth activity', 1, '10:00', '11:00', 100001, '2022-05-02', 100002)
 	
 GO

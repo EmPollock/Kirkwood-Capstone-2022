@@ -68,11 +68,17 @@
     <Compile Include="Event\pgTaskListCreate.xaml.cs">
       <DependentUpon>pgTaskListCreate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Event\pgTaskListEdit.xaml.cs">
+      <DependentUpon>pgTaskListEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Event\pgTaskListView.xaml.cs">
       <DependentUpon>pgTaskListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Event\pgViewActivities.xaml.cs">
       <DependentUpon>pgViewActivities.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Event\pgViewEventDateActivities.xaml.cs">
+      <DependentUpon>pgViewEventDateActivities.xaml</DependentUpon>
     </Compile>
     <Compile Include="Event\pgViewEvents.xaml.cs">
       <DependentUpon>pgViewEvents.xaml</DependentUpon>
@@ -82,6 +88,12 @@
     </Compile>
     <Compile Include="Location\pgViewLocations.xaml.cs">
       <DependentUpon>pgViewLocations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterUser.xaml.cs">
+      <DependentUpon>RegisterUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SplashScreen.xaml.cs">
+      <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Supplier\pgViewSuppliers.xaml.cs">
       <DependentUpon>pgViewSuppliers.xaml</DependentUpon>
@@ -100,7 +112,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Event\pgTaskListEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Event\pgTaskListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Event\pgViewEventDateActivities.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,6 +153,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Event\pgViewEvents.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RegisterUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SplashScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -106,6 +106,7 @@ AS
 		WHERE [EventName] = @EventName
 			AND [EventDescription] = @EventDescription
 			AND [Active] = 1
+		ORDER BY [DateCreated] DESC
 	END	
 GO
 
@@ -150,6 +151,254 @@ AS
 			@OldEventDescription = [EventDescription]
 		  AND
 			@OldActive = [Active]
+		RETURN @@ROWCOUNT
+	END
+GO
+
+/***************************************************************
+<<<<<<< HEAD
+Derrick Nagy
+Created: 2022/02/06
+
+Description:
+Stored procedure to select active events from the events table from the future and past
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_active_events_for_past_and_future_event_dates'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_for_past_and_future_event_dates]
+AS
+	BEGIN
+		SELECT 
+			[Event].[EventID],
+			[EventName],
+			[EventDescription],
+			[DateCreated],
+			[EventDate].[EventDateID]
+			
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+		WHERE [Event].[Active] = 1
+		ORDER BY [Event].[EventID] ASC
+		
+	END	
+GO
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/06
+
+Description:
+Stored procedure to select active upcoming event from the events table
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_active_events_for_upcoming_dates'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_for_upcoming_dates]
+AS
+	BEGIN
+		SELECT 
+			[Event].[EventID],
+			[EventName],
+			[EventDescription],
+			[DateCreated],
+			[EventDate].[EventDateID]
+			
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+		WHERE [Event].[Active] = 1
+			AND [EventDateID] >= GETDATE()
+		ORDER BY [Event].[EventID] ASC
+		
+	END	
+GO
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/06
+
+Description:
+Stored procedure to select active past events from the events 
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_active_events_for_past_dates'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_for_past_dates]
+AS
+	BEGIN
+		SELECT 
+			[Event].[EventID],
+			[EventName],
+			[EventDescription],
+			[DateCreated],
+			[EventDate].[EventDateID]
+			
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+		WHERE [Event].[Active] = 1
+			AND [EventDateID] < GETDATE()
+		ORDER BY [Event].[EventID] ASC
+		
+	END	
+GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/08
+
+Description:
+Stored procedure to select active upcoming event from the events table for a user
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_active_events_for_upcoming_dates_for_user'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_for_upcoming_dates_for_user]
+(
+	@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[UserEvent].[EventID],
+			[Event].[EventName],
+			[Event].[EventDescription],
+			[Event].[DateCreated],
+			[EventDate].[EventDateID]			
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+		WHERE [Event].[Active] = 1
+			AND [EventDateID] >= GETDATE()
+			AND [UserEvent].[EventID] = [Event].[EventID]
+		ORDER BY [UserEvent].[EventID] ASC
+		
+	END	
+GO
+
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/08
+
+Description:
+Stored procedure to select active past events from the events table for a user
+=======
+Christopher Repko
+Created: 2022/02/09
+
+Description:
+Stored procedure to update an event's location data
+
+>>>>>>> origin/main
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_active_events_for_past_dates_for_user'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_for_past_dates_for_user]
+(
+	@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[UserEvent].[EventID],
+			[Event].[EventName],
+			[Event].[EventDescription],
+			[Event].[DateCreated],
+			[EventDate].[EventDateID]			
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+		WHERE [Event].[Active] = 1
+			AND [EventDateID] < GETDATE()
+			AND [UserEvent].[EventID] = [Event].[EventID]
+		ORDER BY [UserEvent].[EventID] ASC
+		
+	END	
+GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/08
+
+Description:
+Stored procedure to select active past and upcoming events from the events table for a user
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_active_events_for_past_and_upcoming_dates_for_user'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_for_past_and_upcoming_dates_for_user]
+(
+	@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[UserEvent].[EventID],
+			[Event].[EventName],
+			[Event].[EventDescription],
+			[Event].[DateCreated],
+			[EventDate].[EventDateID]			
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+		WHERE [Event].[Active] = 1			
+			AND [UserEvent].[EventID] = [Event].[EventID]
+		ORDER BY [UserEvent].[EventID] ASC
+		
+	END	
+
+
+print '' print '*** creating sp_update_event_location_by_event_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_event_location_by_event_id]
+(
+	@EventID 				[int],
+	@OldLocationID			[int],
+	@LocationID				[int]
+)
+AS
+	BEGIN
+		UPDATE	[Event]
+		SET		
+			[LocationID] = @LocationID
+		WHERE 	
+			[EventID] = @EventID
+		  AND	
+			(
+				@OldLocationID = [LocationID] OR
+				(
+					@OldLocationID IS NULL AND
+					[LocationID] IS NULL
+				)
+			)
 		RETURN @@ROWCOUNT
 	END
 GO

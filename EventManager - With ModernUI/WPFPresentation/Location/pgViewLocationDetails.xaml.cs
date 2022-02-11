@@ -59,7 +59,7 @@ namespace WPFPresentation
 
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
-            _locationImages = _locationManager.RetrieveLocationImages(locationID);
+            _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
 
             InitializeComponent();
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
