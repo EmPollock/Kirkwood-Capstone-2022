@@ -15,6 +15,8 @@ sqlcmd -S localhost -E -i tables/activity_result.sql
 sqlcmd -S localhost -E -i tables/volunteer_request.sql
 sqlcmd -S localhost -E -i tables/location_image.sql
 sqlcmd -S localhost -E -i tables/review.sql
+sqlcmd -S localhost -E -i tables/tags.sql
+sqlcmd -S localhost -E -i tables/supplier_image.sql
 sqlcmd -S localhost -E -i stored_procedures/event_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/event_date_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/user_stored_procedures.sql

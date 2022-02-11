@@ -62,5 +62,16 @@ namespace WPFPresentation
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void datSuppliersList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(this.datSuppliersList.SelectedItem != null)
+            {
+                DataObjects.Supplier supplier = (DataObjects.Supplier)this.datSuppliersList.SelectedItem;
+
+                Page page = new Supplier.pgViewSupplierListing(supplier);
+                this.NavigationService.Navigate(page);
+            }
+        }
     }
 }

@@ -55,6 +55,12 @@ GO
  Description:
  Test records for Review table
 ***************************************************************
+ Christopher Repko
+ Updated: 2022/02/11
+
+ Description: 
+ Additional test records for SupplierReview join.
+***************************************************************
  <Updater Name>
  Updated: yyyy/mm/dd
 
@@ -69,7 +75,9 @@ INSERT INTO [dbo].[Review] (
     [Review],					
     [Active]		
 )VALUES 
-	(100000, "Location Review", 3, "Enjoyable place to visit", 1)
+	(100000, "Location Review", 3, "Enjoyable place to visit", 1),
+	(100000, "Supplier Review", 5, "Amazing place!", 5),
+	(100000, "Supplier Review", 1, "Didn't like it.", 1)
 GO
 
 
@@ -117,4 +125,51 @@ INSERT INTO [dbo].[LocationReview] (
     [LocationID]
 )VALUES 
 	(100000, 100000)
+GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/02/11
+
+Description:
+SupplierReview table
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating SupplierReview table'
+CREATE TABLE [dbo].[SupplierReview] (
+	[ReviewID]			[int]                     	NOT NULL,
+	[SupplierID]		[int] 						NOT NULL,
+
+	CONSTRAINT [fk_SupplierReview_ReviewID] FOREIGN KEY([ReviewID])
+        REFERENCES [Review]([ReviewID]),
+	CONSTRAINT [fk_SupplierReview_SupplierID] FOREIGN KEY([SupplierID])
+		REFERENCES [Supplier]([SupplierID])
+)
+GO
+
+/***************************************************************
+ Christopher Repko
+ Created: 2022/02/11
+ 
+ Description:
+ Test records for SupplierReview table
+***************************************************************
+ <Updater Name>
+ Updated: yyyy/mm/dd
+
+ Description: 
+****************************************************************/
+print '' print '*** test records for SupplierReview table'
+GO
+INSERT INTO [dbo].[SupplierReview] (					
+    [ReviewID],
+    [SupplierID]
+)VALUES 
+	(100001, 100000),
+	(100002, 100000)
 GO

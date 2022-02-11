@@ -30,7 +30,7 @@ namespace WPFPresentation
     {
         ILocationManager _locationManager;
         DataObjects.Location _location;
-        List<LocationReview> _locationReviews;
+        List<Reviews> _locationReviews;
         List<LocationImage> _locationImages;
         Uri _src;
         int _imageNumber = 0;
@@ -104,7 +104,7 @@ namespace WPFPresentation
                     int avg = 0;
                     int total = 0;
 
-                    foreach (LocationReview locationReview in _locationReviews)
+                    foreach (Reviews locationReview in _locationReviews)
                     {
                         avg += locationReview.Rating;
                         total++;

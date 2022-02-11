@@ -81,7 +81,7 @@ namespace LogicLayerInterfaces
         /// Updated: yyyy/mm/dd
         /// </remarks>
         /// /// <param name="locationID"></param>
-        List<LocationReview> RetrieveLocationReviews(int locationID);
+        List<Reviews> RetrieveLocationReviews(int locationID);
 
         /// <summary>
         /// Austin Timmerman

@@ -39,7 +39,7 @@ namespace DataAccessInterfaces
         /// Updated: yyyy/mm/dd
         /// </remarks>
         /// <param name="locationID"></param>
-        List<LocationReview> SelectLocationReviews(int locationID);
+        List<Reviews> SelectLocationReviews(int locationID);
 
         /// <summary>
         /// Austin Timmerman

@@ -215,9 +215,9 @@ namespace DataAccessLayer
         /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A List of LocationReview objects</returns>
-        public List<LocationReview> SelectLocationReviews(int locationID)
+        public List<Reviews> SelectLocationReviews(int locationID)
         {
-            List<LocationReview> locationReviews = new List<LocationReview>();
+            List<Reviews> locationReviews = new List<Reviews>();
 
             var conn = DBConnection.GetConnection();
             var cmdText = "sp_select_location_reviews";
@@ -235,9 +235,9 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        locationReviews.Add(new LocationReview()
+                        locationReviews.Add(new Reviews()
                         {
-                            LocationID = locationID,
+                            ForeignID = locationID,
                             ReviewID = reader.GetInt32(0),
                             FullName = reader.GetString(1),
                             ReviewType = reader.GetString(2),

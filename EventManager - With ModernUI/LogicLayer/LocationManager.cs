@@ -240,9 +240,9 @@ namespace LogicLayer
         /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A list of LocationReview objects</returns>
-        public List<LocationReview> RetrieveLocationReviews(int locationID)
+        public List<Reviews> RetrieveLocationReviews(int locationID)
         {
-            List<LocationReview> locationReviews = new List<LocationReview>();
+            List<Reviews> locationReviews = new List<Reviews>();
 
             try
             {
