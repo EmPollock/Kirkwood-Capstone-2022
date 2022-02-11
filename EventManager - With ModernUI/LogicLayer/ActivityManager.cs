@@ -106,5 +106,60 @@ namespace LogicLayer
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/02/05
+        /// 
+        /// Description:
+        /// Retrieves a list of Activity View Models that are associated with 
+        ///     an event and event date
+        /// </summary>
+        /// <param name="eventID">The EventID</param>
+        /// <param name="eventDateID">The EventDateID</param>
+        /// <returns>A list of ActivityVMs</returns>
+        public List<ActivityVM> RetrieveActivitiesByEventIDAndEventDateID(int eventID, DateTime? eventDateID)
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+            try
+            {
+                List<Activity> activities = _activityAccessor.SelectActivitiesByEventIDAndEventDateID(eventID, eventDateID);
+
+                foreach (Activity activity in activities)
+                {
+                    //set list of ActivityResults
+                    List<ActivityResult> activityResults = _activityResultAccessor.SelectActivityResultsByActivityID(activity.ActivityID);
+
+                    //set ActivitySublocation
+                    Sublocation activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID(activity.SublocationID);
+
+                    //set EventDate
+                    EventDate activityEventDate = _eventDateAccessor.SelectEventDateByEventDateIDAndEventID(activity.EventDateID, eventID);
+
+                    result.Add(new ActivityVM()
+                    {
+                        ActivityID = activity.ActivityID,
+                        ActivityName = activity.ActivityName,
+                        ActivityDescription = activity.ActivityDescription,
+                        PublicActivity = activity.PublicActivity,
+                        StartTime = activity.StartTime,
+                        EndTime = activity.EndTime,
+                        ActivityImageName = activity.ActivityImageName,
+                        SublocationID = activity.SublocationID,
+                        EventDateID = activity.EventDateID,
+                        EventID = activity.EventID,
+                        ActivityResults = activityResults,
+                        ActivitySublocation = activitySublocation,
+                        EventDate = activityEventDate
+                    });
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

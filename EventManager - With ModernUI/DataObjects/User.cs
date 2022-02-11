@@ -12,7 +12,6 @@ namespace DataObjects
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
         public string EmailAddress { get; set; }
-        public string PasswordHash { get; set; }
         public string State { get; set; }
         public string City { get; set; }
         public int? Zip { get; set; }

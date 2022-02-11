@@ -10,5 +10,6 @@ namespace LogicLayerInterfaces
     public interface IActivityManager
     {
         List<ActivityVM> RetrieveActivitiesByEventID(int eventID);
+        List<ActivityVM> RetrieveActivitiesByEventIDAndEventDateID(int eventID, DateTime? eventDateID);
     }
 }

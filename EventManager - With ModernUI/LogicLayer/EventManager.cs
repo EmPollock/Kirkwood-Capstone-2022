@@ -40,6 +40,7 @@ namespace LogicLayer
         }
 
 
+
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/01/22
@@ -184,6 +185,31 @@ namespace LogicLayer
             }
 
             return eventToGet;
+        }
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Updates the locationID of an event
+        /// </summary>
+        /// <param name="eventID">EventID of the event to be updated</param>
+        /// <param name="oldLocationID">The event's current locationID</param>
+        /// <param name="newLocationID">The new location ID</param>
+        /// <returns>bool - One row affected</returns>
+        public bool UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = 1 == _eventAccessor.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to update event location", ex);
+            }
+
+            return result;
         }
     }
 }

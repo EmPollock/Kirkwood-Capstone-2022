@@ -13,5 +13,6 @@ namespace LogicLayerInterfaces
         List<Event> RetreieveActiveEvents();
         bool UpdateEvent(Event oldEvent, Event newEvent);
         Event RetrieveEventByEventNameAndDescription(string eventName, string eventDescription);
+        bool UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID);
     }
 }

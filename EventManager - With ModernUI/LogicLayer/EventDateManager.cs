@@ -87,10 +87,10 @@ namespace LogicLayer
             try
             {
                 eventDates = _eventDateAccessor.SelectEventDatesByEventID(eventID);
-                if (eventDates.Count == 0)
-                {
-                    throw new ApplicationException("No dates found for this event.");
-                }
+                //if (eventDates.Count == 0)
+                //{
+                //    throw new ApplicationException("No dates found for this event.");
+                //}
             }
             catch (Exception ex)
             {

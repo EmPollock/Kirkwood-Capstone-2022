@@ -21,9 +21,26 @@ namespace DataAccessFakes
         /// </summary>
         public EventAccessorFake()
         {
-            _fakeEvents.Add(new Event()
+            
+               _fakeEvents.Add(new Event()
             {
                 EventID = 1000000,
+                Location = new Location()
+                {
+                    LocationID = 100000,
+                    UserID = 100000,
+                    Name = "Test Location 1",
+                    Description = "Description of Test Location 1 goes here.",
+                    PricingInfo = "Pricing information for renting Test Location 1 goes here.",
+                    Phone = "111-111-1111",
+                    Email = "testLocation1@locations.com",
+                    Address1 = "Test Location 1 Street",
+                    City = "Iowa City",
+                    State = "Iowa",
+                    ZipCode = "52240",
+                    ImagePath = "http://imagehost.com/testlocation1.png",
+                    Active = true
+                },
                 EventName = "Test Event 1",
                 EventDescription = "A description of test event 1",
                 EventCreatedDate = DateTime.Now,
@@ -33,6 +50,23 @@ namespace DataAccessFakes
             _fakeEvents.Add(new Event()
             {
                 EventID = 1000001,
+                Location = new Location()
+                {
+                    LocationID = 100001,
+                    UserID = 100000,
+                    Name = "Test Location 2",
+                    Description = "Description of Test Location 2 goes here.",
+                    PricingInfo = "Pricing information for renting Test Location 2 goes here.",
+                    Phone = "222-222-2222",
+                    Email = "testLocation2@locations.com",
+                    Address1 = "Test Location 2 Street",
+                    Address2 = "Apt 2",
+                    City = "Cedar Rapids",
+                    State = "Iowa",
+                    ZipCode = "52404",
+                    ImagePath = "http://imagehost.com/testlocation2.png",
+                    Active = true
+                },
                 EventName = "Test Event 2",
                 EventDescription = "A description of test event 2",
                 EventCreatedDate = DateTime.Now.AddMinutes(1),
@@ -42,6 +76,23 @@ namespace DataAccessFakes
             _fakeEvents.Add(new Event()
             {
                 EventID = 1000002,
+                Location = new Location()
+                {
+                    LocationID = 100002,
+                    UserID = 100000,
+                    Name = "Test Location 3",
+                    Description = "Description of Test Location 3 goes here.",
+                    PricingInfo = "Pricing information for renting Test Location 3 goes here.",
+                    Phone = "333-333-3333",
+                    Email = "testLocation3@locations.com",
+                    Address1 = "Test Location 3 Street",
+                    Address2 = "Apt 33",
+                    City = "Chicago",
+                    State = "Illinois",
+                    ZipCode = "60007",
+                    ImagePath = "http://imagehost.com/testlocation3.png",
+                    Active = true
+                },
                 EventName = "Test Event 3",
                 EventDescription = "A description of test event 3",
                 EventCreatedDate = DateTime.Now.AddMinutes(2),
@@ -52,6 +103,23 @@ namespace DataAccessFakes
             _fakeEvents.Add(new Event()
             {
                 EventID = 1000003,
+                Location = new Location()
+                {
+                    LocationID = 100003,
+                    UserID = 100000,
+                    Name = "Test Location 4",
+                    Description = "Description of Test Location 4 goes here.",
+                    PricingInfo = "Pricing information for renting Test Location 4 goes here.",
+                    Phone = "444-444-4444",
+                    Email = "testLocation4@locations.com",
+                    Address1 = "Test Location 4 Street",
+                    Address2 = "Apt 44",
+                    City = "New York City",
+                    State = "New York",
+                    ZipCode = "10036",
+                    ImagePath = "http://imagehost.com/testlocation4.png",
+                    Active = true
+                },
                 EventName = "Test Event 4",
                 EventDescription = "A description of test event 4",
                 EventCreatedDate = DateTime.Now.AddMinutes(3),
@@ -169,6 +237,29 @@ namespace DataAccessFakes
             return rowsAffected;
         }
 
-
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Updates the location of a fake event record.
+        /// </summary>
+        /// <param name="eventID">Event ID of the event</param>
+        /// <param name="oldLocationID">ID of the old location</param>
+        /// <param name="newLocationID">ID of the new location</param>
+        /// <returns>int - rows affected</returns>
+        public int UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID)
+        {
+            int rowsAffected = 0;
+            foreach (var fakeEvent in _fakeEvents)
+            {
+                if (fakeEvent.EventID == eventID && fakeEvent.Location.LocationID == oldLocationID)
+                {
+                    fakeEvent.Location.LocationID = (int)newLocationID;
+                    rowsAffected++;
+                }
+            }
+            return rowsAffected;
+        }
     }
 }

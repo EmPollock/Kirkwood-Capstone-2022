@@ -13,15 +13,15 @@ namespace LogicLayerInterfaces
         // Should return a user object with roles
         // or throw an exception.
         User LoginUser(string email, string password);
-        bool AuthenticateUser(string email, string password);
+        bool AuthenticateUserByEmailAndPassword(string email, string password);
 
         string HashSha256(string source);
 
-        User GetUserByEmail(string email);
+        User RetrieveUserByEmail(string email);
 
-        List<String> GetRolesForUser(int employeeID);
+        List<String> RetrieveUserRolesByUserID(int UserID);
 
-        bool ResetPassword(string email, string oldPassword, string newPassword);
+        bool UpdatePasswordHash(string email, string oldPassword, string newPassword);
 
         bool CreateUser(User user);
     }

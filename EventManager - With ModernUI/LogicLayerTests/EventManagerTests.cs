@@ -385,5 +385,74 @@ namespace LogicLayerTests
             // notthing to assert, exception testing
             
         }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Test that updates event location and makes sure the method returns true when doing so.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEventLocationByLocationIDReturnsTrue()
+        {
+            // arrange
+            const int eventID = 1000000;
+            const int oldLocationID = 100000;
+            const int newLocationID = 1500000;
+
+            const bool expected = true;
+
+            // act
+            bool actual = _eventManager.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Test that updates event location and makes sure the method returns false when provided a bad event ID.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEventLocationByLocationIDReturnsFalseForBadEventID()
+        {
+            // arrange
+            const int eventID = 2000;
+            const int oldLocationID = 100000;
+            const int newLocationID = 1500000;
+
+            const bool expected = false;
+
+            // act
+            bool actual = _eventManager.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Test that updates event location and makes sure the method returns false when provided a bad old location ID.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEventLocationByLocationIDReturnsFalseForBadOldLocationID()
+        {
+            // arrange
+            const int eventID = 1000000;
+            const int oldLocationID = 200;
+            const int newLocationID = 1500000;
+
+            const bool expected = false;
+
+            // act
+            bool actual = _eventManager.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

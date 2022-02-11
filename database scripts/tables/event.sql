@@ -24,6 +24,11 @@ Created: 2022/01/22
 Description:
 Event table
 **************************************************************
+Christopher Repko
+Updated: 2022/02/09
+
+Description: Made LocationID nullable
+**************************************************************
 <Updater Name>
 Updated: yyyy/mm/dd
 
@@ -33,11 +38,13 @@ Description:
 print '' print '*** creating Event table'
 CREATE TABLE [dbo].[Event] (
 	[EventID]			[int] IDENTITY(100000,1)	NOT NULL
+	,[LocationID]		[int]						NULL
 	,[EventName]		[nvarchar](50)				NOT NULL
 	,[EventDescription]	[nvarchar](1000)			NOT NULL
 	,[DateCreated]		[DateTime]					NOT NULL DEFAULT CURRENT_TIMESTAMP 
 	,[Active]			[bit]						NOT NULL DEFAULT 1
-
+	CONSTRAINT [fk_LocationID_Event] FOREIGN KEY([LocationID])
+		REFERENCES [Location]([LocationID])
 	CONSTRAINT [pk_EventID] PRIMARY KEY([EventID])
 )
 GO
@@ -59,11 +66,12 @@ print '' print '*** test records for Event table'
 GO
 INSERT INTO [dbo].[Event] (
 	[EventName],
-	[EventDescription]	
+	[EventDescription],	
+	[LocationID]
 )VALUES 
-	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA'),
-	('Clean Up the Park','An event to organize a way to clean up the local park.'),
-	('Coachella in the Corridor','A music festival to raise money for local charities.')
+	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA',100000),
+	('Clean Up the Park','An event to organize a way to clean up the local park.', 100000),
+	('Coachella in the Corridor','A music festival to raise money for local charities.', 100001)
 GO
 
 

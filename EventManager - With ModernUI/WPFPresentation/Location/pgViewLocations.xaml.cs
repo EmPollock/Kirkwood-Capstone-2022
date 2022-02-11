@@ -35,10 +35,10 @@ namespace WPFPresentation.Location
         public pgViewLocations()
         {
             // fake accessor
-            _locationManager = new LocationManager(new LocationAccessorFake());
+            //_locationManager = new LocationManager(new LocationAccessorFake());
 
             // live data accessor
-            // _locationManager = new LocationManager();
+            _locationManager = new LocationManager();
 
             InitializeComponent();
         }
@@ -60,6 +60,18 @@ namespace WPFPresentation.Location
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void datLocationsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(datLocationsList.SelectedItem == null)
+            {
+                return;
+            }
+            DataObjects.Location location = (DataObjects.Location)datLocationsList.SelectedItem;
+
+            pgViewLocationDetails page = new pgViewLocationDetails(location.LocationID, _locationManager);
+            this.NavigationService.Navigate(page);
         }
     }
 }

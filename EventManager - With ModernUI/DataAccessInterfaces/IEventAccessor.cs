@@ -13,6 +13,7 @@ namespace DataAccessInterfaces
         List<Event> SelectActiveEvents();
         int UpdateEvent(Event oldEvent, Event newEvent);
         Event SelectEventByEventNameAndDescription(string eventName, string eventDescription);
+        int UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID);
     }
 }
 

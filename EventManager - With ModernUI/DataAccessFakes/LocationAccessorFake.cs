@@ -11,6 +11,8 @@ namespace DataAccessFakes
     public class LocationAccessorFake : ILocationAccessor
     {
         private List<Location> _fakeLocations = new List<Location>();
+        private List<LocationReview> _fakeLocationReviews = new List<LocationReview>();
+        private List<LocationImage> _fakeLocationImages = new List<LocationImage>();
 
         /// <summary>
         /// Kris Howell
@@ -121,6 +123,42 @@ namespace DataAccessFakes
                 ZipCode = "48202",
                 Active = true
             });
+
+            _fakeLocationReviews.Add(new LocationReview()
+            {
+                LocationID = 100000,
+                ReviewID = 100000,
+                FullName = "Tess Data",
+                ReviewType = "Location Review",
+                Rating = 5,
+                Review = "Great place",
+                DateCreated = DateTime.Now,
+                Active = true
+            });
+
+            _fakeLocationReviews.Add(new LocationReview()
+            {
+                LocationID = 100000,
+                ReviewID = 100001,
+                FullName = "Joey Speed",
+                ReviewType = "Location Review",
+                Rating = 2,
+                Review = "Not a good place one bit",
+                DateCreated = DateTime.Now,
+                Active = true
+            });
+
+            _fakeLocationImages.Add(new LocationImage()
+            {
+                LocationID = 100000,
+                ImageName = "f43faecc-5d0f-4b4a-ba47-4c1d3ce56912.jpg"
+            });
+
+            _fakeLocationImages.Add(new LocationImage()
+            {
+                LocationID = 100000,
+                ImageName = "7263a839-3428-49f2-b26f-875d3811ef85.jpg"
+            });
         }
 
         /// <summary>
@@ -145,6 +183,153 @@ namespace DataAccessFakes
             }
 
             return locations;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// The method that selects a location by its LocationID
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Updater Name
+        /// Updated: yyyy/mm/dd
+        /// </remarks>
+        /// <param name="locationID"></param>
+        /// <returns>A Location object that matches the provided locationID or a null location if not there</returns>
+        public Location SelectLocationByLocationID(int locationID)
+        {
+            Location location = new Location();
+
+            foreach (Location fakeLocation in _fakeLocations)
+            {
+                if (fakeLocation.LocationID == locationID)
+                {
+                    location = fakeLocation;
+                }
+            }
+
+            return location;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/05
+        /// 
+        /// Description:
+        /// The method that selects a location images by its LocationID
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Updater Name
+        /// Updated: yyyy/mm/dd
+        /// </remarks>
+        /// <param name="locationID"></param>
+        /// <returns>A list of LocationImage object that matches the provided locationID or a null location if not there</returns>
+        public List<LocationImage> SelectLocationImagesByLocationID(int locationID)
+        {
+            List<LocationImage> locationImages = new List<LocationImage>();
+
+            foreach (LocationImage fakeLocationImage in _fakeLocationImages)
+            {
+                if (fakeLocationImage.LocationID == locationID)
+                {
+                    locationImages.Add(fakeLocationImage);
+                }
+            }
+
+            return locationImages;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/04
+        /// 
+        /// Description:
+        /// The method that selects a location reviews by its LocationID
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Updater Name
+        /// Updated: yyyy/mm/dd
+        /// </remarks>
+        /// <param name="locationID"></param>
+        /// <returns>A list of location review objects</returns>
+        public List<LocationReview> SelectLocationReviews(int locationID)
+        {
+            List<LocationReview> locationReviews = new List<LocationReview>();
+
+            foreach (LocationReview fakeLocationReview in _fakeLocationReviews)
+            {
+                if (fakeLocationReview.LocationID == locationID)
+                {
+                    locationReviews.Add(fakeLocationReview);
+                }
+            }
+
+            return locationReviews;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/01/26
+        /// 
+        /// Description:
+        /// Insert fake location for testing
+        /// 
+        /// </summary>
+        /// <param name="LocationName">Name of the event</param>
+        /// <param name="address">name of the address</param>
+        /// <param name="locationCity">address of the location</param>
+        /// <param name="locationState">address of the location</param>
+        /// <param name="locationZipCode">address of the location</param>
+        /// <returns>Number of rows inserted</returns>
+        public int InsertLocation(string locationName, string address, string locationCity, string locationState, string locationZip)
+        {
+            int rowsAffected = 0;
+            _fakeLocations.Add(new Location()
+            {
+                Name = locationName,
+                Address1 = address,
+                City = locationCity,
+                State = locationState,
+                ZipCode = locationZip
+            });
+
+            rowsAffected++;
+
+            return rowsAffected;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/01/26
+        /// 
+        /// Description:
+        /// Select matching location for testing
+        /// 
+        /// </summary>
+        /// <param name="LocationName">Name of the location</param>
+        /// <param name="address">Name of the address/param>
+        /// <returns>matching location if it exists</returns>
+        public Location SelectLocationByLocationNameAndAddress(string locationName, string address)
+        {
+            Location _eventLocation = new Location();
+            _eventLocation.Name = locationName;
+            _eventLocation.Address1 = address;
+
+            foreach (Location location in _fakeLocations)
+            {
+                if (location.Name == _eventLocation.Name &&
+                    location.Address1 == _eventLocation.Address1)
+                {
+                    _eventLocation = location;
+                }
+
+            }
+            return _eventLocation;
+
         }
     }
 }
