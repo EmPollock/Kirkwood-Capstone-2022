@@ -61,7 +61,7 @@ GO
  Updated: 2202/02/10
 
  Description: 
- Added event id to inserts
+ Added LocationID to inserts
 ****************************************************************/
 
 print '' print '*** test records for Event table'
