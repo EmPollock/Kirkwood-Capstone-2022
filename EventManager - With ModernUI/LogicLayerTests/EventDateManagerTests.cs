@@ -186,6 +186,196 @@ namespace LogicLayerTests
 
         }
 
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that returns true if update successful
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEventReturnsTrueIfUpdateSuccessful()
+        {
+            // arrange
+            EventDate oldEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 01, 01),
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            };
 
+            EventDate newEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 02, 01),
+                StartTime = new DateTime(2022, 01, 01, 9, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 21, 0, 0),
+                Active = false
+            };
+
+            bool expected = true;
+            bool actual;
+
+            // act
+            actual = _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
+
+            // assert
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that trys to update and throws exception if Event Date ID is null
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsExceptionIfEventDateIDNull()
+        {
+            // arrange
+            EventDate oldEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 01, 01),
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            };
+
+            EventDate newEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = null,
+                StartTime = new DateTime(2022, 01, 01, 9, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 21, 0, 0),
+                Active = false
+            };
+
+            // act
+             _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
+
+            // assert
+            // nothing to do, exception thrown
+
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that trys to update and throws exception if Start Time is null
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsExceptionIfStartTimeNull()
+        {
+            // arrange
+            EventDate oldEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 01, 01),
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            };
+
+            EventDate newEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 02, 01),
+                StartTime = null,
+                EndTime = new DateTime(2022, 01, 01, 21, 0, 0),
+                Active = false
+            };
+
+            // act
+            _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
+
+            // assert
+            // nothing to do, exception thrown
+
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that trys to update and throws exception if End Time is null
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsExceptionIfEndTimeNull()
+        {
+            // arrange
+            EventDate oldEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 01, 01),
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            };
+
+            EventDate newEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 02, 01),
+                StartTime = new DateTime(2022, 01, 01, 9, 0, 0),
+                EndTime = null,
+                Active = false
+            };
+
+            // act
+            _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
+
+            // assert
+            // nothing to do, exception thrown
+
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Test that trys to update and throws exception if End Time beofre start time
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsExceptionIfEndTimeBeforeStartTime()
+        {
+            // arrange
+            EventDate oldEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 01, 01),
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            };
+
+            EventDate newEventDate = new EventDate()
+            {
+                EventID = 1,
+                EventDateID = new DateTime(2022, 02, 01),
+                StartTime = new DateTime(2022, 01, 01, 9, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                Active = false
+            };
+
+            // act
+            _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
+
+            // assert
+            // nothing to do, exception thrown
+
+        }
     }
 }

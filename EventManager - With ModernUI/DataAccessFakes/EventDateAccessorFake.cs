@@ -30,7 +30,7 @@ namespace DataAccessFakes
                 StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
                 EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
                 Active = true
-            }) ;
+            });
 
             _fakeEventDate.Add(new EventDate()
             {
@@ -122,7 +122,8 @@ namespace DataAccessFakes
         /// <returns>fake EventDate object</returns>
         public EventDate SelectEventDateByEventDateIDAndEventID(DateTime eventDateID, int eventID)
         {
-            try{
+            try
+            {
                 foreach (EventDate eventDate in _fakeEventDate)
                 {
                     if (eventDate.EventDateID == eventDateID && eventDate.EventID == eventID)
@@ -162,5 +163,38 @@ namespace DataAccessFakes
 
             return eventDates;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Updates an event date in fake data list
+        /// 
+        /// </summary>
+        /// <returns>int number of records affected</returns>
+        public int UpdateEventDate(EventDate oldEventDate, EventDate newEventDate)
+        {
+            int rowsAffected = 0;
+
+            foreach (var fakeEventDate in _fakeEventDate)
+            {
+                if (fakeEventDate.EventID == newEventDate.EventID
+                    && fakeEventDate.EventDateID == oldEventDate.EventDateID
+                    && fakeEventDate.StartTime == oldEventDate.StartTime
+                    && fakeEventDate.EndTime == oldEventDate.EndTime
+                    && fakeEventDate.Active == oldEventDate.Active)
+                {
+                    fakeEventDate.EventDateID = newEventDate.EventDateID;
+                    fakeEventDate.StartTime = newEventDate.StartTime;
+                    fakeEventDate.EndTime = newEventDate.EndTime;
+                    fakeEventDate.Active = newEventDate.Active;
+
+                    rowsAffected++;
+                }
+            }
+            return rowsAffected;
+        }
     }
 }
+
