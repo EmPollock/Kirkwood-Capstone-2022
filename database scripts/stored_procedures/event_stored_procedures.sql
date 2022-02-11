@@ -32,7 +32,6 @@ CREATE PROCEDURE [dbo].[sp_insert_event]
 (
 	@EventName			nvarchar(50)
 	,@EventDescription	nvarchar(1000)
-	,@LocationID		int
 )
 AS
 	BEGIN
@@ -40,10 +39,9 @@ AS
 		(
 			[EventName]				
 			,[EventDescription]	
-			,[LocationID]
 		)
 		VALUES
-		(@EventName, @EventDescription, @LocationID)		
+		(@EventName, @EventDescription)		
 	END	
 GO
 
@@ -158,6 +156,7 @@ AS
 GO
 
 /***************************************************************
+<<<<<<< HEAD
 Derrick Nagy
 Created: 2022/02/06
 
@@ -301,6 +300,14 @@ Created: 2022/02/08
 
 Description:
 Stored procedure to select active past events from the events table for a user
+=======
+Christopher Repko
+Created: 2022/02/09
+
+Description:
+Stored procedure to update an event's location data
+
+>>>>>>> origin/main
 **************************************************************
 <Updater Name>
 Updated: yyyy/mm/dd
@@ -367,4 +374,31 @@ AS
 		ORDER BY [UserEvent].[EventID] ASC
 		
 	END	
+
+
+print '' print '*** creating sp_update_event_location_by_event_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_event_location_by_event_id]
+(
+	@EventID 				[int],
+	@OldLocationID			[int],
+	@LocationID				[int]
+)
+AS
+	BEGIN
+		UPDATE	[Event]
+		SET		
+			[LocationID] = @LocationID
+		WHERE 	
+			[EventID] = @EventID
+		  AND	
+			(
+				@OldLocationID = [LocationID] OR
+				(
+					@OldLocationID IS NULL AND
+					[LocationID] IS NULL
+				)
+			)
+		RETURN @@ROWCOUNT
+	END
 GO

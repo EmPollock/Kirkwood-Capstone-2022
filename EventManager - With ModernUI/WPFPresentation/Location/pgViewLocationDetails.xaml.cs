@@ -59,7 +59,7 @@ namespace WPFPresentation
 
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
-            _locationImages = _locationManager.RetrieveLocationImages(locationID);
+            _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
 
             InitializeComponent();
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
@@ -80,14 +80,14 @@ namespace WPFPresentation
         /// </remarks>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            txtLocationName.Text = _location.LocationName;
-            txtAboutLocationName.Text = "About " + _location.LocationName + ":";
-            txtBoxAboutLocation.Text = _location.LocationDescription;
-            txtPhoneNumber.Text = _location.LocationPhone;
-            txtEmail.Text = _location.LocationEmail;
-            txtAddressOne.Text = _location.LocationAddress1;
-            txtAddressTwo.Text = _location.LocationAddress2;
-            txtBoxPricing.Text = _location.LocationPricingText;
+            txtLocationName.Text = _location.Name;
+            txtAboutLocationName.Text = "About " + _location.Name + ":";
+            txtBoxAboutLocation.Text = _location.Description;
+            txtPhoneNumber.Text = _location.Phone;
+            txtEmail.Text = _location.Email;
+            txtAddressOne.Text = _location.Address1;
+            txtAddressTwo.Text = _location.Address2;
+            txtBoxPricing.Text = _location.PricingInfo;
 
 
             if (_locationReviews.Count == 0)

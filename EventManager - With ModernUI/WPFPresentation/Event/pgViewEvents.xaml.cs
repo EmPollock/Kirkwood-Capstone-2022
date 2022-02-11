@@ -101,7 +101,18 @@ namespace WPFPresentation
                 // Update 2022/02/05
                 //datActiveEvents.ItemsSource = _eventManager.RetreieveActiveEvents();
                 //_eventList = _eventManager.RetreieveActiveEvents();
-                _eventList = _eventManager.RetrieveEventListForUpcomingDates();                
+
+                if (_user != null)
+                {
+                    eventFilter = EventFilter.UserUpcomingEvents;
+                    _eventList = _eventManager.RetrieveEventListForPastAndUpcomingDatesForUser(_user.UserID);
+                }
+                else
+                {                    
+                    _eventList = _eventManager.RetrieveEventListForUpcomingDates();
+                    
+                }
+                
 
                 datActiveEvents.ItemsSource = _eventList;
                 

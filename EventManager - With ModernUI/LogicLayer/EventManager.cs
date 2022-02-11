@@ -49,7 +49,7 @@ namespace LogicLayer
         /// <param name="eventName"></param>
         /// <param name="eventDescription"></param>
         /// <returns>Number of rows added</returns>
-        public int CreateEvent(string eventName, string eventDescription, int locationID)
+        public int CreateEvent(string eventName, string eventDescription)
         {
             int rowsAffected = 0;
 
@@ -72,14 +72,11 @@ namespace LogicLayer
             {
                 throw new ApplicationException("Description can not over 1000 characters.");
             }
-            if (locationID < 99999)
-            {
-                throw new ApplicationException("Invalid Location");
-            }
+
 
             try
             {
-                rowsAffected = _eventAccessor.InsertEvent(eventName, eventDescription, locationID);
+                rowsAffected = _eventAccessor.InsertEvent(eventName, eventDescription);
             }
             catch (Exception ex)
             {
@@ -193,6 +190,7 @@ namespace LogicLayer
 
             return eventToGet;
         }
+
 
         /// <summary>
         /// Derrick Nagy
@@ -378,6 +376,33 @@ namespace LogicLayer
 
 
             return eventVMs;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Updates the locationID of an event
+        /// </summary>
+        /// <param name="eventID">EventID of the event to be updated</param>
+        /// <param name="oldLocationID">The event's current locationID</param>
+        /// <param name="newLocationID">The new location ID</param>
+        /// <returns>bool - One row affected</returns>
+        public bool UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = 1 == _eventAccessor.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to update event location", ex);
+            }
+
+            return result;
+
         }
     }
 }

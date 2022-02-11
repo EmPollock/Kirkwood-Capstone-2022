@@ -92,11 +92,13 @@ namespace LogicLayerInterfaces
         /// </summary>
         ///
         /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
+        /// Christopher Repko
+        /// Updated: 2022/02/10
+        /// 
+        /// Updated name to match documentation
         /// </remarks>
         /// /// <param name="locationID"></param>
-        List<LocationImage> RetrieveLocationImages(int locationID);
+        List<LocationImage> RetrieveLocationImagesByLocationID(int locationID);
 
     }
 }

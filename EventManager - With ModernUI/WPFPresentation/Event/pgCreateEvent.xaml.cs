@@ -105,14 +105,12 @@ namespace WPFPresentation
                 }
                 else
                 {
-                    tabAddEventDate.IsEnabled = true;
+                    _eventManager.CreateEvent(txtBoxEventName.Text, txtBoxEventDescription.Text);
                     tabsetAddEventLocation.IsEnabled = true;
-                    tabAddEventDate.Focus();
+                    tabsetAddEventLocation.Focus();
                 }
-                //(tabsetCreateEvent.SelectedItem as TabItem).IsEnabled = false;
-                //tabsetCreateEvent.SelectedIndex = newIndex;
-                //(tabsetCreateEvent.SelectedItem as TabItem).IsEnabled = true;
-                
+
+
             }
             catch (Exception ex)
             {
@@ -391,14 +389,19 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler for adding a location to an event and inserting a new event
+        /// 
+        /// *******************************************************************************
+        /// Christopher Repko
+        /// Updated: 2022/02/09
+        /// Removed call to create event and just set event location ID.
         /// </summary>
         private void btnEventLocationAdd_Click(object sender, RoutedEventArgs e)
         {
-            DataObjects.Location _eventLocation = new DataObjects.Location();
+            DataObjects.Location eventLocation = new DataObjects.Location();
 
             string eventName = txtBoxEventName.Text;
             string eventDescription = txtBoxEventDescription.Text;
-            if (txtBoxLocationName.Text == "" || txtBoxStreet.Text == "" || txtBoxCity.Text == "" || txtBoxState.Text == "" || txtBoxZip.Text == "")
+            if (txtBoxLocationName.Text == "" || txtBoxStreet.Text == "" || txtBoxCity.Text == "" || cboState.SelectedItem == null || txtBoxZip.Text == "")
             {
                 MessageBox.Show("Please enter a value for all location fields.");
                 txtBoxLocationName.Focus();
@@ -407,25 +410,41 @@ namespace WPFPresentation
             {
                 try
                 {
-                    _eventLocation = _locationManager.RetrieveLocationByNameAndAddress(txtBoxLocationName.Text, txtBoxStreet.Text);
-                    if (_eventLocation is null || _eventLocation.LocationID == 0)
+                    eventLocation = _locationManager.RetrieveLocationByNameAndAddress(txtBoxLocationName.Text, txtBoxStreet.Text);
+                    if (eventLocation is null || eventLocation.LocationID == 0)
                     {
-                        _locationManager.CreateLocation(txtBoxLocationName.Text, txtBoxStreet.Text, txtBoxCity.Text, txtBoxState.Text, txtBoxZip.Text);
-                        _eventLocation = _locationManager.RetrieveLocationByNameAndAddress(txtBoxLocationName.Text, txtBoxStreet.Text);
-                        _eventManager.CreateEvent(eventName, eventDescription, _eventLocation.LocationID);
+                        _locationManager.CreateLocation(txtBoxLocationName.Text, txtBoxStreet.Text, txtBoxCity.Text, ((ComboBoxItem)cboState.SelectedItem).Tag.ToString(), txtBoxZip.Text);
+                        eventLocation = _locationManager.RetrieveLocationByNameAndAddress(txtBoxLocationName.Text, txtBoxStreet.Text);
+                        DataObjects.Event eventObj = _eventManager.RetrieveEventByEventNameAndDescription(txtBoxEventName.Text, txtBoxEventDescription.Text);
+                        _eventManager.UpdateEventLocationByEventID(eventObj.EventID, null, eventLocation.LocationID);
                         txtBoxLocationName.Text = "";
                         txtBoxStreet.Text = "";
                         txtBoxCity.Text = "";
-                        txtBoxState.Text = "";
+                        cboState.SelectedItem = null;
+                        txtBoxZip.Text = "";
+                    } else if(eventLocation != null)
+                    {
+                        int? eventLocationID = null;
+                        DataObjects.Event eventObj = _eventManager.RetrieveEventByEventNameAndDescription(txtBoxEventName.Text, txtBoxEventDescription.Text);
+                        if (eventObj.Location != null)
+                        {
+                            eventLocationID = eventObj.Location.LocationID;
+                        }
+                        _eventManager.UpdateEventLocationByEventID(eventObj.EventID, eventLocationID, eventLocation.LocationID);
+                        txtBoxLocationName.Text = "";
+                        txtBoxStreet.Text = "";
+                        txtBoxCity.Text = "";
+                        cboState.SelectedItem = null;
                         txtBoxZip.Text = "";
                     }
 
-                    MessageBox.Show("Event Added");
-                    tabAddEventVolunteer.IsEnabled = true;
+                    MessageBox.Show("Event Location Added");
+                    tabAddEventDate.IsEnabled = true;
+                    tabAddEventDate.Focus();
                 }
-                catch (Exception)
+                catch (Exception ex )
                 {
-                    MessageBox.Show("There was a problem creating the event.");
+                    MessageBox.Show("There was a problem adding this location to the event.\n\n"  + ex.Message + "\n\n\n" + ex.InnerException.Message);
                 }
             }
         }
