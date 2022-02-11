@@ -236,119 +236,140 @@ namespace LogicLayerTests
             Assert.AreEqual(expected, actual);
         }
 
-        /// <summary>
-        /// Jace Pettinger
-        /// Created: 2022/02/08
-        /// 
-        /// Description:
-        /// Test that trys to update and throws exception if Event Date ID is null
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestUpdateEventThrowsExceptionIfEventDateIDNull()
-        {
-            // arrange
-            EventDate oldEventDate = new EventDate()
-            {
-                EventID = 1,
-                EventDateID = new DateTime(2022, 01, 01),
-                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
-                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
-                Active = true
-            };
+        ///// <summary>
+        ///// Jace Pettinger
+        ///// Created: 2022/02/08
+        /////
+        //// Update:
+        //// Jace Pettinger
+        //// Created: 2022/02/11
+        //// 
+        //// Description:
+        //// test cannot run because eventDateID cannot be null. Throwing build error
+        ////
+        ///// Description:
+        ///// Test that trys to update and throws exception if Event Date ID is null
+        ///// </summary>
+        //[TestMethod]
+        //[ExpectedException(typeof(ApplicationException))]
+        //public void TestUpdateEventThrowsExceptionIfEventDateIDNull()
+        //{
+        //    // arrange
+        //    EventDate oldEventDate = new EventDate()
+        //    {
+        //        EventID = 1,
+        //        EventDateID = new DateTime(2022, 01, 01),
+        //        StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+        //        EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+        //        Active = true
+        //    };
 
-            EventDate newEventDate = new EventDate()
-            {
-                EventID = 1,
-                EventDateID = null,
-                StartTime = new DateTime(2022, 01, 01, 9, 0, 0),
-                EndTime = new DateTime(2022, 01, 01, 21, 0, 0),
-                Active = false
-            };
+        //    EventDate newEventDate = new EventDate()
+        //    {
+        //        EventID = 1,
+        //        EventDateID = null,
+        //        StartTime = new DateTime(2022, 01, 01, 9, 0, 0),
+        //        EndTime = new DateTime(2022, 01, 01, 21, 0, 0),
+        //        Active = false
+        //    };
 
-            // act
-             _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
+        // act
+        // _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
 
-            // assert
-            // nothing to do, exception thrown
+        // assert
+        // nothing to do, exception thrown
 
-        }
-
-        /// <summary>
-        /// Jace Pettinger
-        /// Created: 2022/02/08
-        /// 
-        /// Description:
-        /// Test that trys to update and throws exception if Start Time is null
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestUpdateEventThrowsExceptionIfStartTimeNull()
-        {
-            // arrange
-            EventDate oldEventDate = new EventDate()
-            {
-                EventID = 1,
-                EventDateID = new DateTime(2022, 01, 01),
-                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
-                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
-                Active = true
-            };
-
-            EventDate newEventDate = new EventDate()
-            {
-                EventID = 1,
-                EventDateID = new DateTime(2022, 02, 01),
-                StartTime = null,
-                EndTime = new DateTime(2022, 01, 01, 21, 0, 0),
-                Active = false
-            };
-
-            // act
-            _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
-
-            // assert
-            // nothing to do, exception thrown
-
-        }
+        // }
 
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/08
-        /// 
+        //// Update:
+        //// Jace Pettinger
+        //// Created: 2022/02/11
+        //// 
+        //// Description:
+        //// test cannot run because StartTime cannot be null. Throwing build errorr
+        ///
         /// Description:
         /// Test that trys to update and throws exception if End Time is null
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestUpdateEventThrowsExceptionIfEndTimeNull()
-        {
-            // arrange
-            EventDate oldEventDate = new EventDate()
-            {
-                EventID = 1,
-                EventDateID = new DateTime(2022, 01, 01),
-                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
-                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
-                Active = true
-            };
+        /// Description:
+        /// Test that trys to update and throws exception if Start Time is null
+        /// </summary>
+        //[TestMethod]
+        //[ExpectedException(typeof(ApplicationException))]
+        //public void TestUpdateEventThrowsExceptionIfStartTimeNull()
+        //{
+        //    // arrange
+        //    EventDate oldEventDate = new EventDate()
+        //    {
+        //        EventID = 1,
+        //        EventDateID = new DateTime(2022, 01, 01),
+        //        StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+        //        EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+        //        Active = true
+        //    };
 
-            EventDate newEventDate = new EventDate()
-            {
-                EventID = 1,
-                EventDateID = new DateTime(2022, 02, 01),
-                StartTime = new DateTime(2022, 01, 01, 9, 0, 0),
-                EndTime = null,
-                Active = false
-            };
+        //    EventDate newEventDate = new EventDate()
+        //    {
+        //        EventID = 1,
+        //        EventDateID = new DateTime(2022, 02, 01),
+        //        StartTime = null,
+        //        EndTime = new DateTime(2022, 01, 01, 21, 0, 0),
+        //        Active = false
+        //    };
 
-            // act
-            _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
+        //    // act
+        //    _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
 
-            // assert
-            // nothing to do, exception thrown
+        //    // assert
+        //    // nothing to do, exception thrown
 
-        }
+        //}
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        //// Update:
+        //// Jace Pettinger
+        //// Created: 2022/02/11
+        //// 
+        //// Description:
+        //// test cannot run because EndTime cannot be null. Throwing build errorr
+        /// Description:
+        /// Test that trys to update and throws exception if End Time is null
+        /// </summary>
+        //[TestMethod]
+        //[ExpectedException(typeof(ApplicationException))]
+        //public void TestUpdateEventThrowsExceptionIfEndTimeNull()
+        //{
+        //    // arrange
+        //    EventDate oldEventDate = new EventDate()
+        //    {
+        //        EventID = 1,
+        //        EventDateID = new DateTime(2022, 01, 01),
+        //        StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+        //        EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+        //        Active = true
+        //    };
+
+        //    EventDate newEventDate = new EventDate()
+        //    {
+        //        EventID = 1,
+        //        EventDateID = new DateTime(2022, 02, 01),
+        //        StartTime = new DateTime(2022, 01, 01, 9, 0, 0),
+        //        EndTime = null,
+        //        Active = false
+        //    };
+
+        //    // act
+        //    _eventDateManager.UpdateEventDate(oldEventDate, newEventDate);
+
+        //    // assert
+        //    // nothing to do, exception thrown
+
+        //}
 
         /// <summary>
         /// Jace Pettinger
