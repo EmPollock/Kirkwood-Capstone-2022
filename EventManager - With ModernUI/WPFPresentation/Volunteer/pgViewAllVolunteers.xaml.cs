@@ -49,7 +49,7 @@ namespace WPFPresentation
             // default accessor
             _volunteerManager = new VolunteerManager();
 
-            //InitializeComponent();
+            InitializeComponent();
         }
 
         /// <summary>
