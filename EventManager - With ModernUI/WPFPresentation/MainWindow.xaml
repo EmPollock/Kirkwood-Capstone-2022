@@ -172,7 +172,7 @@
             </Menu>
         </Grid>
 
-        <Frame x:Name="MainFrame" Grid.Row="2" Source="Event/pgEventCreate.xaml" Margin="5px" NavigationUIVisibility="Hidden" Navigated="MainFrame_Navigated" ></Frame>
+        <Frame x:Name="MainFrame" Grid.Row="2" Source="Event/pgCreateEvent.xaml" Margin="5px" NavigationUIVisibility="Hidden" Navigated="MainFrame_Navigated" ></Frame>
         <StatusBar Grid.Row="4">
             <StatusBarItem x:Name="staMessage" Content="Please log in to continue." Padding="20px, 0px"/>
         </StatusBar>
