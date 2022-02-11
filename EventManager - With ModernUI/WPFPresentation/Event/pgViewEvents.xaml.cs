@@ -87,7 +87,6 @@ namespace WPFPresentation
         /// </summary>
         private void datActiveEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Uri pageURI = new Uri("Event/pgEventEditDetail.xaml", UriKind.Relative);
             DataObjects.Event selectedEvent = (DataObjects.Event)datActiveEvents.SelectedItem;
             pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent);
             this.NavigationService.Navigate(viewEditPage);

@@ -31,7 +31,7 @@ namespace WPFPresentation
         
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
-        DataObjects.Event _event = null;
+        //DataObjects.Event _event = null;
 
         // priority values to populate cboPriority
         List<Priority> _priorities = new List<Priority>();
@@ -120,6 +120,7 @@ namespace WPFPresentation
                 EventID = eventID,
                 Name = taskName,
                 Description = taskDescription,
+                // cboAssign variable,
                 DueDate = taskDueDate,
                 Priority = priority
             };

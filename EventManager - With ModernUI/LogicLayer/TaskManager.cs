@@ -108,6 +108,66 @@ namespace LogicLayer
 
         /// <summary>
         /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// An update method that updates a task object in the task list
+        /// </summary>
+        /// <param name="oldTask"></param>
+        /// <param name="newTask"></param>
+        /// <returns></returns>
+        public bool EditTask(Tasks oldTask, Tasks newTask)
+        {
+            bool result = false;
+
+            if (newTask.Name == "" || newTask.Name == null)
+            {
+                throw new ApplicationException("Task name cannot be blank.");
+            }
+            if (newTask.Name.Length >= 50)
+            {
+                throw new ApplicationException("Task name cannot exceed 50 characters.");
+            }
+            if (newTask.Description == "" || newTask.Description == null)
+            {
+                throw new ApplicationException("Task description cannot be blank.");
+            }
+            if (newTask.Description.Length >= 255)
+            {
+                throw new ApplicationException("Task description cannot exceed 255 characters.");
+            }
+            if (newTask.DueDate == null)
+            {
+                throw new ApplicationException("Please set a due date for this task.");
+            }
+            if (newTask.DueDate == DateTime.Today.AddDays(-1))
+            {
+                throw new ApplicationException("Task due date cannot be set to the previous day.");
+            }
+            if (newTask.DueDate == DateTime.Today.AddHours(-1))
+            {
+                throw new ApplicationException("Task due date cannot be set to the previous hour.");
+            }
+            if (newTask.DueDate == DateTime.Today.AddMinutes(-1))
+            {
+                throw new ApplicationException("Task due date cannot be set to the previous minute.");
+            }
+
+            try
+            {
+                result = 1 == _taskAccessor.UpdateTasks(oldTask, newTask);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Mike Cahow
         /// Created: 2022/01/24
         /// 
         /// Description:
@@ -155,5 +215,6 @@ namespace LogicLayer
 
             return tasks;
         }
+
     }
 }

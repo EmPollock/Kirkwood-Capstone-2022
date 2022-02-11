@@ -30,6 +30,17 @@ namespace DataAccessInterfaces
 
         /// <summary>
         /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// An update method for a task in the database
+        /// </summary>
+        /// <param name="oldTask" name="newTask"></param>
+        /// <returns>int</returns>
+        int UpdateTasks(Tasks oldTask, Tasks newTask);
+
+        /// <summary>
+        /// Mike Cahow
         /// Created: 2022/01/23
         /// 
         /// Description:

@@ -65,6 +65,63 @@ namespace DataAccessLayer
 
         /// <summary>
         /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// A method for updating a task object in the database
+        /// </summary>
+        /// <param name="oldTask"></param>
+        /// <param name="newTask"></param>
+        /// <returns></returns>
+        public int UpdateTasks(Tasks oldTask, Tasks newTask)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_update_task";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+            cmd.Parameters["@EventID"].Value = newTask.EventID;
+            cmd.Parameters.Add("@TaskID", SqlDbType.Int);
+            cmd.Parameters["@TaskID"].Value = oldTask.TaskID;
+            cmd.Parameters.AddWithValue("@OldName", oldTask.Name);
+            cmd.Parameters.AddWithValue("OldDescription", oldTask.Description);
+            cmd.Parameters.AddWithValue("OldDueDate", oldTask.DueDate);
+            cmd.Parameters.AddWithValue("@OldPriority", oldTask.Priority);
+            cmd.Parameters.AddWithValue("OldActive", oldTask.Active);
+            cmd.Parameters.Add("@NewName", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@NewName"].Value = newTask.Name;
+            cmd.Parameters.Add("@NewDescription", SqlDbType.NVarChar, 255);
+            cmd.Parameters["@NewDescription"].Value = newTask.Description;
+            cmd.Parameters.Add("@NewDueDate", SqlDbType.DateTime);
+            cmd.Parameters["@NewDueDate"].Value = newTask.DueDate;
+            cmd.Parameters.Add("@NewPriority", SqlDbType.Int);
+            cmd.Parameters["@NewPriority"].Value = newTask.Priority;
+            cmd.Parameters.Add("@NewActive", SqlDbType.Bit);
+            cmd.Parameters["@NewActive"].Value = newTask.Active;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Mike Cahow
         /// Created: 2022/01/24
         /// 
         /// Description:
@@ -141,8 +198,9 @@ namespace DataAccessLayer
                             Name = reader.GetString(1),
                             Description = reader.GetString(2),
                             DueDate = reader.GetDateTime(3),
-                            TaskPriority = reader.GetString(4),
-                            TaskEventName = reader.GetString(5),
+                            Priority = reader.GetInt32(4),
+                            TaskPriority = reader.GetString(5),
+                            TaskEventName = reader.GetString(6),
                             Active = true
                         });
                     }
@@ -156,5 +214,6 @@ namespace DataAccessLayer
 
             return tasks;
         }
+
     }
 }

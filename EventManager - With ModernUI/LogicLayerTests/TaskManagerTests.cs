@@ -271,7 +271,7 @@ namespace LogicLayerTests
         public void TestRetrieveAllActiveTasksByEventIDReturnsCorrectNumberOfListItems()
         {
             // arrange
-            const int eventID = 100000;
+            const int eventID = 1000000;
             const int expectedCount = 3;
             int actualCount;
 
@@ -327,6 +327,317 @@ namespace LogicLayerTests
             // assert
             Assert.AreNotEqual(expectedCount, actualCount);
 
+        }
+
+        [TestMethod]
+        public void TestUpdateTaskReturnsTrueIfSuccessful()
+        {
+            // arrange
+            Tasks oldTask = new Tasks()
+            {
+                TaskID = 999997,
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            Tasks newTask = new Tasks()
+            {
+                TaskID = 999997,
+                Name = "Test",
+                Description = "Big test energy",
+                DueDate = DateTime.Today.AddDays(2),
+                Priority = 2,
+                Active = true
+            };
+            bool expectedResult = true;
+            bool actualResult;
+
+            // act
+            actualResult = taskManager.EditTask(oldTask, newTask);
+
+            // assert
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test that fails because Name holds an empty value
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateThrowsExceptionWithEmptyNameValue()
+        {
+            // arrange
+            TasksVM oldTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            TasksVM newTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            // act
+            taskManager.EditTask(oldTask, newTask);
+
+            // assert
+            // exception checking
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test that fails be cause the value of name has more than
+        /// 50 characters
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateThrowsExceptionIfNameHasMoreThan50Characters()
+        {
+            // arrange
+            TasksVM oldTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            TasksVM newTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Sweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            // act
+            taskManager.EditTask(oldTask, newTask);
+
+            // assert
+            // exception checking
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test that fails with an empty Description value
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateTaskThrowsExceptionWithEmptyDescriptionValue()
+        {
+            // arrange
+            TasksVM oldTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            TasksVM newTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "test",
+                Description = "",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            // act
+            taskManager.EditTask(oldTask, newTask);
+
+            // assert
+            // exception checking
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test that fails with a Description value that has more than
+        /// 250 characters
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateTaskThrowExceptionIfDescriptionHasMoreThan255Characters()
+        {
+            // arrange
+            TasksVM oldTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            TasksVM newTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "test",
+                Description = "Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong sweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeep ovvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvveeeeeeeeeeeeeer heeeeeere",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            // act
+            taskManager.EditTask(oldTask, newTask);
+
+            // assert
+            // exception checking
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test that fails because DueDate value is set to the previous day
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateTaskThrowsExceptionIfDueDateIsThePreviousDay()
+        {
+            // arrange
+            TasksVM oldTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            TasksVM newTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Test",
+                Description = "More test",
+                DueDate = DateTime.Today.AddDays(-1),
+                Priority = 2,
+                Active = true
+            };
+
+            // act
+            taskManager.EditTask(oldTask, newTask);
+
+            // assert
+            // exception checking
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test that fails because DueDate value is set to the previous hour
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateTaskThrowsExceptionIfDueDateIsThePreviousHour()
+        {
+            // arrange
+            TasksVM oldTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            TasksVM newTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Test",
+                Description = "More test",
+                DueDate = DateTime.Today.AddHours(-1),
+                Priority = 2,
+                Active = true
+            };
+
+            // act
+            taskManager.EditTask(oldTask, newTask);
+
+            // assert
+            // exception checking
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Test that fails because DueDate value is set to the previous minute
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateTaskThrowsExceptionIfDueDateIsPreviousMinute()
+        {
+            // arrange
+            TasksVM oldTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Sweep",
+                Description = "Sweep broken glass",
+                DueDate = DateTime.Now,
+                Priority = 3,
+                Active = true
+            };
+
+            TasksVM newTask = new TasksVM()
+            {
+                TaskID = 999997,
+                Name = "Test",
+                Description = "More test",
+                DueDate = DateTime.Today.AddMinutes(-1),
+                Priority = 2,
+                Active = false
+            };
+
+            // act
+            taskManager.EditTask(oldTask, newTask);
+
+            // assert
+            // exception checking
         }
 
     }

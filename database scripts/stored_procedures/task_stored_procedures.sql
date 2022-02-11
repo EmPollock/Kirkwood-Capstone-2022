@@ -99,7 +99,7 @@ AS
 	BEGIN
 	
 		SELECT	[TaskID], [Name], [Task].[Description], [DueDate],
-				[Priority].[Description], [Event].[EventName]
+				[Task].[Priority], [Priority].[Description], [Event].[EventName]
 		FROM	[dbo].[Task] JOIN [dbo].[Priority]
 					ON [Task].[Priority] = [Priority].[PriorityID]
 				JOIN [dbo].[Event]
@@ -240,39 +240,6 @@ AS
 		
 	END
 GO
-		
-/***************************************************************
-/ Mike Cahow
-/ Created: 2022/01/22
-/ 
-/ Description: Creating Stored Procedure for updating a tasks 
-/				priority 
-/
-***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
-/
-/ Description: 
-****************************************************************/
-
-print '' print '*** creating sp_update_task_priority_by_taskID...'
-GO
-CREATE PROCEDURE [dbo].[sp_update_task_priority_by_taskID]
-(
-	@TaskID			[int],
-	@OldPriority	[int],
-	@NewPriority	[int]
-)
-AS
-	BEGIN
-	
-		UPDATE	[Task]
-		SET		[Priority] = @NewPriority
-		WHERE	[TaskID] = @TaskID
-		 AND	[Priority] = @OldPriority
-	
-	END
-GO
 
 /***************************************************************
 / Mike Cahow
@@ -308,6 +275,56 @@ AS
 				(@Name, @Description, @DueDate,
 					@Priority, @EventID)
 	
+	END
+GO
+
+/***************************************************************
+/ Mike Cahow
+/ Created: 2022/02/07
+/ 
+/ Description: Creating Stored Procedure for updating tasks
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print'*** creating sp_update_task'
+GO
+CREATE PROCEDURE [dbo].[sp_update_task]
+(
+	@EventID		[int],
+	@TaskID			[int],
+	@OldName		[nvarchar](50),
+	@OldDescription	[nvarchar](255),
+	@OldDueDate		[DateTime],
+	@OldPriority	[int],
+	@OldActive		[bit],
+	@NewName		[nvarchar](50),
+	@NewDescription	[nvarchar](255),
+	@NewDueDate		[DateTime],
+	@NewPriority	[int],
+	@NewActive		[bit]
+)
+AS
+	BEGIN
+		
+		UPDATE	[Task]
+		SET		[Name] 			= @NewName,
+				[Description]	= @NewDescription,
+				[DueDate]		= @NewDueDate,
+				[Priority]		= @NewPriority,
+				[Active]		= @NewActive
+		WHERE	[EventID]		= @EventID
+		 AND	[TaskID]		= @TaskID
+		 AND	[Name] 			= @OldName
+		 AND	[Description]	= @OldDescription
+		 AND	[DueDate]		= @OldDueDate
+		 AND	[Priority]		= @OldPriority
+		 AND	[Active]		= @OldActive
+		 
 	END
 GO
 
