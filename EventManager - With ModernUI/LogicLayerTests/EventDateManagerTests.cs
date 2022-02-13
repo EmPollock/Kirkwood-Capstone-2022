@@ -408,5 +408,27 @@ namespace LogicLayerTests
             // nothing to do, exception thrown
 
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/10
+        /// 
+        /// Description:
+        /// Test that retrieves event dates by locationID and tests the count retrieved
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventDatesByLocationIDReturnsCorrectAmount()
+        {
+            // arrange
+            const int locationID = 100000;
+            const int expectedCount = 3;
+            int actualCount;
+
+            // act
+            actualCount = _eventDateManager.RetrieveEventDatesByLocationID(locationID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
     }
 }

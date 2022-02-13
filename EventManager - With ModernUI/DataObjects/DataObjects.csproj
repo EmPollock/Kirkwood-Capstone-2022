@@ -49,6 +49,7 @@
     <Compile Include="EventDate.cs" />
     <Compile Include="IntegerValidationHelpers.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="LocationAvailability.cs" />
     <Compile Include="LocationImage.cs" />
     <Compile Include="LocationReview.cs" />
     <Compile Include="Priority.cs" />

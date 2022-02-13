@@ -29,9 +29,13 @@ namespace WPFPresentation
     public partial class pgViewLocationDetails : Page
     {
         ILocationManager _locationManager;
+        IEventDateManager _eventDateManager;
         DataObjects.Location _location;
+        int _locationID;
         List<LocationReview> _locationReviews;
         List<LocationImage> _locationImages;
+        List<EventDateVM> _eventDatesForLocation;
+
         Uri _src;
         int _imageNumber = 0;
 
@@ -42,21 +46,21 @@ namespace WPFPresentation
         /// Description:
         /// The custom constructor for the ViewAllVolunteersPage
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
+        /// <param name="locationID"></param>
+        /// <param name="locationManager"></param>
         public pgViewLocationDetails(int locationID, ILocationManager locationManager)
         {
             // use fake accessor
             //_locationManager = new LocationManager(new LocationAccessorFake());
+            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
 
             // use default accessor
             //_locationManager = new LocationManager();
+            _eventDateManager = new EventDateManager();
 
             _locationManager = locationManager;
 
+            _locationID = locationID;
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
             _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
@@ -67,19 +71,19 @@ namespace WPFPresentation
 
         /// <summary>
         /// Austin Timmerman
-        /// Created: 2022/02/03
+        /// Created: 2022/02/09
         /// 
         /// Description:
-        /// The page loaded event handler that populates the controls on the page with the 
-        /// location passed to the page
+        /// The helper method that fills the text boxes, text blocks, images, and reviews for the
+        /// Location Details page
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private void loadLocationDetails()
         {
+            hideDetails();
+            btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
+            scrLocationDetails.Visibility = Visibility.Visible;
+
+            //scrLocationDetails.Visibility = Visibility.Visible;
             txtLocationName.Text = _location.Name;
             txtAboutLocationName.Text = "About " + _location.Name + ":";
             txtBoxAboutLocation.Text = _location.Description;
@@ -88,7 +92,8 @@ namespace WPFPresentation
             txtAddressOne.Text = _location.Address1;
             txtAddressTwo.Text = _location.Address2;
             txtBoxPricing.Text = _location.PricingInfo;
-
+            txtBoxReviews.Text = "";
+            txtBoxReviewsSecond.Text = "";
 
             if (_locationReviews.Count == 0)
             {
@@ -299,7 +304,57 @@ namespace WPFPresentation
                 btnBack.Visibility = Visibility.Collapsed;
                 return;
             }
-            
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// The helper method that loads the specific location's schedule
+        /// </summary>
+        private void loadLocationSchedule()
+        {
+            hideDetails();
+            btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
+            scrLocationSchedule.Visibility = Visibility.Visible;
+
+            txtLocationNamesSchedule.Text = _location.Name + "'s Schedule";
+
+
+            _eventDatesForLocation = _eventDateManager.RetrieveEventDatesByLocationID(_locationID);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// The helper method that hides all details when switching to a different detail page
+        /// </summary>
+        private void hideDetails()
+        {
+            scrLocationDetails.Visibility = Visibility.Collapsed;
+            scrLocationSchedule.Visibility = Visibility.Collapsed;
+
+            btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// The page loaded event handler that populates the controls on the page with the 
+        /// location passed to the page
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            loadLocationDetails();
+
         }
 
         /// <summary>
@@ -310,11 +365,8 @@ namespace WPFPresentation
         /// When the next button is clicked the next image for locations is loaded. If its at the end
         /// of the list, goes back to the beginning
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
             _imageNumber++;
@@ -331,7 +383,7 @@ namespace WPFPresentation
                 {
                     return;
                 }
-                
+
             }
             else
             {
@@ -345,7 +397,7 @@ namespace WPFPresentation
                 {
                     return;
                 }
-                
+
             }
         }
 
@@ -357,11 +409,8 @@ namespace WPFPresentation
         /// When the back button is clicked the previous image for locations is loaded. If its past the beginning
         /// of the list, goes to the end
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             _imageNumber--;
@@ -378,7 +427,7 @@ namespace WPFPresentation
                 {
                     return;
                 }
-                
+
             }
             else
             {
@@ -392,8 +441,78 @@ namespace WPFPresentation
                 {
                     return;
                 }
-                
+
             }
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// When the "Site Details" button is clicked, the location's details will populate the screen
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnSiteDetails_Click(object sender, RoutedEventArgs e)
+        {
+            loadLocationDetails();
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// When the "Site Schedule" button is clicked, the location's schedule will populate the screen
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnSiteSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            loadLocationSchedule();
+
+            //datLocationSchedule.ItemsSource = _locationManager.RetrieveLocationAvailability(_locationID);
+            //calLocationCalendar.BlackoutDates.Add(new CalendarDateRange(new DateTime(2022, 2, 10), new DateTime(2009, 2, 10)));
+            //List<LocationAvailability> locationAvailabilities = new List<LocationAvailability>();
+            //locationAvailabilities = _locationManager.RetrieveLocationAvailability(_locationID);
+            //foreach(LocationAvailability availability in locationAvailabilities)
+            //{
+            //    availableDates.Add(availability.AvailableDay);
+            //}
+
+            //foreach(DateTime d in availableDates)
+            //{
+
+            //}
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// When the user selects a date on the calendar, the data grid below will shows the location's
+        /// schedule (events planned for that day).
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void calLocationCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<EventDateVM> eventDatesForDataGrid = new List<EventDateVM>();
+
+            foreach (EventDateVM eventDate in _eventDatesForLocation)
+            {
+                if (eventDate.EventDateID == calLocationCalendar.SelectedDate)
+                {
+                    eventDatesForDataGrid.Add(eventDate);
+                }
+            }
+
+            datLocationSchedule.ItemsSource = eventDatesForDataGrid;
+            DateTime date = (DateTime)calLocationCalendar.SelectedDate;
+
+            lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
         }
     }
 }

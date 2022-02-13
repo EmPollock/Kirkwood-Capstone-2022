@@ -13,6 +13,7 @@ namespace DataAccessFakes
         private List<Location> _fakeLocations = new List<Location>();
         private List<LocationReview> _fakeLocationReviews = new List<LocationReview>();
         private List<LocationImage> _fakeLocationImages = new List<LocationImage>();
+        private List<LocationAvailability> _fakeLocationAvailability = new List<LocationAvailability>();
 
         /// <summary>
         /// Kris Howell
@@ -159,6 +160,78 @@ namespace DataAccessFakes
                 LocationID = 100000,
                 ImageName = "7263a839-3428-49f2-b26f-875d3811ef85.jpg"
             });
+
+            _fakeLocationAvailability.Add(new LocationAvailability()
+            {
+                AvailabilityID = 100000,
+                LocationID = 100000,
+                AvailableDay = new DateTime(2022, 02, 09),
+                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
+                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+            });
+
+            _fakeLocationAvailability.Add(new LocationAvailability()
+            {
+                AvailabilityID = 100000,
+                LocationID = 100000,
+                AvailableDay = new DateTime(2022, 02, 10),
+                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
+                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+            });
+
+            _fakeLocationAvailability.Add(new LocationAvailability()
+            {
+                AvailabilityID = 100000,
+                LocationID = 100000,
+                AvailableDay = new DateTime(2022, 02, 11),
+                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
+                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+            });
+
+            _fakeLocationAvailability.Add(new LocationAvailability()
+            {
+                AvailabilityID = 100000,
+                LocationID = 100000,
+                AvailableDay = new DateTime(2022, 02, 12),
+                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
+                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+            });
+
+            _fakeLocationAvailability.Add(new LocationAvailability()
+            {
+                AvailabilityID = 100000,
+                LocationID = 100000,
+                AvailableDay = new DateTime(2022, 02, 13),
+                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
+                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+            });
+
+            _fakeLocationAvailability.Add(new LocationAvailability()
+            {
+                AvailabilityID = 100000,
+                LocationID = 100000,
+                AvailableDay = new DateTime(2022, 02, 14),
+                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
+                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+            });
+
+            _fakeLocationAvailability.Add(new LocationAvailability()
+            {
+                AvailabilityID = 100000,
+                LocationID = 100000,
+                AvailableDay = new DateTime(2022, 02, 20),
+                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
+                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+            });
+
+            _fakeLocationAvailability.Add(new LocationAvailability()
+            {
+                AvailabilityID = 100000,
+                LocationID = 100000,
+                AvailableDay = new DateTime(2022, 02, 23),
+                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
+                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+            });
         }
 
         /// <summary>
@@ -192,11 +265,6 @@ namespace DataAccessFakes
         /// Description:
         /// The method that selects a location by its LocationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A Location object that matches the provided locationID or a null location if not there</returns>
         public Location SelectLocationByLocationID(int locationID)
@@ -221,11 +289,6 @@ namespace DataAccessFakes
         /// Description:
         /// The method that selects a location images by its LocationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A list of LocationImage object that matches the provided locationID or a null location if not there</returns>
         public List<LocationImage> SelectLocationImagesByLocationID(int locationID)
@@ -250,11 +313,6 @@ namespace DataAccessFakes
         /// Description:
         /// The method that selects a location reviews by its LocationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A list of location review objects</returns>
         public List<LocationReview> SelectLocationReviews(int locationID)
@@ -330,6 +388,30 @@ namespace DataAccessFakes
             }
             return _eventLocation;
 
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// The method that selects a location availability by its LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of location availability objects</returns>
+        public List<LocationAvailability> SelectLocationAvailability(int locationID)
+        {
+            List<LocationAvailability> locationAvailabilities = new List<LocationAvailability>();
+
+            foreach (LocationAvailability fakeLocationAvailability in _fakeLocationAvailability)
+            {
+                if (fakeLocationAvailability.LocationID == locationID)
+                {
+                    locationAvailabilities.Add(fakeLocationAvailability);
+                }
+            }
+
+            return locationAvailabilities;
         }
     }
 }

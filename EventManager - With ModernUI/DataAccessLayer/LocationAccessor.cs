@@ -7,6 +7,7 @@ using DataObjects;
 using DataAccessInterfaces;
 using System.Data.SqlClient;
 using System.Data;
+using System.Globalization;
 
 namespace DataAccessLayer
 {
@@ -86,11 +87,6 @@ namespace DataAccessLayer
         /// Accessor method that that selects the location matching the locationID provided and returns a location 
         /// data object. Will be null if no location is found
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A Location object</returns>
         public Location SelectLocationByLocationID(int locationID)
@@ -153,11 +149,6 @@ namespace DataAccessLayer
         /// Accessor method that that selects the location images matching the locationID provided and returns a list of location image
         /// data objects. Will be null if no location images are found
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A List of LocationImage objects</returns>
         public List<LocationImage> SelectLocationImagesByLocationID(int locationID)
@@ -208,11 +199,6 @@ namespace DataAccessLayer
         /// Accessor method that that selects the location reviews matching the locationID provided and returns a list of location review
         /// data objects. Will be null if no location reviews are found
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A List of LocationReview objects</returns>
         public List<LocationReview> SelectLocationReviews(int locationID)
@@ -362,6 +348,59 @@ namespace DataAccessLayer
                 conn.Close();
             }
             return _matchingLocation;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/10
+        /// 
+        /// Description:
+        /// Accessor method that that selects the location availability matching the locationID provided and returns a location 
+        /// availability data object. Will be null if no location is found
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A Location object</returns>
+        public List<LocationAvailability> SelectLocationAvailability(int locationID)
+        {
+            List<LocationAvailability> locationAvailabilities = new List<LocationAvailability>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_location_availability";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters["@LocationID"].Value = locationID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        locationAvailabilities.Add(new LocationAvailability()
+                        {
+                            AvailabilityID = reader.GetInt32(0),
+                            LocationID = reader.GetInt32(1),
+                            AvailableDay = reader.GetDateTime(2),
+                            AvailableTimeStart = DateTime.ParseExact(reader["AvailableTimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            AvailableTimeEnd = DateTime.ParseExact(reader["AvailableTimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return locationAvailabilities;
         }
     }
 }

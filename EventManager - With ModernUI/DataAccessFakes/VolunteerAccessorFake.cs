@@ -26,11 +26,6 @@ namespace DataAccessFakes
         /// Description:
         /// The volunteer accessor fakes for fake volunteers
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         public VolunteerAccessorFake()
         {
 
@@ -89,12 +84,6 @@ namespace DataAccessFakes
         /// Description:
         /// The accessor fake to select all volunteer reviews
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
-        /// <exception cref="Exception">Selection fails</exception>
         /// <returns>A list of volunteer data object shells for the volunteer ID and rating</returns>
         public List<Volunteer> SelectAllVolunteerReviews()
         {
@@ -120,12 +109,6 @@ namespace DataAccessFakes
         /// Description:
         /// The accessor fake to select all volunteers
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
-        /// <exception cref="Exception">Selection fails</exception>
         /// <returns>A list of volunteer data objects</returns>
 
         public List<Volunteer> SelectAllVolunteers()

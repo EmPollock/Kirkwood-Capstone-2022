@@ -238,5 +238,62 @@ namespace DataAccessLayer
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/10
+        /// 
+        /// Description:
+        /// Accessor method for selecting event dates by LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
+        public List<EventDateVM> SelectEventDatesByLocationID(int locationID)
+        {
+            List<EventDateVM> eventDatesForLocation = new List<EventDateVM>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_event_dates_by_location_id";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+
+            cmd.Parameters["@LocationID"].Value = locationID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventDatesForLocation.Add(new EventDateVM()
+                        {
+                            LocationID = locationID,
+                            EventDateID = DateTime.Parse(reader["EventDateID"].ToString()),
+                            EventID = reader.GetInt32(1),
+                            EventName = reader.GetString(2),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            Active = true
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return eventDatesForLocation;
+        }
     }
 }

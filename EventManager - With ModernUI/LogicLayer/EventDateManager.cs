@@ -153,5 +153,31 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/10
+        /// 
+        /// Description:
+        /// Method for selecting event dates by LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
+        public List<EventDateVM> RetrieveEventDatesByLocationID(int locationID)
+        {
+            List<EventDateVM> eventDatesForLocation = new List<EventDateVM>();
+
+            try
+            {
+                eventDatesForLocation = _eventDateAccessor.SelectEventDatesByLocationID(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return eventDatesForLocation;
+        }
+
     }
 }

@@ -166,3 +166,37 @@ AS
 		RETURN @@ROWCOUNT
 	END
 GO
+
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/02/10
+
+Description:
+Stored procedure to select the event dates associated with a 
+locationID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_event_dates_by_location_id'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_dates_by_location_id](
+	@LocationID			[int] 
+)
+AS
+	BEGIN
+		SELECT 
+			[EventDateID],
+			[Event].[EventID],
+			[EventName],
+			[StartTime],
+			[EndTime]
+		FROM [dbo].[EventDate]
+		JOIN [Event] ON [EventDate].[EventID] = [Event].[EventID]
+		WHERE [Event].[Active] = 1
+		AND   [LocationID] = @LocationID
+	END	
+GO

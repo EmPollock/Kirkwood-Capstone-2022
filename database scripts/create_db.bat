@@ -18,6 +18,7 @@ sqlcmd -S localhost -E -i tables/user_role.sql
 sqlcmd -S localhost -E -i tables/user_event.sql
 sqlcmd -S localhost -E -i tables/location_image.sql
 sqlcmd -S localhost -E -i tables/review.sql
+sqlcmd -S localhost -E -i tables/availability.sql
 
 sqlcmd -S localhost -E -i stored_procedures/event_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/event_date_stored_procedures.sql
@@ -32,6 +33,7 @@ sqlcmd -S localhost -E -i stored_procedures/activity_result_stored_procedures.sq
 sqlcmd -S localhost -E -i stored_procedures/volunteer_request_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/location_image_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/review_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/availability_stored_procedures.sql
 
 rem list depenecies after this line:
 rem task.sql requires event.sql
@@ -67,9 +69,9 @@ REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 ::  volunteers.sql
 ::
 :: ************************
-:: FILES WHICH REQUIRE:  
-:: 
-:: 
+:: FILES WHICH REQUIRE:  location.sql
+::  availability.sql
+::  
 :: 
 :: ************************
 

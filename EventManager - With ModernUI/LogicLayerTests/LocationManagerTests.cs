@@ -50,11 +50,6 @@ namespace LogicLayerTests
         /// Description:
         /// Test that returns the location that matches the provided LocationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         [TestMethod]
         public void TestRetrieveLocationByLocationIDReturnsCorrectLocation()
         {
@@ -88,11 +83,6 @@ namespace LogicLayerTests
         /// Description:
         /// Test that returns the count of location reviews that match the provided LocationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         [TestMethod]
         public void TestRetrieveLocationReviewsReturnsCorrectAmount()
         {
@@ -112,11 +102,6 @@ namespace LogicLayerTests
         /// Description:
         /// Test that returns the count of location images that match the provided locationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         [TestMethod]
         public void TestRetrieveLocationImagesReturnsCorrectAmount()
         {
@@ -267,6 +252,25 @@ namespace LogicLayerTests
             //assert
             Assert.AreEqual(expected, actual);
 
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/09
+        /// 
+        /// Description:
+        /// Test that returns the count of location availability that match the provided locationID
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveLocationAvailabilityReturnsCorrectAmount()
+        {
+            int locationID = 100000;
+            int expectedCount = 8;
+            int actualCount;
+
+            actualCount = _locationManager.RetrieveLocationAvailability(locationID).Count;
+
+            Assert.AreEqual(expectedCount, actualCount);
         }
     }
 }
