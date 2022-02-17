@@ -43,6 +43,9 @@ rem activity_result.sql requires activity.sql
 rem supplier.sql requires user.sql
 rem location.sql requires user.sql
 rem event.sql requires location.sql
+rem supplier_image.sql requires supplier.sql
+rem tags.sql requires supplier.sql
+rem review.sql requires supplier.sql and location.sql
 
 
 ECHO .

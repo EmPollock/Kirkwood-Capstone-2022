@@ -82,7 +82,7 @@ namespace DataAccessLayer
             List<string> result = new List<string>();
 
             var conn = DBConnection.GetConnection();
-            var cmdText = "sp_select_supplier_tags";
+            var cmdText = "sp_select_supplier_images";
 
             var cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -186,7 +186,7 @@ namespace DataAccessLayer
             List<string> result = new List<string>();
 
             var conn = DBConnection.GetConnection();
-            var cmdText = "sp_select_supplier_images";
+            var cmdText = "sp_select_supplier_tags";
 
             var cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;

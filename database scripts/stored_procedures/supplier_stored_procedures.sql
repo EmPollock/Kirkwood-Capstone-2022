@@ -77,8 +77,8 @@ CREATE PROCEDURE [dbo].[sp_select_supplier_images]
 AS
 	BEGIN
 		SELECT 
-			[TagID]
-		FROM [dbo].[SupplierTag]
+			[ImageName]
+		FROM [dbo].[SupplierImage]
 		WHERE [SupplierID] = @SupplierID	
 	END	
 GO

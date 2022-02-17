@@ -52,7 +52,7 @@
                     <Path x:Name="pathFavorite" Stroke="#808080" Fill="#C0C0C0" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M 0,0 l 10,0 l 5,-10 l 5,10 l 10,0 l -7,10 l 2,10 l -10,-5 l -10,5 l 2,-10 Z" />
                 </Canvas>
             </Canvas>
-            <Button x:Name="btnFavorite" Grid.Column="2" HorizontalAlignment="Right" Width="40" Height="40" Margin="5"/>
+            <Button x:Name="btnFavorite" Grid.Column="2" HorizontalAlignment="Right" Background="#00000000" Height="40px" Width="40px" Grid.RowSpan="2" Margin="0 1 5 0" VerticalAlignment="Top"/>
             
             <Label Grid.Row="1" Grid.Column="1" Content="Type:" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" />
             <Label Grid.Row="2" Grid.Column="1" x:Name="lblType" Content="Vendor/supplier" VerticalAlignment="Top" Margin="5px"/>
