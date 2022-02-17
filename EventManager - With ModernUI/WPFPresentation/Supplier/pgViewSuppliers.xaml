@@ -12,6 +12,6 @@
             <ColumnDefinition Width="300"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="datSuppliersList" SelectionMode="Single" IsReadOnly="True" Grid.Column="1"/>
+        <DataGrid x:Name="datSuppliersList" SelectionMode="Single" IsReadOnly="True" Grid.Column="1" MouseDoubleClick="datSuppliersList_MouseDoubleClick"/>
     </Grid>
 </Page>

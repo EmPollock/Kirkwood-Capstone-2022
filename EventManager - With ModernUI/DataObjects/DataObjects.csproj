@@ -51,7 +51,7 @@
     <Compile Include="Location.cs" />
     <Compile Include="LocationAvailability.cs" />
     <Compile Include="LocationImage.cs" />
-    <Compile Include="LocationReview.cs" />
+    <Compile Include="Reviews.cs" />
     <Compile Include="Priority.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringValidationHelpers.cs" />

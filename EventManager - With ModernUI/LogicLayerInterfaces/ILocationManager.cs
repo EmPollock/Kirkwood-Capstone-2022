@@ -52,7 +52,7 @@ namespace LogicLayerInterfaces
         Location RetrieveLocationByNameAndAddress(string locationName, string address);
         List<Location> RetrieveActiveLocations();
         Location RetrieveLocationByLocationID(int locationID);
-        List<LocationReview> RetrieveLocationReviews(int locationID);
+        List<Reviews> RetrieveLocationReviews(int locationID);
         List<LocationImage> RetrieveLocationImagesByLocationID(int locationID);
         List<LocationAvailability> RetrieveLocationAvailability(int locationID);
 

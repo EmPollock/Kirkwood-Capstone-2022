@@ -49,3 +49,38 @@ AS
         WHERE [LocationID] = @LocationID
 	END	
 GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/02/11
+
+Description:
+Stored procedure to select all the reviews associated with a supplier
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_supplier_reviews'
+GO
+CREATE PROCEDURE [dbo].[sp_select_supplier_reviews]
+(
+    @SupplierID     [int]
+)
+AS
+	BEGIN
+		SELECT 
+			[SupplierReview].[ReviewID],
+            CONCAT([GivenName], ' ', [FamilyName]),
+            [ReviewType],
+            [Rating],
+            [Review],
+            [Review].[DateCreated],
+            [Review].[Active]
+		FROM [SupplierReview]
+        JOIN [Review] ON [SupplierReview].[ReviewID] = [Review].[ReviewID]
+		JOIN [Users] ON [Users].[UserID] = [Review].[UserID]
+        WHERE [SupplierID] = @SupplierID
+	END	
+GO

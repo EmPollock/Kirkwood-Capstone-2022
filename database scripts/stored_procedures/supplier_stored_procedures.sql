@@ -36,3 +36,49 @@ AS
 		WHERE [Active] = 1	
 	END	
 GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/02/11
+
+Description:
+Stored procedure to select a supplier's tags 
+from the suppliers table
+****************************************************************/
+print '' print '*** creating sp_select_supplier_tags ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_supplier_tags]
+(
+    @SupplierID     [int]
+)
+AS
+	BEGIN
+		SELECT 
+			[TagID]
+		FROM [dbo].[SupplierTag]
+		WHERE [SupplierID] = @SupplierID	
+	END	
+GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/02/11
+
+Description:
+Stored procedure to select a supplier's images 
+from the suppliers table
+****************************************************************/
+print '' print '*** creating sp_select_supplier_images ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_supplier_images]
+(
+    @SupplierID     [int]
+)
+AS
+	BEGIN
+		SELECT 
+			[ImageName]
+		FROM [dbo].[SupplierImage]
+		WHERE [SupplierID] = @SupplierID	
+	END	
+GO
