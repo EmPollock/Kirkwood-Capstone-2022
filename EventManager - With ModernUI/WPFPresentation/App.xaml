@@ -17,7 +17,7 @@
                             <ResourceDictionary.MergedDictionaries>
                                 <ui:ColorPaletteResources
                                     TargetTheme="Light"
-                                    Accent="#7DA2A9"
+                                    Accent="#FF4388CC"
                                     AltHigh="#F7F7F7" />
                             </ResourceDictionary.MergedDictionaries>
                         </ResourceDictionary>
