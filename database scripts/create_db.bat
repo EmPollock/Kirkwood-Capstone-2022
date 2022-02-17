@@ -47,6 +47,7 @@ REM tables/event_date.sql depends on tables/event.sql
 REM tables/user_role depends on tables/user.sql, tables/role.sql
 REM tables/user_event depends on tables/user.sql, tables/event.sql, and tables/role.sql
 REM tables/volunteers.sql depends on tables/role.sql
+REM tables/volunteer_request depends on tables/task.sql, tables/volunteer.sql
 
 REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 :: ************************

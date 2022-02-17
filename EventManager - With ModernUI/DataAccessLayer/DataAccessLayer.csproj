@@ -46,6 +46,7 @@
     <Compile Include="DBConnection.cs" />
     <Compile Include="EventAccessor.cs" />
     <Compile Include="EventDateAccessor.cs" />
+    <Compile Include="HelperMethods.cs" />
     <Compile Include="LocationAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SublocationAccessor.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="TaskAccessor.cs" />
     <Compile Include="UserAccessor.cs" />
     <Compile Include="VolunteerAccessor.cs" />
+    <Compile Include="VolunteerRequestAccessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessInterfaces\DataAccessInterfaces.csproj">

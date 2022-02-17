@@ -5,10 +5,10 @@ Created: 2022/01/26
 Description:
 The Volunteer Requests Table
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Vinayak Deshpande
+Updated: 2022/02/16
 
-Description: 
+Description: Changed EventID to TaskID
 ****************************************************************/
 
 Use [tadpole_db]
@@ -19,13 +19,13 @@ GO
 Create Table [dbo].[VolunteerRequests] {
 	[RequestID]					[int] Identity(100000, 1)	Not Null	
 	, [VolunteerID]				[int]						Not Null
-	, [EventID]					[int]						Not Null	
+	, [TaskID]					[int]						Not Null	
 	, [VolunteerResponse]		[bit]
 	, [EventResponse]			[bit]
 	
 	Constraint [pk_RequestID] Primary Key([RequestID])
 	, Constraint [fk_Request_VolunteerID] Foreign Key([VolunteerID]) References [dbo].[Volunteer]([VolunteerID])
-	, Constraint [fk_Request_EventID] Foreign Key([EventID]) References [dbo].[Event]([EventID])
+	, Constraint [fk_Request_TaskID] Foreign Key([TaskID]) References [dbo].[Event]([TaskID])
 
 }
 GO
@@ -46,7 +46,7 @@ Description:
 print '' print '*** adding test data for Volunteer Requests Table ***'
 GO
 Insert Into [dbo].[VolunteerRequests] {
-	[VolunteerID], [EventID], [VolunteerResponse], [EventResponse]}
+	[VolunteerID], [TaskID], [VolunteerResponse], [EventResponse]}
 	Values
 		(100001, 100000, 1, 1),
 		(100002, 100001, 1, 1),

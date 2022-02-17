@@ -32,6 +32,7 @@ namespace WPFPresentation.Event
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
         EventDate _selectedEventDate = null;
+        IVolunteerRequestManager _volunteerRequestManager = null;
 
         /// <summary>
         /// Jace Pettinger
@@ -46,11 +47,12 @@ namespace WPFPresentation.Event
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
             //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
+            _volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
 
             // use default accessor
             _eventManager = new LogicLayer.EventManager();
             _eventDateManager = new EventDateManager();
-
+            //_volunteerRequestManager = new VolunteerRequestManager();
             _event = selectedEvent;
 
             InitializeComponent();
@@ -721,6 +723,54 @@ namespace WPFPresentation.Event
 
             //focus on first item to set
             datePickerEventDate.Focus();
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// 2022/02/16
+        /// Logic for viewing requests for currently selected event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tabEventVolunteerRequests_Loaded(object sender, RoutedEventArgs e)
+        {
+            setEventVolunteerRequestTabList();
+        }
+
+        private void setEventVolunteerRequestTabList()
+        {
+            int eventID = _event.EventID;
+
+            try
+            {
+                List<VolunteerRequest> _requests = _volunteerRequestManager.GetVolunteerRequests(eventID);
+                dgRequestList.ItemsSource = _requests;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// 2022/02/16
+        /// To be added logic for accepting and rejecting requests.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAcceptRequest_Click(object sender, RoutedEventArgs e)
+        {
+            VolunteerRequest currRequest = (VolunteerRequest)dgRequestList.SelectedItem;
+            // logic required to accept DNE
+
+        }
+
+        private void btnRejectRequest_Click(object sender, RoutedEventArgs e)
+        {
+            VolunteerRequest currRequest = (VolunteerRequest)dgRequestList.SelectedItem;
+            // Logic required to reject DNE
         }
     }
 }

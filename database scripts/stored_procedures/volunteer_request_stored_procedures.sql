@@ -14,9 +14,9 @@ Updated: yyyy/mm/dd
 Description: 
 ****************************************************************/
 
-print '' print '*** creating sp_select_all_requests_for_event_by_eventID ***'
+print '' print '*** creating sp_select_all_requests_by_eventID ***'
 GO
-Create PROCEDURE [dbo].[sp_select_all_requests_for_event_by_eventID]
+Create PROCEDURE [dbo].[sp_select_all_requests_by_eventID]
 {
 	@EventID int
 }
@@ -25,11 +25,13 @@ AS
 		SELECT 
 			[RequestID],
 			[VolunteerID],
-			[EventID],
+			[TaskID],
 			[VolunteerResponse],
 			[EventResponse]
-		From [dbo].[VolunteerRequests]
-		Where [EventID] = @EventID
+		From [dbo].[VolunteerRequest]
+		Join [dbo].[Task]
+		ON [VolunteerRequest].[TaskID] = [Task].[TaskID]
+		Where [Task].[EventID] = @EventID
 		Order By [RequestID] ASC
 	END
 GO
