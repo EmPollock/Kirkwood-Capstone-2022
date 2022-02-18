@@ -166,13 +166,13 @@
             <Button x:Name="btnNotification" Margin="10px" Height="60px" Width="60px" Grid.Column="11" Background="#0000" />
 
             <Menu Grid.Column="12" HorizontalAlignment="Center" >
-                <MenuItem x:Name="mnuUser" Header="TestUser ▼">
+                <MenuItem x:Name="mnuUser" Header="Test User ▼">
                     <MenuItem x:Name="mnuLogOut" Header="Log Out" Click="mnuLogOut_Click" />
                 </MenuItem>
             </Menu>
         </Grid>
 
-        <Frame x:Name="MainFrame" Grid.Row="2" Source="Event/pgCreateEvent.xaml" Margin="5px" NavigationUIVisibility="Hidden" Navigated="MainFrame_Navigated" ></Frame>
+        <Frame x:Name="MainFrame" Grid.Row="2" Source="Event/pgViewEvents.xaml" Margin="5px" NavigationUIVisibility="Hidden" Navigated="MainFrame_Navigated" ></Frame>
         <StatusBar Grid.Row="4">
             <StatusBarItem x:Name="staMessage" Content="Please log in to continue." Padding="20px, 0px"/>
         </StatusBar>

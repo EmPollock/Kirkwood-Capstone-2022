@@ -27,6 +27,9 @@ namespace WPFPresentation
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
+        DataObjects.Event newEvent = null;
+
+        User _user = null;
 
 
         /// <summary>
@@ -40,8 +43,14 @@ namespace WPFPresentation
         /// Vinayak Deshpande
         /// 2022/02/02
         /// Added some logic for requesting volunteers
+        /// 
+        /// Update
+        /// Jace Pettinger
+        /// 2022/02/17
+        /// Added user parameter for constructor
         /// </summary>
-        public pgCreateEvent()
+        /// <param name="sender"></param>
+        public pgCreateEvent(User user)
         {
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
@@ -52,6 +61,8 @@ namespace WPFPresentation
             _eventManager = new LogicLayer.EventManager();
             _eventDateManager = new EventDateManager();
             _locationManager = new LocationManager();
+
+            _user = user;
 
             InitializeComponent();
 
@@ -65,6 +76,7 @@ namespace WPFPresentation
             tabAddEventDate.IsEnabled = false;
             tabsetAddEventLocation.IsEnabled = false;
             tabAddEventVolunteer.IsEnabled = false;
+
         }
 
         /// <summary>
@@ -91,13 +103,16 @@ namespace WPFPresentation
         /// 2022/02/04
         /// Description:
         /// Moved event creation back to first tab of event creation page.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// 2022/02/17
+        /// Description:
+        /// Changed the manager method that creates the event to CreateEventReturnsEventID from CreateEvent
         private void btnEventNext_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-
-                //MessageBox.Show("Added event.");
-
                 if (txtBoxEventName.Text == "" || txtBoxEventDescription.Text == "")
                 {
                     MessageBox.Show("Please enter all fields for the event.");
@@ -105,12 +120,16 @@ namespace WPFPresentation
                 }
                 else
                 {
-                    _eventManager.CreateEvent(txtBoxEventName.Text, txtBoxEventDescription.Text);
-                    tabsetAddEventLocation.IsEnabled = true;
-                    tabsetAddEventLocation.Focus();
+                    newEvent = new DataObjects.Event()
+                    {
+                        EventID = _eventManager.CreateEventReturnsEventID(txtBoxEventName.Text, txtBoxEventDescription.Text),
+                        EventName = txtBoxEventName.Text,
+                        EventDescription = txtBoxEventDescription.Text
+                    };
+
+                    tabAddEventDate.IsEnabled = true;
+                    tabAddEventDate.Focus();
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -119,7 +138,7 @@ namespace WPFPresentation
         }
 
         /// <summary>
-        /// Jace Pettiger
+        /// Derrick Nagy
         /// Created: 2022/01/22
         /// 
         /// Description:
@@ -130,8 +149,17 @@ namespace WPFPresentation
         /// <param name="e"></param>
         private void btnEventCancel_Click(object sender, RoutedEventArgs e)
         {
-            Page page = new pgViewEvents();
-            this.NavigationService.Navigate(page);
+            var result = MessageBox.Show("Are you sure?\n Unsaved changes will be discarded.",
+                               "Cancel",
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Page page = new pgViewEvents(_user);
+                this.NavigationService.Navigate(page);
+            }
+            
         }
 
         /// <summary>
@@ -335,12 +363,10 @@ namespace WPFPresentation
                 {
                     try
                     {
-                        int eventID = _eventManager.RetrieveEventByEventNameAndDescription(txtBoxEventName.Text, txtBoxEventDescription.Text).EventID;
-
                         EventDate eventDate = new EventDate()
                         {
                             EventDateID = dateTimeToAdd,
-                            EventID = eventID,
+                            EventID = newEvent.EventID,
                             StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
                             EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
                             Active = true
@@ -348,7 +374,7 @@ namespace WPFPresentation
 
                         _eventDateManager.CreateEventDate(eventDate);                        
 
-                        datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(eventID);
+                        datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(newEvent.EventID);
                         datCurrentEventDates.Visibility = Visibility.Visible;
                         txtBlkCurrentEventDates.Visibility = Visibility.Visible;
 
@@ -372,6 +398,36 @@ namespace WPFPresentation
                 }
             }
         }
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Click handler for continuing on from event dates tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEventDateNext_Click(object sender, RoutedEventArgs e)
+        {
+            if (datCurrentEventDates.Items.Count == 0) // no dates were added, confirm want to continue
+            {
+                var result = MessageBox.Show("Continue without adding a date?",
+                               "No Dates",
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    tabsetAddEventLocation.IsEnabled = true;
+                    tabsetAddEventLocation.Focus();
+                }
+            }
+            else { // dates were added, just go to next tab
+                tabsetAddEventLocation.IsEnabled = true;
+                tabsetAddEventLocation.Focus();
+               
+            }
+        }
 
         private void chkBxNeedVolunteers_Checked(object sender, RoutedEventArgs e)
         {
@@ -384,16 +440,39 @@ namespace WPFPresentation
         }
 
         /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Click event handler for navigating to next tab from volunteers tab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnVolunteersNext_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Event details added");
+            pgViewEvents viewEventsPage = new pgViewEvents(_user);
+            this.NavigationService.Navigate(viewEventsPage);
+        }
+
+        /// <summary>
         /// Logan Baccam
         /// Created: 2022/01/24
         /// 
         /// Description:
         /// Click event handler for adding a location to an event and inserting a new event
         /// 
-        /// *******************************************************************************
         /// Christopher Repko
         /// Updated: 2022/02/09
         /// Removed call to create event and just set event location ID.
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// Updated code to use variables that were assigned and never accessed.
+        /// Removed creation of an event object to access a location object
+        /// Made it optional to add a location
+        /// Added validation
+        /// 
         /// </summary>
         private void btnEventLocationAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -401,50 +480,104 @@ namespace WPFPresentation
 
             string eventName = txtBoxEventName.Text;
             string eventDescription = txtBoxEventDescription.Text;
-            if (txtBoxLocationName.Text == "" || txtBoxStreet.Text == "" || txtBoxCity.Text == "" || cboState.SelectedItem == null || txtBoxZip.Text == "")
+            string locationName = txtBoxLocationName.Text; // added variable for repeated code -jp
+            string locationStreet = txtBoxStreet.Text; // added variable for repeated code -jp
+            string locationCity = txtBoxCity.Text; // added variable for repeated code -jp
+            object locationState = cboState.SelectedItem; // added variable for repeated code -jp
+            string locationZip = txtBoxZip.Text; // added variable for repeated code -jp
+
+            if (locationName == "" && locationStreet == "" && locationCity == "" && locationState == null && locationZip == "")
             {
-                MessageBox.Show("Please enter a value for all location fields.");
+                //MessageBox.Show("Please enter a value for all location fields.");
+                //txtBoxLocationName.Focus();
+                var result = MessageBox.Show("Continue without adding a location?", // added -jp
+                               "No location",
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    tabAddEventVolunteer.IsEnabled = true;
+                    tabAddEventVolunteer.Focus();
+                }
+            }
+            else if (!ValidationHelpers.IsValidName(locationName)) // added validation -jp
+            {
+                txtBlockLocationValidationMessage.Text = "Please enter a name for the location";
+                txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
                 txtBoxLocationName.Focus();
             }
+            else if (!ValidationHelpers.IsValidName(locationStreet)) // added validation -jp
+            {
+                txtBlockLocationValidationMessage.Text = "Please enter a name for the location";
+                txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
+                txtBoxStreet.Focus();
+            }
+            else if (!ValidationHelpers.IsValidCityName(locationCity)) // added validation -jp
+            { 
+                txtBlockLocationValidationMessage.Text = "Please enter a valid city name";
+                txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
+                txtBoxCity.Focus();
+            }
+            else if (locationState == null) // added validation -jp
+            {
+                txtBlockLocationValidationMessage.Text = "Please select a state";
+                txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
+                cboState.Focus();
+            }
+            else if (!ValidationHelpers.IsValidZipCode(locationZip)) // added validation -jp
+            {
+                txtBlockLocationValidationMessage.Text = "Please enter a valid zip code";
+                txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
+                txtBoxZip.Focus();
+            } 
             else
             {
+                txtBlockLocationValidationMessage.Visibility = Visibility.Hidden;
                 try
                 {
-                    eventLocation = _locationManager.RetrieveLocationByNameAndAddress(txtBoxLocationName.Text, txtBoxStreet.Text);
+
+                    eventLocation = _locationManager.RetrieveLocationByNameAndAddress(locationName, locationStreet);
                     if (eventLocation is null || eventLocation.LocationID == 0)
                     {
-                        _locationManager.CreateLocation(txtBoxLocationName.Text, txtBoxStreet.Text, txtBoxCity.Text, ((ComboBoxItem)cboState.SelectedItem).Tag.ToString(), txtBoxZip.Text);
-                        eventLocation = _locationManager.RetrieveLocationByNameAndAddress(txtBoxLocationName.Text, txtBoxStreet.Text);
-                        DataObjects.Event eventObj = _eventManager.RetrieveEventByEventNameAndDescription(txtBoxEventName.Text, txtBoxEventDescription.Text);
+                        _locationManager.CreateLocation(locationName, locationStreet, locationCity, ((ComboBoxItem)locationState).Tag.ToString(), locationZip);
+                        eventLocation = _locationManager.RetrieveLocationByNameAndAddress(locationName, locationStreet);
+                        DataObjects.EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription/*txtBoxEventDescription.Text*/);
                         _eventManager.UpdateEventLocationByEventID(eventObj.EventID, null, eventLocation.LocationID);
-                        txtBoxLocationName.Text = "";
-                        txtBoxStreet.Text = "";
-                        txtBoxCity.Text = "";
-                        cboState.SelectedItem = null;
-                        txtBoxZip.Text = "";
-                    } else if(eventLocation != null)
+                        locationName = "";
+                        locationStreet = "";
+                        locationCity = "";
+                        locationState = null;
+                        locationZip = "";
+                    }
+                    else if (eventLocation != null)
                     {
-                        int? eventLocationID = null;
-                        DataObjects.Event eventObj = _eventManager.RetrieveEventByEventNameAndDescription(txtBoxEventName.Text, txtBoxEventDescription.Text);
-                        if (eventObj.Location != null)
+                        //int? eventLocationID = null; if the event location is not null that means there is a locationID
+                        int newEventLocationID = eventLocation.LocationID;
+                        EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription /*txtBoxEventDescription.Text*/);
+                        int? oldEventLocationID = null; // added
+
+                        if (eventObj.LocationID != null)
                         {
-                            eventLocationID = eventObj.Location.LocationID;
+                            oldEventLocationID = eventObj/*.Location*/.LocationID;
                         }
-                        _eventManager.UpdateEventLocationByEventID(eventObj.EventID, eventLocationID, eventLocation.LocationID);
-                        txtBoxLocationName.Text = "";
-                        txtBoxStreet.Text = "";
-                        txtBoxCity.Text = "";
-                        cboState.SelectedItem = null;
-                        txtBoxZip.Text = "";
+                        _eventManager.UpdateEventLocationByEventID(eventObj.EventID, oldEventLocationID /*eventLocationID*/, newEventLocationID /*eventLocation.LocationID*/);
+                        //locationName = ""; // cannot add multiple locations, this step is not needed 
+                        //locationStreet = "";
+                        //locationCity = "";
+                        //locationState = null;
+                        //locationZip = "";
                     }
 
                     MessageBox.Show("Event Location Added");
-                    tabAddEventDate.IsEnabled = true;
-                    tabAddEventDate.Focus();
+                    tabAddEventVolunteer.IsEnabled = true;
+                    tabAddEventVolunteer.Focus();
+                    // do not allow user to go back
+                    tabsetAddEventLocation.IsEnabled = false;
                 }
-                catch (Exception ex )
+                catch (Exception ex)
                 {
-                    MessageBox.Show("There was a problem adding this location to the event.\n\n"  + ex.Message + "\n\n\n" + ex.InnerException.Message);
+                    MessageBox.Show("There was a problem adding this location to the event.\n\n" + ex.Message + "\n\n\n" + ex.InnerException.Message);
                 }
             }
         }

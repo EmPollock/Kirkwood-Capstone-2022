@@ -75,6 +75,7 @@
                     <TextBlock Grid.Row="5" Grid.Column="1" x:Name="txtBlockValidationMessage" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="#FFFF4040" Visibility="Hidden"></TextBlock>
                     <Button x:Name="btnEventEditSave" Grid.Row="6" Grid.Column="0" Content="Edit" IsTabStop="False"  HorizontalAlignment="Left" Margin="10" Click="btnEventEditSave_Click"/>
                     <Button x:Name="btnEventCloseCancel" Grid.Row="6" Grid.Column="0"  Content="Close" HorizontalAlignment="Right" Margin="10" Click="btnEventCloseCancel_Click" />
+
                 </Grid>
             </TabItem>
             <TabItem x:Name="tabEventDates" Header="Dates" Loaded="tabEventDates_Loaded">
@@ -160,8 +161,6 @@
 
                     </Grid>
 
-
-
                     <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -172,6 +171,18 @@
                         <Button x:Name="btnEditEventDateCloseCancel" Grid.Row="0" Grid.Column="1" Margin="40 0 0 0" Content="Close" HorizontalAlignment="Left" Click="btnEditEventDateCloseCancel_Click" />
 
                     </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="tabEventLocation" Header="Location" Loaded="tabEventLocation_Loaded" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="txtBlkEventLocationHeader" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}">Event Location</TextBlock>
+                    <TextBlock x:Name="lblLocationErrorMesage" Text="No location added" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="#FFFF4040" Visibility="Hidden"/>
+                    <Frame x:Name="locationFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Margin="5px" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="tabEventVolunteerRequests" Header="Requests" Loaded="tabEventVolunteerRequests_Loaded">

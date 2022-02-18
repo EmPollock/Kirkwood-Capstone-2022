@@ -16,6 +16,12 @@ Created: 2022/01/27
 Description:
 Stored procedure to select all active suppliers 
 from the suppliers table
+****************************************************************
+Kris Howell
+Updated: 2022/02/18
+
+Description:
+Add city, state, and zip code to select
 ****************************************************************/
 print '' print '*** creating sp_select_active_suppliers ***'
 GO
@@ -32,6 +38,9 @@ AS
 			,[SupplierTypeID]
 			,[SupplierAddress1]
 			,[SupplierAddress2]
+			,[SupplierCity]
+			,[SupplierState]
+			,[SupplierZipCode]
 		FROM [dbo].[Supplier]
 		WHERE [Active] = 1	
 	END	

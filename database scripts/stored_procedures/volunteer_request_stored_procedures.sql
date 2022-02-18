@@ -17,9 +17,9 @@ Description:
 print '' print '*** creating sp_select_all_requests_by_eventID ***'
 GO
 Create PROCEDURE [dbo].[sp_select_all_requests_by_eventID]
-{
+(
 	@EventID int
-}
+)
 AS
 	BEGIN
 		SELECT 
@@ -34,4 +34,7 @@ AS
 		Where [Task].[EventID] = @EventID
 		Order By [RequestID] ASC
 	END
+GO
+
+print'' print'*****AAAAAxxxxxnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnxxxxxxxxxxxx'
 GO

@@ -9,7 +9,7 @@ namespace DataAccessFakes
 {
     public class EventAccessorFake : IEventAccessor
     {
-        private List<Event> _fakeEvents = new List<Event>();
+        private List<EventVM> _fakeEvents = new List<EventVM>();
         private List<EventVM> _fakeEventVMs = new List<EventVM>();
         
         // This list only contains the values for the user ID first, and the EventID second
@@ -28,81 +28,41 @@ namespace DataAccessFakes
         /// Created: 2022/02/08
         /// 
         /// Description:
-        /// Added fakeVM and UserEvent data       
+        /// Added fakeVM and UserEvent data 
+        /// 
+        /// Update:
+        /// Jace Pettinger
+        /// Created: 2022/02/15
+        /// 
+        /// Description:
+        /// Removed location object from fake events
         public EventAccessorFake()
         {
             
-               _fakeEvents.Add(new Event()
+               _fakeEvents.Add(new EventVM()
             {
                 EventID = 1000000,
-                Location = new Location()
-                {
-                    LocationID = 100000,
-                    UserID = 100000,
-                    Name = "Test Location 1",
-                    Description = "Description of Test Location 1 goes here.",
-                    PricingInfo = "Pricing information for renting Test Location 1 goes here.",
-                    Phone = "111-111-1111",
-                    Email = "testLocation1@locations.com",
-                    Address1 = "Test Location 1 Street",
-                    City = "Iowa City",
-                    State = "Iowa",
-                    ZipCode = "52240",
-                    ImagePath = "http://imagehost.com/testlocation1.png",
-                    Active = true
-                },
+                LocationID= 100000,
                 EventName = "Test Event 1",
                 EventDescription = "A description of test event 1",
                 EventCreatedDate = DateTime.Now,
                 Active = true
             });
 
-            _fakeEvents.Add(new Event()
+            _fakeEvents.Add(new EventVM()
             {
                 EventID = 1000001,
-                Location = new Location()
-                {
-                    LocationID = 100001,
-                    UserID = 100000,
-                    Name = "Test Location 2",
-                    Description = "Description of Test Location 2 goes here.",
-                    PricingInfo = "Pricing information for renting Test Location 2 goes here.",
-                    Phone = "222-222-2222",
-                    Email = "testLocation2@locations.com",
-                    Address1 = "Test Location 2 Street",
-                    Address2 = "Apt 2",
-                    City = "Cedar Rapids",
-                    State = "Iowa",
-                    ZipCode = "52404",
-                    ImagePath = "http://imagehost.com/testlocation2.png",
-                    Active = true
-                },
+                LocationID = 100001,
                 EventName = "Test Event 2",
                 EventDescription = "A description of test event 2",
                 EventCreatedDate = DateTime.Now.AddMinutes(1),
                 Active = true
             });
 
-            _fakeEvents.Add(new Event()
+            _fakeEvents.Add(new EventVM()
             {
                 EventID = 1000002,
-                Location = new Location()
-                {
-                    LocationID = 100002,
-                    UserID = 100000,
-                    Name = "Test Location 3",
-                    Description = "Description of Test Location 3 goes here.",
-                    PricingInfo = "Pricing information for renting Test Location 3 goes here.",
-                    Phone = "333-333-3333",
-                    Email = "testLocation3@locations.com",
-                    Address1 = "Test Location 3 Street",
-                    Address2 = "Apt 33",
-                    City = "Chicago",
-                    State = "Illinois",
-                    ZipCode = "60007",
-                    ImagePath = "http://imagehost.com/testlocation3.png",
-                    Active = true
-                },
+                LocationID = 100002,
                 EventName = "Test Event 3",
                 EventDescription = "A description of test event 3",
                 EventCreatedDate = DateTime.Now.AddMinutes(2),
@@ -110,26 +70,10 @@ namespace DataAccessFakes
             });
 
 
-            _fakeEvents.Add(new Event()
+            _fakeEvents.Add(new EventVM()
             {
                 EventID = 1000003,
-                Location = new Location()
-                {
-                    LocationID = 100003,
-                    UserID = 100000,
-                    Name = "Test Location 4",
-                    Description = "Description of Test Location 4 goes here.",
-                    PricingInfo = "Pricing information for renting Test Location 4 goes here.",
-                    Phone = "444-444-4444",
-                    Email = "testLocation4@locations.com",
-                    Address1 = "Test Location 4 Street",
-                    Address2 = "Apt 44",
-                    City = "New York City",
-                    State = "New York",
-                    ZipCode = "10036",
-                    ImagePath = "http://imagehost.com/testlocation4.png",
-                    Active = true
-                },
+                LocationID = 100003,
                 EventName = "Test Event 4",
                 EventDescription = "A description of test event 4",
                 EventCreatedDate = DateTime.Now.AddMinutes(3),
@@ -284,7 +228,7 @@ namespace DataAccessFakes
             int eventID = _fakeEvents.Last().EventID + 1;
 
 
-            _fakeEvents.Add(new Event()
+            _fakeEvents.Add(new EventVM()
             {
                 EventID = eventID,
                 EventName = eventName,
@@ -299,6 +243,34 @@ namespace DataAccessFakes
         }
 
         /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Inserts a fake event into the database and returns the auto-increment value created for the event id
+        /// </summary>
+        /// <param name="eventName"></param>
+        /// <param name="eventDescription"></param>
+        /// <returns></returns>
+        public int InsertEventReturnsEventID(string eventName, string eventDescription)
+        {
+            int eventID = _fakeEvents.Last().EventID + 1;
+
+            // I am not digging _fakeEvents being a list of EventVM
+            _fakeEvents.Add(new EventVM()
+            {
+                EventID = eventID,
+                EventName = eventName,
+                EventDescription = eventDescription,
+                EventCreatedDate = DateTime.Now,
+                Active = true,
+                LocationID = null
+            });
+
+            return eventID;
+        }
+
+        /// <summary>
         /// Jace Pettinger
         /// Created: 2022/01/23
         /// 
@@ -309,7 +281,7 @@ namespace DataAccessFakes
         /// <returns>List of active events</returns>
         public List<Event> SelectActiveEvents()
         {
-            List<Event> events = new List<Event>();
+            List<EventVM> events = new List<EventVM>();
 
             foreach (var fakeEvent in _fakeEvents) 
             { 
@@ -334,9 +306,9 @@ namespace DataAccessFakes
         /// <param name="eventName"></param>
         /// <param name="eventDescription"></param>
         /// <returns></returns>
-        public Event SelectEventByEventNameAndDescription(string eventName, string eventDescription)
+        public EventVM SelectEventByEventNameAndDescription(string eventName, string eventDescription)
         {
-            Event fakeEvent = null;
+            EventVM fakeEvent = null;
 
             if (_fakeEvents.Exists(e => (e.EventName == eventName) && (e.EventDescription == eventDescription)))
             {
@@ -535,6 +507,12 @@ namespace DataAccessFakes
         /// Description:
         /// Updates the location of a fake event record.
         /// </summary>
+        /// Update:
+        /// Jace Pettinger
+        /// Created: 2022/02/15
+        /// 
+        /// Description:
+        /// Removed location object and just used the locationId in the event object
         /// <param name="eventID">Event ID of the event</param>
         /// <param name="oldLocationID">ID of the old location</param>
         /// <param name="newLocationID">ID of the new location</param>
@@ -544,9 +522,9 @@ namespace DataAccessFakes
             int rowsAffected = 0;
             foreach (var fakeEvent in _fakeEvents)
             {
-                if (fakeEvent.EventID == eventID && fakeEvent.Location.LocationID == oldLocationID)
+                if (fakeEvent.EventID == eventID && fakeEvent.LocationID == oldLocationID)
                 {
-                    fakeEvent.Location.LocationID = (int)newLocationID;
+                    fakeEvent.LocationID = (int)newLocationID;
                     rowsAffected++;
                 }
             }

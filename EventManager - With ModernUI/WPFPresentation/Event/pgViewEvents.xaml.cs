@@ -133,8 +133,15 @@ namespace WPFPresentation
         /// </summary>
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            Uri pageURI = new Uri("Event/pgCreateEvent.xaml", UriKind.Relative);
-            this.NavigationService.Navigate(pageURI);
+            if (_user == null)
+            {
+                MessageBox.Show("Please log in to create an event");
+            } else
+            {
+                pgCreateEvent createEventPage = new pgCreateEvent(_user);
+                this.NavigationService.Navigate(createEventPage);
+            }
+           
         }
 
         /// <summary>
@@ -149,7 +156,7 @@ namespace WPFPresentation
         /// </summary>
         private void datActiveEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DataObjects.Event selectedEvent = (DataObjects.Event)datActiveEvents.SelectedItem;
+            DataObjects.EventVM selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
             pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent);
             this.NavigationService.Navigate(viewEditPage);
         }

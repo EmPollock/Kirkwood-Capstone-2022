@@ -52,10 +52,11 @@ Created: 2022/01/23
 Description:
 Stored procedure to select active event from the events table
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+<Jace Pettinger>
+Updated: 2022/02/15
 
 Description: 
+Adding LocationID to the selected values
 ****************************************************************/
 print '' print '*** creating sp_select_active_events'
 GO
@@ -66,7 +67,8 @@ AS
 			[EventID],
 			[EventName],
 			[EventDescription],
-			[DateCreated]
+			[DateCreated],
+			[LocationID]
 		FROM [dbo].[Event]
 		WHERE [Active] = 1	
 	END	
@@ -83,10 +85,11 @@ sp_select_event_by_event_name_and_description	@EventName 	nvarchar(50)
 												@EventDescription	nvarchar(1000)	
 	
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+<Jace Pettinger>
+Updated: 2022/02/15
 
 Description: 
+Adding LocationID to the selected values
 ****************************************************************/
 print '' print '*** creating sp_select_event_by_event_name_and_description'
 GO
@@ -100,7 +103,8 @@ AS
 			[EventID],
 			[EventName],
 			[EventDescription],
-			[DateCreated]
+			[DateCreated],
+			[LocationID]
 			
 		FROM [dbo].[Event]
 		WHERE [EventName] = @EventName
@@ -156,17 +160,17 @@ AS
 GO
 
 /***************************************************************
-<<<<<<< HEAD
 Derrick Nagy
 Created: 2022/02/06
 
 Description:
 Stored procedure to select active events from the events table from the future and past
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+<Jace Pettinger>
+Updated: 2022/02/15
 
 Description: 
+Adding LocationID to the selected values
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_future_event_dates'
 GO
@@ -178,8 +182,8 @@ AS
 			[EventName],
 			[EventDescription],
 			[DateCreated],
+			[LocationID],
 			[EventDate].[EventDateID]
-			
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 		WHERE [Event].[Active] = 1
@@ -195,10 +199,11 @@ Created: 2022/02/06
 Description:
 Stored procedure to select active upcoming event from the events table
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+<Jace Pettinger>
+Updated: 2022/02/15
 
 Description: 
+Adding LocationID to the selected values
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates'
 GO
@@ -210,8 +215,8 @@ AS
 			[EventName],
 			[EventDescription],
 			[DateCreated],
+			[LocationID],
 			[EventDate].[EventDateID]
-			
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 		WHERE [Event].[Active] = 1
@@ -228,10 +233,11 @@ Created: 2022/02/06
 Description:
 Stored procedure to select active past events from the events 
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+<Jace Pettinger>
+Updated: 2022/02/15
 
 Description: 
+Adding LocationID to the selected values
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates'
 GO
@@ -243,8 +249,8 @@ AS
 			[EventName],
 			[EventDescription],
 			[DateCreated],
+			[LocationID],
 			[EventDate].[EventDateID]
-			
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 		WHERE [Event].[Active] = 1
@@ -262,10 +268,11 @@ Created: 2022/02/08
 Description:
 Stored procedure to select active upcoming event from the events table for a user
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+<Jace Pettinger>
+Updated: 2022/02/15
 
 Description: 
+Adding LocationID to the selected values
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates_for_user'
 GO
@@ -280,7 +287,8 @@ AS
 			[Event].[EventName],
 			[Event].[EventDescription],
 			[Event].[DateCreated],
-			[EventDate].[EventDateID]			
+			[Event].[LocationID],
+			[EventDate].[EventDateID]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
@@ -300,19 +308,12 @@ Created: 2022/02/08
 
 Description:
 Stored procedure to select active past events from the events table for a user
-=======
-Christopher Repko
-Created: 2022/02/09
-
-Description:
-Stored procedure to update an event's location data
-
->>>>>>> origin/main
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+<Jace Pettinger>
+Updated: 2022/02/15
 
 Description: 
+Adding LocationID to the selected values
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates_for_user'
 GO
@@ -327,7 +328,8 @@ AS
 			[Event].[EventName],
 			[Event].[EventDescription],
 			[Event].[DateCreated],
-			[EventDate].[EventDateID]			
+			[Event].[LocationID],
+			[EventDate].[EventDateID]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
@@ -347,10 +349,11 @@ Created: 2022/02/08
 Description:
 Stored procedure to select active past and upcoming events from the events table for a user
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+<Jace Pettinger>
+Updated: 2022/02/15
 
 Description: 
+Adding LocationID to the selected values
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_upcoming_dates_for_user'
 GO
@@ -365,6 +368,7 @@ AS
 			[Event].[EventName],
 			[Event].[EventDescription],
 			[Event].[DateCreated],
+			[Event].[LocationID],
 			[EventDate].[EventDateID]			
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
@@ -374,8 +378,19 @@ AS
 		ORDER BY [UserEvent].[EventID] ASC
 		
 	END	
+	
+/***************************************************************
+Christopher Repko
+Created: 2022/02/09
 
+Description:
+Stored procedure to update an event's location data
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
 
+Description: 
+****************************************************************/
 print '' print '*** creating sp_update_event_location_by_event_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_update_event_location_by_event_id]
@@ -401,4 +416,37 @@ AS
 			)
 		RETURN @@ROWCOUNT
 	END
+GO
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/17
+
+Description:
+Stored procedure to insert an event into the events table that returns the EventID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_insert_event_return_event_id'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_event_return_event_id]
+(
+	@EventName			nvarchar(50)
+	,@EventDescription	nvarchar(1000)
+)
+AS
+	BEGIN
+		INSERT INTO [dbo].[Event]
+		(
+			[EventName]				
+			,[EventDescription]	
+		)
+		OUTPUT Inserted.EventID
+		VALUES
+		(@EventName, @EventDescription)		
+
+	END	
 GO

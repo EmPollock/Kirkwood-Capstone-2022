@@ -169,7 +169,7 @@ namespace LogicLayerTests
         public void TestUpdateEventThrowsApplicationExceptionIfNoName()
         {
             // arrange
-            Event oldEvent = new Event()
+            EventVM oldEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "Test Event 1",
@@ -177,7 +177,7 @@ namespace LogicLayerTests
                 Active = true
             };
 
-            Event newEvent = new Event()
+            EventVM newEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "",
@@ -204,7 +204,7 @@ namespace LogicLayerTests
         public void TestUpdateEventThrowsApplicationExceptionIfNameOver50Char()
         {
             // arrange
-            Event oldEvent = new Event()
+            EventVM oldEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "Test Event 1",
@@ -212,7 +212,7 @@ namespace LogicLayerTests
                 Active = true
             };
 
-            Event newEvent = new Event()
+            EventVM newEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "jDWAAHKGh6r3JQwRW7IPVHDJunFb8b5tfgYfGz8vauaNJ2tM1z",
@@ -241,7 +241,7 @@ namespace LogicLayerTests
         public void TestUpdateEventThrowsApplicationExceptionIfNoDescription()
         {
             // arrange
-            Event oldEvent = new Event()
+            EventVM oldEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "Test Event 1",
@@ -249,7 +249,7 @@ namespace LogicLayerTests
                 Active = true
             };
 
-            Event newEvent = new Event()
+            EventVM newEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "Test Event 1",
@@ -278,7 +278,7 @@ namespace LogicLayerTests
         public void TestUpdateEventThrowsApplicationExceptionIfDescriptionTooLong()
         {
             // arrange
-            Event oldEvent = new Event()
+            EventVM oldEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "Test Event 1",
@@ -286,7 +286,7 @@ namespace LogicLayerTests
                 Active = true
             };
 
-            Event newEvent = new Event()
+            EventVM newEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "Test Event 1",
@@ -313,7 +313,7 @@ namespace LogicLayerTests
         public void TestUpdateEventReturnsTrueIfUpdateSuccessful()
         {
             // arrange
-            Event oldEvent = new Event()
+            EventVM oldEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "Test Event 1",
@@ -321,7 +321,7 @@ namespace LogicLayerTests
                 Active = true
             };
 
-            Event newEvent = new Event()
+            EventVM newEvent = new EventVM()
             {
                 EventID = 1000000,
                 EventName = "Test Name",
@@ -667,6 +667,29 @@ namespace LogicLayerTests
             bool actual = _eventManager.UpdateEventLocationByEventID(eventID, oldLocationID, newLocationID);
 
             Assert.AreEqual(expected, actual);
+        }
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Test that returns the event id
+        /// </summary>
+        [TestMethod]
+        public void TestCreateEventReturnsEventIDIfCreated()
+        {
+            // arrange
+            const string eventName = "Test";
+            const string eventDescription = "Test Description";
+            const int expectedEventID = 1000004;
+            int actualEventID = 0;
+
+            // act
+            actualEventID = _eventManager.CreateEventReturnsEventID(eventName, eventDescription);
+
+            // assert
+            Assert.AreEqual(expectedEventID, actualEventID);
+
         }
     }
 }

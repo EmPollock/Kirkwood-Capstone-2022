@@ -9,7 +9,7 @@ IF EXISTS(
 
 BEGIN 
 	DROP DATABASE tadpole_db
-	print '' print '*** droping database tadpole_db'
+	print '' print '*** dropping database tadpole_db'
 END
 GO
 
