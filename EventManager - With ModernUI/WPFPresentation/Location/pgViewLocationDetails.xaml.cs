@@ -32,7 +32,7 @@ namespace WPFPresentation
         IEventDateManager _eventDateManager;
         DataObjects.Location _location;
         int _locationID;
-        List<LocationReview> _locationReviews;
+        List<Reviews> _locationReviews;
         List<LocationImage> _locationImages;
         List<EventDateVM> _eventDatesForLocation;
 
@@ -109,7 +109,7 @@ namespace WPFPresentation
                     int avg = 0;
                     int total = 0;
 
-                    foreach (LocationReview locationReview in _locationReviews)
+                    foreach (Reviews locationReview in _locationReviews)
                     {
                         avg += locationReview.Rating;
                         total++;

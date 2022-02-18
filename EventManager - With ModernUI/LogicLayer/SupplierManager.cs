@@ -64,5 +64,73 @@ namespace LogicLayer
 
             return suppliers;
         }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/11
+        /// 
+        /// Description:
+        /// Function to take a supplier ID and get a list of images
+        /// </summary>
+        /// <param name="supplierID">Supplier ID to use to search for images</param>
+        /// <returns>A list of images for the supplier ID</returns>
+        public List<string> RetrieveSupplierImagesBySupplierID(int supplierID)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                result = _supplierAccessor.SelectSupplierImagesBySupplierID(supplierID);
+            } catch(Exception ex) 
+            {
+                throw new ApplicationException("Failed to retrieve supplier images", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/11
+        /// 
+        /// Description:
+        /// Function to take a supplier ID and get a list of reviews
+        /// </summary>
+        /// <param name="supplierID">Supplier ID to use to search for reviews</param>
+        /// <returns>A list of reviews for the supplier ID</returns>
+        public List<Reviews> RetrieveSupplierReviewsBySupplierID(int supplierID)
+        {
+            List<Reviews> result = new List<Reviews>();
+            try
+            {
+                result = _supplierAccessor.SelectSupplierReviewsBySupplierID(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve supplier reviews", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/11
+        /// 
+        /// Description:
+        /// Function to take a supplier ID and get a list of tags
+        /// </summary>
+        /// <param name="supplierID">Supplier ID to use to search for tags</param>
+        /// <returns>A list of tags for the supplier ID</returns>
+        public List<string> RetrieveSupplierTagsBySupplierID(int supplierID)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                result = _supplierAccessor.SelectSupplierTagsBySupplierID(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve supplier tags", ex);
+            }
+            return result;
+        }
     }
 }

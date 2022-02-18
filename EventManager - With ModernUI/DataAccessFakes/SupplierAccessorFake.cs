@@ -11,6 +11,8 @@ namespace DataAccessFakes
     public class SupplierAccessorFake : ISupplierAccessor
     {
         private List<Supplier> _fakeSuppliers = new List<Supplier>();
+        private List<Reviews> _fakeReviews = new List<Reviews>();
+        private List<List<string>> _fakeImages = new List<List<string>>();
 
         /// <summary>
         /// Kris Howell
@@ -19,6 +21,11 @@ namespace DataAccessFakes
         /// Description:
         /// Constructor to populate _fakeSuppliers with dummy values for testing purposes
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/11
+        /// 
+        /// Description: 
+        /// Added fake reviews and image paths
         /// </summary>
         public SupplierAccessorFake()
         {
@@ -97,6 +104,41 @@ namespace DataAccessFakes
                 },
                 Active = true
             });
+
+            _fakeReviews.Add(new Reviews()
+            {
+                ForeignID = 100000,
+                ReviewID = 100000,
+                FullName = "Whodunnit",
+                ReviewType = "Supplier Review",
+                Rating = 3,
+                Review = "Could be better.",
+                DateCreated = DateTime.Now,
+                Active = true
+            }); 
+
+            _fakeReviews.Add(new Reviews()
+            {
+                ForeignID = 100000,
+                ReviewID = 100020,
+                FullName = "Whodunnit2",
+                ReviewType = "Supplier Review2",
+                Rating = 5,
+                Review = "Amazing!",
+                DateCreated = DateTime.Now,
+                Active = true
+            });
+
+            _fakeImages.Add(new List<string>()
+            {
+                "Fakepath.png",
+                "Fakepath2.png",
+                "Fakepath3.png"
+            });
+            _fakeImages.Add(new List<string>()
+            {
+                "Fakepath.png"
+            });
         }
 
         /// <summary>
@@ -121,6 +163,74 @@ namespace DataAccessFakes
             }
 
             return suppliers;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/11
+        /// 
+        /// Description:
+        /// Returns images associated with the selected supplier
+        /// </summary>
+        /// <param name="supplierID"> ID of supplier to retrieve images for</param>
+        /// <returns>a list of strings representing image paths</returns>
+        public List<string> SelectSupplierImagesBySupplierID(int supplierID)
+        {
+            List<string> result = new List<string>();
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    if(_fakeImages.Count > _fakeSuppliers.IndexOf(supplier))
+                    {
+                        result = _fakeImages[_fakeSuppliers.IndexOf(supplier)];
+                    }
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/11
+        /// 
+        /// Description:
+        /// Returns reviews associated with the selected supplier
+        /// </summary>
+        /// <param name="supplierID"> ID of supplier to retrieve reviews for</param>
+        /// <returns>A list of reviews</returns>
+        public List<Reviews> SelectSupplierReviewsBySupplierID(int supplierID)
+        {
+            List<Reviews> result = new List<Reviews>();
+            foreach (Reviews review in _fakeReviews)
+            {
+                if (review.ForeignID == supplierID)
+                {
+                    result.Add(review);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/02/11
+        /// 
+        /// Description:
+        /// Returns tags associated with the selected supplier
+        /// </summary>
+        /// <param name="supplierID"> ID of supplier to retrieve tags for</param>
+        /// <returns>A list of strings</returns>
+        public List<string> SelectSupplierTagsBySupplierID(int supplierID)
+        {
+            List<string> result = new List<string>();
+            foreach(Supplier supplier in _fakeSuppliers)
+            {
+                if(supplier.SupplierID == supplierID)
+                {
+                    result = supplier.Tags;
+                }
+            }
+            return result;
         }
     }
 }

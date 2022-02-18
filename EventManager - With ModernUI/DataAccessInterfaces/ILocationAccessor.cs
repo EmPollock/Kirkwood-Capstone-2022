@@ -11,7 +11,9 @@ namespace DataAccessInterfaces
     {
         List<Location> SelectActiveLocations();
         Location SelectLocationByLocationID(int locationID);
-        List<LocationReview> SelectLocationReviews(int locationID);
+
+        List<Reviews> SelectLocationReviews(int locationID);
+
         List<LocationImage> SelectLocationImagesByLocationID(int locationID);
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace DataAccessFakes
     public class LocationAccessorFake : ILocationAccessor
     {
         private List<Location> _fakeLocations = new List<Location>();
-        private List<LocationReview> _fakeLocationReviews = new List<LocationReview>();
+        private List<Reviews> _fakeLocationReviews = new List<Reviews>();
         private List<LocationImage> _fakeLocationImages = new List<LocationImage>();
         private List<LocationAvailability> _fakeLocationAvailability = new List<LocationAvailability>();
 
@@ -125,9 +125,9 @@ namespace DataAccessFakes
                 Active = true
             });
 
-            _fakeLocationReviews.Add(new LocationReview()
+            _fakeLocationReviews.Add(new Reviews()
             {
-                LocationID = 100000,
+                ForeignID = 100000,
                 ReviewID = 100000,
                 FullName = "Tess Data",
                 ReviewType = "Location Review",
@@ -137,9 +137,9 @@ namespace DataAccessFakes
                 Active = true
             });
 
-            _fakeLocationReviews.Add(new LocationReview()
+            _fakeLocationReviews.Add(new Reviews()
             {
-                LocationID = 100000,
+                ForeignID = 100000,
                 ReviewID = 100001,
                 FullName = "Joey Speed",
                 ReviewType = "Location Review",
@@ -315,13 +315,13 @@ namespace DataAccessFakes
         /// </summary>
         /// <param name="locationID"></param>
         /// <returns>A list of location review objects</returns>
-        public List<LocationReview> SelectLocationReviews(int locationID)
+        public List<Reviews> SelectLocationReviews(int locationID)
         {
-            List<LocationReview> locationReviews = new List<LocationReview>();
+            List<Reviews> locationReviews = new List<Reviews>();
 
-            foreach (LocationReview fakeLocationReview in _fakeLocationReviews)
+            foreach (Reviews fakeLocationReview in _fakeLocationReviews)
             {
-                if (fakeLocationReview.LocationID == locationID)
+                if (fakeLocationReview.ForeignID == locationID)
                 {
                     locationReviews.Add(fakeLocationReview);
                 }

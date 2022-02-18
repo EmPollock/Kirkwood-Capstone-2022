@@ -116,7 +116,7 @@
 
             <Button x:Name="btnCreateEvents" Grid.Column="2" Content="Create Event" Margin="0px 10px" Height="50" Width="120" Background="#00000000" Foreground="#FFFFFF99" FontSize="18" Click="btnCreateEvents_Click" />
             <Button x:Name="btnViewEvents" Grid.Column="3" Content="My Events" Margin="0px 10px" Height="50" Width="120" Background="#00000000" Foreground="#FFFFFFFF" FontSize="18" Click="btnViewEvents_Click" />
-            <Button x:Name="btnViewSuppliers" Grid.Column="4" Content="Suppliers" Margin="0px 10px" Height="50" Width="120" Background="#00000000" Foreground="#FFFFFFFF" FontSize="18" />
+            <Button x:Name="btnViewSuppliers" Grid.Column="4" Content="Suppliers" Margin="0px 10px" Height="50" Width="120" Background="#00000000" Foreground="#FFFFFFFF" FontSize="18" Click="btnViewSuppliers_Click" />
             <Button x:Name="btnViewLocations" Grid.Column="5" Content="Locations" Margin="0px 10px" Height="50" Width="120" Background="#00000000" Foreground="#FFFFFFFF" FontSize="18" Click="btnViewLocations_Click" />
             <Button x:Name="btnViewVolunteers" Grid.Column="6" Content="Volunteers" Margin="0px 10px" Height="50" Width="120" Background="#00000000" Foreground="#FFFFFFFF" FontSize="18" Click="btnViewVolunteers_Click" />
             <Button x:Name="btnViewAbout" Grid.Column="7" Content="About" Margin="0px 10px" Height="50" Width="120" Background="#00000000" Foreground="#FFFFFFFF" FontSize="18" />

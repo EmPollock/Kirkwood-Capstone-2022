@@ -14,10 +14,10 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="txtBlkVolunteerList" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Margin="10" 
+        <TextBlock x:Name="txtLocationList" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Margin="10" 
                    HorizontalAlignment="Left" VerticalAlignment="Top" 
                    Style="{StaticResource TitleTextBlockStyle}">
             Locations
@@ -28,7 +28,7 @@
                   Grid.Row="1" Grid.Column="1" MouseDoubleClick="datLocationsList_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Address" Binding="{Binding Address1}"/>
                 <DataGridTextColumn Header="City" Binding="{Binding City}"/>
                 <DataGridTextColumn Header="State" Binding="{Binding State}"/>

@@ -193,5 +193,11 @@ namespace WPFPresentation
             var page = new pgViewLocations();
             this.MainFrame.NavigationService.Navigate(page);
         }
+
+        private void btnViewSuppliers_Click(object sender, RoutedEventArgs e)
+        {
+            var page = new pgViewSuppliers();
+            this.MainFrame.NavigationService.Navigate(page);
+        }
     }
 }

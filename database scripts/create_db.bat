@@ -19,7 +19,8 @@ sqlcmd -S localhost -E -i tables/user_event.sql
 sqlcmd -S localhost -E -i tables/location_image.sql
 sqlcmd -S localhost -E -i tables/review.sql
 sqlcmd -S localhost -E -i tables/availability.sql
-
+sqlcmd -S localhost -E -i tables/tags.sql
+sqlcmd -S localhost -E -i tables/supplier_image.sql
 sqlcmd -S localhost -E -i stored_procedures/event_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/event_date_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/user_stored_procedures.sql
@@ -47,6 +48,10 @@ REM tables/event_date.sql depends on tables/event.sql
 REM tables/user_role depends on tables/user.sql, tables/role.sql
 REM tables/user_event depends on tables/user.sql, tables/event.sql, and tables/role.sql
 REM tables/volunteers.sql depends on tables/role.sql
+REM tables/volunteer_request depends on tables/task.sql, tables/volunteer.sql
+rem supplier_image.sql requires supplier.sql
+rem tags.sql requires supplier.sql
+rem review.sql requires supplier.sql and location.sql
 
 REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 :: ************************
