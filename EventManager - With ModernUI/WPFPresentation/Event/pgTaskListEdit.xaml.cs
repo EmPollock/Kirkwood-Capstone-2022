@@ -25,6 +25,7 @@ namespace WPFPresentation.Event
     public partial class pgTaskListEdit : Page
     {
         DataObjects.TasksVM _task = null;
+        DataObjects.Event _event = null;
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
 
@@ -40,7 +41,7 @@ namespace WPFPresentation.Event
         /// as the selectedTask object along with a list of priorities
         /// </summary>
         /// <param name="selectedTask"></param>
-        public pgTaskListEdit(DataObjects.TasksVM selectedTask)
+        public pgTaskListEdit(DataObjects.TasksVM selectedTask, DataObjects.Event selectedEvent)
         {
             // fake accessors for testing purposes
             //_taskManager = new TaskManager(new TaskAccessorFakes());
@@ -51,6 +52,10 @@ namespace WPFPresentation.Event
             _eventManager = new LogicLayer.EventManager();
 
             _task = selectedTask;
+            _event = selectedEvent;
+
+            _task.TaskEventName = _event.EventName;
+            _task.EventID = _event.EventID;
 
             InitializeComponent();
         }
@@ -82,9 +87,10 @@ namespace WPFPresentation.Event
         /// </summary>
         private void populateControls()
         {
-            txtBlkEventName.Text = "Event Name"; // pass up event name from view
+            txtBlkEventName.Text = _task.TaskEventName; // pass up event name from view
             txtTaskName.Text = _task.Name.ToString();
             txtTaskName.IsReadOnly = true;
+            txtTaskName.IsEnabled = false;
             txtTaskDescription.Text = _task.Description.ToString();
             cboAssign.SelectedItem = "Unavailable"; // pass up volunteer when available
             dtpTaskDueDate.SelectedDate = _task.DueDate;
@@ -114,8 +120,8 @@ namespace WPFPresentation.Event
             }
             else
             {
-                Uri pageUri = new Uri("Event/pgTaskListView.xaml", UriKind.Relative);
-                this.NavigationService.Navigate(pageUri);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                this.NavigationService.Navigate(viewTasksPage);
             }
         }
 
@@ -130,11 +136,17 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnSaveTask_Click(object sender, RoutedEventArgs e)
         {
+            if(txtTaskDescription.Text == "" || txtTaskDescription.Text == null)
+            {
+                MessageBox.Show("Please enter a description field.");
+                txtTaskDescription.Focus();
+                return;
+            }
             int priority = _priorities.First(p => p.Description == cboPriority.Text.ToString()).PriorityID;
 
             var task = new TasksVM()
             {
-                EventID = 100000,
+                EventID = _task.EventID,
                 TaskEventName = _task.TaskEventName,
                 TaskID = _task.TaskID,
                 Name = _task.Name,
@@ -159,8 +171,8 @@ namespace WPFPresentation.Event
             }
             finally
             {
-                Uri pageUri = new Uri("Event/pgTaskListView.xaml", UriKind.Relative);
-                this.NavigationService.Navigate(pageUri);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                this.NavigationService.Navigate(viewTasksPage);
             }
         }
 

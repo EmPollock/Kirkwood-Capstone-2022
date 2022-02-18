@@ -60,17 +60,10 @@ namespace LogicLayer
         {
             bool result = false;
 
-            if(newtask.Name == "" || newtask.Name == null)
-            {
-                throw new ApplicationException("Task name cannot be blank.");
-            }
+            
             if(newtask.Name.Length >= 50)
             {
                 throw new ApplicationException("Task name cannot exceed 50 characters.");
-            }
-            if(newtask.Description == "" || newtask.Description == null)
-            {
-                throw new ApplicationException("Task description cannot be blank.");
             }
             if(newtask.Description.Length >= 255)
             {
@@ -122,7 +115,7 @@ namespace LogicLayer
 
             if (newTask.Name == "" || newTask.Name == null)
             {
-                throw new ApplicationException("Task name cannot be blank.");
+                throw new ApplicationException("Task name cannot be empty.");
             }
             if (newTask.Name.Length >= 50)
             {
@@ -130,7 +123,7 @@ namespace LogicLayer
             }
             if (newTask.Description == "" || newTask.Description == null)
             {
-                throw new ApplicationException("Task description cannot be blank.");
+                throw new ApplicationException("Task description cannot be empty.");
             }
             if (newTask.Description.Length >= 255)
             {

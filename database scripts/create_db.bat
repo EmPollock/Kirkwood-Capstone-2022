@@ -2,12 +2,12 @@ rem server is localhost
 ECHO off
 
 sqlcmd -S localhost -E -i drop_and_create_db.sql
-sqlcmd -S localhost -E -i tables/event.sql
-sqlcmd -S localhost -E -i tables/event_date.sql
 sqlcmd -S localhost -E -i tables/role.sql
 sqlcmd -S localhost -E -i tables/user.sql
 sqlcmd -S localhost -E -i tables/supplier.sql
 sqlcmd -S localhost -E -i tables/location.sql
+sqlcmd -S localhost -E -i tables/event.sql
+sqlcmd -S localhost -E -i tables/event_date.sql
 sqlcmd -S localhost -E -i tables/volunteers.sql
 sqlcmd -S localhost -E -i tables/task.sql
 sqlcmd -S localhost -E -i tables/sublocation.sql

@@ -291,5 +291,11 @@ namespace WPFPresentation.Event
                 txtBlockValidationMessage.Visibility = Visibility.Hidden;
             }
         }
+
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+            pgTaskListView taskViewPage = new pgTaskListView(_event);
+            this.NavigationService.Navigate(taskViewPage);
+        }
     }
 }
