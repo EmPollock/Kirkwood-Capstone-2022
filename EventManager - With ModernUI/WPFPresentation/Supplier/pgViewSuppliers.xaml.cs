@@ -53,9 +53,6 @@ namespace WPFPresentation
             try
             {
                 datSuppliersList.ItemsSource = _supplierManager.RetrieveActiveSuppliers();
-                // remove first two ID columns
-                datSuppliersList.Columns.RemoveAt(0);
-                datSuppliersList.Columns.RemoveAt(0);
             }
             catch(Exception ex)
             {
