@@ -67,6 +67,11 @@ GO
  Updated: 2022/02/17
 
  Description: Added dependencies that were missed previously.
+***************************************************************
+ Kris Howell
+ Updated: 2022/02/17
+
+ Description: Corrected fk_SupplierTagTagID to create foreign key TagID.
 ****************************************************************/
 print '' print '*** creating SupplierTag table'
 CREATE TABLE [dbo].[SupplierTag] (
@@ -75,7 +80,7 @@ CREATE TABLE [dbo].[SupplierTag] (
 	CONSTRAINT [pk_SupplierTagID] PRIMARY KEY([TagID], [SupplierID])
 	,CONSTRAINT [fk_SupplierTagSupplierID] FOREIGN KEY([SupplierID])
 		REFERENCES [Supplier]([SupplierID])
-	,CONSTRAINT [fk_SupplierTagTagID] FOREIGN KEY([SupplierID])
+	,CONSTRAINT [fk_SupplierTagTagID] FOREIGN KEY([TagID])
 		REFERENCES [Tag]([TagID])
 )
 GO
