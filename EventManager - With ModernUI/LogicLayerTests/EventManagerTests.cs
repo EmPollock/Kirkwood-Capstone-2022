@@ -668,28 +668,54 @@ namespace LogicLayerTests
 
             Assert.AreEqual(expected, actual);
         }
+
         /// <summary>
         /// Derrick Nagy
-        /// Created: 2022/02/17
+        /// Created: 2022/02/18
         /// 
         /// Description:
         /// Test that returns the event id
         /// </summary>
         [TestMethod]
-        public void TestCreateEventReturnsEventIDIfCreated()
+        public void TestCreateEventWithUserReturnsEventIDIfCreated()
         {
             // arrange
             const string eventName = "Test";
             const string eventDescription = "Test Description";
             const int expectedEventID = 1000004;
+            const int userID = 100000;
             int actualEventID = 0;
 
             // act
-            actualEventID = _eventManager.CreateEventReturnsEventID(eventName, eventDescription);
+            actualEventID = _eventManager.CreateEventReturnsEventID(eventName, eventDescription, userID);
 
             // assert
             Assert.AreEqual(expectedEventID, actualEventID);
-
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that throws an application exception if there is no name
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestCreateEventWithUserReturnsEventIDThrowsApplicationExceptionIfNoDescription()
+        {
+            // arrange
+            const string eventName = "Test";
+            const string eventDescription = null;
+            const int userID = 100000;
+
+            // act
+            _eventManager.CreateEventReturnsEventID(eventName, eventDescription, userID);
+
+
+            // assert
+            // nothing to assert, exception testing
+        }
+
     }
 }

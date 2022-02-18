@@ -701,7 +701,6 @@ namespace DataAccessLayer
         /// </summary>
         /// <param name="eventListRef">Takes an eventvm list</param>
         /// <returns>A list of Events with no duplicate EventIDs and all the EventDates in a list in the Event object</returns>
-
         private List<EventVM> eventDateVMHelper(List<EventVM> eventListRef)
         {
             List<EventVM> eventList = new List<EventVM>();
@@ -744,82 +743,36 @@ namespace DataAccessLayer
             return noDuplicates;
         }
 
-        //private List<EventVM> eventDateVMHelper(List<EventVM> eventListRef)
-        //{
-        //    List<EventVM> eventList = new List<EventVM>();
-        //    List<EventDate> allDates = new List<EventDate>();
-        //    if (eventListRef.Count > 0)
-        //    {
-        //        foreach (EventVM item in eventListRef)
-        //        {
-        //            allDates.Add(item.EventDates[0]);
-
-        //            eventList.Add(new EventVM()
-        //            {
-        //                EventID = item.EventID,
-        //                EventName = item.EventName,
-        //                EventDescription = item.EventDescription,
-        //                EventCreatedDate = item.EventCreatedDate,
-        //                EventDates = new List<EventDate>()
-        //            });
-        //        }
-        //    }
-
-        //    //remove duplicates
-        //    List<EventVM> noDuplicates = eventList.GroupBy(e => e.EventID).Select(e => e.First()).ToList();
-
-        //    foreach (EventVM item in eventList)
-        //    {
-        //        for (int i = 0; i < allDates.Count; i++)
-        //        {
-        //            if (item.EventID == allDates[i].EventID)
-        //            {
-        //                item.EventDates.Add(allDates[i]);
-        //            }
-        //        }
-        //    }
-
-        //    // sort by earliest date
-        //    noDuplicates.Sort((ev1, ev2) => ev1.EventDates[0].EventDateID.CompareTo(ev2.EventDates[0].EventDateID));
-
-        //    return noDuplicates;
-        //}
-
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-
-        //    return rowsAffected;
-        //}
         /// <summary>
         /// Derrick Nagy
-        /// Created: 2022/02/17
+        /// Created: 2022/02/18
         /// 
         /// Description:
         /// Inserts an event into the database and returns the auto-increment value created for the event id
         /// </summary>
-        /// <param name="eventName">The name of the event</param>
+        /// <param name="eventName">The name of the evnet</param>
         /// <param name="eventDescription">The description of the event</param>
-        /// <returns>Event ID as an int</returns>
-        public int InsertEventReturnsEventID(string eventName, string eventDescription)
+        /// <param name="userID">The userID of the user who created the event</param>
+        /// <returns></returns>
+        public int InsertEventReturnsEventID(string eventName, string eventDescription, int userID)
         {
-
             int eventID = 0;
 
             // connection
             var conn = DBConnection.GetConnection();
 
-            string cmdTxt = "sp_insert_event_return_event_id";
+            string cmdTxt = "sp_insert_event_with_user_ID_return_event_id";
             var cmd = new SqlCommand(cmdTxt, conn);
 
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
 
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
+            cmd.Parameters["@UserID"].Value = userID;
 
             try
             {

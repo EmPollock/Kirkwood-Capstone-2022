@@ -244,19 +244,20 @@ namespace DataAccessFakes
 
         /// <summary>
         /// Derrick Nagy
-        /// Created: 2022/02/17
+        /// Created: 2022/02/18
         /// 
         /// Description:
         /// Inserts a fake event into the database and returns the auto-increment value created for the event id
+        /// 
         /// </summary>
-        /// <param name="eventName"></param>
-        /// <param name="eventDescription"></param>
+        /// <param name="eventName">The name of the event</param>
+        /// <param name="eventDescription">The name of the description</param>
+        /// <param name="userID">The user id to associate with the event</param>
         /// <returns></returns>
-        public int InsertEventReturnsEventID(string eventName, string eventDescription)
+        public int InsertEventReturnsEventID(string eventName, string eventDescription, int userID)
         {
             int eventID = _fakeEvents.Last().EventID + 1;
 
-            // I am not digging _fakeEvents being a list of EventVM
             _fakeEvents.Add(new EventVM()
             {
                 EventID = eventID,

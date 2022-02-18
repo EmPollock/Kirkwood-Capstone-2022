@@ -194,7 +194,6 @@ namespace LogicLayer
             return eventToGet;
         }
 
-
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/02/06
@@ -407,33 +406,6 @@ namespace LogicLayer
             return result;
 
         }
-        /// <summary>
-        /// Derrick Nagy
-        /// Created: 2022/02/17
-        /// 
-        /// Description:
-        /// Called the accessor that creates an event the event id
-        /// </summary>
-        /// <param name="eventName">The name of the event</param>
-        /// <param name="eventDescription">The description of the event</param>
-        /// <returns>Event ID as an int</returns>
-        public int CreateEventReturnsEventID(string eventName, string eventDescription)
-        {
-            int eventID;
-            // green
-            // eventID = 1000000;
-            throwExceptionsForBadEventNameOrDescription(eventName, eventDescription);
-            try
-            {
-                eventID = _eventAccessor.InsertEventReturnsEventID(eventName, eventDescription);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return eventID;
-        }
 
         /// <summary>
         /// Derrick Nagy
@@ -464,6 +436,36 @@ namespace LogicLayer
             {
                 throw new ApplicationException("Description can not over 1000 characters.");
             }
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Creates an event and returns the event id
+        /// </summary>
+        /// <param name="eventName">The name of the evnet</param>
+        /// <param name="eventDescription">The description of the evnet</param>
+        /// <param name="userID">The userO</param>
+        /// <returns></returns>
+        public int CreateEventReturnsEventID(string eventName, string eventDescription, int userID)
+        {
+            int eventID;
+            // green
+            //eventID = 1000004;
+
+            throwExceptionsForBadEventNameOrDescription(eventName, eventDescription);
+            try
+            {
+                eventID = _eventAccessor.InsertEventReturnsEventID(eventName, eventDescription, userID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventID;
         }
     }
 }

@@ -10,7 +10,8 @@ namespace DataAccessInterfaces
     public interface IEventAccessor
     {
         int InsertEvent(string eventName, string eventDescription);
-        int InsertEventReturnsEventID(string eventName, string eventDescription);
+        int InsertEventReturnsEventID(string eventName, string eventDescription, int userID);
+
         List<EventVM> SelectActiveEvents();
         int UpdateEvent(EventVM oldEvent, EventVM newEvent);
         EventVM SelectEventByEventNameAndDescription(string eventName, string eventDescription);

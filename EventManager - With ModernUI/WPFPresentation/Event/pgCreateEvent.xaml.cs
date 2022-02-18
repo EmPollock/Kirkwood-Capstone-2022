@@ -55,7 +55,7 @@ namespace WPFPresentation
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
             //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            // _locationManager = new LocationManager(new LocationAccessorFake());
+            //_locationManager = new LocationManager(new LocationAccessorFake());
 
             // use default accessor
             _eventManager = new LogicLayer.EventManager();
@@ -122,7 +122,7 @@ namespace WPFPresentation
                 {
                     newEvent = new DataObjects.Event()
                     {
-                        EventID = _eventManager.CreateEventReturnsEventID(txtBoxEventName.Text, txtBoxEventDescription.Text),
+                        EventID = _eventManager.CreateEventReturnsEventID(txtBoxEventName.Text, txtBoxEventDescription.Text, _user.UserID),
                         EventName = txtBoxEventName.Text,
                         EventDescription = txtBoxEventDescription.Text
                     };
@@ -398,6 +398,7 @@ namespace WPFPresentation
                 }
             }
         }
+
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/17

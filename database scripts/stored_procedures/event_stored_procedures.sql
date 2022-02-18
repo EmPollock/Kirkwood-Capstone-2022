@@ -450,3 +450,65 @@ AS
 
 	END	
 GO
+
+
+-- sp_insert_event_with_user_ID_return_event_id
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/18
+
+Description:
+Stored procedure to insert an event into the events table that returns the EventID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_insert_event_with_user_ID_return_event_id'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_event_with_user_ID_return_event_id]
+(
+	@EventName			nvarchar(50)
+	,@EventDescription	nvarchar(1000)
+	,@UserID			int
+)
+AS
+	BEGIN -- SP
+		BEGIN TRAN
+			BEGIN TRY
+			
+				DECLARE @EventID INT
+			
+				-- insert into event the record	
+				INSERT INTO [dbo].[Event]
+				(
+					[EventName]				
+					,[EventDescription]	
+				)
+				OUTPUT Inserted.EventID
+				VALUES
+				(@EventName, @EventDescription)
+				
+				SET @EventID = SCOPE_IDENTITY()
+								
+				-- insert into UserEvent				
+				INSERT INTO [dbo].[UserEvent]
+				(
+					[UserID]
+					, [RoleID]
+					, [EventID]
+				)
+				VALUES
+				(@UserID, 'Event Planner', @EventID)
+				, (@UserID, 'Event Manager', @EventID)
+				
+				COMMIT TRANSACTION
+				
+			END TRY
+			BEGIN CATCH
+				ROLLBACK TRANSACTION
+			END CATCH
+	END	-- SP
+GO
