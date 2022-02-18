@@ -279,7 +279,6 @@
                                 <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat=\{0:hh:mm tt\}}"/>
                             </DataGrid.Columns>
 
-
                         </DataGrid>
 
                     </Grid>
@@ -290,8 +289,8 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="btnEventDateNext" Grid.Row="0" Grid.Column="0" Margin="40,5" Content="Next" IsTabStop="False" Click="btnEventNext_Click" HorizontalAlignment="Right"/>
-                        <Button x:Name="btnEventDateCancel" Grid.Row="0" Grid.Column="1" Margin="40,5" Content="Cancel" HorizontalAlignment="Left" Click="btnEventCancel_Click"/>
+                        <Button x:Name="btnEventDateNext" Grid.Row="0" Grid.Column="0" Margin="40,5" Content="Next" IsTabStop="False"  HorizontalAlignment="Right" Click="btnEventDateNext_Click"/>
+                        <Button x:Name="btnEventDateCancel" Grid.Row="0" Grid.Column="1" Margin="40,5" Content="Cancel" HorizontalAlignment="Left" Click="btnEventDateCancel_Click" />
 
                     </Grid>
 

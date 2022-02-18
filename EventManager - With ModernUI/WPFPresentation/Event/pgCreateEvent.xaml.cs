@@ -28,6 +28,8 @@ namespace WPFPresentation
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
 
+        EventVM newEventVM = new EventVM();
+
 
         /// <summary>
         /// Derrick Nagy
@@ -322,14 +324,12 @@ namespace WPFPresentation
                     txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                 }
-                else if (startHour == endHour)
-                {
-                    if (startMin >= endMin)
-                    {
-                        txtBoxEventEndTimeMinute.Focus();
-                        txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
-                        txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                    }
+                else if (startHour == endHour && startMin >= endMin)
+                {   
+                    txtBoxEventEndTimeMinute.Focus();
+                    txtBlockEventAddValidationMessage.Text = "The end time is before the start time or at the same time. Please change.";
+                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                    
                 }
                 else
                 {
@@ -337,18 +337,21 @@ namespace WPFPresentation
                     {
                         int eventID = _eventManager.RetrieveEventByEventNameAndDescription(txtBoxEventName.Text, txtBoxEventDescription.Text).EventID;
 
-                        EventDate eventDate = new EventDate()
+                        //_eventDateManager.CreateEventDate(eventDate);
+                        newEventVM.EventDates.Add(new EventDate()
                         {
                             EventDateID = dateTimeToAdd,
                             EventID = eventID,
                             StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
                             EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
                             Active = true
-                        };
+                        });
 
-                        _eventDateManager.CreateEventDate(eventDate);                        
+                        //datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(eventID);
+                        datCurrentEventDates.ItemsSource = null;
+                        datCurrentEventDates.ItemsSource = newEventVM.EventDates;
+                        
 
-                        datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(eventID);
                         datCurrentEventDates.Visibility = Visibility.Visible;
                         txtBlkCurrentEventDates.Visibility = Visibility.Visible;
 
@@ -446,6 +449,94 @@ namespace WPFPresentation
                 {
                     MessageBox.Show("There was a problem adding this location to the event.\n\n"  + ex.Message + "\n\n\n" + ex.InnerException.Message);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Added click event for Event date. Adds the list of event dates to the database
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEventDateNext_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (newEventVM.EventDates.Count > 0)
+            {
+                try
+                {
+                    foreach (EventDate date in newEventVM.EventDates)
+                    {
+                        _eventDateManager.CreateEventDate(date);
+                    }
+
+                    String message = (newEventVM.EventDates.Count == 1) ? "The event date was successfully added." : "The " + newEventVM.EventDates.Count + " event dates were successfully added.";
+
+                    MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    Page page = new pgViewEvents();
+                    this.NavigationService.Navigate(page);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you are finished with this tab?", "Finished?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Cancel:
+                        break;
+                    case MessageBoxResult.Yes:
+
+                        newEventVM.EventDates = new List<EventDate>();
+                        Page page = new pgViewEvents();
+                        this.NavigationService.Navigate(page);
+
+                        break;
+                    case MessageBoxResult.No:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/01/31
+        /// 
+        /// Description:
+        /// Cancel adding event dates
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEventDateCancel_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you are finished with this tab?", "Finished?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+            switch (result)
+            {
+                case MessageBoxResult.Cancel:
+                    break;
+                case MessageBoxResult.Yes:
+                    newEventVM.EventDates = new List<EventDate>();
+                    Page page = new pgViewEvents();
+                    this.NavigationService.Navigate(page);
+
+                    break;
+                case MessageBoxResult.No:
+                    break;
+                default:
+                    break;
             }
         }
     }

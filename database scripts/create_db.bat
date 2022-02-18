@@ -38,7 +38,6 @@ sqlcmd -S localhost -E -i stored_procedures/availability_stored_procedures.sql
 
 rem list depenecies after this line:
 rem task.sql requires event.sql
-rem tables/event_date.sql depends on tables/event.sql
 rem activity.sql requires event.sql, event_date.sql, and sublocation.sql 
 rem activity_result.sql requires activity.sql
 rem supplier.sql requires user.sql
