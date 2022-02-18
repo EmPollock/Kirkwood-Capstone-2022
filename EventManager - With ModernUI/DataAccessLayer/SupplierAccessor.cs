@@ -19,6 +19,12 @@ namespace DataAccessLayer
         /// Description:
         /// Select all active suppliers from tadpole_db
         /// 
+        /// Kris Howell
+        /// Updated: 2022/02/18
+        /// 
+        /// Description:
+        /// Add City, State, ZipCode to match sp
+        /// 
         /// </summary>
         /// <returns>List of all active suppliers</returns>
         public List<Supplier> SelectActiveSuppliers()
@@ -49,8 +55,11 @@ namespace DataAccessLayer
                             Phone = reader.GetString(4),
                             Email = reader.GetString(5),
                             TypeID = reader.GetString(6),
-                            Address1 = reader.IsDBNull(7) ? null : reader.GetString(7),
+                            Address1 = reader.GetString(7),
                             Address2 = reader.IsDBNull(8) ? null : reader.GetString(8),
+                            City = reader.GetString(9),
+                            State = reader.GetString(10),
+                            ZipCode = reader.GetString(11),
                             Active = true
                         });
                     }

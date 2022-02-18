@@ -26,6 +26,12 @@ namespace DataAccessFakes
         /// 
         /// Description: 
         /// Added fake reviews and image paths
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/02/18
+        /// 
+        /// Description:
+        /// Add City, State, and Zip to supplier fakes
         /// </summary>
         public SupplierAccessorFake()
         {
@@ -40,6 +46,9 @@ namespace DataAccessFakes
                 TypeID = "Vendor",
                 Address1 = "Test Supplier 1 Street",
                 Address2 = "Apt 1",
+                City = "Cedar Rapids",
+                State = "Iowa",
+                ZipCode = "52404",
                 Tags = new List<string>()
                 {
                     "Test Tag 1",
@@ -59,6 +68,9 @@ namespace DataAccessFakes
                 TypeID = "Vendor",
                 Address1 = "Test Supplier 2 Street",
                 Address2 = "Apt 2",
+                City = "Iowa City",
+                State = "Iowa",
+                ZipCode = "52240",
                 Tags = new List<string>()
                 {
                     "Test Tag 1",
@@ -78,6 +90,9 @@ namespace DataAccessFakes
                 TypeID = "Vendor",
                 Address1 = "Test Supplier 3 Street",
                 Address2 = "Apt 3",
+                City = "Cedar Rapids",
+                State = "Iowa",
+                ZipCode = "52404",
                 Tags = new List<string>()
                 {
                     "Test Tag 1",
@@ -97,6 +112,9 @@ namespace DataAccessFakes
                 TypeID = "Vendor",
                 Address1 = "Test Supplier 4 Street",
                 Address2 = "Apt 4",
+                City = "Iowa City",
+                State = "Iowa",
+                ZipCode = "52240",
                 Tags = new List<string>()
                 {
                     "Test Tag 1",

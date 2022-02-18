@@ -50,6 +50,13 @@ Created: 2022/01/27
 
 Description:
 Supplier table
+****************************************************************
+Kris Howell
+Updated: 2022/02/18
+
+Description:
+Add City, State, and Zip.  
+Address1 and Address2 pair must be unique.
 ****************************************************************/
 
 print '' print '*** creating Supplier table ***'
@@ -61,8 +68,11 @@ CREATE TABLE [dbo].[Supplier] (
 	,[SupplierPhone]		[nvarchar](15)				NOT NULL
 	,[SupplierEmail]		[nvarchar](250)				NOT NULL
 	,[SupplierTypeID]		[nvarchar](10)				NOT NULL
-	,[SupplierAddress1]		[nvarchar](100)				NULL
+	,[SupplierAddress1]		[nvarchar](100)				NOT NULL
 	,[SupplierAddress2]		[nvarchar](100)				NULL
+	,[SupplierCity]			[nvarchar](100)				NOT NULL
+	,[SupplierState]		[nvarchar](100)				NOT NULL
+	,[SupplierZipCode]		[nvarchar](100)				NOT NULL
 	,[Active]				[bit]						NOT NULL DEFAULT 1
 	
 
@@ -72,7 +82,7 @@ CREATE TABLE [dbo].[Supplier] (
 	,CONSTRAINT [fk_UserID] FOREIGN KEY([UserID])
 		REFERENCES [Users]([UserID])
 	,CONSTRAINT [ak_SupplierEmail] UNIQUE([SupplierEmail])
-	,CONSTRAINT [ak_SupplierAddress1] UNIQUE([SupplierAddress1])
+	,CONSTRAINT [ak_SupplierAddress] UNIQUE([SupplierAddress1],[SupplierAddress2])
 )
 GO
 
@@ -82,6 +92,13 @@ Created: 2022/01/27
  
 Description:
 Test records for supplier table
+****************************************************************
+Kris Howell
+Updated: 2022/02/18
+
+Description:
+Added City, State, and ZipCode fields
+Added new test supplier
 ****************************************************************/
 print '' print '*** test records for Supplier table ***'
 GO
@@ -94,7 +111,11 @@ INSERT INTO [dbo].[Supplier] (
 	,[SupplierTypeID]
 	,[SupplierAddress1]
 	,[SupplierAddress2]
+	,[SupplierCity]
+	,[SupplierState]
+	,[SupplierZipCode]
 )VALUES 
-	(100000, "McSupplier", "I'm liking it.", "999-999-9999", "mcsupplier@suppliers.com", "Vendor", "123 McSupplier Lane", null)
+	(100000, "McSupplier", "I'm liking it.", "999-999-9999", "mcsupplier@suppliers.com", "Vendor", "123 McSupplier Lane", null, "Cedar Rapids", "Iowa", "52404")
+	,(100000, "Supplier King", "Supply it your way.", "888-888-8888", "supplierking@suppliers.com", "Vendor", "456 Supplier King Blvd", null, "Iowa City", "Iowa", "52240")
 GO
 
