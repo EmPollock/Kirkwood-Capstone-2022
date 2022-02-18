@@ -12,6 +12,7 @@ namespace DataAccessFakes
     public class EventDateAccessorFake : IEventDateAccessor
     {
         private List<EventDate> _fakeEventDate = new List<EventDate>();
+        private List<EventDateVM> _fakeEventDatesForLocation = new List<EventDateVM>();
 
         /// <summary>
         /// Derrick Nagy
@@ -30,7 +31,7 @@ namespace DataAccessFakes
                 StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
                 EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
                 Active = true
-            }) ;
+            });
 
             _fakeEventDate.Add(new EventDate()
             {
@@ -72,6 +73,39 @@ namespace DataAccessFakes
             _fakeEventDate.Add(new EventDate()
             {
                 EventDateID = new DateTime(2022, 06, 01),
+                EventID = 3,
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            });
+
+            _fakeEventDatesForLocation.Add(new EventDateVM()
+            {
+                EventDateID = new DateTime(2022, 06, 01),
+                EventName = "Fake Event Number 1",
+                LocationID = 100000,
+                EventID = 3,
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            });
+
+            _fakeEventDatesForLocation.Add(new EventDateVM()
+            {
+                EventDateID = new DateTime(2022, 06, 02),
+                EventName = "Fake Event Number 2",
+                LocationID = 100000,
+                EventID = 3,
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            });
+
+            _fakeEventDatesForLocation.Add(new EventDateVM()
+            {
+                EventDateID = new DateTime(2022, 06, 03),
+                EventName = "Fake Event Number 1",
+                LocationID = 100000,
                 EventID = 3,
                 StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
                 EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
@@ -122,7 +156,8 @@ namespace DataAccessFakes
         /// <returns>fake EventDate object</returns>
         public EventDate SelectEventDateByEventDateIDAndEventID(DateTime eventDateID, int eventID)
         {
-            try{
+            try
+            {
                 foreach (EventDate eventDate in _fakeEventDate)
                 {
                     if (eventDate.EventDateID == eventDateID && eventDate.EventID == eventID)
@@ -162,5 +197,62 @@ namespace DataAccessFakes
 
             return eventDates;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Updates an event date in fake data list
+        /// 
+        /// </summary>
+        /// <returns>int number of records affected</returns>
+        public int UpdateEventDate(EventDate oldEventDate, EventDate newEventDate)
+        {
+            int rowsAffected = 0;
+
+            foreach (var fakeEventDate in _fakeEventDate)
+            {
+                if (fakeEventDate.EventID == newEventDate.EventID
+                    && fakeEventDate.EventDateID == oldEventDate.EventDateID
+                    && fakeEventDate.StartTime == oldEventDate.StartTime
+                    && fakeEventDate.EndTime == oldEventDate.EndTime
+                    && fakeEventDate.Active == oldEventDate.Active)
+                {
+                    fakeEventDate.EventDateID = newEventDate.EventDateID;
+                    fakeEventDate.StartTime = newEventDate.StartTime;
+                    fakeEventDate.EndTime = newEventDate.EndTime;
+                    fakeEventDate.Active = newEventDate.Active;
+
+                    rowsAffected++;
+                }
+            }
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/03
+        /// 
+        /// Description:
+        /// The fake accessor for selecting event dates by their locationID
+        /// </summary>
+        /// /// <param name="locationID"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
+        public List<EventDateVM> SelectEventDatesByLocationID(int locationID)
+        {
+            List<EventDateVM> eventDatesForLocation = new List<EventDateVM>();
+
+            _fakeEventDatesForLocation.ForEach(ed =>
+            {
+                if (ed.LocationID == locationID)
+                {
+                    eventDatesForLocation.Add(ed);
+                }
+            });
+
+            return eventDatesForLocation;
+        }
     }
 }
+

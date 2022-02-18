@@ -175,5 +175,125 @@ namespace DataAccessLayer
 
             return eventDates;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Updates a record in the EventDate table
+        /// 
+        /// </summary>
+        /// <returns>int rows affected</returns>
+        public int UpdateEventDate(EventDate oldEventDate, EventDate newEventDate)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_update_event_date";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@EventID", oldEventDate.EventID);
+
+            cmd.Parameters.Add("@OldEventDateID", SqlDbType.DateTime2);
+            cmd.Parameters["@OldEventDateID"].Value = oldEventDate.EventDateID;
+
+            cmd.Parameters.Add("@OldStartTime", SqlDbType.DateTime2);
+            cmd.Parameters["@OldStartTime"].Value = oldEventDate.StartTime;
+
+            cmd.Parameters.Add("@OldEndTime", SqlDbType.DateTime2);
+            cmd.Parameters["@OldEndTime"].Value = oldEventDate.EndTime;
+
+            cmd.Parameters.Add("@OldActive", SqlDbType.Bit);
+            cmd.Parameters["@OldActive"].Value = oldEventDate.Active;
+
+            cmd.Parameters.Add("@NewEventDateID", SqlDbType.DateTime2);
+            cmd.Parameters["@NewEventDateID"].Value = newEventDate.EventDateID;
+
+            cmd.Parameters.Add("@NewStartTime", SqlDbType.DateTime2);
+            cmd.Parameters["@NewStartTime"].Value = newEventDate.StartTime;
+
+            cmd.Parameters.Add("@NewEndTime", SqlDbType.DateTime2);
+            cmd.Parameters["@NewEndTime"].Value = newEventDate.EndTime;
+
+            cmd.Parameters.Add("@NewActive", SqlDbType.Bit);
+            cmd.Parameters["@NewActive"].Value = newEventDate.Active;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/10
+        /// 
+        /// Description:
+        /// Accessor method for selecting event dates by LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
+        public List<EventDateVM> SelectEventDatesByLocationID(int locationID)
+        {
+            List<EventDateVM> eventDatesForLocation = new List<EventDateVM>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_event_dates_by_location_id";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+
+            cmd.Parameters["@LocationID"].Value = locationID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventDatesForLocation.Add(new EventDateVM()
+                        {
+                            LocationID = locationID,
+                            EventDateID = DateTime.Parse(reader["EventDateID"].ToString()),
+                            EventID = reader.GetInt32(1),
+                            EventName = reader.GetString(2),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            Active = true
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return eventDatesForLocation;
+        }
     }
 }

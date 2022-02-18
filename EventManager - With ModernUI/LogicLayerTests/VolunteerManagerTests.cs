@@ -29,11 +29,6 @@ namespace LogicLayerTests
         /// Description:
         /// The test initializer
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         [TestInitialize]
         public void TestInitialize()
         {
@@ -47,12 +42,6 @@ namespace LogicLayerTests
         /// Description:
         /// Test that returns the amount of volunteers retrieved
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
-
         [TestMethod]
         public void TestRetrieveAllVolunteerReturnsThree()
         {
@@ -75,11 +64,6 @@ namespace LogicLayerTests
         /// Description:
         /// Test that returns the amount of volunteer reviews retrieved
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         [TestMethod]
         public void TestRetrieveAllVolunteerReviewsReturnsThree()
         {

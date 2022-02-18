@@ -49,8 +49,9 @@
     <Compile Include="EventDate.cs" />
     <Compile Include="IntegerValidationHelpers.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="LocationAvailability.cs" />
     <Compile Include="LocationImage.cs" />
-    <Compile Include="LocationReview.cs" />
+    <Compile Include="Reviews.cs" />
     <Compile Include="Priority.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringValidationHelpers.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="User.cs" />
     <Compile Include="ValidationHelpers.cs" />
     <Compile Include="Volunteer.cs" />
+    <Compile Include="VolunteerRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -307,7 +307,6 @@ namespace DataAccessFakes
         /// 
         /// </summary>
         /// <returns>List of active events</returns>
-        /// 
         public List<Event> SelectActiveEvents()
         {
             List<Event> events = new List<Event>();
@@ -509,7 +508,6 @@ namespace DataAccessFakes
         /// 
         /// </summary>
         /// <returns>int number of records affected</returns>
-        /// 
         public int UpdateEvent(Event oldEvent, Event newEvent)
         {
             int rowsAffected = 0;

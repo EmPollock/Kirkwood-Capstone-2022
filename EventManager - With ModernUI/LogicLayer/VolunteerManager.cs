@@ -27,11 +27,6 @@ namespace LogicLayer
         /// Description:
         /// Constructor for volunteer manager using the volunteer accessor
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         public VolunteerManager()
         {
             _volunteerAccessor = new VolunteerAccessor();
@@ -44,11 +39,6 @@ namespace LogicLayer
         /// Description:
         /// Constructor that takes an IVolunteerAccessor and sets it to the _volunteerAccessor field. For passing test data for the manager.
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="volunteerAccessor">The custom accessor being passed through</param>
         public VolunteerManager(IVolunteerAccessor volunteerAccessor)
         {
@@ -62,12 +52,6 @@ namespace LogicLayer
         /// Description:
         /// Method to retrieve a list of all volunteer reviews
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
-        /// <exception cref="Exception">Retrieval fails</exception>
         /// <returns>A list of volunteer data object shells for the volunteer ID and rating</returns>
         public List<Volunteer> RetrieveAllVolunteerReviews()
         {
@@ -93,14 +77,7 @@ namespace LogicLayer
         /// Description:
         /// Method used to retrieve a list of all volunteers to display on the Volunteers tab / page
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
-        /// <exception cref="Exception">Retrieval fails</exception>
         /// <returns>A list of volunteer data objects</returns>
-
         public List<Volunteer> RetrieveAllVolunteers()
         {
             List<Volunteer> volunteers = new List<Volunteer>();

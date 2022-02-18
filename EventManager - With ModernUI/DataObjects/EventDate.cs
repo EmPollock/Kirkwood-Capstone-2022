@@ -38,4 +38,11 @@ namespace DataObjects
             Active = true;
         }
     }
+
+    public class EventDateVM : EventDate
+    {
+        new public DateTime EventDateID { get; set; }
+        public string EventName { get; set; }
+        public int LocationID { get; set; }
+    }
 }

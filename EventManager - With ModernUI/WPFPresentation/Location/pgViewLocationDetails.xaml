@@ -22,17 +22,19 @@
                 <RowDefinition Height="70"/>
                 <RowDefinition Height="70"/>
                 <RowDefinition Height="70"/>
+                <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
 
-            <Button x:Name="btnSiteAreas" Content="Site Areas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-            <Button x:Name="btnSiteSchedule" Content="Site Schedule" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-            <Button x:Name="btnSiteMap" Content="Site Map" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-            <Button x:Name="btnSiteParking" Content="Site Parking" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-            <Button x:Name="btnSiteEntrances" Content="Site Schedule" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-            <Button x:Name="btnSiteSupplies" Content="Site Supplies" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+            <Button x:Name="btnSiteDetails" Content="Site Details" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteDetails_Click"/>
+            <Button x:Name="btnSiteAreas" Grid.Row="1" Content="Site Areas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+            <Button x:Name="btnSiteSchedule" Content="Site Schedule" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteSchedule_Click"/>
+            <Button x:Name="btnSiteMap" Content="Site Map" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+            <Button x:Name="btnSiteParking" Content="Site Parking" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+            <Button x:Name="btnSiteEntrances" Content="Site Entrances" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+            <Button x:Name="btnSiteSupplies" Content="Site Supplies" Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
         </Grid>
 
-        <ScrollViewer Grid.Column="1">
+        <ScrollViewer x:Name="scrLocationDetails" Grid.Column="1" Visibility="Collapsed">
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -154,6 +156,29 @@
                 <TextBox   x:Name="txtBoxReviews" Grid.Row="9" Margin="20 10" IsReadOnly="True"/>
                 <TextBox   x:Name="txtBoxReviewsSecond" Grid.Row="10" Margin="20 10" IsReadOnly="True"/>
                 <Button    x:Name="btnMoreReviews" Grid.Row="11" Content="More reviews..." FontWeight="Medium" Margin="20 0" Background="{x:Null}"/>
+            </Grid>
+        </ScrollViewer>
+
+        <ScrollViewer x:Name="scrLocationSchedule" Grid.Column="1">
+            <Grid Grid.Column="1" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock  x:Name="txtLocationNamesSchedule" Text="Location Name's Schedule" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}"/>
+                <Calendar   x:Name="calLocationCalendar" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="1000" SelectedDatesChanged="calLocationCalendar_SelectedDatesChanged"/>
+
+                <TextBlock x:Name="lblLocationDate" Grid.Row="2" HorizontalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}"/>
+                <DataGrid   x:Name="datLocationSchedule" Grid.Row="3" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsSynchronizedWithCurrentItem="True" HorizontalContentAlignment="Center" MinColumnWidth="100" SelectionMode="Single" Padding="0" OverridesDefaultStyle="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Event Name" Binding="{Binding EventName}"/>
+                        <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime, StringFormat='hh:mm tt'}"/>
+                        <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat='hh:mm tt'}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </ScrollViewer>
     </Grid>

@@ -116,3 +116,87 @@ AS
 			AND [EventID] = @EventID
 	END	
 GO
+
+/***************************************************************
+Jace Pettinger
+Created: 2022/02/08
+
+Description:
+Stored procedure to update an event date from the EventDate table
+
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_update_event_date***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_event_date]
+(
+	@EventID 				[int],
+	@OldEventDateID			[Date],
+	@OldStartTime			[Time](0),
+	@OldEndTime				[Time](0),
+	@OldActive				[bit],
+	@NewEventDateID			[Date],
+	@NewStartTime			[Time](0),
+	@NewEndTime				[Time](0),
+	@NewActive				[bit]
+)
+AS
+	BEGIN
+		UPDATE	[EventDate]
+		SET	
+			[EventDateID] = @NewEventDateID,
+			[StartTime] = @NewStartTime,
+			[EndTime] = @NewEndTime,
+			[Active] = @NewActive
+		WHERE
+			[EventID] = @EventID
+		  AND
+			@OldEventDateID = [EventDateID]
+		  AND	
+			@OldStartTime = [StartTime]
+		  AND
+			@OldEndTime = [EndTime]
+		  AND
+			@OldActive = [Active]
+		RETURN @@ROWCOUNT
+	END
+GO
+
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/02/10
+
+Description:
+Stored procedure to select the event dates associated with a 
+locationID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_event_dates_by_location_id'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_dates_by_location_id](
+	@LocationID			[int] 
+)
+AS
+	BEGIN
+		SELECT 
+			[EventDateID],
+			[Event].[EventID],
+			[EventName],
+			[StartTime],
+			[EndTime]
+		FROM [dbo].[EventDate]
+		JOIN [Event] ON [EventDate].[EventID] = [Event].[EventID]
+		WHERE [Event].[Active] = 1
+		AND   [LocationID] = @LocationID
+	END	
+GO

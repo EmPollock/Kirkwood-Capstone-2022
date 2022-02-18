@@ -123,7 +123,9 @@ namespace LogicLayer
         /// Description:
         /// Updates an Event record in data source
         /// </summary>
-        /// <returns>List of active events</returns>
+        /// <param name="oldEvent">The record previously stored</param>
+        /// <param name="newEvent">The new record containing the updates to the old</param>
+        /// <returns>True or false if one record was updated</returns>
         public bool UpdateEvent(Event oldEvent, Event newEvent)
         {
             bool result = false;
@@ -151,10 +153,10 @@ namespace LogicLayer
             {
                 result = 1 == _eventAccessor.UpdateEvent(oldEvent, newEvent);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
 
             return result;

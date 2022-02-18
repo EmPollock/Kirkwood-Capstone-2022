@@ -8,10 +8,30 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="pgViewSuppliers" Loaded="Page_Loaded">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="datSuppliersList" SelectionMode="Single" IsReadOnly="True" Grid.Column="1"/>
+        <TextBlock x:Name="txtSupplierList" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Margin="10" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top" 
+                   Style="{StaticResource TitleTextBlockStyle}">
+            Suppliers
+        </TextBlock>
+        <DataGrid x:Name="datSuppliersList" SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="False"
+                  ItemsSource="{Binding}" HorizontalAlignment="Left" HorizontalContentAlignment="Center" 
+                  MinColumnWidth="100" CanUserResizeColumns="False"
+                  Grid.Row="1" Grid.Column="1" MouseDoubleClick="datSuppliersList_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address1}"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}"/>
+                <DataGridTextColumn Header="State" Binding="{Binding State}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

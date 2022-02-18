@@ -26,11 +26,6 @@ namespace DataAccessLayer
         /// Accessor method that that selects all volunteer reviews and returns a list of them in the form of 
         /// a volunteer data object
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <returns>A list of volunteer data object shells that records the Volunteer ID and rating</returns>
         public List<Volunteer> SelectAllVolunteerReviews()
         {
@@ -80,11 +75,6 @@ namespace DataAccessLayer
         /// Accessor method that that selects all volunteers and returns a list of them in the form of 
         /// a volunteer data object
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <returns>A list volunteer data object</returns>
         public List<Volunteer> SelectAllVolunteers()
         {

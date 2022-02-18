@@ -133,11 +133,6 @@ namespace LogicLayer
         /// Description:
         /// Method to retrieve a location by its LocationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A Location object</returns>
         public Location RetrieveLocationByLocationID(int locationID)
@@ -202,11 +197,6 @@ namespace LogicLayer
         /// Description:
         /// Method to retrieve location images by its LocationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A list of LocationImage objects</returns>
         public List<LocationImage> RetrieveLocationImagesByLocationID(int locationID)
@@ -233,16 +223,11 @@ namespace LogicLayer
         /// Description:
         /// Method to retrieve location reviews by its LocationID
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         /// <param name="locationID"></param>
         /// <returns>A list of LocationReview objects</returns>
-        public List<LocationReview> RetrieveLocationReviews(int locationID)
+        public List<Reviews> RetrieveLocationReviews(int locationID)
         {
-            List<LocationReview> locationReviews = new List<LocationReview>();
+            List<Reviews> locationReviews = new List<Reviews>();
 
             try
             {
@@ -255,6 +240,32 @@ namespace LogicLayer
             }
 
             return locationReviews;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/10
+        /// 
+        /// Description:
+        /// Method to retrieve location availability by its LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of LocationAvailability objects</returns>
+        public List<LocationAvailability> RetrieveLocationAvailability(int locationID)
+        {
+            List<LocationAvailability> locationAvailabilities = new List<LocationAvailability>();
+
+            try
+            {
+                locationAvailabilities = _locationAccessor.SelectLocationAvailability(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return locationAvailabilities;
         }
     }
 }

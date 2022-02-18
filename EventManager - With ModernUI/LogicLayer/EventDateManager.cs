@@ -109,5 +109,75 @@ namespace LogicLayer
 
             return eventDates;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/08
+        /// 
+        /// Description:
+        /// Updates an Event Date record in data store
+        /// </summary>
+        /// <param name="oldEventDate">The record previously stored</param>
+        /// <param name="newEventDate">The new record containing the updates to the old</param>
+        /// <returns>True or false if one record was updated</returns>
+        public bool UpdateEventDate(EventDate oldEventDate, EventDate newEventDate)
+        {
+            bool result = false;
+
+            if (newEventDate.EventDateID == null)
+            {
+                throw new ApplicationException("Event date can not be empty.");
+            }
+            if (newEventDate.StartTime == null)
+            {
+                throw new ApplicationException("Start Time can not be empty.");
+            }
+            if (newEventDate.EndTime == null)
+            {
+                throw new ApplicationException("End Time can not be empty.");
+            }
+            if (newEventDate.StartTime >= newEventDate.EndTime)
+            {
+                throw new ApplicationException("End time cannot be before start time.");
+            }
+            try
+            {
+               result = 1 == _eventDateAccessor.UpdateEventDate(oldEventDate, newEventDate);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/10
+        /// 
+        /// Description:
+        /// Method for selecting event dates by LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
+        public List<EventDateVM> RetrieveEventDatesByLocationID(int locationID)
+        {
+            List<EventDateVM> eventDatesForLocation = new List<EventDateVM>();
+
+            try
+            {
+                eventDatesForLocation = _eventDateAccessor.SelectEventDatesByLocationID(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return eventDatesForLocation;
+        }
+
     }
 }

@@ -36,11 +36,6 @@ namespace WPFPresentation
         /// Description:
         /// The default constructor for the ViewAllVolunteersPage
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         public pgViewAllVolunteers()
         {
             // fake accessor
@@ -59,11 +54,6 @@ namespace WPFPresentation
         /// Description:
         /// Helper method that loads the volunteers data grid
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
         public void loadAllVolunteers()
         {
             // This is used to display the users review next to their name. Because not every volunteer may have
@@ -111,11 +101,8 @@ namespace WPFPresentation
         /// Description:
         /// Method that calls the loadAllVolunteers helper method when the page is loaded
         /// </summary>
-        ///
-        /// <remarks>
-        /// Updater Name
-        /// Updated: yyyy/mm/dd
-        /// </remarks>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             loadAllVolunteers();
