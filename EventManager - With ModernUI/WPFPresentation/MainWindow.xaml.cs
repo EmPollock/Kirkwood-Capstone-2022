@@ -35,8 +35,21 @@ namespace WPFPresentation
             this._userManager = new UserManager();
             //this._userManager = new UserManager(new UserAccessorFake());
             // Keep this always safe! 
+            _user = new User()
+            {
+                UserID = 100001,
+                GivenName = "Joanne",
+                FamilyName = "Smith",
+                EmailAddress = "joanne@company.com",
+                State = "IA",
+                City = "Cedar Rapids",
+                Zip = 52402,
+                Active = true
+            };
+
             InitializeComponent();
             this.btnBack.IsEnabled = false;
+            
         }
 
         public MainWindow(User user, IUserManager userManager)
@@ -85,12 +98,24 @@ namespace WPFPresentation
         /// Description:
         /// Click event for "Create Event" button. Brings up the Create Event screen.
         /// 
+        /// Update
+        /// Jace Pettinger
+        /// 2022/02/17
+        /// Added user parameter for create event constructor
+        /// 
         /// </summary>
 
         private void btnCreateEvents_Click(object sender, RoutedEventArgs e)
         {
-            Page page = new pgCreateEvent();
-            this.MainFrame.NavigationService.Navigate(page);
+            if(_user == null)
+            {
+                MessageBox.Show("Please log in to create an event");
+            }
+            else
+            {
+                Page page = new pgCreateEvent(_user);
+                this.MainFrame.NavigationService.Navigate(page);
+            }
         }
 
 
@@ -111,9 +136,6 @@ namespace WPFPresentation
         /// </summary>
         private void btnViewEvents_Click(object sender, RoutedEventArgs e)
         {
-
-            Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
-
             if (_user != null)
             {
                 pgViewEvents pgViewEvents = new pgViewEvents(_user);
@@ -122,7 +144,7 @@ namespace WPFPresentation
             else
             {
                 Page page = new pgViewEvents();
-                this.MainFrame.NavigationService.Navigate(pageURI);
+                this.MainFrame.NavigationService.Navigate(page);
             }
 
         }

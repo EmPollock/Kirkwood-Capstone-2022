@@ -27,10 +27,13 @@ namespace WPFPresentation.Event
     /// </summary>
     public partial class pgEventEditDetail : Page
     {
-        DataObjects.Event _event = null;
-        List<EventDate> _eventDates = null;
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
+        ILocationManager _locationManager = null;
+
+        DataObjects.Location _location = null;
+        DataObjects.EventVM _event = null;
+        List<EventDate> _eventDates = null;
         EventDate _selectedEventDate = null;
 
         /// <summary>
@@ -41,16 +44,18 @@ namespace WPFPresentation.Event
         /// Initializes component and sets up event manager with fake and default accessors
         /// </summary>
         /// <param name="selectedEvent">Must be pased an event object to view or edit</param>
-        public pgEventEditDetail(DataObjects.Event selectedEvent)
+        public pgEventEditDetail(DataObjects.EventVM selectedEvent)
         {
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
             //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
+            //_locationManager = new LocationManager(new LocationAccessorFake());
 
             // use default accessor
             _eventManager = new LogicLayer.EventManager();
             _eventDateManager = new EventDateManager();
-
+            _locationManager = new LocationManager();
+            
             _event = selectedEvent;
 
             InitializeComponent();
@@ -83,7 +88,6 @@ namespace WPFPresentation.Event
             txtBoxEventName.Text = _event.EventName.ToString();
             txtBoxEventDateCreated.Text = _event.EventCreatedDate.ToShortDateString();
             txtBoxEventDescription.Text = _event.EventDescription.ToString();
-            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet
         }
 
         /// <summary>
@@ -100,12 +104,10 @@ namespace WPFPresentation.Event
             // Enable editing 
             txtBoxEventName.IsReadOnly = false;
             txtBoxEventDescription.IsReadOnly = false;
-            txtBoxEventLocation.IsReadOnly = true; // cannot change until I can add location
             btnDeleteEvent.Visibility = Visibility.Visible;
 
             // not allowed to change date created
             txtBoxEventDateCreated.IsEnabled = false;
-            txtBoxEventLocation.IsEnabled = false;
 
             // change buttons to Save and Cancel
             btnEventEditSave.Content = "Save";
@@ -127,12 +129,10 @@ namespace WPFPresentation.Event
             txtBoxEventName.IsReadOnly = true;
             txtBoxEventDateCreated.IsReadOnly = true;
             txtBoxEventDescription.IsReadOnly = true;
-            txtBoxEventLocation.IsReadOnly = true;
             btnDeleteEvent.Visibility = Visibility.Hidden;
 
             // make enabled to look nicer
             txtBoxEventDateCreated.IsEnabled = true;
-            txtBoxEventLocation.IsEnabled = true;
 
             // make sure buttons are Edit and Close
             btnEventEditSave.Content = "Edit";
@@ -164,7 +164,7 @@ namespace WPFPresentation.Event
                 }
                 else // create new event object
                 {
-                    DataObjects.Event newEvent = new DataObjects.Event()
+                    DataObjects.EventVM newEvent = new DataObjects.EventVM()
                     {
                         EventID = _event.EventID,
                         EventName = txtBoxEventName.Text,
@@ -187,8 +187,7 @@ namespace WPFPresentation.Event
                     }
                     finally // return to view events page
                     {
-                        Uri pageURI = new Uri("Event/pgViewEvents.xaml", UriKind.Relative);
-                        this.NavigationService.Navigate(pageURI);
+                        this.NavigationService.GoBack();
                     }
                 }
             }
@@ -297,7 +296,7 @@ namespace WPFPresentation.Event
             {
                 try // try update
                 {
-                    DataObjects.Event newEvent = new DataObjects.Event()
+                    DataObjects.EventVM newEvent = new DataObjects.EventVM()
                     { // same Event with event set to false
                         EventID = _event.EventID,
                         EventName = _event.EventName,
@@ -322,6 +321,8 @@ namespace WPFPresentation.Event
             }
         }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
+
+        // --------------------------------------------------------- Start of Date Tab -----------------------------------------------------------
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/08
@@ -363,6 +364,7 @@ namespace WPFPresentation.Event
         /// </summary>
         private void setEventDateTabEditMode()
         {
+            // prepare add event grid
             grdAddEventDate.Visibility = Visibility.Visible;
             datePickerEventDate.SelectedDate = null;
             txtBoxEventStartTimeHour.Text = "";
@@ -373,7 +375,13 @@ namespace WPFPresentation.Event
             cmbEndTimeAMPM.SelectedItem = "AM";
             txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
 
+            // change buttons
             btnEditEventDateAddSave.Content = "Add";
+            btnEditEventDateCloseCancel.Content = "Cancel";
+
+            // do not display past dates in calendar select
+            datePickerEventDate.DisplayDateStart = DateTime.Today; 
+
         }
 
         /// <summary>
@@ -715,12 +723,38 @@ namespace WPFPresentation.Event
             cmbStartTimeAMPM.SelectedIndex = startTimeAMPM;
             cmbEndTimeAMPM.SelectedIndex = endTimeAMPM;
 
+            // do not show past dates in calendar picker
+            datePickerEventDate.DisplayDateStart = DateTime.Today;
+
             // change buttons
             btnEditEventDateAddSave.Content = "Update";
             btnEditEventDateCloseCancel.Content = "Cancel";
 
             //focus on first item to set
             datePickerEventDate.Focus();
+        }
+        // --------------------------------------------------------- End of Dates Tab -----------------------------------------------------------
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/15
+        /// 
+        /// Description:
+        /// Helper method for loading location tab in location details page
+        /// </summary>
+        private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
+                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _locationManager);
+                locationFrame.Navigate(locationDetailsPage);
+                lblLocationErrorMesage.Visibility = Visibility.Hidden;
+            }
+            catch (Exception)
+            {
+                // nothing to show
+                lblLocationErrorMesage.Visibility = Visibility.Visible;
+            }
         }
     }
 }

@@ -17,7 +17,6 @@
                         <RowDefinition Height="100"/>
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -34,10 +33,7 @@
                     <TextBlock x:Name="lblEventDescription" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Description</TextBlock>
                     <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtBoxEventDescription" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" TextChanged="txtBoxEventDescription_TextChanged"></TextBox>
 
-                    <TextBlock x:Name="lblEventLocation" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Location</TextBlock>
-                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtBoxEventLocation" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
-
-                    <Button x:Name="btnDeleteEvent"  Grid.Row="4" Grid.Column="1" Margin="10" HorizontalAlignment="Center"  VerticalAlignment="Center" Content="Delete" Click="btnDeleteEvent_Click" />
+                    <Button x:Name="btnDeleteEvent"  Grid.Row="3" Grid.Column="1" Margin="10" HorizontalAlignment="Center"  VerticalAlignment="Center" Content="Delete" Click="btnDeleteEvent_Click" />
                     <TextBlock Grid.Row="5" Grid.Column="1" x:Name="txtBlockValidationMessage" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="#FFFF4040" Visibility="Hidden"></TextBlock>
                     <Button x:Name="btnEventEditSave" Grid.Row="6" Grid.Column="1" Content="Edit" IsTabStop="False"  HorizontalAlignment="Left" Margin="10" Click="btnEventEditSave_Click"/>
                     <Button x:Name="btnEventCloseCancel" Grid.Row="6" Grid.Column="1"  Content="Close" HorizontalAlignment="Right" Margin="10" Click="btnEventCloseCancel_Click" />
@@ -138,6 +134,17 @@
                         <Button x:Name="btnEditEventDateCloseCancel" Grid.Row="0" Grid.Column="1" Margin="40 0 0 0" Content="Close" HorizontalAlignment="Left" Click="btnEditEventDateCloseCancel_Click" />
 
                     </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabEventLocation" Header="Location" Loaded="tabEventLocation_Loaded" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="txtBlkEventLocationHeader" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}">Event Location</TextBlock>
+                    <TextBlock x:Name="lblLocationErrorMesage" Text="No location added" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="#FFFF4040" Visibility="Hidden"/>
+                    <Frame x:Name="locationFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Margin="5px" />
                 </Grid>
             </TabItem>
         </TabControl>

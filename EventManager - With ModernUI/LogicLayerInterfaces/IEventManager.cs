@@ -10,9 +10,10 @@ namespace LogicLayerInterfaces
     public interface IEventManager
     {
         int CreateEvent(string eventName, string eventDescription);
-        List<Event> RetreieveActiveEvents();
-        bool UpdateEvent(Event oldEvent, Event newEvent);
-        Event RetrieveEventByEventNameAndDescription(string eventName, string eventDescription);
+        int CreateEventReturnsEventID(string eventName, string eventDescription);
+        List<EventVM> RetreieveActiveEvents();
+        bool UpdateEvent(EventVM oldEvent, EventVM newEvent);
+        EventVM RetrieveEventByEventNameAndDescription(string eventName, string eventDescription);
 
         List<EventVM> RetrieveEventListForUpcomingDates();
         List<EventVM> RetrieveEventListForUpcomingAndPastDates();
