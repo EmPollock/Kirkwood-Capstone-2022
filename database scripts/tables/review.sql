@@ -23,10 +23,11 @@ Created: 2022/02/04
 Description:
 Review table
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Kris Howell
+Updated: 2022/02/18
 
 Description: 
+Set Active field default to 1
 ****************************************************************/
 
 print '' print '*** creating Review table'
@@ -37,7 +38,7 @@ CREATE TABLE [dbo].[Review] (
 	[Rating]			[int]						NOT NULL,
 	[Review]			[nvarchar](3000)			NULL,
 	[DateCreated]		[DateTime]				    NOT NULL DEFAULT GETDATE(),
-	[Active]			[bit]						NOT NULL,
+	[Active]			[bit]						NOT NULL DEFAULT 1,
 
 	CONSTRAINT [pk_ReviewID] PRIMARY KEY([ReviewID]),
 	CONSTRAINT [fk_Review_UserID] FOREIGN KEY([UserID])
@@ -61,10 +62,11 @@ GO
  Description: 
  Additional test records for SupplierReview join.
 ***************************************************************
- <Updater Name>
- Updated: yyyy/mm/dd
+Kris Howell
+ Updated: 2022/02/18
 
  Description: 
+ Removed insert active field, let new default to 1 handle it.
 ****************************************************************/
 print '' print '*** test records for Review table'
 GO
@@ -72,12 +74,11 @@ INSERT INTO [dbo].[Review] (
     [UserID],		
     [ReviewType],	
     [Rating],			
-    [Review],					
-    [Active]		
+    [Review]
 )VALUES 
-	(100000, "Location Review", 3, "Enjoyable place to visit", 1),
-	(100000, "Supplier Review", 5, "Amazing place!", 5),
-	(100000, "Supplier Review", 1, "Didn't like it.", 1)
+	(100000, "Location Review", 3, "Enjoyable place to visit"),
+	(100000, "Supplier Review", 5, "Amazing place!"),
+	(100000, "Supplier Review", 1, "Didn't like it.")
 GO
 
 

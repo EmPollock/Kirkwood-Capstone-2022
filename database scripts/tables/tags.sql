@@ -104,5 +104,8 @@ INSERT INTO [dbo].[SupplierTag] (
 	) VALUES 
 	("Food", 100000),
 	("Fast Food", 100000),
-	("Delivered", 100000)
+	("Delivered", 100000),
+	("Food", 100001),
+	("Fast Food", 100001),
+	("Delivered", 100001)
 GO
