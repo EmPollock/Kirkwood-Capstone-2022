@@ -99,13 +99,14 @@ namespace LogicLayer
         /// Description:
         /// Added variable "ex" so method throws ex
         /// <returns>List of active events</returns>
-        public List<Event> RetreieveActiveEvents()
+        public List<EventVM> RetreieveActiveEvents()
         {
-            List<Event> events = new List<Event>();
+            List<EventVM> events = new List<EventVM>();
 
             try
             {
-                events = _eventAccessor.SelectActiveEvents();
+                events = _eventAccessor.SelectActiveEvents(); // trying to get the list of events
+        
             }
             catch (Exception ex)
             {
@@ -126,6 +127,7 @@ namespace LogicLayer
         /// <param name="oldEvent">The record previously stored</param>
         /// <param name="newEvent">The new record containing the updates to the old</param>
         /// <returns>True or false if one record was updated</returns>
+
         public bool UpdateEvent(Event oldEvent, Event newEvent)
         {
             bool result = false;
@@ -172,9 +174,9 @@ namespace LogicLayer
         /// <param name="eventName"></param>
         /// <param name="eventDescription"></param>
         /// <returns>EventID</returns>
-        public Event RetrieveEventByEventNameAndDescription(string eventName, string eventDescription)
+        public EventVM RetrieveEventByEventNameAndDescription(string eventName, string eventDescription)
         {
-            Event eventToGet = null;
+            EventVM eventToGet = null;
 
             try
             {
@@ -405,6 +407,64 @@ namespace LogicLayer
 
             return result;
 
+        }
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Called the accessor that creates an event the event id
+        /// </summary>
+        /// <param name="eventName">The name of the event</param>
+        /// <param name="eventDescription">The description of the event</param>
+        /// <returns>Event ID as an int</returns>
+        public int CreateEventReturnsEventID(string eventName, string eventDescription)
+        {
+            int eventID;
+            // green
+            // eventID = 1000000;
+            throwExceptionsForBadEventNameOrDescription(eventName, eventDescription);
+            try
+            {
+                eventID = _eventAccessor.InsertEventReturnsEventID(eventName, eventDescription);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventID;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Helper method for throwing exceptions if the event name or description are not correct
+        /// </summary>
+        /// <param name="eventName">The name of the event</param>
+        /// <param name="eventDescription">Description of the event</param>
+        private static void throwExceptionsForBadEventNameOrDescription(string eventName, string eventDescription)
+        {
+            if (eventName == "" || eventName == null)
+            {
+                throw new ApplicationException("Name can not be empty.");
+            }
+            if (eventName.Length >= 50)
+            {
+                throw new ApplicationException("Name can not be over 50 characters.");
+            }
+
+            if (eventDescription == "" || eventDescription == null)
+            {
+                throw new ApplicationException("Description can not empty.");
+            }
+
+            if (eventDescription.Length >= 1000)
+            {
+                throw new ApplicationException("Description can not over 1000 characters.");
+            }
         }
     }
 }

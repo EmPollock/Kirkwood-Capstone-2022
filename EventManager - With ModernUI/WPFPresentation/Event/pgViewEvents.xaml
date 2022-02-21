@@ -79,9 +79,9 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding EventDateID, StringFormat=\{0:MM/dd/yy\}}" VerticalAlignment="Center" Margin="0,0,10,0" />
-                                    </DataTemplate>                                        
+                                    </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-                            </ItemsControl>                                
+                            </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

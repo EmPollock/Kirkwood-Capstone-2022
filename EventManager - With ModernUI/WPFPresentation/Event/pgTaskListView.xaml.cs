@@ -38,9 +38,9 @@ namespace WPFPresentation.Event
 
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
-        DataObjects.Event _event = null;
+        DataObjects.EventVM _event = null;
 
-        public pgTaskListView()
+        public pgTaskListView(DataObjects.EventVM selectedEvent)
         {
             // fake accessor
             //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
@@ -48,6 +48,7 @@ namespace WPFPresentation.Event
             // default accessor
             _taskManager = new TaskManager();
             _eventManager = new LogicLayer.EventManager();
+            _event = selectedEvent;
 
             InitializeComponent();
         }
@@ -64,6 +65,9 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
+            lblEventName.Text = _event.EventName;
+
+
             updateTaskList();
 
         }
@@ -72,7 +76,7 @@ namespace WPFPresentation.Event
         {
             try
             {
-                datViewAllTasksForEvent.ItemsSource = _taskManager.RetrieveAllActiveTasksByEventID(100000);
+                datViewAllTasksForEvent.ItemsSource = _taskManager.RetrieveAllActiveTasksByEventID(_event.EventID);
             }
             catch (Exception ex)
             {
@@ -117,9 +121,8 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnTaskListCreate_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Button will bring up Task Create page soon.");
-            Uri pageUri = new Uri("Event/pgTaskListCreate.xaml", UriKind.Relative);
-            this.NavigationService.Navigate(pageUri);
+            pgTaskListCreate createTaskPage = new pgTaskListCreate(_event);
+            this.NavigationService.Navigate(createTaskPage);
         }
 
         /// <summary>
@@ -134,10 +137,16 @@ namespace WPFPresentation.Event
         private void datViewAllTasksForEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TasksVM selectedTask = (TasksVM)datViewAllTasksForEvent.SelectedItem;
-            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask);
+            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask, _event);
             this.NavigationService.Navigate(taskEditPage);
 
             updateTaskList();
+        }
+
+        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
+        {
+            pgEventEditDetail editEventPage = new pgEventEditDetail(_event);
+            this.NavigationService.Navigate(editEventPage);
         }
     }
 }

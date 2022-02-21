@@ -65,11 +65,17 @@ namespace DataAccessLayer
         /// Description:
         /// Select active events from tadpole_db
         /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID to the returned event object
+        /// 
         /// </summary>
         /// <returns>List of active events</returns>
-        public List<Event> SelectActiveEvents()
+        public List<EventVM> SelectActiveEvents()
         {
-            List<Event> events = new List<Event>();
+            List<EventVM> events = new List<EventVM>();
 
             var conn = DBConnection.GetConnection();
             var cmdText = "sp_select_active_events";
@@ -86,14 +92,15 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        events.Add(new Event()
+                        events.Add(new EventVM()
                         {
                             EventID = reader.GetInt32(0),
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             Active = true
-                        });
+                        }); 
                     }
                 }
             }
@@ -126,16 +133,22 @@ namespace DataAccessLayer
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@EventID", oldEvent.EventID);
+
             cmd.Parameters.Add("@OldEventName", SqlDbType.NVarChar, 50);
             cmd.Parameters["@OldEventName"].Value = oldEvent.EventName;
+
             cmd.Parameters.Add("@OldEventDescription", SqlDbType.NVarChar, 1000);
             cmd.Parameters["@OldEventDescription"].Value = oldEvent.EventDescription;
+
             cmd.Parameters.Add("@OldActive", SqlDbType.Bit);
             cmd.Parameters["@OldActive"].Value = oldEvent.Active;
+
             cmd.Parameters.Add("@NewEventName", SqlDbType.NVarChar, 50);
             cmd.Parameters["@NewEventName"].Value = newEvent.EventName;
+
             cmd.Parameters.Add("@NewEventDescription", SqlDbType.NVarChar, 1000);
             cmd.Parameters["@NewEventDescription"].Value = newEvent.EventDescription;
+
             cmd.Parameters.Add("@NewActive", SqlDbType.Bit);
             cmd.Parameters["@NewActive"].Value = newEvent.Active;
 
@@ -163,13 +176,19 @@ namespace DataAccessLayer
         /// Description:
         /// Retrieve an event object by its nabe and Description
         /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID to the returned event object
+        /// 
         /// </summary>
         /// <param name="eventName">The name of the event</param>
         /// <param name="eventDescription">The description of the event</param>
         /// <returns></returns>
-        public Event SelectEventByEventNameAndDescription(string eventName, string eventDescription)
+        public EventVM SelectEventByEventNameAndDescription(string eventName, string eventDescription)
         {
-            Event eventToGet = null;
+            EventVM eventToGet = null;
 
             // connection
             var conn = DBConnection.GetConnection();
@@ -194,12 +213,13 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        eventToGet = new Event()
+                        eventToGet = new EventVM()
                         {
                             EventID = reader.GetInt32(0),
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             Active = true
                         };
                     }
@@ -222,6 +242,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select list of upcoming dates
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID to the returned event objects
         /// 
         /// </summary>
         /// <returns>Event view models</returns>
@@ -249,11 +275,12 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             EventDates = new List<EventDate>()
                                     {
                                         new EventDate()
                                         {
-                                            EventDateID = reader.GetDateTime(4),
+                                            EventDateID = reader.GetDateTime(5),
                                             EventID = reader.GetInt32(0),
                                             Active = true
                                         }
@@ -279,6 +306,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select list of upcoming and past dates
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID to the returned event objects
         /// 
         /// </summary>
         /// <returns>Event view models</returns>
@@ -306,11 +339,12 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             EventDates = new List<EventDate>()
                                     {
                                         new EventDate()
                                         {
-                                            EventDateID = reader.GetDateTime(4),
+                                            EventDateID = reader.GetDateTime(5),
                                             EventID = reader.GetInt32(0),
                                             Active = true
                                         }
@@ -335,6 +369,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select list of past dates
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID to the returned event objects
         /// 
         /// </summary>
         /// <returns>Event view models</returns>
@@ -362,11 +402,12 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             EventDates = new List<EventDate>()
                                     {
                                         new EventDate()
                                         {
-                                            EventDateID = reader.GetDateTime(4),
+                                            EventDateID = reader.GetDateTime(5),
                                             EventID = reader.GetInt32(0),
                                             Active = true
                                         }
@@ -391,6 +432,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select list of upcoming dates for a user
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID to the returned event objects
         /// 
         /// </summary>
         /// <param name="userID"></param>
@@ -422,11 +469,12 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             EventDates = new List<EventDate>()
                                         {
                                             new EventDate()
                                             {
-                                                EventDateID = reader.GetDateTime(4),
+                                                EventDateID = reader.GetDateTime(5),
                                                 EventID = reader.GetInt32(0),
                                                 Active = true
                                             }
@@ -452,6 +500,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select list of past dates for a user
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID to the returned event objects
         /// 
         /// </summary>
         /// <param name="userID"></param>
@@ -483,11 +537,12 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             EventDates = new List<EventDate>()
                                         {
                                             new EventDate()
                                             {
-                                                EventDateID = reader.GetDateTime(4),
+                                                EventDateID = reader.GetDateTime(5),
                                                 EventID = reader.GetInt32(0),
                                                 Active = true
                                             }
@@ -511,6 +566,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select list of past and upcoming dates for a user
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID to the returned event objects
         /// 
         /// </summary>
         /// <param name="userID"></param>
@@ -542,11 +603,12 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             EventDates = new List<EventDate>()
                                         {
                                             new EventDate()
                                             {
-                                                EventDateID = reader.GetDateTime(4),
+                                                EventDateID = reader.GetDateTime(5),
                                                 EventID = reader.GetInt32(0),
                                                 Active = true
                                             }
@@ -629,6 +691,13 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Removes duplicates and adds the dates to the appropriate event
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/15
+        /// 
+        /// Description:
+        /// Adding locationID variable to the event list
+        /// 
         /// </summary>
         /// <param name="eventListRef">Takes an eventvm list</param>
         /// <returns>A list of Events with no duplicate EventIDs and all the EventDates in a list in the Event object</returns>
@@ -649,6 +718,7 @@ namespace DataAccessLayer
                         EventName = item.EventName,
                         EventDescription = item.EventDescription,
                         EventCreatedDate = item.EventCreatedDate,
+                        LocationID = item.LocationID,
                         EventDates = new List<EventDate>()
                     });
                 }
@@ -722,6 +792,50 @@ namespace DataAccessLayer
 
         //    return rowsAffected;
         //}
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Inserts an event into the database and returns the auto-increment value created for the event id
+        /// </summary>
+        /// <param name="eventName">The name of the event</param>
+        /// <param name="eventDescription">The description of the event</param>
+        /// <returns>Event ID as an int</returns>
+        public int InsertEventReturnsEventID(string eventName, string eventDescription)
+        {
 
+            int eventID = 0;
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_insert_event_return_event_id";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
+
+            cmd.Parameters["@EventName"].Value = eventName;
+            cmd.Parameters["@EventDescription"].Value = eventDescription;
+
+            try
+            {
+                conn.Open();
+                Object result = cmd.ExecuteScalar();
+                eventID = (int)result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return eventID;
+        }
     }
 }
