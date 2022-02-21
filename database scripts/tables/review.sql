@@ -85,9 +85,9 @@ INSERT INTO [dbo].[Review] (
     [Rating],			
     [Review]
 )VALUES 
-	(100000, "Location Review", 3, "Enjoyable place to visit", 1),
-	(100000, "Supplier Review", 5, "Amazing place!", 5),
-	(100000, "Supplier Review", 1, "Didn't like it.", 1)
+	(100000, "Location Review", 3, "Enjoyable place to visit"),
+	(100000, "Supplier Review", 5, "Amazing place!"),
+	(100000, "Supplier Review", 1, "Didn't like it.")
 GO
 
 

@@ -38,9 +38,9 @@ namespace WPFPresentation.Event
 
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
-        DataObjects.Event _event = null;
+        DataObjects.EventVM _event = null;
 
-        public pgTaskListView(DataObjects.Event selectedEvent)
+        public pgTaskListView(DataObjects.EventVM selectedEvent)
         {
             // fake accessor
             //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());

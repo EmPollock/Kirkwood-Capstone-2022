@@ -25,7 +25,7 @@ namespace WPFPresentation.Event
     public partial class pgTaskListEdit : Page
     {
         DataObjects.TasksVM _task = null;
-        DataObjects.Event _event = null;
+        DataObjects.EventVM _event = null;
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
 
@@ -41,7 +41,7 @@ namespace WPFPresentation.Event
         /// as the selectedTask object along with a list of priorities
         /// </summary>
         /// <param name="selectedTask"></param>
-        public pgTaskListEdit(DataObjects.TasksVM selectedTask, DataObjects.Event selectedEvent)
+        public pgTaskListEdit(DataObjects.TasksVM selectedTask, DataObjects.EventVM selectedEvent)
         {
             // fake accessors for testing purposes
             //_taskManager = new TaskManager(new TaskAccessorFakes());

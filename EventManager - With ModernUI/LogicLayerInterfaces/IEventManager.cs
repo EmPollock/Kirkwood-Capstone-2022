@@ -12,7 +12,7 @@ namespace LogicLayerInterfaces
         int CreateEvent(string eventName, string eventDescription);
         int CreateEventReturnsEventID(string eventName, string eventDescription);
         List<EventVM> RetreieveActiveEvents();
-        bool UpdateEvent(EventVM oldEvent, EventVM newEvent);
+        bool UpdateEvent(Event oldEvent, Event newEvent);
         EventVM RetrieveEventByEventNameAndDescription(string eventName, string eventDescription);
 
         List<EventVM> RetrieveEventListForUpcomingDates();

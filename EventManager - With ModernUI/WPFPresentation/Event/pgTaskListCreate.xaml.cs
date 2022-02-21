@@ -32,7 +32,7 @@ namespace WPFPresentation
         
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
-        DataObjects.Event _event = null;
+        DataObjects.EventVM _event = null;
 
         // priority values to populate cboPriority
         List<Priority> _priorities = new List<Priority>();
@@ -44,7 +44,7 @@ namespace WPFPresentation
         /// Description:
         /// Initializes component and sets up task manager with either fake or default accessors
         /// </summary>
-        public pgTaskListCreate(DataObjects.Event selectedEvent)
+        public pgTaskListCreate(DataObjects.EventVM selectedEvent)
         {
             // fake accessor
             //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());

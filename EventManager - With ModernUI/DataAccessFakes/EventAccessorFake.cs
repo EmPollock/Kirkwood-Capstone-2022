@@ -279,7 +279,7 @@ namespace DataAccessFakes
         /// 
         /// </summary>
         /// <returns>List of active events</returns>
-        public List<Event> SelectActiveEvents()
+        public List<EventVM> SelectActiveEvents()
         {
             List<EventVM> events = new List<EventVM>();
 
