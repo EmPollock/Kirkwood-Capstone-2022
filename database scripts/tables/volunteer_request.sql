@@ -14,9 +14,9 @@ Description: Changed EventID to TaskID
 Use [tadpole_db]
 GO
 
-print '' print '*** creating Volunteer Requests table ***'
+print '' print '*** creating Volunteer Request table ***'
 GO
-Create Table [dbo].[VolunteerRequests] {
+Create Table [dbo].[VolunteerRequest] (
 	[RequestID]					[int] Identity(100000, 1)	Not Null	
 	, [VolunteerID]				[int]						Not Null
 	, [TaskID]					[int]						Not Null	
@@ -25,9 +25,9 @@ Create Table [dbo].[VolunteerRequests] {
 	
 	Constraint [pk_RequestID] Primary Key([RequestID])
 	, Constraint [fk_Request_VolunteerID] Foreign Key([VolunteerID]) References [dbo].[Volunteer]([VolunteerID])
-	, Constraint [fk_Request_TaskID] Foreign Key([TaskID]) References [dbo].[Event]([TaskID])
+	, Constraint [fk_Request_TaskID] Foreign Key([TaskID]) References [dbo].[Task]([TaskID])
 
-}
+)
 GO
 
 /***************************************************************
@@ -45,12 +45,8 @@ Description:
 
 print '' print '*** adding test data for Volunteer Requests Table ***'
 GO
-Insert Into [dbo].[VolunteerRequests] {
-	[VolunteerID], [TaskID], [VolunteerResponse], [EventResponse]}
+Insert Into [dbo].[VolunteerRequest] (
+	[VolunteerID], [TaskID], [VolunteerResponse], [EventResponse])
 	Values
-		(100001, 100000, 1, 1),
-		(100002, 100001, 1, 1),
-		(100001, 100002, 0, 1),
-		(100002, 100002, 1, 0),
-		(100003, 100002, NULL, NULL)
+		(100000, 100000, 1, 1)
 GO

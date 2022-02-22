@@ -51,12 +51,12 @@ namespace WPFPresentation.Event
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
             //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
             //_locationManager = new LocationManager(new LocationAccessorFake());
-            _volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
+            //_volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
 
             // use default accessor
             _eventManager = new LogicLayer.EventManager();
             _eventDateManager = new EventDateManager();
-            //_volunteerRequestManager = new VolunteerRequestManager();
+            _volunteerRequestManager = new VolunteerRequestManager();
             _locationManager = new LocationManager();
             _event = selectedEvent;
 
@@ -789,7 +789,7 @@ namespace WPFPresentation.Event
 
             try
             {
-                List<VolunteerRequest> _requests = _volunteerRequestManager.GetVolunteerRequests(eventID);
+                List<VolunteerRequestViewModel> _requests = _volunteerRequestManager.RetrieveVolunteerRequests(eventID);
                 dgRequestList.ItemsSource = _requests;
             }
             catch (Exception)

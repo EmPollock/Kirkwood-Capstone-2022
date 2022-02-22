@@ -8,7 +8,7 @@ sqlcmd -S localhost -E -i tables/event.sql
 sqlcmd -S localhost -E -i tables/event_date.sql
 sqlcmd -S localhost -E -i tables/role.sql
 sqlcmd -S localhost -E -i tables/supplier.sql
-sqlcmd -S localhost -E -i tables/volunteers.sql
+sqlcmd -S localhost -E -i tables/volunteer.sql
 sqlcmd -S localhost -E -i tables/task.sql
 sqlcmd -S localhost -E -i tables/sublocation.sql
 sqlcmd -S localhost -E -i tables/activity.sql

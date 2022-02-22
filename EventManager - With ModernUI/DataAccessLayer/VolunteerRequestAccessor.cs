@@ -19,14 +19,14 @@ namespace DataAccessLayer
 {
     public class VolunteerRequestAccessor : IVolunteerRequestAccessor
     {
-        public List<VolunteerRequest> SelectVolunteerRequestsByEventID(int eventID)
+        public List<VolunteerRequestViewModel> SelectVolunteerRequestsByEventID(int eventID)
         {
-            List<VolunteerRequest> requests = new List<VolunteerRequest>();
+            List<VolunteerRequestViewModel> requests = new List<VolunteerRequestViewModel>();
 
             var conn = DBConnection.GetConnection();
 
             // next, we need command text.
-            var cmdText = "sp_select_all_requests_for_event_by_eventID";
+            var cmdText = "sp_select_all_requests_by_eventID";
 
             // we create a command object;
             var cmd = new SqlCommand(cmdText, conn);
@@ -62,8 +62,10 @@ namespace DataAccessLayer
                         tempRequest.TaskID = reader.GetInt32(2);
                         tempRequest.VolunteerResponse = HelperMethods.IsNullCheck(reader, 3);
                         tempRequest.EventResponse = HelperMethods.IsNullCheck(reader, 4);
-
-                        requests.Add(tempRequest);
+                        var volunteerName = reader.GetString(5);
+                        var taskName = reader.GetString(6);
+                        var tempRequestVM = new VolunteerRequestViewModel(tempRequest, volunteerName, taskName);
+                        requests.Add(tempRequestVM);
 
                     }
                 }
@@ -81,5 +83,6 @@ namespace DataAccessLayer
 
             return requests;
         }
+
     }
 }

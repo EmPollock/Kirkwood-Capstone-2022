@@ -17,56 +17,77 @@ namespace DataAccessFakes
 {
     public class VolunteerRequestAccessorFake : IVolunteerRequestAccessor
     {
-        List<VolunteerRequest> _fakeRequests = new List<VolunteerRequest>();
+        List<VolunteerRequestViewModel> _fakeRequests = new List<VolunteerRequestViewModel>();
 
-        public VolunteerRequestAccessorFake() 
+        public VolunteerRequestAccessorFake()
         {
-            this._fakeRequests.Add(new VolunteerRequest()
+            this._fakeRequests.Add(new VolunteerRequestViewModel()
             {
                 RequestID = 999999,
                 VolunteerID = 999999,
                 TaskID = 999999,
                 VolunteerResponse = false,
-                EventResponse = true
+                EventResponse = true,
+                VolunteerName = "Abe Zed",
+                TaskName = "Test Task 1"
             });
 
-            this._fakeRequests.Add(new VolunteerRequest()
+            this._fakeRequests.Add(new VolunteerRequestViewModel()
             {
                 RequestID = 999998,
                 VolunteerID = 999998,
                 TaskID = 999999,
                 VolunteerResponse = true,
-                EventResponse = true
+                EventResponse = true,
+                VolunteerName = "Bell Yotta",
+                TaskName = "Test Task 1"
             });
 
-            this._fakeRequests.Add(new VolunteerRequest()
+            this._fakeRequests.Add(new VolunteerRequestViewModel()
             {
                 RequestID = 999997,
-                VolunteerID = 999999,
+                VolunteerID = 999997,
                 TaskID = 999998,
                 VolunteerResponse = true,
-                EventResponse = true
+                EventResponse = null,
+                VolunteerName = "Chaos Xylophone",
+                TaskName = "Test Task 2"
             });
 
-            this._fakeRequests.Add(new VolunteerRequest()
+            this._fakeRequests.Add(new VolunteerRequestViewModel()
             {
                 RequestID = 999996,
-                VolunteerID = 999998,
+                VolunteerID = 999996,
                 TaskID = 999998,
                 VolunteerResponse = null,
-                EventResponse = null
+                EventResponse = true,
+                VolunteerName = "Digger Wiggum",
+                TaskName = "Test Task 2"
             });
+
+            this._fakeRequests.Add(new VolunteerRequestViewModel()
+            {
+                RequestID = 999995,
+                VolunteerID = 999995,
+                TaskID = 999998,
+                VolunteerResponse = true,
+                EventResponse = false,
+                VolunteerName = "Elf Verdant",
+                TaskName = "Test Task 2"
+            });
+
+
         }
 
-        public List<VolunteerRequest> SelectVolunteerRequestsByEventID(int EventID)
+        public List<VolunteerRequestViewModel> SelectVolunteerRequestsByEventID(int EventID)
         {
-            List<VolunteerRequest> requests = new List<VolunteerRequest>();
+            List<VolunteerRequestViewModel> requests = new List<VolunteerRequestViewModel>();
 
             try
             {
                 requests = _fakeRequests;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
