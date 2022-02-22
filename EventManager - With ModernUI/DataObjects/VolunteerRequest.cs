@@ -21,7 +21,7 @@ namespace DataObjects
         public bool? VolunteerResponse { get; set; }
         public bool? EventResponse { get; set; }
 
-        public VolunteerRequest() 
+        public VolunteerRequest()
         {
 
         }
@@ -33,6 +33,46 @@ namespace DataObjects
             VolunteerResponse = volunteerResponse;
             EventResponse = eventResponse;
 
+        }
+    }
+
+    public class VolunteerRequestViewModel : VolunteerRequest
+    {
+        public string VolunteerName { get; set; }
+        public string TaskName { get; set; }
+        public string StrVolunteerResponse { get; set; }
+        public string StrEventResponse { get; set; }
+
+        public VolunteerRequestViewModel()
+        {
+
+        }
+
+        public VolunteerRequestViewModel(VolunteerRequest volunteerRequest, string volunteerName, string taskName)
+        {
+            RequestID = volunteerRequest.RequestID;
+            VolunteerID = volunteerRequest.VolunteerID;
+            TaskID = volunteerRequest.TaskID;
+            VolunteerResponse = volunteerRequest.VolunteerResponse;
+            EventResponse = volunteerRequest.EventResponse;
+            VolunteerName = volunteerName;
+            TaskName = taskName;
+            if ((bool)VolunteerResponse.HasValue)
+            {
+                StrVolunteerResponse = (bool)VolunteerResponse ? "Yes" : "No";
+            }
+            else
+            {
+                StrVolunteerResponse = "N/A";
+            }
+            if ((bool)EventResponse.HasValue)
+            {
+                StrEventResponse = (bool)EventResponse ? "Yes" : "No";
+            }
+            else
+            {
+                StrEventResponse = "N/A";
+            }
         }
     }
 }

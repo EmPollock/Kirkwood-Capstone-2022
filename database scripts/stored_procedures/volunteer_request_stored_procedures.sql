@@ -23,18 +23,19 @@ Create PROCEDURE [dbo].[sp_select_all_requests_by_eventID]
 AS
 	BEGIN
 		SELECT 
-			[RequestID],
-			[VolunteerID],
-			[TaskID],
-			[VolunteerResponse],
-			[EventResponse]
+			[VolunteerRequest].[RequestID],
+			[VolunteerRequest].[VolunteerID],
+			[VolunteerRequest].[TaskID],
+			[VolunteerRequest].[VolunteerResponse],
+			[VolunteerRequest].[EventResponse],
+			CONCAT([Users].[GivenName], " ", [Users].[FamilyName]),
+			[Task].[Name]
 		From [dbo].[VolunteerRequest]
-		Join [dbo].[Task]
-		ON [VolunteerRequest].[TaskID] = [Task].[TaskID]
+		Join [dbo].[Task] ON [VolunteerRequest].[TaskID] = [Task].[TaskID]
+		Join [dbo].[Volunteer] ON [VolunteerRequest].[VolunteerID] = [Volunteer].[VolunteerID]
+		Join [dbo].[Users] ON [Volunteer].[UserID] = [Users].[UserID]
 		Where [Task].[EventID] = @EventID
 		Order By [RequestID] ASC
 	END
 GO
 
-print'' print'*****AAAAAxxxxxnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnxxxxxxxxxxxx'
-GO
