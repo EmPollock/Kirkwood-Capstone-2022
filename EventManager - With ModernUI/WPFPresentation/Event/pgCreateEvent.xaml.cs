@@ -370,14 +370,15 @@ namespace WPFPresentation
                             StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
                             EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
                             Active = true
-                        });
+                        };
 
                         //datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(eventID);
+                        newEventVM.EventDates.Add(eventDate);
+
                         datCurrentEventDates.ItemsSource = null;
                         datCurrentEventDates.ItemsSource = newEventVM.EventDates;
                         
-
-                        datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(newEvent.EventID);
+                        
                         datCurrentEventDates.Visibility = Visibility.Visible;
                         txtBlkCurrentEventDates.Visibility = Visibility.Visible;
 
@@ -401,12 +402,21 @@ namespace WPFPresentation
                 }
             }
         }
+
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/17
         /// 
         /// Description:
         /// Click handler for continuing on from event dates tab
+        /// 
+        /// Update
+        /// Derrick Nagy
+        /// 2022/02/22
+        /// 
+        /// Desription:
+        /// Added call to database to add the dates
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -425,10 +435,28 @@ namespace WPFPresentation
                     tabsetAddEventLocation.Focus();
                 }
             }
-            else { // dates were added, just go to next tab
-                tabsetAddEventLocation.IsEnabled = true;
-                tabsetAddEventLocation.Focus();
-               
+            else { 
+
+                // add dates
+                try
+                {
+                    foreach (EventDate date in newEventVM.EventDates)
+                    {
+                        _eventDateManager.CreateEventDate(date);
+                    }
+
+                    String message = (newEventVM.EventDates.Count == 1) ? "The event date was successfully added." : "The " + newEventVM.EventDates.Count + " event dates were successfully added.";
+
+                    MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    tabsetAddEventLocation.IsEnabled = true;
+                    tabsetAddEventLocation.Focus();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                }               
             }
         }
 
@@ -595,7 +623,7 @@ namespace WPFPresentation
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnEventDateNext_Click(object sender, RoutedEventArgs e)
+        private void btnEventDateNext_Helper(object sender, RoutedEventArgs e)
         {
 
             if (newEventVM.EventDates.Count > 0)
@@ -643,34 +671,5 @@ namespace WPFPresentation
             }
         }
 
-        /// <summary>
-        /// Derrick Nagy
-        /// Created: 2022/01/31
-        /// 
-        /// Description:
-        /// Cancel adding event dates
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnEventDateCancel_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Are you sure you are finished with this tab?", "Finished?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-
-            switch (result)
-            {
-                case MessageBoxResult.Cancel:
-                    break;
-                case MessageBoxResult.Yes:
-                    newEventVM.EventDates = new List<EventDate>();
-                    Page page = new pgViewEvents();
-                    this.NavigationService.Navigate(page);
-
-                    break;
-                case MessageBoxResult.No:
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 }
