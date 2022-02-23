@@ -75,5 +75,6 @@ INSERT INTO [dbo].[UserEvent] (
 	,(100002, 'Attendee', 100005)
 	,(100002, 'Attendee', 100006)
 	,(100002, 'Attendee', 100007) -- Past Event
+	,(100000, 'Event Planner', 100008)-- Past Event
 
 GO

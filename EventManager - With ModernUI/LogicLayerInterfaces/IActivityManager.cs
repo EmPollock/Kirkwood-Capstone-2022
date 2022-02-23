@@ -11,5 +11,7 @@ namespace LogicLayerInterfaces
     {
         List<ActivityVM> RetrieveActivitiesByEventID(int eventID);
         List<ActivityVM> RetrieveActivitiesByEventIDAndEventDateID(int eventID, DateTime? eventDateID);
+        List<ActivityVM> RetreiveActivitiesPastAndUpcomingDates();
+        List<ActivityVM> RetreiveUserActivitiesPastAndUpcomingDates(int userID);
     }
 }

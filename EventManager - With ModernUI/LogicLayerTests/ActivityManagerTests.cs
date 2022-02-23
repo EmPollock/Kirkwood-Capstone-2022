@@ -146,5 +146,68 @@ namespace LogicLayerTests
             //assert
             Assert.AreEqual(expectedCount, actualCount);
         }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that passes if RetreiveActivitiesPastAndUpcomingDates returns 
+        ///     expected size.
+        /// </summary>
+        [TestMethod]
+        public void TestRetreiveActivitiesPastAndUpcomingDatesRetrievesCorrectSize()
+        {
+            //arrange
+            const int expected = 6;
+            List<ActivityVM> activities = new List<ActivityVM>();
+            int actual;
+            //act
+            activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
+            actual = activities.Count;
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that passes if RetreiveUserActivitiesPastAndUpcomingDates returns 
+        ///     expected size with corresponding userID.
+        /// </summary>
+        [TestMethod]
+        public void TestRetreiveUserActivitiesPastAndUpcomingDatesReturnsCorrectList()
+        {
+            //arrange
+            const int expected = 3;
+            const int _userID = 100000;
+            List<ActivityVM> activities = new List<ActivityVM>();
+            int actual;
+            //act
+            activities = _activityManager.RetreiveUserActivitiesPastAndUpcomingDates(_userID);
+            actual = activities.Count;
+            //assert
+            Assert.AreEqual(expected, actual);
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that passes if RetreiveUserActivitiesPastAndUpcomingDates returns 
+        ///     application exception with invalid userID
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestRetreiveUserActivitiesPastAndUpcomingDatesFailsWithInvalidUserID()
+        {
+            //arrange
+            const int invalidUserID = 1;
+            List<ActivityVM> activities = new List<ActivityVM>();
+            //act
+            activities = _activityManager.RetreiveUserActivitiesPastAndUpcomingDates(invalidUserID);
+            //assert
+            //nothing to assert
+        }
     }
 }

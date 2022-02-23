@@ -84,7 +84,8 @@ INSERT INTO [dbo].[Event] (
 	('Ragbrai Stop Mason City','The event plans for Ragbrai in Mason City 2022.',100000),
 	('Jazzfest','Live jazz performances and food vendors downtown Iowa City.',100000),
 	('Bix7 2021','7 mile race in Davenport, Iowa ',100000),
-	('Spelling Bee for the Bees','A spelling bee contest to raise money for a bee sanctuary.',100000)
+	('Spelling Bee for the Bees','A spelling bee contest to raise money for a bee sanctuary.',100000),
+	('Apple-Bobbing','Apple-Bobbing contest.',100000)	
 
 GO
 
