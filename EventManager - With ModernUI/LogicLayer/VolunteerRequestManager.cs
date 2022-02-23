@@ -30,9 +30,9 @@ namespace LogicLayer
         {
             this._volunteerRequestAccessor = requestAccessor;
         }
-        public List<VolunteerRequest> GetVolunteerRequests(int eventID)
+        public List<VolunteerRequestViewModel> RetrieveVolunteerRequests(int eventID)
         {
-            List<VolunteerRequest> requests = null;
+            List<VolunteerRequestViewModel> requests = null;
             try
             {
                 requests = _volunteerRequestAccessor.SelectVolunteerRequestsByEventID(eventID);

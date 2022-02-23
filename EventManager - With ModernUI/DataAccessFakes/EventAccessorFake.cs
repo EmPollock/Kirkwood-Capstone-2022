@@ -481,7 +481,7 @@ namespace DataAccessFakes
         /// 
         /// </summary>
         /// <returns>int number of records affected</returns>
-        public int UpdateEvent(EventVM oldEvent, EventVM newEvent)
+        public int UpdateEvent(Event oldEvent, Event newEvent)
         {
             int rowsAffected = 0;
 

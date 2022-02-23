@@ -51,13 +51,13 @@ namespace WPFPresentation.Event
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
             //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
             //_locationManager = new LocationManager(new LocationAccessorFake());
-            _volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
+            //_volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
 
             // use default accessor
             _eventManager = new LogicLayer.EventManager();
             _eventDateManager = new EventDateManager();
+            _volunteerRequestManager = new VolunteerRequestManager();
             _locationManager = new LocationManager();
-           // _volunteerRequestManager = new VolunteerRequestManager();
             _event = selectedEvent;
 
             InitializeComponent();
@@ -90,6 +90,8 @@ namespace WPFPresentation.Event
             txtBoxEventName.Text = _event.EventName.ToString();
             txtBoxEventDateCreated.Text = _event.EventCreatedDate.ToShortDateString();
             txtBoxEventDescription.Text = _event.EventDescription.ToString();
+            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet
+
         }
 
         /// <summary>
@@ -106,10 +108,12 @@ namespace WPFPresentation.Event
             // Enable editing 
             txtBoxEventName.IsReadOnly = false;
             txtBoxEventDescription.IsReadOnly = false;
+            txtBoxEventLocation.IsReadOnly = true; // cannot change until I can add location
             btnDeleteEvent.Visibility = Visibility.Visible;
 
             // not allowed to change date created
             txtBoxEventDateCreated.IsEnabled = false;
+            txtBoxEventLocation.IsEnabled = false;
 
             // change buttons to Save and Cancel
             btnEventEditSave.Content = "Save";
@@ -131,6 +135,7 @@ namespace WPFPresentation.Event
             txtBoxEventName.IsReadOnly = true;
             txtBoxEventDateCreated.IsReadOnly = true;
             txtBoxEventDescription.IsReadOnly = true;
+            txtBoxEventLocation.IsReadOnly = true;
             btnDeleteEvent.Visibility = Visibility.Hidden;
 
             // make enabled to look nicer
@@ -280,7 +285,6 @@ namespace WPFPresentation.Event
                 txtBlockValidationMessage.Visibility = Visibility.Hidden;
             }
         }
-
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/01
@@ -298,7 +302,7 @@ namespace WPFPresentation.Event
             {
                 try // try update
                 {
-                    DataObjects.EventVM newEvent = new DataObjects.EventVM()
+                    DataObjects.Event newEvent = new DataObjects.Event()
                     { // same Event with event set to false
                         EventID = _event.EventID,
                         EventName = _event.EventName,
@@ -322,9 +326,16 @@ namespace WPFPresentation.Event
                 }
             }
         }
+
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+            pgTaskListView taskViewPage = new pgTaskListView(_event);
+            this.NavigationService.Navigate(taskViewPage);
+        }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
 
         // --------------------------------------------------------- Start of Date Tab -----------------------------------------------------------
+
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/08
@@ -377,6 +388,7 @@ namespace WPFPresentation.Event
             cmbEndTimeAMPM.SelectedItem = "AM";
             txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
 
+            btnEditEventDateAddSave.Content = "Add";
             // change buttons
             btnEditEventDateAddSave.Content = "Add";
             btnEditEventDateCloseCancel.Content = "Cancel";
@@ -777,13 +789,13 @@ namespace WPFPresentation.Event
 
             try
             {
-                List<VolunteerRequest> _requests = _volunteerRequestManager.GetVolunteerRequests(eventID);
+                List<VolunteerRequestViewModel> _requests = _volunteerRequestManager.RetrieveVolunteerRequests(eventID);
                 dgRequestList.ItemsSource = _requests;
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
-                MessageBox.Show(e.Message);
+                throw;
             }
         }
 

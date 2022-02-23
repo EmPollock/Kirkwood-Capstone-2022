@@ -153,5 +153,108 @@ namespace DataAccessLayer
 
             return result;
         }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/14
+        /// 
+        /// Description:
+        /// Returns the list of all public activities from the activity table in a view model
+        /// 
+        /// </summary>
+        /// 
+        /// <returns>A list of Activity objects</returns>
+        public List<ActivityVM> SelectActivitiesPastAndUpcomingDates()
+        {
+            List<ActivityVM> activeActivities = new List<ActivityVM>();
+
+            var cmdText = "sp_select_activities_for_past_and_upcoming_dates";
+            var conn = DBConnection.GetConnection();
+            var cmd = new SqlCommand(cmdText, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        activeActivities.Add(new ActivityVM()
+                        {
+
+                            ActivityID = reader.GetInt32(0),
+                            ActivityName = reader.GetString(1),
+                            ActivityDescription = reader.GetString(2),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            ActivityImageName = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            SublocationID = reader.GetInt32(6),
+                            SublocationName = reader.GetString(7),
+                            EventDateID = reader.GetDateTime(9),
+                            PublicActivity = true
+
+                        });
+                    }
+                }
+            }
+            catch (Exception ex) { throw ex; }
+
+            return activeActivities;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/12
+        /// 
+        /// Description:
+        /// Returns the list of all upcoming and past activities
+        /// 
+        /// </summary>
+        /// 
+        /// <returns>A list of Activity objects</returns>
+        public List<ActivityVM> SelectUserActivitiesPastAndUpcomingDates(int userID)
+        {
+            List<ActivityVM> activeActivities = new List<ActivityVM>();
+
+            var cmdText = "sp_select_all_activities_for_user";
+            var conn = DBConnection.GetConnection();
+            var cmd = new SqlCommand(cmdText, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        activeActivities.Add(new ActivityVM()
+                        {
+                            ActivityID = reader.GetInt32(0),
+                            ActivityName = reader.GetString(1),
+                            ActivityDescription = reader.GetString(2),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            ActivityImageName = reader.IsDBNull(5) ? null : reader.GetString(5),
+                            SublocationID = reader.GetInt32(6),
+                            SublocationName = reader.GetString(7),
+                            EventID = reader.GetInt32(8),
+                            EventDateID = reader.GetDateTime(9),
+                            PublicActivity = reader.GetBoolean(11)
+
+
+                        });
+
+                    }
+                }
+            }
+            catch (Exception ex) { throw ex; }
+            return activeActivities;
+        }
     }
 }

@@ -56,6 +56,47 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/14
+        /// 
+        /// Description:
+        /// Retrieves a list of all public Activities in View Model 
+        /// </summary>
+        /// <returns>A list of ActivityVMs</returns>
+        public List<ActivityVM> RetreiveActivitiesPastAndUpcomingDates()
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+
+            try
+            {
+                result = _activityAccessor.SelectActivitiesPastAndUpcomingDates();
+            }
+            catch (Exception ex) { throw; }
+
+            return result;
+
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/14
+        /// 
+        /// Description:
+        /// Retrieves a list of all user Activities in View Model 
+        /// </summary>
+        /// <returns>A list of ActivityVMs</returns>
+        public List<ActivityVM> RetreiveUserActivitiesPastAndUpcomingDates(int userID)
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+            try
+            {
+                result = _activityAccessor.SelectUserActivitiesPastAndUpcomingDates(userID);
+            }
+            catch (Exception ex) { throw ex; }
+
+            return result;
+        }
+
+        /// <summary>
         /// Emma Pollock
         /// Created: 2022/02/03
         /// 

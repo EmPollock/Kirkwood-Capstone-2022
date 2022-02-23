@@ -311,7 +311,30 @@ namespace WPFPresentation
                 eventFilter = EventFilter.AllUpcomingEvents;
             }
         }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// handler for navigating to the view activities page
+        /// 
+        /// </summary>
+        private void btnActivity_Click(object sender, RoutedEventArgs e)
+        {
+            Event.pgViewActivities page;
+            Uri pageURI = new Uri("Event/pgViewActivities.xaml", UriKind.Relative);
 
+            if (_user != null)
+            {
+                page = new Event.pgViewActivities(_user);
+                this.NavigationService.Navigate(page, pageURI);
+            }
+            else
+            {
+                page = new Event.pgViewActivities();
+                this.NavigationService.Navigate(page, pageURI);
+            }
+        }
     }
 
     /// <summary>

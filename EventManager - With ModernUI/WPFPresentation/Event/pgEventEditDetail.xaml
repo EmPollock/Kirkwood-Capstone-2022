@@ -8,7 +8,40 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="pgEventEditDetail" Loaded="Page_Loaded">
     <Grid>
-        <TabControl x:Name="tabsetEditViewEvents">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="btnEventDetails" Grid.Row="0" HorizontalAlignment="Center" Padding="34 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="#FFFFFF99">Event Details</Button>
+            <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White" Click="btnTasks_Click">Tasks</Button>
+            <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Itinerary</Button>
+            <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Budget</Button>
+            <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Advertising</Button>
+            <Button x:Name="btnAfterEventReport" Grid.Row="5" HorizontalAlignment="Center" Padding="17 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">After Event Report</Button>
+            <Button x:Name="btnFiles" Grid.Row="6" HorizontalAlignment="Center" Padding="63 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Files</Button>
+            <Button x:Name="btnInvitations" Grid.Row="7" HorizontalAlignment="Center" Padding="43 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Invitations</Button>
+        </Grid>
+        <TabControl x:Name="tabsetEditViewEvents" Grid.Column="1">
             <TabItem x:Name="tabGeneralEvent" Header="General">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -17,26 +50,32 @@
                         <RowDefinition Height="100"/>
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    
                     <TextBlock x:Name="txtBlkEditEventGeneralTitle" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}">Event Details</TextBlock>
-                    <TextBlock  x:Name="lblEventName" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Name</TextBlock>
-                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtBoxEventName" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" TextChanged="txtBoxEventName_TextChanged"></TextBox>
+                    <TextBlock  x:Name="lblEventName" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Name</TextBlock>
+                    <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="txtBoxEventName" Margin="250 20 0 20" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" TextChanged="txtBoxEventName_TextChanged"></TextBox>
 
-                    <TextBlock x:Name="lblEventDate" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Date Created</TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtBoxEventDateCreated" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+                    <TextBlock x:Name="lblEventDate" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Date Created</TextBlock>
+                    <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="txtBoxEventDateCreated" Margin="250 20 0 20" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
 
-                    <TextBlock x:Name="lblEventDescription" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Description</TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtBoxEventDescription" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" TextChanged="txtBoxEventDescription_TextChanged"></TextBox>
+                    <TextBlock x:Name="lblEventDescription" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Description</TextBlock>
+                    <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="txtBoxEventDescription"  Margin="250 20 0 20" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" TextChanged="txtBoxEventDescription_TextChanged"></TextBox>
 
-                    <Button x:Name="btnDeleteEvent"  Grid.Row="3" Grid.Column="1" Margin="10" HorizontalAlignment="Center"  VerticalAlignment="Center" Content="Delete" Click="btnDeleteEvent_Click" />
+                    <TextBlock x:Name="lblEventLocation" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Location</TextBlock>
+                    <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="txtBoxEventLocation" Margin="250 20 0 20" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+
+                    <Button x:Name="btnDeleteEvent"  Grid.Row="4" Grid.Column="0" Margin="10" HorizontalAlignment="Center"  VerticalAlignment="Center" Content="Delete" Click="btnDeleteEvent_Click" />
                     <TextBlock Grid.Row="5" Grid.Column="1" x:Name="txtBlockValidationMessage" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="#FFFF4040" Visibility="Hidden"></TextBlock>
-                    <Button x:Name="btnEventEditSave" Grid.Row="6" Grid.Column="1" Content="Edit" IsTabStop="False"  HorizontalAlignment="Left" Margin="10" Click="btnEventEditSave_Click"/>
-                    <Button x:Name="btnEventCloseCancel" Grid.Row="6" Grid.Column="1"  Content="Close" HorizontalAlignment="Right" Margin="10" Click="btnEventCloseCancel_Click" />
+                    <Button x:Name="btnEventEditSave" Grid.Row="6" Grid.Column="0" Content="Edit" IsTabStop="False"  HorizontalAlignment="Left" Margin="10" Click="btnEventEditSave_Click"/>
+                    <Button x:Name="btnEventCloseCancel" Grid.Row="6" Grid.Column="0"  Content="Close" HorizontalAlignment="Right" Margin="10" Click="btnEventCloseCancel_Click" />
+
                 </Grid>
             </TabItem>
             <TabItem x:Name="tabEventDates" Header="Dates" Loaded="tabEventDates_Loaded">
@@ -134,6 +173,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
+
             <TabItem x:Name="tabEventLocation" Header="Location" Loaded="tabEventLocation_Loaded" >
                 <Grid>
                     <Grid.RowDefinitions>
@@ -160,8 +200,15 @@
                         <ColumnDefinition Width="160" />
                         <ColumnDefinition Width="160" />
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="dgRequestList" Grid.Row="1" CanUserAddRows="False"
-                              Grid.ColumnSpan="6" />
+                    <DataGrid x:Name="dgRequestList" Grid.Row="1" CanUserAddRows="False" Grid.ColumnSpan="6" AutoGenerateColumns="false">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Request ID" Binding="{Binding RequestID}" Width="*"/>
+                            <DataGridTextColumn Header="Volunteer" Binding="{Binding VolunteerName}" Width="*"/>
+                            <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*"/>
+                            <DataGridTextColumn Header="Volunteer Response" Binding="{Binding StrVolunteerResponse}" Width="*"/>
+                            <DataGridTextColumn Header="Event Response" Binding="{Binding StrEventResponse}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                     <Button x:Name="acceptRequest" Grid.Column="3" Grid.Row="2" 
                             Margin="10 5" Click="btnAcceptRequest_Click" >Accept Request</Button>
                     <Button x:Name="rejectRequest" Grid.Column="4" Grid.Row="2" 

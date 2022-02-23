@@ -33,7 +33,8 @@ namespace DataAccessFakes
                 EndTime = new DateTime(2022, 01, 01).AddHours(4),
                 SublocationID = 1000003,
                 EventDateID = new DateTime(2022, 01, 01),
-                EventID = 1
+                EventID = 1,
+                UserID = 100000
             });
 
             _fakeActivites.Add(new ActivityVM()
@@ -46,7 +47,8 @@ namespace DataAccessFakes
                 EndTime = new DateTime(2022, 01, 01).AddHours(3),
                 SublocationID = 1000004,
                 EventDateID = new DateTime(2022, 01, 01),
-                EventID = 1
+                EventID = 1,
+                UserID = 100000
             });
 
             _fakeActivites.Add(new ActivityVM()
@@ -98,7 +100,8 @@ namespace DataAccessFakes
                 EndTime = new DateTime(2022, 01, 03).AddHours(3),
                 SublocationID = 1000001,
                 EventDateID = new DateTime(2022, 01, 02),
-                EventID = 2
+                EventID = 2,
+                UserID = 100000
             });
         }
 
@@ -195,6 +198,50 @@ namespace DataAccessFakes
                 }
             }
 
+            return result;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/14
+        /// 
+        /// Description:
+        /// Select fake Activities that are public  
+        /// 
+        /// </summary>
+        /// <returns>A List of all public Activities </returns>
+        public List<ActivityVM> SelectActivitiesPastAndUpcomingDates()
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+
+            foreach (ActivityVM activity in _fakeActivites)
+            {
+                result.Add(activity);
+            }
+            return result;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/14
+        /// 
+        /// Description:
+        /// Select fake Activities with the corresponding userID
+        /// 
+        /// </summary>
+        /// <returns>A List of all user Activities </returns>
+        public List<ActivityVM> SelectUserActivitiesPastAndUpcomingDates(int userID)
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+
+            foreach (ActivityVM activity in _fakeActivites)
+            {
+                if (activity.UserID == userID)
+                {
+                    result.Add(activity);
+                }
+            }
+            if (result.Count == 0)
+            { throw new ArgumentException(); }
             return result;
         }
     }

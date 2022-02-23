@@ -16,6 +16,6 @@ namespace LogicLayerInterfaces
 {
     public interface IVolunteerRequestManager
     {
-        List<VolunteerRequest> GetVolunteerRequests(int eventID);
+        List<VolunteerRequestViewModel> RetrieveVolunteerRequests(int eventID);
     }
 }

@@ -58,6 +58,15 @@ GO
 ***************************************************************
  Christopher Repko
  Updated: 2022/02/11
+<<<<<<< HEAD
+
+ Description: 
+ Additional test records for SupplierReview join.
+***************************************************************
+ <Updater Name>
+ Updated: yyyy/mm/dd
+=======
+>>>>>>> origin/main
 
  Description: 
  Additional test records for SupplierReview join.

@@ -13,7 +13,7 @@ namespace DataAccessInterfaces
         int InsertEventReturnsEventID(string eventName, string eventDescription, int userID);
 
         List<EventVM> SelectActiveEvents();
-        int UpdateEvent(EventVM oldEvent, EventVM newEvent);
+        int UpdateEvent(Event oldEvent, Event newEvent);
         EventVM SelectEventByEventNameAndDescription(string eventName, string eventDescription);
         
         List<EventVM> SelectEventsUpcomingDates();

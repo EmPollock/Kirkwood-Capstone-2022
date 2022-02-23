@@ -127,7 +127,8 @@ namespace LogicLayer
         /// <param name="oldEvent">The record previously stored</param>
         /// <param name="newEvent">The new record containing the updates to the old</param>
         /// <returns>True or false if one record was updated</returns>
-        public bool UpdateEvent(EventVM oldEvent, EventVM newEvent)
+
+        public bool UpdateEvent(Event oldEvent, Event newEvent)
         {
             bool result = false;
 

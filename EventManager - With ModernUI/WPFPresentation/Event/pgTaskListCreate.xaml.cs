@@ -16,6 +16,7 @@ using LogicLayer;
 using LogicLayerInterfaces;
 using DataObjects;
 using DataAccessFakes;
+using WPFPresentation.Event;
 
 namespace WPFPresentation
 {
@@ -31,7 +32,7 @@ namespace WPFPresentation
         
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
-        //DataObjects.Event _event = null;
+        DataObjects.EventVM _event = null;
 
         // priority values to populate cboPriority
         List<Priority> _priorities = new List<Priority>();
@@ -43,7 +44,7 @@ namespace WPFPresentation
         /// Description:
         /// Initializes component and sets up task manager with either fake or default accessors
         /// </summary>
-        public pgTaskListCreate()
+        public pgTaskListCreate(DataObjects.EventVM selectedEvent)
         {
             // fake accessor
             //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
@@ -51,6 +52,7 @@ namespace WPFPresentation
             // default accessor
             _taskManager = new TaskManager();
             _eventManager = new LogicLayer.EventManager();
+            _event = selectedEvent;
 
             InitializeComponent();
         }
@@ -68,7 +70,7 @@ namespace WPFPresentation
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
-            // txtBlkEventName.Text = _event.EventName;
+            txtBlkEventName.Text = _event.EventName;
             try
             {
                 _priorities = _taskManager.RetrieveAllPriorities();
@@ -92,17 +94,31 @@ namespace WPFPresentation
         /// </summary>
         private void btnSaveTask_Click(object sender, RoutedEventArgs e)
         {
-            // hard coding this in for testing purposes, please delete when passing event id through pages
-            // is implemented.
-            int eventID = 100000;
+            int eventID = _event.EventID;
+
+            if (txtTaskName.Text == "" || txtTaskName.Text == null)
+            {
+                MessageBox.Show("Task name cannot be blank.");
+                txtTaskName.Focus();
+                return;
+            }
 
             string taskName = txtTaskName.Text.ToString();
+
+            if (txtTaskDescription.Text == "" || txtTaskDescription.Text == null)
+            {
+                MessageBox.Show("Task description cannot be blank.");
+                txtTaskDescription.Focus();
+                return;
+            }
 
             string taskDescription = txtTaskDescription.Text.ToString();
 
             if(dtpTaskDueDate.SelectedDate == null)
             {
-                dtpTaskDueDate.SelectedDate = DateTime.Now;
+                MessageBox.Show("Please set a due date before continuing");
+                dtpTaskDueDate.Focus();
+                return;
             }
 
             DateTime taskDueDate = (DateTime)dtpTaskDueDate.SelectedDate;
@@ -128,8 +144,8 @@ namespace WPFPresentation
             {
                 _taskManager.AddTask(task);
                 MessageBox.Show("Task has been added.");
-                Uri pageUri = new Uri("Event/pgTaskListView.xaml", UriKind.Relative);
-                this.NavigationService.Navigate(pageUri);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                this.NavigationService.Navigate(viewTasksPage);
             }
             catch (Exception ex)
             {
@@ -162,8 +178,8 @@ namespace WPFPresentation
             }
             else
             {
-                Uri pageUri = new Uri("Event/pgTaskListView.xaml", UriKind.Relative);
-                this.NavigationService.Navigate(pageUri);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                this.NavigationService.Navigate(viewTasksPage);
             }
         }
     }

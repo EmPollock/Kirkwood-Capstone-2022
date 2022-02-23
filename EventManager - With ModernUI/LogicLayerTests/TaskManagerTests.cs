@@ -61,35 +61,6 @@ namespace LogicLayerTests
         /// Created: 2022/01/24
         /// 
         /// Description:
-        /// Test that returns an application exception if Name is empty
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestInsertTaskThrowsExceptionIfNameIsBlank()
-        {
-            //arrange
-            Tasks task = new Tasks()
-            {
-                EventID = 100001,
-                Name = "",
-                Description = "Something needs cleaned and it ain't me",
-                DueDate = DateTime.Today,
-                Priority = 2
-            };
-
-            //act
-            taskManager.AddTask(task);
-
-            //assert
-            //checking for exception
-
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/01/24
-        /// 
-        /// Description:
         /// Test that returns an application exception if Name is over 50 characters
         /// </summary>
         [TestMethod]
@@ -102,35 +73,6 @@ namespace LogicLayerTests
                 EventID = 100001,
                 Name = "Cleannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn Something",
                 Description = "Something needs cleaned and it ain't me",
-                DueDate = DateTime.Today,
-                Priority = 2
-            };
-
-            //act
-            taskManager.AddTask(task);
-
-            //assert
-            //checking for exception
-
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/01/24
-        /// 
-        /// Description:
-        /// Test that returns an application exception if Description is empty
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestInsertTaskThrowsExceptionIfDescriptionIsBlank()
-        {
-            //arrange
-            Tasks task = new Tasks()
-            {
-                EventID = 100001,
-                Name = "Clean",
-                Description = "",
                 DueDate = DateTime.Today,
                 Priority = 2
             };
@@ -329,6 +271,13 @@ namespace LogicLayerTests
 
         }
 
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/11
+        /// 
+        /// Description:
+        /// Test that returns true if EditTask() ran successfully
+        /// </summary>
         [TestMethod]
         public void TestUpdateTaskReturnsTrueIfSuccessful()
         {
