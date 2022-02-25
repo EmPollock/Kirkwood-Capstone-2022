@@ -9,7 +9,6 @@ namespace LogicLayerInterfaces
 {
     public interface ISublocationManager
     {
-        int InsertSubLocation(int locationID, string sublocationName, string sublocationDescription);
-        List<Sublocation> RetrieveSublocationsByLocationID(int locationID);
+
     }
 }

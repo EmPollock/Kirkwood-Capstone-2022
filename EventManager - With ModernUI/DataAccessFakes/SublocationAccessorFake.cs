@@ -103,9 +103,5 @@ namespace DataAccessFakes
             throw new ArgumentException();
         }
 
-        public List<Sublocation> SelectSublocationsByLocationID(int locationID)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

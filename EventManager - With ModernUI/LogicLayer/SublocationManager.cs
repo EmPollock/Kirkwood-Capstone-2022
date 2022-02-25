@@ -18,32 +18,6 @@ namespace LogicLayer
         {
             _sublocationAccessor = new SublocationAccessor();
         }
-        public int InsertSubLocation(int locationID, string sublocationName, string sublocationDescription)
-        {
-            int rows = 0;
-            try
-            {
-                rows = _sublocationAccessor.InsertSublocationByLocationID(locationID, sublocationName, sublocationDescription);
-            }
-            catch (Exception e) 
-            {
-                throw e;
-            }
-            return rows;
-        }
-
-        public List<Sublocation> RetrieveSublocationsByLocationID(int locationID)
-        {
-            List<Sublocation> sublocations = new List<Sublocation>();
-            try
-            {
-                _sublocationAccessor.SelectSublocationsByLocationID(locationID);
-            }
-            catch (Exception e) 
-            {
-                throw e;
-            }
-            return sublocations;
-        }
+      
     }
 }
