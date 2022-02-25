@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using LogicLayer;
 using LogicLayerInterfaces;
 using DataObjects;
+using WPFPresentation.Location;
 using DataAccessFakes;
 
 namespace WPFPresentation
@@ -39,7 +40,7 @@ namespace WPFPresentation
         List<Reviews> _locationReviews;
         List<LocationImage> _locationImages;
         List<EventDateVM> _eventDatesForLocation;
-        List<Sublocation> _sublocationsForLocation;
+        List<Sublocation> _sublocations;
         List<Activity> _activitiesForSublocation;
 
         Uri _src;
@@ -54,7 +55,7 @@ namespace WPFPresentation
         /// </summary>
         /// <param name="locationID"></param>
         /// <param name="locationManager"></param>
-        public pgViewLocationDetails(int locationID, ILocationManager locationManager)
+        public pgViewLocationDetails(int locationID, ILocationManager locationManager, ISublocationManager sublocationManager)
         {
             // use fake accessor
             //_locationManager = new LocationManager(new LocationAccessorFake());
@@ -69,12 +70,13 @@ namespace WPFPresentation
             _activityManager = new ActivityManager();
 
             _locationManager = locationManager;
+            _sublocationManager = sublocationManager;
 
             _locationID = locationID;
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
             _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
-            _sublocationsForLocation = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
+            _sublocations = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
 
             InitializeComponent();
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
@@ -91,6 +93,7 @@ namespace WPFPresentation
         private void loadLocationDetails()
         {
             hideDetails();
+            hideSublocations();
             btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
             scrLocationDetails.Visibility = Visibility.Visible;
 
@@ -326,6 +329,12 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationSchedule()
         {
+
+            hideDetails();
+            hideSublocations();
+            btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
+            scrLocationSchedule.Visibility = Visibility.Visible;
+
             txtLocationNamesSchedule.Text = _location.Name + "'s Schedule";
             _eventDatesForLocation = _eventDateManager.RetrieveEventDatesByLocationID(_locationID);
         }
@@ -407,6 +416,7 @@ namespace WPFPresentation
 
             btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
         }
 
         /// <summary>
@@ -547,7 +557,7 @@ namespace WPFPresentation
             {
                 cboSchedulePicker.Items.Add(_location.Name);
 
-                foreach (Sublocation sublocation in _sublocationsForLocation)
+                foreach (Sublocation sublocation in _sublocations)
                 {
                     cboSchedulePicker.Items.Add(sublocation.SublocationName);
                 }
@@ -600,7 +610,7 @@ namespace WPFPresentation
                 {
                     colActivityName.Visibility = Visibility.Visible;
                     colEventName.Visibility = Visibility.Collapsed;
-                    _sublocationID = _sublocationsForLocation.First(m => m.SublocationName == cboSchedulePicker.SelectedItem.ToString()).SublocationID;
+                    _sublocationID = _sublocations.First(m => m.SublocationName == cboSchedulePicker.SelectedItem.ToString()).SublocationID;
                     loadSublocationSchedule();
                     //loadCalendarData();
                 }
@@ -611,6 +621,127 @@ namespace WPFPresentation
             }
             //MessageBox.Show(cboSchedulePicker.SelectedItem.ToString());
             loadCalendarData();
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Click event handler for deactivating a location
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnDeleteLocation_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to delete this location?",
+                               "Delete",
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    int rowsAffected = _locationManager.DeactivateLocationByLocationID(_locationID);
+                    if (rowsAffected == 1) 
+                    {
+                        pgViewLocations viewLocations = new pgViewLocations(_locationManager, _sublocationManager);
+                        this.NavigationService.Navigate(viewLocations);
+                    }
+                } catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error deleting this location." + ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description
+        /// Event handler for the "Site Areas" button. Grabs a list of location sublocations and populates the screen.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSiteAreas_Click(object sender, RoutedEventArgs e)
+        {
+            this.hideDetails();
+            btnSiteAreas.Background = new SolidColorBrush(Colors.Gray);
+            try
+            {
+                _sublocations = _sublocationManager.RetrieveSublocationsByLocationID(_locationID);
+            } catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n\n" + ex.InnerException.Message);
+            }
+
+            scrSublocations.Visibility = Visibility.Visible;
+            scrLocationDetails.Visibility = Visibility.Collapsed;
+            scrLocationSchedule.Visibility = Visibility.Collapsed;
+
+            // redraw sublocations
+            grdSublocations.RowDefinitions.Clear();
+            RowDefinition row = new RowDefinition();
+            row.Height = new GridLength(150);
+            grdSublocations.RowDefinitions.Add(row);
+            grdSublocations.RowDefinitions.Add(new RowDefinition());
+
+            this.populateSublocations();
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Populates the sublocations screen from a list of saved sublocations.
+        /// </summary>
+        private void populateSublocations()
+        {
+            if(_sublocations.Count > 0)
+            {
+                lblSublocationName.Content = _sublocations[0].SublocationName;
+                txtSublocationDescription.Text = _sublocations[0].SublocationDescription;
+
+                for(int i = 1; i < _sublocations.Count; i++)
+                {
+                    RowDefinition row = new RowDefinition();
+                    row.Height = new GridLength(150);
+                    grdSublocations.RowDefinitions.Insert(i, row);
+
+                    Label nameLabel = new Label();
+                    nameLabel.Content = _sublocations[i].SublocationName;
+                    nameLabel.Margin = new Thickness(30, 10, 0, 110);
+                    nameLabel.FontSize = 18.0d;
+                    nameLabel.FontWeight = FontWeights.Bold;
+
+                    TextBox descriptionText = new TextBox();
+                    descriptionText.Text = _sublocations[i].SublocationDescription;
+                    descriptionText.Margin = new Thickness(30, 40, 30, 10);
+                    descriptionText.IsReadOnly = true;
+
+                    Grid.SetRow(nameLabel, i); 
+                    Grid.SetRow(descriptionText, i);
+                    grdSublocations.Children.Add(nameLabel);
+                    grdSublocations.Children.Add(descriptionText);
+                }
+            } else
+            {
+                lblSublocationName.Content = "No sublocations found.";
+            }
+        }
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Small helper method to hide sublocation screen.
+        /// </summary>
+        private void hideSublocations()
+        {
+            scrSublocations.Visibility = Visibility.Collapsed;
         }
     }
 }

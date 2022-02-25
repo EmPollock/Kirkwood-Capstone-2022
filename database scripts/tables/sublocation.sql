@@ -31,6 +31,7 @@ Description:
 ****************************************************************/
 
 print '' print '*** creating Sublocation table'
+GO
 CREATE TABLE [dbo].[Sublocation] (
 	[SublocationID]				[int] IDENTITY(100000,1)	NOT NULL
 	,[LocationID] 				[int]						NOT NULL

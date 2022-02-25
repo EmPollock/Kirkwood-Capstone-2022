@@ -29,6 +29,11 @@ Updated: 2022/02/09
 
 Description: Made LocationID nullable
 **************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: Created TotalBudget field, updated formatting
+**************************************************************
 <Updater Name>
 Updated: yyyy/mm/dd
 
@@ -37,12 +42,13 @@ Description:
 
 print '' print '*** creating Event table'
 CREATE TABLE [dbo].[Event] (
-	[EventID]			[int] IDENTITY(100000,1)	NOT NULL
-	,[LocationID]		[int]						NULL
-	,[EventName]		[nvarchar](50)				NOT NULL
-	,[EventDescription]	[nvarchar](1000)			NOT NULL
-	,[DateCreated]		[DateTime]					NOT NULL DEFAULT CURRENT_TIMESTAMP 
-	,[Active]			[bit]						NOT NULL DEFAULT 1
+	[EventID]			[int] IDENTITY(100000,1)	NOT NULL,
+	[LocationID]		[int]						NULL,
+	[EventName]		[nvarchar](50)					NOT NULL,
+	[EventDescription]	[nvarchar](1000)			NOT NULL,
+	[DateCreated]		[DateTime]					NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+	[TotalBudget]		[money]						NOT NULL DEFAULT 0,
+	[Active]			[bit]						NOT NULL DEFAULT 1
 	CONSTRAINT [fk_LocationID_Event] FOREIGN KEY([LocationID])
 		REFERENCES [Location]([LocationID])
 	CONSTRAINT [pk_EventID] PRIMARY KEY([EventID])
@@ -68,6 +74,12 @@ GO
 
  Description: 
  Added LocationID to inserts
+ ***************************************************************
+ Alaina Gilson
+ Updated: 2022/02/22
+ 
+ Description: 
+ Added TotalBudget to inserts, updated formatting
 ****************************************************************/
 
 print '' print '*** test records for Event table'
@@ -75,16 +87,18 @@ GO
 INSERT INTO [dbo].[Event] (
 	[EventName],
 	[EventDescription],	
+	[TotalBudget],
 	[LocationID]
-)VALUES 
-	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA',100000),
-	('Clean Up the Park','An event to organize a way to clean up the local park.',100000),
-	('Coachella in the Corridor','A music festival to raise money for local charities.',100000),
-	('Meeting of the C-Sharpians','Convention for C# coding enthusiasts.',100000),
-	('Ragbrai Stop Mason City','The event plans for Ragbrai in Mason City 2022.',100000),
-	('Jazzfest','Live jazz performances and food vendors downtown Iowa City.',100000),
-	('Bix7 2021','7 mile race in Davenport, Iowa ',100000),
-	('Spelling Bee for the Bees','A spelling bee contest to raise money for a bee sanctuary.',100000)
-
+)
+VALUES 
+	('Scottish Highland Games', 'Event created for the Scottish Highland games in Cedar Rapids, IA',1000.00,100000),
+	('Clean Up the Park','An event to organize a way to clean up the local park.',1000.00,100000),
+	('Coachella in the Corridor','A music festival to raise money for local charities.',1000.00,100000),
+	('Meeting of the C-Sharpians','Convention for C# coding enthusiasts.',1000.00,100000),
+	('Ragbrai Stop Mason City','The event plans for Ragbrai in Mason City 2022.',1000.00,100000),
+	('Jazzfest','Live jazz performances and food vendors downtown Iowa City.',1000.00,100000),
+	('Bix7 2021','7 mile race in Davenport, Iowa ',1000.00,100000),
+	('Spelling Bee for the Bees','A spelling bee contest to raise money for a bee sanctuary.',1000.00,100000),
+	('Apple-Bobbing','Apple-Bobbing contest.',1000.00,100000)	
 GO
 

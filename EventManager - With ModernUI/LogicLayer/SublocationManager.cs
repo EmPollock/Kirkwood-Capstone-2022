@@ -10,6 +10,7 @@ using DataAccessLayer;
 
 namespace LogicLayer
 {
+
     /// <summary>
     /// Austin Timmerman
     /// Created: 2022/02/22
@@ -47,29 +48,49 @@ namespace LogicLayer
         }
 
         /// <summary>
-        /// Austin Timmerman
-        /// Created: 2022/02/22
+        /// Christopher Repko
+        /// Created 2022/02/24
         /// 
         /// Description:
-        /// Method retrieving sublocations by the passed locationID
+        /// Retrieves a sublocation based on a sublocationID
         /// </summary>
-        /// <param name="locationID"></param>
-        /// <returns>List of Sublocation objects</returns>
-        public List<Sublocation> RetrieveSublocationsByLocationID(int locationID)
+        /// <param name="sublocationID">SublocationID to retrieve the sublocation for</param>
+        /// <returns>A sublocation matching the sublocationID passed in.</returns>
+        public Sublocation RetrieveSublocationBySublocationID(int sublocationID)
         {
-            List<Sublocation> sublocations = new List<Sublocation>();
-
+            Sublocation result = null;
             try
             {
-                sublocations = _sublocationAccessor.SelectSublocationsByLocationID(locationID);
+                result = this._sublocationAccessor.SelectSublocationBySublocationID(sublocationID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve sublocation", ex);
             }
-            catch (Exception)
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Retrieves a list of sublocations based on a locationID
+        /// </summary>
+        /// <param name="locationID">LocationID to retrieve sublocations matching.</param>
+        /// <returns>A list of sublocations matching the locationID passed in.</returns>
+        public List<Sublocation> RetrieveSublocationsByLocationID(int locationID)
+        {
+            List<Sublocation> result = new List<Sublocation>();
+            try
+            {
+                result = this._sublocationAccessor.SelectSublocationsByLocationID(locationID);
+            }
+            catch (Exception ex)
             {
 
-                throw;
+                throw new ApplicationException("Failed to retrieve list of sublocations for location", ex);
             }
-
-            return sublocations;
+            return result;
         }
     }
 }

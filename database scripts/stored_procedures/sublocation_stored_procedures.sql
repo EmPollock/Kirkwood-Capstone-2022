@@ -47,11 +47,11 @@ GO
 
 
 /***************************************************************
-Austin Timmerman
-Created: 2022/02/22
+Christopher Repko
+Created: 2022/02/24
 
 Description:
-Stored procedure to select sublocations by location id
+Stored procedure to select a list of sublocations linked to a location
 **************************************************************
 <Updater Name>
 Updated: yyyy/mm/dd
@@ -66,11 +66,11 @@ CREATE PROCEDURE [dbo].[sp_select_sublocations_by_locationID](
 )
 AS
 	BEGIN
-		SELECT 
-			[SublocationID],
-			[SublocationName],		
-			[SublocationDescription],	
-			[Active]			
+		SELECT 			
+			[SublocationName]			
+			,[SublocationDescription]	
+			,[Active]	
+			,[SublocationID]			
 		FROM [dbo].[Sublocation]
 		WHERE [LocationID] = @LocationID
 	END	

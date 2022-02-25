@@ -24,6 +24,7 @@ namespace WPFPresentation.Location
     public partial class pgViewLocations : Page
     {
         ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager;
 
         /// <summary>
         /// Kris Howell
@@ -32,13 +33,14 @@ namespace WPFPresentation.Location
         /// Description:
         /// Initialize location manager and page
         /// </summary>
-        public pgViewLocations()
+        public pgViewLocations(ILocationManager locationManager, ISublocationManager sublocationManager)
         {
             // fake accessor
             //_locationManager = new LocationManager(new LocationAccessorFake());
 
             // live data accessor
-            _locationManager = new LocationManager();
+            _locationManager = locationManager;
+            _sublocationManager = sublocationManager;
 
             InitializeComponent();
         }
@@ -70,7 +72,7 @@ namespace WPFPresentation.Location
             }
             DataObjects.Location location = (DataObjects.Location)datLocationsList.SelectedItem;
 
-            pgViewLocationDetails page = new pgViewLocationDetails(location.LocationID, _locationManager);
+            pgViewLocationDetails page = new pgViewLocationDetails(location.LocationID, _locationManager, _sublocationManager);
             this.NavigationService.Navigate(page);
         }
     }

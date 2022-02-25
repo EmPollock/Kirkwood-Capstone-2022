@@ -36,6 +36,13 @@ namespace DataAccessFakes
         /// 
         /// Description:
         /// Removed location object from fake events
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         public EventAccessorFake()
         {
             
@@ -46,6 +53,7 @@ namespace DataAccessFakes
                 EventName = "Test Event 1",
                 EventDescription = "A description of test event 1",
                 EventCreatedDate = DateTime.Now,
+                TotalBudget = 1000.00m,
                 Active = true
             });
 
@@ -56,6 +64,7 @@ namespace DataAccessFakes
                 EventName = "Test Event 2",
                 EventDescription = "A description of test event 2",
                 EventCreatedDate = DateTime.Now.AddMinutes(1),
+                TotalBudget = 120.00m,
                 Active = true
             });
 
@@ -66,6 +75,7 @@ namespace DataAccessFakes
                 EventName = "Test Event 3",
                 EventDescription = "A description of test event 3",
                 EventCreatedDate = DateTime.Now.AddMinutes(2),
+                TotalBudget = 222.00m,
                 Active = true
             });
 
@@ -77,6 +87,7 @@ namespace DataAccessFakes
                 EventName = "Test Event 4",
                 EventDescription = "A description of test event 4",
                 EventCreatedDate = DateTime.Now.AddMinutes(3),
+                TotalBudget = 2938.00m,
                 Active = true
             });
 
@@ -88,6 +99,7 @@ namespace DataAccessFakes
                 EventName = "Test EventVM 1",
                 EventDescription = "A description of test event 1",
                 EventCreatedDate = DateTime.Now,
+                TotalBudget = 1000.00m,
                 Active = true,
                 EventDates = new List<EventDate>()
             });
@@ -127,6 +139,7 @@ namespace DataAccessFakes
                 EventName = "Test EventVM 2",
                 EventDescription = "A description of test event 2",
                 EventCreatedDate = DateTime.Now.AddMinutes(1),
+                TotalBudget = 120.00m,
                 Active = true,
                 EventDates = new List<EventDate>()
             });
@@ -157,6 +170,7 @@ namespace DataAccessFakes
                 EventName = "Test EventVM 3",
                 EventDescription = "A description of test event 3",
                 EventCreatedDate = DateTime.Now.AddMinutes(2),
+                TotalBudget = 222.00m,
                 Active = true,
                 EventDates = new List<EventDate>()
             });
@@ -178,6 +192,7 @@ namespace DataAccessFakes
                 EventName = "Test EventVM 4",
                 EventDescription = "A description of test event 4",
                 EventCreatedDate = DateTime.Now.AddMinutes(3),
+                TotalBudget = 2938.00m,
                 Active = true,
                 EventDates = new List<EventDate>()
             });
@@ -221,8 +236,9 @@ namespace DataAccessFakes
         /// </summary>
         /// <param name="eventName">Name of the event</param>
         /// <param name="eventDescription">Description fo the event</param>
+        /// <param name="totalBudget">Total budget planned for event</param>
         /// <returns>Number of rows inserted</returns>
-        public int InsertEvent(string eventName, string eventDescription)
+        public int InsertEvent(string eventName, string eventDescription, decimal totalBudget)
         {
             int rowsAffected = 0;
             int eventID = _fakeEvents.Last().EventID + 1;
@@ -234,6 +250,7 @@ namespace DataAccessFakes
                 EventName = eventName,
                 EventDescription = eventDescription,
                 EventCreatedDate = DateTime.Now,
+                TotalBudget = totalBudget,
                 Active = true
             });
 
@@ -248,11 +265,19 @@ namespace DataAccessFakes
         /// 
         /// Description:
         /// Inserts a fake event into the database and returns the auto-increment value created for the event id
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
         /// <param name="eventName"></param>
         /// <param name="eventDescription"></param>
+        /// <param name="totalBudget"></param>
         /// <returns></returns>
-        public int InsertEventReturnsEventID(string eventName, string eventDescription)
+        public int InsertEventReturnsEventID(string eventName, string eventDescription, decimal totalBudget)
         {
             int eventID = _fakeEvents.Last().EventID + 1;
 
@@ -263,6 +288,7 @@ namespace DataAccessFakes
                 EventName = eventName,
                 EventDescription = eventDescription,
                 EventCreatedDate = DateTime.Now,
+                TotalBudget = totalBudget,
                 Active = true,
                 LocationID = null
             });
@@ -469,7 +495,7 @@ namespace DataAccessFakes
                 }
             }
             return events;
-        }        
+        }
 
         /// <summary>
         /// Jace Pettinger
@@ -477,6 +503,12 @@ namespace DataAccessFakes
         /// 
         /// Description:
         /// Updates an event in fake data list
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// 
         /// </summary>
         /// <returns>int number of records affected</returns>
@@ -488,10 +520,12 @@ namespace DataAccessFakes
             {
                 if (fakeEvent.EventID == newEvent.EventID && fakeEvent.EventName == oldEvent.EventName
                     && fakeEvent.EventDescription == oldEvent.EventDescription
+                    && fakeEvent.TotalBudget == oldEvent.TotalBudget
                     && fakeEvent.Active == oldEvent.Active)
                 {
                     fakeEvent.EventName = newEvent.EventName;
                     fakeEvent.EventDescription = newEvent.EventDescription;
+                    fakeEvent.TotalBudget = newEvent.TotalBudget;
                     fakeEvent.Active = newEvent.Active;
                     rowsAffected++;
                 }

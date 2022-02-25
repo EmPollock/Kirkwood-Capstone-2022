@@ -28,6 +28,7 @@ namespace WPFPresentation.Event
         DataObjects.EventVM _event = null;
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
+        ISublocationManager _sublocationManager = null;
 
         // create a priority list to populate in a bit
         List<Priority> _priorities = new List<Priority>();
@@ -39,9 +40,14 @@ namespace WPFPresentation.Event
         /// Description:
         /// Initializes components and sets up task/event managers as well
         /// as the selectedTask object along with a list of priorities
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager 
         /// </summary>
         /// <param name="selectedTask"></param>
-        public pgTaskListEdit(DataObjects.TasksVM selectedTask, DataObjects.EventVM selectedEvent)
+        public pgTaskListEdit(DataObjects.TasksVM selectedTask, DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager)
         {
             // fake accessors for testing purposes
             //_taskManager = new TaskManager(new TaskAccessorFakes());
@@ -53,7 +59,7 @@ namespace WPFPresentation.Event
 
             _task = selectedTask;
             _event = selectedEvent;
-
+            _sublocationManager = sublocationManager;
             _task.TaskEventName = _event.EventName;
             _task.EventID = _event.EventID;
 
@@ -103,6 +109,11 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Checks if the user wants to leave the page without saving update
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -120,7 +131,7 @@ namespace WPFPresentation.Event
             }
             else
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }
@@ -131,6 +142,11 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Click event handler to save the updated task
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -171,7 +187,7 @@ namespace WPFPresentation.Event
             }
             finally
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }

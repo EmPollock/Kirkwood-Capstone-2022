@@ -35,10 +35,12 @@ namespace WPFPresentation
         ITaskManager _taskManager = null;
         IVolunteerManager _volunteerManager = null;
         IVolunteerRequestManager _volunteerRequestManager = null;
+
         User _user = null;
         
         public MainWindow()
         {
+
             // fakes
             //this._userManager = new UserManager(new UserAccessorFake());
             //this._activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
@@ -62,11 +64,8 @@ namespace WPFPresentation
             this._volunteerRequestManager = new VolunteerRequestManager();
 
 
-
-
-
-
             // Keep this always safe! 
+
             _user = new User()
             {
                 UserID = 100001,
@@ -84,12 +83,10 @@ namespace WPFPresentation
             
         }
 
-        public MainWindow(User user, IUserManager userManager)
+        public MainWindow(User user, IUserManager userManager) : this()
         {
-            InitializeComponent();
             this._user = user;
             this._userManager = userManager;
-            this.btnBack.IsEnabled = false;
             this.mnuUser.Header = user.GivenName + " ▼";
         }
 
@@ -135,6 +132,11 @@ namespace WPFPresentation
         /// 2022/02/17
         /// Added user parameter for create event constructor
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// 
         /// </summary>
 
         private void btnCreateEvents_Click(object sender, RoutedEventArgs e)
@@ -145,7 +147,7 @@ namespace WPFPresentation
             }
             else
             {
-                Page page = new pgCreateEvent(_user);
+                Page page = new pgCreateEvent(_user, _sublocationManager);
                 this.MainFrame.NavigationService.Navigate(page);
             }
         }
@@ -165,17 +167,22 @@ namespace WPFPresentation
         /// Description:
         /// Added option to send user information to the view events page
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// 
         /// </summary>
         private void btnViewEvents_Click(object sender, RoutedEventArgs e)
         {
             if (_user != null)
             {
-                pgViewEvents pgViewEvents = new pgViewEvents(_user);
+                pgViewEvents pgViewEvents = new pgViewEvents(_user, _sublocationManager);
                 this.MainFrame.NavigationService.Navigate(pgViewEvents);
             }
             else
             {
-                Page page = new pgViewEvents();
+                Page page = new pgViewEvents(_sublocationManager);
                 this.MainFrame.NavigationService.Navigate(page);
             }
 
@@ -222,7 +229,7 @@ namespace WPFPresentation
 
         private void btnViewLocations_Click(object sender, RoutedEventArgs e)
         {
-            var page = new pgViewLocations();
+            var page = new pgViewLocations(_locationManager, _sublocationManager);
             this.MainFrame.NavigationService.Navigate(page);
         }
 

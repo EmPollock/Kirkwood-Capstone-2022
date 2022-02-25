@@ -200,8 +200,15 @@
                         <ColumnDefinition Width="160" />
                         <ColumnDefinition Width="160" />
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="dgRequestList" Grid.Row="1" CanUserAddRows="False"
-                              Grid.ColumnSpan="6" />
+                    <DataGrid x:Name="dgRequestList" Grid.Row="1" CanUserAddRows="False" Grid.ColumnSpan="6" AutoGenerateColumns="false">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Request ID" Binding="{Binding RequestID}" Width="*"/>
+                            <DataGridTextColumn Header="Volunteer" Binding="{Binding VolunteerName}" Width="*"/>
+                            <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*"/>
+                            <DataGridTextColumn Header="Volunteer Response" Binding="{Binding StrVolunteerResponse}" Width="*"/>
+                            <DataGridTextColumn Header="Event Response" Binding="{Binding StrEventResponse}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                     <Button x:Name="acceptRequest" Grid.Column="3" Grid.Row="2" 
                             Margin="10 5" Click="btnAcceptRequest_Click" >Accept Request</Button>
                     <Button x:Name="rejectRequest" Grid.Column="4" Grid.Row="2" 

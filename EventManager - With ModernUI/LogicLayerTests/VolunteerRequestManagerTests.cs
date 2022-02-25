@@ -27,14 +27,14 @@ namespace LogicLayerTests
         /// Description
         /// Recreation of Tests that check the request accessor
         /// </summary>
-         
+
         [TestMethod]
         public void TestRetrieveAllRequests()
         {
-            const int expectedAmount = 4;
+            const int expectedAmount = 5;
             int actualamount = 0;
 
-            actualamount = _volunteerRequestManager.GetVolunteerRequests(999999).Count;
+            actualamount = _volunteerRequestManager.RetrieveVolunteerRequests(999999).Count;
 
             Assert.AreEqual(expectedAmount, actualamount);
         }

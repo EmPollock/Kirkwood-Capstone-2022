@@ -16,6 +16,7 @@ namespace DataAccessInterfaces
 
     public interface IVolunteerRequestAccessor
     {
-        List<VolunteerRequest> SelectVolunteerRequestsByEventID(int EventID);
+        List<VolunteerRequestViewModel> SelectVolunteerRequestsByEventID(int EventID);
+
     }
 }

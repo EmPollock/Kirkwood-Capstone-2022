@@ -12,6 +12,7 @@ namespace DataAccessLayer
 {
     public class SublocationAccessor : ISublocationAccessor
     {
+      
         /// <summary>
         /// Emma Pollock
         /// Created: 2022/02/03
@@ -19,12 +20,16 @@ namespace DataAccessLayer
         /// Description:
         /// Returns a specific Sublocation
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/24
+        /// 
+        /// Updated to remove default sublocation. Also reenabled the location ID
         /// </summary>
         /// <param name="sublocationID"></param>
         /// <returns>A sublocation object</returns>
         public Sublocation SelectSublocationBySublocationID(int sublocationID)
         {
-            Sublocation result = new Sublocation();
+            Sublocation result = null;
 
             var conn = DBConnection.GetConnection();
             var cmdText = "sp_select_sublocation_by_sublocationID";
@@ -45,12 +50,6 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        /*	
-			                    [SublocationName]
-			                    ,[SublocationDescription]
-			                    ,[Active]
-                                //,[Location ID]	
-                        */
                         result = new Sublocation()
                         {
                             SublocationID = sublocationID,
@@ -69,6 +68,17 @@ namespace DataAccessLayer
 
             return result;
         }
+
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Returns a list of sublocations based on a locationID
+        /// </summary>
+        /// <param name="locationID">The locationID to get sublocations matching.</param>
+        /// <returns>A list of sublocations matching the location ID passed in.</returns>
 
         public List<Sublocation> SelectSublocationsByLocationID(int locationID)
         {
@@ -96,10 +106,11 @@ namespace DataAccessLayer
                         result.Add(new Sublocation()
                         {
                             LocationID = locationID,
-                            SublocationID = reader.GetInt32(0),
-                            SublocationName = reader.GetString(1),
-                            SublocationDescription = reader.IsDBNull(2) ? "" : reader.GetString(2),
-                            Active = reader.GetBoolean(3)
+
+                            SublocationName = reader.GetString(0),
+                            SublocationDescription = reader.IsDBNull(1) ? "" : reader.GetString(1),
+                            Active = reader.GetBoolean(2),
+                            SublocationID = reader.GetInt32(3)
                         });
                     }
                 }
