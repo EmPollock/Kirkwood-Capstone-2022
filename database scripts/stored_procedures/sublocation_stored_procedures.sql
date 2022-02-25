@@ -39,17 +39,19 @@ AS
 			[SublocationName]			
 			,[SublocationDescription]	
 			,[Active]	
-			/*,[Location ID]*/			
+			,[LocationID]			
 		FROM [dbo].[Sublocation]
 		WHERE [SublocationID] = @SublocationID
 	END	
 GO
+
 /***************************************************************
 Logan Baccam
 Created: 2022/02/23
 
 Description:
 Stored procedure to insert a new sublocation by locationID
+
 **************************************************************
 <Updater Name>
 Updated: yyyy/mm/dd
@@ -80,38 +82,26 @@ AS
 END 
 GO	
 /***************************************************************
-Logan Baccam
-Created: 2022/02/23
+Christopher Repko
+Created: 2022/02/24
 
 Description:
-Stored procedure to select a sublocation by locationID
-**************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Stored procedure to select a list of sublocations linked to a location
+****************************************************************/
 
-Description: 
-***************************************************************/
-
-print '' print '*** creating sp_select_sublocation_by_locationID'
+print '' print '*** creating sp_select_sublocations_by_locationID'
 GO
-CREATE PROCEDURE [dbo].[sp_select_sublocation_by_locationID](
-	@LocationID		[int]
+CREATE PROCEDURE [dbo].[sp_select_sublocations_by_locationID](
+	@LocationID			[int] 
 )
 AS
-BEGIN
-		SELECT
-			[SublocationID],
-			[SublocationName],
-			[SublocationDescription],
-			[Active]
-		FROM
-			[Sublocation]
-		ORDER BY SublocationID	
-END
+	BEGIN
+		SELECT 			
+			[SublocationName]			
+			,[SublocationDescription]	
+			,[Active]	
+			,[SublocationID]			
+		FROM [dbo].[Sublocation]
+		WHERE [LocationID] = @LocationID
+	END	
 GO
-
-
-
-
-
-

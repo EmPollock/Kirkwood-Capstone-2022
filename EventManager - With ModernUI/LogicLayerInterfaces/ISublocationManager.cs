@@ -9,6 +9,7 @@ namespace LogicLayerInterfaces
 {
     public interface ISublocationManager
     {
-
+        Sublocation RetrieveSublocationBySublocationID(int sublocationID);
+        List<Sublocation> RetrieveSublocationsByLocationID(int locationID);
     }
 }

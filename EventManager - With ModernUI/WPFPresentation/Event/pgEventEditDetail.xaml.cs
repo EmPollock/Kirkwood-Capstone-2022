@@ -30,6 +30,7 @@ namespace WPFPresentation.Event
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
 
         DataObjects.Location _location = null;
         DataObjects.EventVM _event = null;
@@ -43,9 +44,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Initializes component and sets up event manager with fake and default accessors
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
         /// </summary>
         /// <param name="selectedEvent">Must be pased an event object to view or edit</param>
-        public pgEventEditDetail(DataObjects.EventVM selectedEvent)
+        public pgEventEditDetail(DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager)
         {
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
@@ -59,6 +65,8 @@ namespace WPFPresentation.Event
             _volunteerRequestManager = new VolunteerRequestManager();
             _locationManager = new LocationManager();
             _event = selectedEvent;
+
+            _sublocationManager = sublocationManager;
 
             InitializeComponent();
         }
@@ -326,10 +334,23 @@ namespace WPFPresentation.Event
                 }
             }
         }
-
+        /// <summary>
+        /// ???
+        /// Created: ????/??/??
+        /// 
+        /// Description:
+        /// Click method for tasks button. Sends the user to the task list view.
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnTasks_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListView taskViewPage = new pgTaskListView(_event);
+            pgTaskListView taskViewPage = new pgTaskListView(_event, _sublocationManager);
             this.NavigationService.Navigate(taskViewPage);
         }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
@@ -754,13 +775,18 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method for loading location tab in location details page
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _locationManager);
+                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _locationManager, _sublocationManager);
                 locationFrame.Navigate(locationDetailsPage);
                 lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }

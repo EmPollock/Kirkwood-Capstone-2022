@@ -31,6 +31,7 @@ Description:
 ****************************************************************/
 
 print '' print '*** creating Sublocation table'
+GO
 CREATE TABLE [dbo].[Sublocation] (
 	[SublocationID]				[int] IDENTITY(100000,1)	NOT NULL
 	,[LocationID] 				[int]						NOT NULL
@@ -40,7 +41,7 @@ CREATE TABLE [dbo].[Sublocation] (
 
 	CONSTRAINT [pk_SublocationID] PRIMARY KEY([SublocationID])
 	,CONSTRAINT [fk_Sublocation_Location] FOREIGN KEY([LocationID])
-		REFERENCES [dbo].[Location]([LocationID]) ON UPDATE CASCADE
+		REFERENCES [dbo].[Location] ([LocationID]) ON UPDATE CASCADE
 )
 GO
 

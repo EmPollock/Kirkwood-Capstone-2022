@@ -10,7 +10,6 @@ namespace DataAccessInterfaces
     public interface ISublocationAccessor
     {
         Sublocation SelectSublocationBySublocationID(int sublocationID);
-        
-       
+        List<Sublocation> SelectSublocationsByLocationID(int locationID);
     }
 }
