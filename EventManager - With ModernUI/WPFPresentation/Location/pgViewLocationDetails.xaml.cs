@@ -30,11 +30,17 @@ namespace WPFPresentation
     {
         ILocationManager _locationManager;
         IEventDateManager _eventDateManager;
+        ISublocationManager _sublocationManager;
+        IActivityManager _activityManager;
+        
         DataObjects.Location _location;
         int _locationID;
+        int _sublocationID;
         List<Reviews> _locationReviews;
         List<LocationImage> _locationImages;
         List<EventDateVM> _eventDatesForLocation;
+        List<Sublocation> _sublocationsForLocation;
+        List<Activity> _activitiesForSublocation;
 
         Uri _src;
         int _imageNumber = 0;
@@ -53,10 +59,14 @@ namespace WPFPresentation
             // use fake accessor
             //_locationManager = new LocationManager(new LocationAccessorFake());
             //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
+            //_sublocationManager = new SublocationManager(new SublocationAccessorFake());
+            //_activityManager = new ActivityManager(new ActivityAccessorFake());
 
             // use default accessor
             //_locationManager = new LocationManager();
             _eventDateManager = new EventDateManager();
+            _sublocationManager = new SublocationManager();
+            _activityManager = new ActivityManager();
 
             _locationManager = locationManager;
 
@@ -64,6 +74,7 @@ namespace WPFPresentation
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
             _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
+            _sublocationsForLocation = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
 
             InitializeComponent();
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
@@ -285,13 +296,13 @@ namespace WPFPresentation
             }
 
 
-            if (_locationImages.Count == 0)
-            {
-                imgLocationImage.Visibility = Visibility.Collapsed;
-                btnNext.Visibility = Visibility.Collapsed;
-                btnBack.Visibility = Visibility.Collapsed;
-                return;
-            }
+            //if (_locationImages.Count == 0)
+            //{
+            //    imgLocationImage.Visibility = Visibility.Collapsed;
+            //    btnNext.Visibility = Visibility.Collapsed;
+            //    btnBack.Visibility = Visibility.Collapsed;
+            //    return;
+            //}
             try
             {
                 _src = new Uri(AppData.DataPath + @"\" + _locationImages[_imageNumber].ImageName, UriKind.Absolute);
@@ -302,7 +313,7 @@ namespace WPFPresentation
             {
                 btnNext.Visibility = Visibility.Collapsed;
                 btnBack.Visibility = Visibility.Collapsed;
-                return;
+                //return;
             }
         }
 
@@ -315,14 +326,71 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationSchedule()
         {
-            hideDetails();
-            btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
-            scrLocationSchedule.Visibility = Visibility.Visible;
-
             txtLocationNamesSchedule.Text = _location.Name + "'s Schedule";
-
-
             _eventDatesForLocation = _eventDateManager.RetrieveEventDatesByLocationID(_locationID);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// The helper method that loads the specific sublocation's schedule
+        /// </summary>
+        private void loadSublocationSchedule()
+        {
+            txtLocationNamesSchedule.Text = cboSchedulePicker.SelectedItem + "'s Schedule";
+            _activitiesForSublocation = _activityManager.RetrieveActivitiesBySublocationID(_sublocationID);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// The helper method that loads the calendars data
+        /// </summary>
+        private void loadCalendarData()
+        {
+            if (!calLocationCalendar.SelectedDate.HasValue)
+            {
+                calLocationCalendar.SelectedDate = DateTime.Today;
+            }
+
+            if (cboSchedulePicker.SelectedItem.Equals(_location.Name))
+            {
+                List<EventDateVM> eventDatesForDataGrid = new List<EventDateVM>();
+
+                foreach (EventDateVM eventDate in _eventDatesForLocation)
+                {
+                    if (eventDate.EventDateID == calLocationCalendar.SelectedDate)
+                    {
+                        eventDatesForDataGrid.Add(eventDate);
+                    }
+                }
+
+                datLocationSchedule.ItemsSource = eventDatesForDataGrid;
+                DateTime date = (DateTime)calLocationCalendar.SelectedDate;
+
+                lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
+            }
+            else
+            {
+                List<Activity> activitiesForDataGrid = new List<Activity>();
+                foreach (Activity activity in _activitiesForSublocation)
+                {
+                    if (activity.EventDateID == calLocationCalendar.SelectedDate)
+                    {
+                        activitiesForDataGrid.Add(activity);
+                    }
+                }
+
+                datLocationSchedule.ItemsSource = activitiesForDataGrid;
+                DateTime date = (DateTime)calLocationCalendar.SelectedDate;
+
+                lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
+            }
+
         }
 
         /// <summary>
@@ -354,7 +422,6 @@ namespace WPFPresentation
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             loadLocationDetails();
-
         }
 
         /// <summary>
@@ -470,21 +537,27 @@ namespace WPFPresentation
         /// <param name="sender"></param>
         private void btnSiteSchedule_Click(object sender, RoutedEventArgs e)
         {
-            loadLocationSchedule();
 
-            //datLocationSchedule.ItemsSource = _locationManager.RetrieveLocationAvailability(_locationID);
-            //calLocationCalendar.BlackoutDates.Add(new CalendarDateRange(new DateTime(2022, 2, 10), new DateTime(2009, 2, 10)));
-            //List<LocationAvailability> locationAvailabilities = new List<LocationAvailability>();
-            //locationAvailabilities = _locationManager.RetrieveLocationAvailability(_locationID);
-            //foreach(LocationAvailability availability in locationAvailabilities)
-            //{
-            //    availableDates.Add(availability.AvailableDay);
-            //}
 
-            //foreach(DateTime d in availableDates)
-            //{
+            hideDetails();
+            btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
+            scrLocationSchedule.Visibility = Visibility.Visible;
 
-            //}
+            if (cboSchedulePicker.Items.Count == 0)
+            {
+                cboSchedulePicker.Items.Add(_location.Name);
+
+                foreach (Sublocation sublocation in _sublocationsForLocation)
+                {
+                    cboSchedulePicker.Items.Add(sublocation.SublocationName);
+                }
+            }
+
+            // PUT CODE HERE TO CALL WHEN SELECTION CHANGES.
+            if (!calLocationCalendar.SelectedDate.HasValue)
+            {
+                calLocationCalendar.SelectedDate = DateTime.Today;
+            }
         }
 
         /// <summary>
@@ -499,20 +572,45 @@ namespace WPFPresentation
         /// <param name="sender"></param>
         private void calLocationCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<EventDateVM> eventDatesForDataGrid = new List<EventDateVM>();
+            loadCalendarData();
+        }
 
-            foreach (EventDateVM eventDate in _eventDatesForLocation)
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// When the user selects a location or sublocation from the combo box drop down, 
+        /// the data grid below will shows the location's / sublocation's schedule (events planned for that day).
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void cboSchedulePicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
             {
-                if (eventDate.EventDateID == calLocationCalendar.SelectedDate)
+                if (cboSchedulePicker.SelectedItem.Equals(_location.Name))
                 {
-                    eventDatesForDataGrid.Add(eventDate);
+                    colActivityName.Visibility = Visibility.Collapsed;
+                    colEventName.Visibility = Visibility.Visible;
+                    loadLocationSchedule();
+                    //loadCalendarData();
+                }
+                else
+                {
+                    colActivityName.Visibility = Visibility.Visible;
+                    colEventName.Visibility = Visibility.Collapsed;
+                    _sublocationID = _sublocationsForLocation.First(m => m.SublocationName == cboSchedulePicker.SelectedItem.ToString()).SublocationID;
+                    loadSublocationSchedule();
+                    //loadCalendarData();
                 }
             }
-
-            datLocationSchedule.ItemsSource = eventDatesForDataGrid;
-            DateTime date = (DateTime)calLocationCalendar.SelectedDate;
-
-            lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
+            catch (Exception)
+            {
+                MessageBox.Show("Error");
+            }
+            //MessageBox.Show(cboSchedulePicker.SelectedItem.ToString());
+            loadCalendarData();
         }
     }
 }

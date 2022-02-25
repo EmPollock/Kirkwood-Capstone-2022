@@ -153,5 +153,68 @@ namespace DataAccessLayer
 
             return result;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// Select Activities for a specific sublocationID passed to it
+        /// 
+        /// </summary>
+        /// <param name="sublocationID"></param>
+        /// <returns>A List of Activities</returns>
+        public List<Activity> SelectActivitiesBySublocationID(int sublocationID)
+        {
+            List<Activity> result = new List<Activity>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_activities_by_sublocationID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SublocationID", SqlDbType.Int);
+
+            cmd.Parameters["@SublocationID"].Value = sublocationID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        /*
+                                [ActivityID]			
+                                ,[ActivityName]			
+                                ,[ActivityDescription]	
+                                ,[PublicActivity]		
+                                ,[StartTime]			
+                                ,[EndTime]				
+                                ,[ActivityImageName]	
+                                ,[SublocationID]			
+                         */
+                        result.Add(new Activity()
+                        {
+                            ActivityID = reader.GetInt32(0),
+                            ActivityName = reader.GetString(1),
+                            PublicActivity = reader.GetBoolean(2),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EventDateID = DateTime.Parse(reader["EventDateID"].ToString())
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return result;
+        }
     }
 }

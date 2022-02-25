@@ -33,14 +33,14 @@ Description:
 print '' print '*** creating Sublocation table'
 CREATE TABLE [dbo].[Sublocation] (
 	[SublocationID]				[int] IDENTITY(100000,1)	NOT NULL
-/*	,[Location ID] 				[int]						NOT NULL*/
+	,[LocationID] 				[int]						NOT NULL
 	,[SublocationName]			[nvarchar](160)				NOT NULL
 	,[SublocationDescription]	[nvarchar](1000)			NULL
 	,[Active]					[bit]						NOT NULL DEFAULT 1
 
 	CONSTRAINT [pk_SublocationID] PRIMARY KEY([SublocationID])
-/*	,CONSTRAINT [fk_Sublocation_Location] FOREIGN KEY([LocationID])
-		REFERENCES [dbo].[Location] ([LocationID]) ON UPDATE CASCADE*/
+	,CONSTRAINT [fk_Sublocation_Location] FOREIGN KEY([LocationID])
+		REFERENCES [dbo].[Location] ([LocationID]) ON UPDATE CASCADE
 )
 GO
 
@@ -59,14 +59,14 @@ GO
 print '' print '*** test records for Sublocations'
 GO
 INSERT INTO [dbo].[Sublocation] (
-	/*[Location ID] 				
-	,*/[SublocationName]			
+	[LocationID] 				
+	,[SublocationName]			
 	,[SublocationDescription]						
 	
 )VALUES 
-	('Sublocation 1', 'The first sublocation')
-	,('Sublocation 2', 'The second sublocation')
-	,('Sublocation 3', 'The third sublocation')
-	,('Sublocation 4', 'The fourth sublocation')
+	(100000, 'Sublocation 1', 'The first sublocation')
+	,(100000, 'Sublocation 2', 'The second sublocation')
+	,(100000, 'Sublocation 3', 'The third sublocation')
+	,(100000, 'Sublocation 4', 'The fourth sublocation')
 	
 GO

@@ -197,5 +197,30 @@ namespace DataAccessFakes
 
             return result;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// Select fake Activities that have the specific sublocation ID passed to it
+        /// 
+        /// </summary>
+        /// <param name="sublocationID"></param>
+        /// <returns>A List of Activities</returns>
+        public List<Activity> SelectActivitiesBySublocationID(int sublocationID)
+        {
+            List<Activity> activities = new List<Activity>();
+
+            foreach(Activity activity in _fakeActivites)
+            {
+                if(activity.SublocationID == sublocationID)
+                {
+                    activities.Add(activity);
+                }
+            }
+
+            return activities;
+        }
     }
 }

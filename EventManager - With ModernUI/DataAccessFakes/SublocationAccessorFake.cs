@@ -26,7 +26,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000001,
-                //LocationID = ,
+                LocationID = 100000,
                 SublocationName = "Fake Sublocation 1",
                 SublocationDescription = "The first fake sublocation"
             });
@@ -34,7 +34,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000001,
-                //LocationID = ,
+                LocationID = 100000,
                 SublocationName = "Fake Sublocation 2",
                 SublocationDescription = "The second fake sublocation"
             });
@@ -42,7 +42,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000002,
-                //LocationID = ,
+                LocationID = 100000,
                 SublocationName = "Fake Sublocation 3",
                 SublocationDescription = "The third fake sublocation"
             });
@@ -50,7 +50,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000003,
-                //LocationID = ,
+                LocationID = 100001,
                 SublocationName = "Fake Sublocation 4",
                 SublocationDescription = "The fourth fake sublocation"
             });
@@ -58,7 +58,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000004,
-                //LocationID = ,
+                LocationID = 100001,
                 SublocationName = "Fake Sublocation 5",
                 SublocationDescription = "The fith fake sublocation"
             });
@@ -85,6 +85,39 @@ namespace DataAccessFakes
             }
 
             throw new ArgumentException();
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Returns a list of sublocations by the locationID
+        /// 
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>a list of fake sublocation objects</returns>
+        public List<Sublocation> SelectSublocationsByLocationID(int locationID)
+        {
+            List<Sublocation> sublocations = new List<Sublocation>();
+
+            try
+            {
+                foreach(Sublocation sublocation in _fakeSublocations)
+                {
+                    if(sublocation.LocationID == locationID)
+                    {
+                        sublocations.Add(sublocation);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return sublocations;
         }
     }
 }

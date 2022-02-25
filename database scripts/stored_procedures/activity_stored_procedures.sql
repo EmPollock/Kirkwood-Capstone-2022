@@ -141,3 +141,36 @@ AS
 			AND [EventDateID] = @EventDateID
 	END	
 GO
+
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/02/23
+
+Description:
+Stored procedure to select all activities for a specific sublocation
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_select_activities_by_sublocationID'
+GO
+CREATE PROCEDURE [dbo].[sp_select_activities_by_sublocationID](
+	@SublocationID		[int] 
+)
+AS
+	BEGIN
+		SELECT 
+			[ActivityID]			
+			,[ActivityName]			
+			,[PublicActivity]		
+			,[StartTime]			
+			,[EndTime]				
+			,[EventDateID]
+		FROM [dbo].[Activity]
+		WHERE [SublocationID] = @SublocationID
+	END	
+GO

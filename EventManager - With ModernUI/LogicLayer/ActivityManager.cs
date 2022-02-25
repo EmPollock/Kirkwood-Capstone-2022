@@ -161,5 +161,31 @@ namespace LogicLayer
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// Retrieves a list of Activities that match the sublocationID parameter
+        /// </summary>
+        /// <param name="sublocationID">The EventID</param>
+        /// <returns>A list of Activities</returns>
+        public List<Activity> RetrieveActivitiesBySublocationID(int sublocationID)
+        {
+            List<Activity> activities = new List<Activity>();
+
+            try
+            {
+                activities = _activityAccessor.SelectActivitiesBySublocationID(sublocationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return activities;
+        }
     }
 }

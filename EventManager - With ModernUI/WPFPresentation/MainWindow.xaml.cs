@@ -27,13 +27,45 @@ namespace WPFPresentation
     public partial class MainWindow : Window
     {
         IUserManager _userManager = null;
+        IActivityManager _activityManager = null;
+        IEventDateManager _eventDateManager = null;
+        ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
+        ISupplierManager _supplierManager = null;
+        ITaskManager _taskManager = null;
+        IVolunteerManager _volunteerManager = null;
+        IVolunteerRequestManager _volunteerRequestManager = null;
         User _user = null;
         
         public MainWindow()
         {
-
-            this._userManager = new UserManager();
+            // fakes
             //this._userManager = new UserManager(new UserAccessorFake());
+            //this._activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
+            //this._eventDateManager = new EventDateManager(new EventDateAccessorFake());
+            //this._locationManager = new LocationManager(new LocationAccessorFake());
+            //this._sublocationManager = new SublocationManager(new SublocationAccessorFake());
+            //this._supplierManager = new SupplierManager(new SupplierAccessorFake());
+            //this._taskManager = new TaskManager(new TaskAccessorFakes());
+            //this._volunteerManager = new VolunteerManager(new VolunteerAccessorFake());
+            //this._volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
+
+            // real
+            this._userManager = new UserManager();
+            this._activityManager = new ActivityManager();
+            this._eventDateManager = new EventDateManager();
+            this._locationManager = new LocationManager();
+            this._sublocationManager = new SublocationManager();
+            this._supplierManager = new SupplierManager();
+            this._taskManager = new TaskManager();
+            this._volunteerManager = new VolunteerManager();
+            this._volunteerRequestManager = new VolunteerRequestManager();
+
+
+
+
+
+
             // Keep this always safe! 
             _user = new User()
             {
