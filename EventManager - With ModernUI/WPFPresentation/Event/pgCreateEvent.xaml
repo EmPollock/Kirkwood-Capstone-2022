@@ -31,6 +31,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition/>
+                            <RowDefinition Height="60"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width=".3*"/>
@@ -41,7 +42,10 @@
                         <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="txtBoxEventName" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
 
                         <TextBlock x:Name="lblEventDescription" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Description</TextBlock>
-                        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="txtBoxEventDescription" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="txtBoxEventDescription" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+
+                        <TextBlock  x:Name="lblTotalBudget" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Budget</TextBlock>
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="txtBoxTotalBudget" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
                     </Grid>
 
                     <Grid Grid.Row="4" Grid.Column="1">

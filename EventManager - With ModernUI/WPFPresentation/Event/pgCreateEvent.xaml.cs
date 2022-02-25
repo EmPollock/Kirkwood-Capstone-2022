@@ -17,7 +17,7 @@ using LogicLayerInterfaces;
 using DataObjects;
 using DataAccessFakes;
 using System.Text.RegularExpressions;
-
+using System.Globalization;
 
 namespace WPFPresentation
 {
@@ -109,8 +109,31 @@ namespace WPFPresentation
         /// 2022/02/17
         /// Description:
         /// Changed the manager method that creates the event to CreateEventReturnsEventID from CreateEvent
+        /// 
+        /// Update:
+        /// Alaina Gilson
+        /// 2022/02/23
+        /// Description:
+        /// Added the TotalBudget field and validation to check that the string input is a decimal
         private void btnEventNext_Click(object sender, RoutedEventArgs e)
         {
+            string value = txtBoxTotalBudget.Text;
+            NumberStyles style = NumberStyles.Number | NumberStyles.AllowCurrencySymbol;
+            CultureInfo provider = new CultureInfo("en-US");
+            decimal totalPlanned;
+
+            try
+            {
+                totalPlanned = Decimal.Parse(value, style, provider);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was a problem creating a new event.\n\nPlease enter a decimal budget.");
+                txtBoxTotalBudget.Text = "";
+                txtBoxTotalBudget.Focus();
+                return;
+            }
+
             try
             {
                 if (txtBoxEventName.Text == "" || txtBoxEventDescription.Text == "")
@@ -122,7 +145,7 @@ namespace WPFPresentation
                 {
                     newEvent = new DataObjects.Event()
                     {
-                        EventID = _eventManager.CreateEventReturnsEventID(txtBoxEventName.Text, txtBoxEventDescription.Text),
+                        EventID = _eventManager.CreateEventReturnsEventID(txtBoxEventName.Text, txtBoxEventDescription.Text, totalPlanned),
                         EventName = txtBoxEventName.Text,
                         EventDescription = txtBoxEventDescription.Text
                     };
@@ -133,7 +156,7 @@ namespace WPFPresentation
             }
             catch (Exception ex)
             {
-                MessageBox.Show("There was a problem creating a new event.\n" + ex.Message);
+                MessageBox.Show("There was a problem creating a new event.\n\n" + ex.Message);
             }
         }
 
