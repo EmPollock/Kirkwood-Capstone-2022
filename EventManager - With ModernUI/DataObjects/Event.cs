@@ -24,6 +24,11 @@ namespace DataObjects
         public string EventDescription { get; set; }
         public DateTime EventCreatedDate { get; set; }
         public bool Active { get; set; }
+
+        public Event()
+        {
+            Active = true;
+        }
     }
 
     /// <summary>

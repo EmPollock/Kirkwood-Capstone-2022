@@ -27,6 +27,7 @@ namespace WPFPresentation
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
         DataObjects.Event newEvent = null;
 
         User _user = null;
@@ -50,9 +51,14 @@ namespace WPFPresentation
         /// Jace Pettinger
         /// 2022/02/17
         /// Added user parameter for constructor
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
         /// </summary>
         /// <param name="sender"></param>
-        public pgCreateEvent(User user)
+        public pgCreateEvent(User user, ISublocationManager sublocationManager)
         {
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
@@ -64,6 +70,7 @@ namespace WPFPresentation
             _eventDateManager = new EventDateManager();
             _locationManager = new LocationManager();
 
+            _sublocationManager = sublocationManager;
             _user = user;
 
             InitializeComponent();
@@ -146,6 +153,11 @@ namespace WPFPresentation
         /// Description:
         /// Click event handler for canceling creating an event
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -158,7 +170,7 @@ namespace WPFPresentation
 
             if (result == MessageBoxResult.Yes)
             {
-                Page page = new pgViewEvents(_user);
+                Page page = new pgViewEvents(_user, _sublocationManager);
                 this.NavigationService.Navigate(page);
             }
             
@@ -476,13 +488,18 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler for navigating to next tab from volunteers tab
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnVolunteersNext_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Event details added");
-            pgViewEvents viewEventsPage = new pgViewEvents(_user);
+            pgViewEvents viewEventsPage = new pgViewEvents(_user, _sublocationManager);
             this.NavigationService.Navigate(viewEventsPage);
         }
 
@@ -639,7 +656,7 @@ namespace WPFPresentation
 
                     MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    Page page = new pgViewEvents();
+                    Page page = new pgViewEvents(_user, _sublocationManager);
                     this.NavigationService.Navigate(page);
 
                 }
@@ -659,7 +676,7 @@ namespace WPFPresentation
                     case MessageBoxResult.Yes:
 
                         newEventVM.EventDates = new List<EventDate>();
-                        Page page = new pgViewEvents();
+                        Page page = new pgViewEvents(_user, _sublocationManager);
                         this.NavigationService.Navigate(page);
 
                         break;

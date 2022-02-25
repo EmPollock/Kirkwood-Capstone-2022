@@ -16,6 +16,7 @@ sqlcmd -S localhost -E -i tables/activity_result.sql
 sqlcmd -S localhost -E -i tables/volunteer_request.sql
 sqlcmd -S localhost -E -i tables/user_role.sql
 sqlcmd -S localhost -E -i tables/user_event.sql
+sqlcmd -S localhost -E -i tables/user_activity.sql
 sqlcmd -S localhost -E -i tables/location_image.sql
 sqlcmd -S localhost -E -i tables/review.sql
 sqlcmd -S localhost -E -i tables/availability.sql
@@ -46,6 +47,7 @@ rem event.sql requires location.sql
 REM tables/event_date.sql depends on tables/event.sql
 REM tables/user_role depends on tables/user.sql, tables/role.sql
 REM tables/user_event depends on tables/user.sql, tables/event.sql, and tables/role.sql
+REM tables/user_activity depends on tables/user.sql, tables/activity.sql, and tables/role.sql
 REM tables/volunteers.sql depends on tables/role.sql
 REM tables/volunteer_request depends on tables/task.sql, tables/volunteer.sql
 rem supplier_image.sql requires supplier.sql
@@ -65,13 +67,13 @@ REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 ::  location.sql
 ::  user_role.sql
 ::  user_event.sql
-::
+::  user_activity.sql
 :: ************************
 :: FILES WHICH REQUIRE:  role.sql
 ::  user_role.sql
 ::  user_event.sql
 ::  volunteers.sql
-::
+::  user_activity.sql
 :: ************************
 :: FILES WHICH REQUIRE:  location.sql
 ::  availability.sql
