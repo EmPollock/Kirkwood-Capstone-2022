@@ -156,7 +156,9 @@
                 <TextBox   x:Name="txtBoxReviews" Grid.Row="9" Margin="20 10" IsReadOnly="True"/>
                 <TextBox   x:Name="txtBoxReviewsSecond" Grid.Row="10" Margin="20 10" IsReadOnly="True"/>
                 <Button    x:Name="btnMoreReviews" Grid.Row="11" Content="More reviews..." FontWeight="Medium" Margin="20 0" Background="{x:Null}"/>
+                <Button x:Name="btnDeleteLocation" Grid.Row="11" Content="Delete" HorizontalAlignment="Center" FontWeight="Medium" Margin="0 0 0 0" Click="btnDeleteLocation_Click"/>
             </Grid>
+            
         </ScrollViewer>
 
         <ScrollViewer x:Name="scrLocationSchedule" Grid.Column="1">

@@ -16,6 +16,7 @@ using LogicLayer;
 using LogicLayerInterfaces;
 using DataObjects;
 using DataAccessFakes;
+using WPFPresentation.Location;
 
 namespace WPFPresentation
 {
@@ -513,6 +514,39 @@ namespace WPFPresentation
             DateTime date = (DateTime)calLocationCalendar.SelectedDate;
 
             lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Click event handler for deactivating a location
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnDeleteLocation_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to delete this location?",
+                               "Delete",
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    int rowsAffected = _locationManager.DeactivateLocationByLocationID(_locationID);
+                    if (rowsAffected == 1) 
+                    {
+                        pgViewLocations viewLocations = new pgViewLocations();
+                        this.NavigationService.Navigate(viewLocations);
+                    }
+                } catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error deleting this location." + ex.Message);
+                }
+            }
         }
     }
 }

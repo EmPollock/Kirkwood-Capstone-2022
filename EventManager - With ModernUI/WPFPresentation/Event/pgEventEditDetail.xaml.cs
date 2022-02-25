@@ -524,6 +524,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Click handler for either starting edit mode, adding a date to an event, or updating an en event date
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/25
+        /// 
+        /// Description:
+        /// Updated validation to fix 24 hour time errors
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -549,6 +555,17 @@ namespace WPFPresentation.Event
                     txtBlockEventAddValidationMessage.Text = "Please enter times for your event to start and end.";
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                 }
+                else if (Int32.Parse(txtBoxEventStartTimeHour.Text) > 12)
+                {
+                    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
+                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                }
+                else if (Int32.Parse(txtBoxEventEndTimeHour.Text) > 12)
+                {
+                    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
+                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                }
+
                 else
                 {
                     DateTime dateTimeToAdd = new DateTime();
@@ -580,6 +597,7 @@ namespace WPFPresentation.Event
                         isAMHour = cmbEndTimeAMPM.Text == "AM";
                         endHour = Int32.Parse(txtBoxEventEndTimeHour.Text).ConvertTo24HourTime(isAMHour);
                         endMin = Int32.Parse(txtBoxEventEndTimeMinute.Text);
+
                     }
                     catch (Exception ex)
                     {
@@ -591,7 +609,6 @@ namespace WPFPresentation.Event
                     {
                         txtBoxEventEndTimeHour.Text = "";
                         txtBoxEventEndTimeMinute.Text = "";
-                        txtBoxEventEndTimeHour.Focus();
                         txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                         txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                     }
@@ -600,54 +617,66 @@ namespace WPFPresentation.Event
                         if (startMin >= endMin)
                         {
                             txtBoxEventEndTimeMinute.Text = "";
-                            txtBoxEventEndTimeMinute.Focus();
                             txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                             txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                         }
                     }
-
                     // end of initial validation checks 
-
-                    EventDate newEventDate = new EventDate() // create event date object
-                    {
-                        EventDateID = dateTimeToAdd,
-                        EventID = _event.EventID,
-                        StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
-                        EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
-                        Active = true
-                    };
-
-                    if (btnEditEventDateAddSave.Content.Equals("Add")) // add a new event date
+                    else
                     {
 
-                        try
+
+
+                        if (btnEditEventDateAddSave.Content.Equals("Add")) // add a new event date
                         {
-                            _eventDateManager.CreateEventDate(newEventDate);
 
-                            datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                            try
+                            {
+                                EventDate newEventDate = new EventDate()
+                                {
+                                    EventDateID = dateTimeToAdd,
+                                    EventID = _event.EventID,
+                                    StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
+                                    EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
+                                    Active = true
+                                };
 
-                            // prepare form to add another date
-                            setEventDateTabEditMode();
+                                _eventDateManager.CreateEventDate(newEventDate);
 
+                                datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+
+                                // prepare form to add another date
+                                setEventDateTabEditMode();
+
+
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
 
                         }
-                        catch (Exception ex)
+                        else // update event date
                         {
-                            MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
+                            try
+                            {
+                                EventDate newEventDate = new EventDate()
+                                {
+                                    EventDateID = dateTimeToAdd,
+                                    EventID = _event.EventID,
+                                    StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
+                                    EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
+                                    Active = true
+                                };
 
-                    }
-                    else // update event date
-                    {
-                        try
-                        {
-                            _eventDateManager.UpdateEventDate(_selectedEventDate, newEventDate);
-                            setEventDatesTabDetailMode();
-                        }
-                        catch (Exception ex)
-                        {
+                                _eventDateManager.UpdateEventDate(_selectedEventDate, newEventDate);
+                                setEventDatesTabDetailMode();
+                            }
+                            catch (Exception ex)
+                            {
 
-                          MessageBox.Show("There was a problem updating the date.\n" + ex.Message, "Problem Updating Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show("There was a problem updating the date.\n" + ex.Message, "Problem Updating Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                     }
                 }
@@ -748,6 +777,7 @@ namespace WPFPresentation.Event
             datePickerEventDate.Focus();
         }
         // --------------------------------------------------------- End of Dates Tab -----------------------------------------------------------
+        // --------------------------------------------------------- Start of Location Tab -----------------------------------------------------------
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/15

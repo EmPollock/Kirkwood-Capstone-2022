@@ -413,5 +413,30 @@ namespace DataAccessFakes
 
             return locationAvailabilities;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// The method that deactivates a location by its LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>int number of rows affected</returns>
+        public int DeactivateLocationByLocationID(int locationID)
+        {
+            int rowsAffected = 0;
+
+            foreach (Location fakeLocation in _fakeLocations)
+            {
+                if (fakeLocation.LocationID == locationID)
+                {
+                    fakeLocation.Active = false;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
     }
 }
