@@ -25,5 +25,8 @@ namespace LogicLayerInterfaces
         List<EventVM> RetrieveEventListForPastAndUpcomingDatesForUser(int userID);
 
         bool UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID);
+
+        bool CheckUserEditPermissionForEvent(int eventID, int userID);
+
     }
 }

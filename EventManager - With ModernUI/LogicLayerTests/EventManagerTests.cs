@@ -717,5 +717,53 @@ namespace LogicLayerTests
             // nothing to assert, exception testing
         }
 
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Test that returns true if the user can edit the event
+        /// </summary>
+        [TestMethod]
+        public void TestEventEditPermissionsReturnsTrueIFUserCanEdit()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int userID = 100000;
+            const bool expected = true;
+            bool actual;
+
+            // act
+            actual = _eventManager.CheckUserEditPermissionForEvent(eventID, userID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Test that returns true if the user can edit the event
+        /// </summary>
+        [TestMethod]
+        public void TestEventEditPermissionsReturnsFalseIfUserCannotEdit()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int userID = 100002;
+            const bool expected = false;
+            bool actual;
+
+            // act
+            actual = _eventManager.CheckUserEditPermissionForEvent(eventID, userID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
     }
 }

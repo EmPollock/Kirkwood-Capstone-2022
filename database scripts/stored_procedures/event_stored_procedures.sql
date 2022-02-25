@@ -512,3 +512,34 @@ AS
 			END CATCH
 	END	-- SP
 GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/22
+
+Description:
+Stored procedure to select the roles that a user has for an event
+**************************************************************
+
+Updated: 
+
+Description: 
+
+****************************************************************/
+print '' print '*** creating sp_select_user_roles_for_event'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_roles_for_event]
+(
+	@EventID	[int]
+	,@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[UserEvent].[RoleID]
+		FROM [dbo].[UserEvent]
+		WHERE [UserEvent].[EventID] = @EventID
+			AND [UserEvent].[UserID] = @UserID
+	END	
+	

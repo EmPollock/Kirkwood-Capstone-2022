@@ -468,5 +468,34 @@ namespace LogicLayer
 
             return eventID;
         }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Checks to see if the user has the correct roles to edit the event
+        /// </summary>
+        /// <param name="eventID">The event ID</param>
+        /// <param name="userID">The user ID</param>
+        /// <returns>True if the user can edit this event, false if not</returns>
+        public bool CheckUserEditPermissionForEvent(int eventID, int userID)
+        {
+            bool result = false;
+            // green
+            //result = true;
+
+            try
+            {
+                result = _eventAccessor.CheckUserEditPermissionForEvent(eventID, userID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
     }
 }

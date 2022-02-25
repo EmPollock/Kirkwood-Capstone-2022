@@ -37,12 +37,22 @@ namespace WPFPresentation.Event
         EventDate _selectedEventDate = null;
         IVolunteerRequestManager _volunteerRequestManager = null;
 
+        bool _userCanEditEvent = false;
+
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/01
         /// 
         /// Description:
         /// Initializes component and sets up event manager with fake and default accessors
+        /// 
+        /// /// Update:
+        /// Derrick Nagy
+        /// Update: 2022/02/23
+        /// Description:
+        /// Changed which data grid is used for viewing and editing.
+        /// Added checks for the user to edit only if they are an event planner or manager.
+        /// 
         /// </summary>
         /// <param name="selectedEvent">Must be pased an event object to view or edit</param>
         public pgEventEditDetail(DataObjects.EventVM selectedEvent)
@@ -61,6 +71,26 @@ namespace WPFPresentation.Event
             _event = selectedEvent;
 
             InitializeComponent();
+
+
+            // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.
+            try
+            {
+                _userCanEditEvent = _eventManager.CheckUserEditPermissionForEvent(_event.EventID, MainWindow.User.UserID);
+                if (_userCanEditEvent)
+                {
+                    btnEventEditSave.Visibility = Visibility.Visible;
+                    btnEventEditSave.Visibility = Visibility.Visible;
+                    datEditCurrentEventDates.Visibility = Visibility.Visible;
+                    datCurrentEventDatesNoEdit.Visibility = Visibility.Collapsed;
+                    tabEventVolunteerRequests.Visibility = Visibility.Visible;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can not find permissions for the user. You will not be able to edit this event.\n" + ex.Message, "Permissions Not Found", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
         /// <summary>
@@ -342,6 +372,10 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method for setting Event Dates tab to detail mode
+        /// 
+        /// Update
+        /// Derrick Nagy
+        /// Updated: 2020/02/24
         /// </summary>
         private void setEventDatesTabDetailMode()
         {
@@ -364,7 +398,17 @@ namespace WPFPresentation.Event
             }
             else
             {
-                datEditCurrentEventDates.ItemsSource = _eventDates;
+                // if the user can edit, use this table
+                if (_userCanEditEvent)
+                {
+                    datEditCurrentEventDates.ItemsSource = _eventDates;
+                }
+                else
+                {
+                    // use this table
+                    datCurrentEventDatesNoEdit.ItemsSource = _eventDates;
+                }
+                
             }
         }
 
@@ -524,6 +568,13 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Click handler for either starting edit mode, adding a date to an event, or updating an en event date
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Update: 2022/02/23
+        /// Description:
+        /// Changed which data grid is used for viewing and editing
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -624,7 +675,19 @@ namespace WPFPresentation.Event
                         {
                             _eventDateManager.CreateEventDate(newEventDate);
 
-                            datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                            //datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+
+
+                            // if the user can edit, use this table
+                            if (_userCanEditEvent)
+                            {
+                                datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                            }
+                            else
+                            {
+                                // use this table
+                                datCurrentEventDatesNoEdit.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                            }
 
                             // prepare form to add another date
                             setEventDateTabEditMode();

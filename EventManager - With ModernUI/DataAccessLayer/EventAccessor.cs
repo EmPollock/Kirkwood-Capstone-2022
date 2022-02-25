@@ -790,5 +790,73 @@ namespace DataAccessLayer
             }
             return eventID;
         }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Checks to see if the user has permission to edit the event
+        /// 
+        /// </summary>
+        /// <param name="eventID">The event id</param>
+        /// <param name="userID">The user id</param>
+        /// <returns>True if the user can edit, false if not</returns>
+        public bool CheckUserEditPermissionForEvent(int eventID, int userID)
+        {
+
+            bool result = false;
+            List<Role> roles = new List<Role>();
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_user_roles_for_event";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+
+            cmd.Parameters["@EventId"].Value = eventID;
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(new Role()
+                        {
+                            RoleID = reader.GetString(0)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            foreach (Role role in roles)
+            {
+                if (role.RoleID == "Event Manager" || role.RoleID == "Event Planner")
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
     }
 }

@@ -23,19 +23,30 @@ namespace WPFPresentation
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// 
+    /// Update
+    /// Derrick Nagy
+    /// Updated: 02/24/2022
+    /// 
+    /// Description:
+    /// Changed the logged in user from internal to public static
+    /// 
     /// </summary>
     public partial class MainWindow : Window
     {
         IUserManager _userManager = null;
-        User _user = null;
-        
+        //User _user = null;
+        public static User User = null;
+
         public MainWindow()
         {
 
             this._userManager = new UserManager();
             //this._userManager = new UserManager(new UserAccessorFake());
             // Keep this always safe! 
-            _user = new User()
+
+            //_user = new User()
+            User = new User()
             {
                 UserID = 100001,
                 GivenName = "Joanne",
@@ -55,7 +66,8 @@ namespace WPFPresentation
         public MainWindow(User user, IUserManager userManager)
         {
             InitializeComponent();
-            this._user = user;
+            //this._user = user;
+            MainWindow.User = user;
             this._userManager = userManager;
             this.btnBack.IsEnabled = false;
             this.mnuUser.Header = user.GivenName + " ▼";
@@ -68,10 +80,18 @@ namespace WPFPresentation
         /// Description:
         /// Method to handle UI transition from logged in to logged out states
         /// 
+        ///     /// Update
+        /// Derrick Nagy
+        /// Updated: 02/24/2022
+        /// 
+        /// Description:
+        /// Changed the logged in user from internal to public static
+        /// 
         /// </summary>
         private void updateUIForLogout()
         {
-            this._user = null;
+            //this._user = null;
+            MainWindow.User = null;
 
             SplashScreen splash = new SplashScreen();
             splash.Show();
@@ -103,17 +123,24 @@ namespace WPFPresentation
         /// 2022/02/17
         /// Added user parameter for create event constructor
         /// 
+        /// Update
+        /// Derrick Nagy
+        /// Updated: 02/24/2022
+        /// 
+        /// Description:
+        /// Changed the logged in user from internal to public static
+        /// 
         /// </summary>
 
         private void btnCreateEvents_Click(object sender, RoutedEventArgs e)
         {
-            if(_user == null)
+            if(User == null)
             {
                 MessageBox.Show("Please log in to create an event");
             }
             else
             {
-                Page page = new pgCreateEvent(_user);
+                Page page = new pgCreateEvent(User);
                 this.MainFrame.NavigationService.Navigate(page);
             }
         }
@@ -133,12 +160,19 @@ namespace WPFPresentation
         /// Description:
         /// Added option to send user information to the view events page
         /// 
+        /// Update
+        /// Derrick Nagy
+        /// Updated: 02/24/2022
+        /// 
+        /// Description:
+        /// Changed the logged in user from internal to public static
+        /// 
         /// </summary>
         private void btnViewEvents_Click(object sender, RoutedEventArgs e)
         {
-            if (_user != null)
+            if (User != null)
             {
-                pgViewEvents pgViewEvents = new pgViewEvents(_user);
+                pgViewEvents pgViewEvents = new pgViewEvents(User);
                 this.MainFrame.NavigationService.Navigate(pgViewEvents);
             }
             else
