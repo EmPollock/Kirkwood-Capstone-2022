@@ -12,7 +12,6 @@ namespace LogicLayer
 {
     public class SublocationManager : ISublocationManager
     {
-
         private ISublocationAccessor _sublocationAccessor;
 
         public SublocationManager()

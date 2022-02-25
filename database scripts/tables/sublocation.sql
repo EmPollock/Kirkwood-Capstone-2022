@@ -56,7 +56,7 @@ GO
  Updated: yyyy/mm/dd
 
  Description: 
-***************************************************************/
+****************************************************************/
 print '' print '*** test records for Sublocations'
 GO
 INSERT INTO [dbo].[Sublocation] (
@@ -65,9 +65,9 @@ INSERT INTO [dbo].[Sublocation] (
 	,[SublocationDescription]						
 	
 )VALUES 
-	(100000 ,'Sublocation 1', 'The first sublocation')
+	(100000, 'Sublocation 1', 'The first sublocation')
 	,(100000, 'Sublocation 2', 'The second sublocation')
-	,(100000,'Sublocation 3', 'The third sublocation')
-	,(100000,'Sublocation 4', 'The fourth sublocation')
+	,(100000, 'Sublocation 3', 'The third sublocation')
+	,(100000, 'Sublocation 4', 'The fourth sublocation')
 	
 GO
