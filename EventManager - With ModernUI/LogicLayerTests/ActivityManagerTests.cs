@@ -35,7 +35,7 @@ namespace LogicLayerTests
             //arrange   
             const int eventID = 1;
             const int expectedCount = 2;
-            List<ActivityVM> activities;
+            List<Activity> activities;
             int actualCount;
 
             //act
@@ -60,7 +60,7 @@ namespace LogicLayerTests
         {
             //arrange   
             const int eventID = 10;
-            List<ActivityVM> activities;
+            List<Activity> activities;
 
             //act
             activities = _activityManager.RetrieveActivitiesByEventID(eventID);
@@ -209,5 +209,52 @@ namespace LogicLayerTests
             //assert
             //nothing to assert
         }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitiesByEventIDForVM returns 
+        ///     correct count
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesByEventIDForVMRetrievesListWithCorrectEventID()
+        {
+            //arrange   
+            const int eventID = 1;
+            const int expectedCount = 2;
+            List<ActivityVM> activities;
+            int actualCount;
+
+            //act
+            activities = _activityManager.RetrieveActivitiesByEventIDForVM(eventID);
+            actualCount = activities.Count;
+
+            //assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that fails if RetrieveActivitiesByEventIDForVM with incorrect eventID
+        /// </summary>
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
+        public void TestRetrieveActivitiesByEventIDForVMFailsWithIncorrectEventID()
+        {
+            //arrange   
+            const int eventID = 10;
+            List<ActivityVM> activities;
+
+            //act
+            activities = _activityManager.RetrieveActivitiesByEventIDForVM(eventID);
+
+            //assert
+            //error testing, nothing to do here
+        }
+
     }
 }

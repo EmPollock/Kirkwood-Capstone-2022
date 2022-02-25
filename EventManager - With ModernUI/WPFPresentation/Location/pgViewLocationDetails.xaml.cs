@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using LogicLayer;
 using LogicLayerInterfaces;
 using DataObjects;
+using WPFPresentation.Location;
 using DataAccessFakes;
 
 namespace WPFPresentation
@@ -35,6 +36,7 @@ namespace WPFPresentation
         List<Reviews> _locationReviews;
         List<LocationImage> _locationImages;
         List<EventDateVM> _eventDatesForLocation;
+       
 
         Uri _src;
         int _imageNumber = 0;
@@ -514,5 +516,7 @@ namespace WPFPresentation
 
             lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
         }
+
+        
     }
 }

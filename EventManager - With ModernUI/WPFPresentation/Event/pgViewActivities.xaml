@@ -23,7 +23,7 @@
             <ComboBox x:Name="cboEventActivityFilter" Height="32"  Width="125" IsEditable="True" IsReadOnly="True" Text="Activity Filter" VerticalContentAlignment="Center">
 
                 <ComboBoxItem x:Name="cmbItemsChooseFilter">
-                    <StackPanel Orientation="Vertical" >
+                    <StackPanel x:Name="stckFilterItems" Orientation="Vertical">
                         <TextBlock Text="Select a Filter"/>
                         <Separator/>
                         <RadioButton x:Name="radActivityDateFilter" Content="Date" Click="radActivityFilterClick"/>

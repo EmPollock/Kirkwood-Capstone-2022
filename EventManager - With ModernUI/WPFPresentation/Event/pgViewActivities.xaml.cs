@@ -71,23 +71,33 @@ namespace WPFPresentation.Event
         /// Description:
         /// Handler for loading activities
         /// </summary>
+        /// /// /// <summary>
+        /// Logan Baccam
+        /// Updated: 2022/02/25
+        /// Description:
+        /// Updated loading activities to data grid 
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns>A list of Activity objects</returns>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 setActivityFilterEnum();
-                // null user gets a list of all public activities if no event is selected
-                if (_event is null && _user is null)
+                
+                if (_event is null)
                 {
                     lblActivityEventName.Content = "All Activities";
                     activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
                     datEventActivities.ItemsSource = activities;
                 }
-                // logged in user gets a list of all their activities if no event selected
-                else if (_event is null && _user != null)
+            
+                else
                 {
-                    lblActivityEventName.Content = "All Activities";
-                    activities = _activityManager.RetreiveUserActivitiesPastAndUpcomingDates(_user.UserID);
+                    radAllActivities.Visibility = Visibility.Hidden;
+                    stckFilterItems.Height = 115;
+                    lblActivityEventName.Content =_event.EventName + " Activities";
+                    activities = _activityManager.RetrieveActivitiesByEventIDForVM(_event.EventID);
                     datEventActivities.ItemsSource = activities;
                 }
             }
@@ -109,40 +119,81 @@ namespace WPFPresentation.Event
             switch (activityFilter)
             {
                 case ActivityFilter.ActivityName:
-                    txtSearch.Visibility = Visibility.Visible;
-                    btnFind.Visibility = Visibility.Visible;
-                    datePickerActivityDate.Visibility = Visibility.Hidden;
-                    lblSearch.Visibility = Visibility.Visible;
-                    activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
-                    datEventActivities.ItemsSource = activities;
-                    txtSearch.Focus();
+                    if (_event is null)
+                    {
+                        txtSearch.Visibility = Visibility.Visible;
+                        btnFind.Visibility = Visibility.Visible;
+                        datePickerActivityDate.Visibility = Visibility.Hidden;
+                        lblSearch.Visibility = Visibility.Visible;
+                        activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
+                        datEventActivities.ItemsSource = activities;
+                        txtSearch.Focus();
+                    }
+                    else
+                    {
+                        txtSearch.Visibility = Visibility.Visible;
+                        btnFind.Visibility = Visibility.Visible;
+                        datePickerActivityDate.Visibility = Visibility.Hidden;
+                        lblSearch.Visibility = Visibility.Visible;
+                        activities = _activityManager.RetrieveActivitiesByEventIDForVM(_event.EventID);
+                        datEventActivities.ItemsSource = activities;
+                        txtSearch.Focus();
+                    }
                     break;
                 case ActivityFilter.ActivityDate:
-                    lblSearch.Visibility = Visibility.Visible;
-                    txtSearch.Visibility = Visibility.Hidden;
-                    datePickerActivityDate.Visibility = Visibility.Visible;
-                    btnFind.Visibility = Visibility.Visible;
-                    activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
-                    datEventActivities.ItemsSource = activities;
-                    datePickerActivityDate.Focus();
+                    if (_event is null)
+                    {
+                        lblSearch.Visibility = Visibility.Visible;
+                        txtSearch.Visibility = Visibility.Hidden;
+                        datePickerActivityDate.Visibility = Visibility.Visible;
+                        btnFind.Visibility = Visibility.Visible;
+                        activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
+                        datEventActivities.ItemsSource = activities;
+                        datePickerActivityDate.Focus();
+                    }
+                    else 
+                    {
+                        lblSearch.Visibility = Visibility.Visible;
+                        txtSearch.Visibility = Visibility.Hidden;
+                        datePickerActivityDate.Visibility = Visibility.Visible;
+                        btnFind.Visibility = Visibility.Visible;
+                        activities = _activityManager.RetrieveActivitiesByEventIDForVM(_event.EventID);
+                        datEventActivities.ItemsSource = activities;
+                        datePickerActivityDate.Focus();
+                    }
                     break;
                 case ActivityFilter.ActivitySublocation:
-                    lblSearch.Visibility = Visibility.Visible;
-                    txtSearch.Visibility = Visibility.Visible;
-                    btnFind.Visibility = Visibility.Visible;
-                    datePickerActivityDate.Visibility = Visibility.Hidden;
-                    activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
-                    datEventActivities.ItemsSource = activities;
-                    txtSearch.Focus();
+                    if (_event is null)
+                    {
+                        lblSearch.Visibility = Visibility.Visible;
+                        txtSearch.Visibility = Visibility.Visible;
+                        btnFind.Visibility = Visibility.Visible;
+                        datePickerActivityDate.Visibility = Visibility.Hidden;
+                        activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
+                        datEventActivities.ItemsSource = activities;
+                        txtSearch.Focus();
+                    }
+                    else 
+                    {
+                        lblSearch.Visibility = Visibility.Visible;
+                        txtSearch.Visibility = Visibility.Visible;
+                        btnFind.Visibility = Visibility.Visible;
+                        datePickerActivityDate.Visibility = Visibility.Hidden;
+                        activities = _activityManager.RetrieveActivitiesByEventIDForVM(_event.EventID);
+                        datEventActivities.ItemsSource = activities;
+                        txtSearch.Focus();
+                    }
                     break;
                 case ActivityFilter.AllActivities:
-                    txtSearch.Visibility = Visibility.Hidden;
-                    lblSearch.Visibility = Visibility.Hidden;
-                    datePickerActivityDate.Visibility = Visibility.Hidden;
-                    btnFind.Visibility = Visibility.Hidden;
-                    activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
-                    datEventActivities.ItemsSource = activities;
-                    break;
+                        txtSearch.Visibility = Visibility.Hidden;
+                        lblSearch.Visibility = Visibility.Hidden;
+                        datePickerActivityDate.Visibility = Visibility.Hidden;
+                        btnFind.Visibility = Visibility.Hidden;
+                        lblActivityEventName.Content = "All Activities";
+                        activities = _activityManager.RetreiveActivitiesPastAndUpcomingDates();
+                        datEventActivities.ItemsSource = activities;
+                        break;
+                    
             }
         }
 
@@ -217,11 +268,11 @@ namespace WPFPresentation.Event
                             }
                         }
                         datEventActivities.ItemsSource = filiteredActivities;
-
+                        datePickerActivityDate.Text = "";
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show("Please make sure the date you entered is in the format \ndd-mm-yyyy with no leading zeros.");
+                        MessageBox.Show("Please make sure the date you entered is in the format: \ndd-mm-yyyy with no leading zeros.");
                         datePickerActivityDate.Focus();
                     }
                     break;

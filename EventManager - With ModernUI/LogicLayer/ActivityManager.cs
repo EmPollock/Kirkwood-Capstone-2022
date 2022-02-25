@@ -57,7 +57,7 @@ namespace LogicLayer
 
         /// <summary>
         /// Logan Baccam
-        /// Created: 2022/02/14
+        /// Created: 2022/02/25
         /// 
         /// Description:
         /// Retrieves a list of all public Activities in View Model 
@@ -78,7 +78,7 @@ namespace LogicLayer
         }
         /// <summary>
         /// Logan Baccam
-        /// Created: 2022/02/14
+        /// Created: 2022/02/25
         /// 
         /// Description:
         /// Retrieves a list of all user Activities in View Model 
@@ -105,9 +105,17 @@ namespace LogicLayer
         /// </summary>
         /// <param name="eventID">The EventID</param>
         /// <returns>A list of ActivityVMs</returns>
-        public List<ActivityVM> RetrieveActivitiesByEventID(int eventID)
+        /// /// <summary>
+        /// Logan Baccam
+        /// Updated: 2022/02/25
+        /// Description:
+        /// Reverted changes
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns>A list of Activity objects</returns>
+        public List<Activity> RetrieveActivitiesByEventID(int eventID)
         {
-            List<ActivityVM> result = new List<ActivityVM>();
+            List<Activity> result = new List<Activity>();
             try{
                 List<Activity> activities =_activityAccessor.SelectActivitiesByEventID(eventID);
 
@@ -201,6 +209,25 @@ namespace LogicLayer
             {
                 throw ex;
             }
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/14
+        /// 
+        /// Description:
+        /// Retrieves a list of all Activities for an event in View Model 
+        /// </summary>
+        /// <returns>A list of ActivityVMs</returns>
+        public List<ActivityVM> RetrieveActivitiesByEventIDForVM(int eventID)
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+            try
+            {
+                result = _activityAccessor.SelectActivitiesByEventIDForVM(eventID);
+            }
+            catch (Exception ex) { throw ex; }
+
+            return result;
         }
     }
 }

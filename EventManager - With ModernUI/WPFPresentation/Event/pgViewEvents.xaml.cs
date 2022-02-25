@@ -26,6 +26,7 @@ namespace WPFPresentation
         private IEventManager _eventManager = null;
         private List<DataObjects.EventVM> _eventList = null;
         private List<DataObjects.Event> _searchResults = null;
+        private DataObjects.Event selectedEvent = null;
         
         private User _user = null;
         private EventFilter eventFilter = EventFilter.AllUpcomingEvents;
@@ -321,18 +322,35 @@ namespace WPFPresentation
         /// </summary>
         private void btnActivity_Click(object sender, RoutedEventArgs e)
         {
+            selectedEvent = (DataObjects.Event)datActiveEvents.SelectedItem;
             Event.pgViewActivities page;
             Uri pageURI = new Uri("Event/pgViewActivities.xaml", UriKind.Relative);
 
             if (_user != null)
             {
-                page = new Event.pgViewActivities(_user);
-                this.NavigationService.Navigate(page, pageURI);
+                if (selectedEvent is null)
+                {
+                    page = new Event.pgViewActivities(_user);
+                    this.NavigationService.Navigate(page, pageURI);
+                }
+                else
+                {
+                    page = new Event.pgViewActivities(selectedEvent);
+                    this.NavigationService.Navigate(page, pageURI);
+                }
             }
             else
             {
-                page = new Event.pgViewActivities();
-                this.NavigationService.Navigate(page, pageURI);
+                if (selectedEvent is null)
+                {
+                    page = new Event.pgViewActivities();
+                    this.NavigationService.Navigate(page, pageURI);
+                }
+                else 
+                {
+                    page = new Event.pgViewActivities(selectedEvent);
+                    this.NavigationService.Navigate(page, pageURI);
+                }
             }
         }
     }

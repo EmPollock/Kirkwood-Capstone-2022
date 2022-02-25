@@ -64,6 +64,22 @@ namespace DataAccessFakes
             });
         }
 
+        public int InsertSublocationByLocationID(int locationID, string sublocationName, string description)
+        {
+            int rows = 0;
+            _fakeSublocations.Add(new Sublocation() 
+            {
+                LocationID = 1000005,
+                SublocationID = 1000005,
+                SublocationName = "Fake Sublocation",
+                SublocationDescription = ""
+            });
+            rows++;
+
+            return rows;
+            
+        }
+
         /// <summary>
         /// Emma Pollock
         /// Created: 2022/02/03
@@ -85,6 +101,11 @@ namespace DataAccessFakes
             }
 
             throw new ArgumentException();
+        }
+
+        public List<Sublocation> SelectSublocationsByLocationID(int locationID)
+        {
+            throw new NotImplementedException();
         }
     }
 }
