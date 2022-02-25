@@ -19,6 +19,10 @@ namespace DataAccessFakes
         /// Description:
         /// Constructor that adds fake Sublocations to the _fakeSublocations list for test data
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added Location IDs
         /// </summary>
          
         public SublocationAccessorFake()
@@ -26,7 +30,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000001,
-                //LocationID = ,
+                LocationID = 1000000,
                 SublocationName = "Fake Sublocation 1",
                 SublocationDescription = "The first fake sublocation"
             });
@@ -34,7 +38,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000001,
-                //LocationID = ,
+                LocationID = 1000001,
                 SublocationName = "Fake Sublocation 2",
                 SublocationDescription = "The second fake sublocation"
             });
@@ -42,7 +46,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000002,
-                //LocationID = ,
+                LocationID = 1000000,
                 SublocationName = "Fake Sublocation 3",
                 SublocationDescription = "The third fake sublocation"
             });
@@ -50,7 +54,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000003,
-                //LocationID = ,
+                LocationID = 1000001,
                 SublocationName = "Fake Sublocation 4",
                 SublocationDescription = "The fourth fake sublocation"
             });
@@ -58,7 +62,7 @@ namespace DataAccessFakes
             _fakeSublocations.Add(new Sublocation()
             {
                 SublocationID = 1000004,
-                //LocationID = ,
+                LocationID = 1000000,
                 SublocationName = "Fake Sublocation 5",
                 SublocationDescription = "The fith fake sublocation"
             });
@@ -71,11 +75,16 @@ namespace DataAccessFakes
         /// Description:
         /// Returns a specific Sublocation
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/24
+        /// Changed logic to be more consistent with a database call.
+        ///
         /// </summary>
         /// <param name="sublocationID"></param>
         /// <returns>a fake Sublocation object</returns>
         public Sublocation SelectSublocationBySublocationID(int sublocationID)
-        {           
+        {          
+
             foreach (Sublocation sublocation in _fakeSublocations)
             {
                 if(sublocation.SublocationID == sublocationID)
@@ -84,7 +93,30 @@ namespace DataAccessFakes
                 }
             }
 
-            throw new ArgumentException();
+            return null;
+        }
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Returns a list of sublocations linked to a specific event.
+        /// </summary>
+        /// <param name="locationID">LocationID to retrieve sublocations matching</param>
+        /// <returns>A list of sublocations matching the location ID passed in.</returns>
+        public List<Sublocation> SelectSublocationsByLocationID(int locationID)
+        {
+            List<Sublocation> result = new List<Sublocation>();
+
+            foreach(Sublocation sublocation in _fakeSublocations)
+            {
+                if(sublocation.LocationID == locationID)
+                {
+                    result.Add(sublocation);
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -26,7 +26,7 @@
             </Grid.RowDefinitions>
 
             <Button x:Name="btnSiteDetails" Content="Site Details" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteDetails_Click"/>
-            <Button x:Name="btnSiteAreas" Grid.Row="1" Content="Site Areas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+            <Button x:Name="btnSiteAreas" Grid.Row="1" Content="Site Areas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteAreas_Click"/>
             <Button x:Name="btnSiteSchedule" Content="Site Schedule" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteSchedule_Click"/>
             <Button x:Name="btnSiteMap" Content="Site Map" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
             <Button x:Name="btnSiteParking" Content="Site Parking" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
@@ -159,7 +159,7 @@
             </Grid>
         </ScrollViewer>
 
-        <ScrollViewer x:Name="scrLocationSchedule" Grid.Column="1">
+        <ScrollViewer x:Name="scrLocationSchedule" Grid.Column="1" Visibility="Collapsed">
             <Grid Grid.Column="1" Visibility="Visible">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -179,6 +179,17 @@
                         <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat='hh:mm tt'}"/>
                     </DataGrid.Columns>
                 </DataGrid>
+            </Grid>
+        </ScrollViewer>
+
+        <ScrollViewer x:Name="scrSublocations" Grid.Column="1" Visibility="Visible">
+            <Grid x:Name="grdSublocations" Grid.Column="1" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label x:Name="lblSublocationName" Content="No sublocations found." Margin="30 10 0 110" FontSize="18" FontWeight="Bold"/>
+                <TextBox x:Name="txtSublocationDescription" Text="" Margin="30 40 30 10" IsReadOnly="True"/>
             </Grid>
         </ScrollViewer>
     </Grid>

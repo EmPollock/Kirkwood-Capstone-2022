@@ -24,6 +24,7 @@ namespace WPFPresentation
     public partial class pgViewEvents : Page
     {
         private IEventManager _eventManager = null;
+        private ISublocationManager _sublocationManager = null;
         private List<DataObjects.EventVM> _eventList = null;
         private List<DataObjects.Event> _searchResults = null;
         
@@ -36,20 +37,23 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Initializes component and sets up event manager with fake and default accessors
-        /// </summary>
-        /// Updates:
-        /// <name>
-        /// Updated: <date>
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
+        /// </summary>
         /// Description:
         /// 
-        public pgViewEvents()
+        public pgViewEvents(ISublocationManager sublocationManager)
         {
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
 
             // use default accessor
             _eventManager = new LogicLayer.EventManager();
+
+            _sublocationManager = sublocationManager;
 
             InitializeComponent();
 
@@ -65,15 +69,22 @@ namespace WPFPresentation
         /// Description:
         /// Overloaded constructor for pgViewEvents that takes a user object
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
+        /// 
         /// </summary>
         /// <param name="user"></param>
-        public pgViewEvents(User user)
+        public pgViewEvents(User user, ISublocationManager sublocationManager)
         {
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
 
             // use default accessor
             _eventManager = new LogicLayer.EventManager();
+
+            _sublocationManager = sublocationManager;
 
             InitializeComponent();
 
@@ -130,6 +141,11 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Button click event handler for navigating to create events page
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
@@ -138,7 +154,7 @@ namespace WPFPresentation
                 MessageBox.Show("Please log in to create an event");
             } else
             {
-                pgCreateEvent createEventPage = new pgCreateEvent(_user);
+                pgCreateEvent createEventPage = new pgCreateEvent(_user, _sublocationManager);
                 this.NavigationService.Navigate(createEventPage);
             }
            
@@ -157,7 +173,7 @@ namespace WPFPresentation
         private void datActiveEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             DataObjects.EventVM selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
-            pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent);
+            pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _sublocationManager);
             this.NavigationService.Navigate(viewEditPage);
         }
 
