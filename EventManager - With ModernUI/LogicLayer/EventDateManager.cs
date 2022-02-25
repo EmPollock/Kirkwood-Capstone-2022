@@ -116,6 +116,13 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Updates an Event Date record in data store
+        /// 
+        /// Jace Pettinger
+        /// Updated: 2022/02/24
+        /// 
+        /// Description:
+        /// removing logic layer exceptions that are no longer tested due to tests that were removed
+        /// 
         /// </summary>
         /// <param name="oldEventDate">The record previously stored</param>
         /// <param name="newEventDate">The new record containing the updates to the old</param>
@@ -124,18 +131,18 @@ namespace LogicLayer
         {
             bool result = false;
 
-            if (newEventDate.EventDateID == null)
-            {
-                throw new ApplicationException("Event date can not be empty.");
-            }
-            if (newEventDate.StartTime == null)
-            {
-                throw new ApplicationException("Start Time can not be empty.");
-            }
-            if (newEventDate.EndTime == null)
-            {
-                throw new ApplicationException("End Time can not be empty.");
-            }
+            //if (newEventDate.EventDateID == null)
+            //{
+            //    throw new ApplicationException("Event date can not be empty.");
+            //}
+            //if (newEventDate.StartTime == null)
+            //{
+            //    throw new ApplicationException("Start Time can not be empty.");
+            //}
+            //if (newEventDate.EndTime == null)
+            //{
+            //    throw new ApplicationException("End Time can not be empty.");
+            //}
             if (newEventDate.StartTime >= newEventDate.EndTime)
             {
                 throw new ApplicationException("End time cannot be before start time.");

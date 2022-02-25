@@ -43,6 +43,11 @@ namespace DataObjects
     public class EventVM : Event
     {
         public List<EventDate> EventDates { get; set; }
+
+        public EventVM()
+        {
+            EventDates = new List<EventDate>();
+        }
     }
 
 }

@@ -27,9 +27,12 @@ namespace WPFPresentation
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
         DataObjects.Event newEvent = null;
 
         User _user = null;
+
+        EventVM newEventVM = new EventVM();
 
 
         /// <summary>
@@ -48,9 +51,14 @@ namespace WPFPresentation
         /// Jace Pettinger
         /// 2022/02/17
         /// Added user parameter for constructor
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
         /// </summary>
         /// <param name="sender"></param>
-        public pgCreateEvent(User user)
+        public pgCreateEvent(User user, ISublocationManager sublocationManager)
         {
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
@@ -62,6 +70,7 @@ namespace WPFPresentation
             _eventDateManager = new EventDateManager();
             _locationManager = new LocationManager();
 
+            _sublocationManager = sublocationManager;
             _user = user;
 
             InitializeComponent();
@@ -167,6 +176,11 @@ namespace WPFPresentation
         /// Description:
         /// Click event handler for canceling creating an event
         /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -179,7 +193,7 @@ namespace WPFPresentation
 
             if (result == MessageBoxResult.Yes)
             {
-                Page page = new pgViewEvents(_user);
+                Page page = new pgViewEvents(_user, _sublocationManager);
                 this.NavigationService.Navigate(page);
             }
             
@@ -373,14 +387,12 @@ namespace WPFPresentation
                     txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                 }
-                else if (startHour == endHour)
-                {
-                    if (startMin >= endMin)
-                    {
-                        txtBoxEventEndTimeMinute.Focus();
-                        txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
-                        txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                    }
+                else if (startHour == endHour && startMin >= endMin)
+                {   
+                    txtBoxEventEndTimeMinute.Focus();
+                    txtBlockEventAddValidationMessage.Text = "The end time is before the start time or at the same time. Please change.";
+                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                    
                 }
                 else
                 {
@@ -395,9 +407,13 @@ namespace WPFPresentation
                             Active = true
                         };
 
-                        _eventDateManager.CreateEventDate(eventDate);                        
+                        //datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(eventID);
+                        newEventVM.EventDates.Add(eventDate);
 
-                        datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(newEvent.EventID);
+                        datCurrentEventDates.ItemsSource = null;
+                        datCurrentEventDates.ItemsSource = newEventVM.EventDates;
+                        
+                        
                         datCurrentEventDates.Visibility = Visibility.Visible;
                         txtBlkCurrentEventDates.Visibility = Visibility.Visible;
 
@@ -421,12 +437,21 @@ namespace WPFPresentation
                 }
             }
         }
+
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/17
         /// 
         /// Description:
         /// Click handler for continuing on from event dates tab
+        /// 
+        /// Update
+        /// Derrick Nagy
+        /// 2022/02/22
+        /// 
+        /// Desription:
+        /// Added call to database to add the dates
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -445,10 +470,28 @@ namespace WPFPresentation
                     tabsetAddEventLocation.Focus();
                 }
             }
-            else { // dates were added, just go to next tab
-                tabsetAddEventLocation.IsEnabled = true;
-                tabsetAddEventLocation.Focus();
-               
+            else { 
+
+                // add dates
+                try
+                {
+                    foreach (EventDate date in newEventVM.EventDates)
+                    {
+                        _eventDateManager.CreateEventDate(date);
+                    }
+
+                    String message = (newEventVM.EventDates.Count == 1) ? "The event date was successfully added." : "The " + newEventVM.EventDates.Count + " event dates were successfully added.";
+
+                    MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    tabsetAddEventLocation.IsEnabled = true;
+                    tabsetAddEventLocation.Focus();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                }               
             }
         }
 
@@ -468,13 +511,18 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler for navigating to next tab from volunteers tab
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnVolunteersNext_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Event details added");
-            pgViewEvents viewEventsPage = new pgViewEvents(_user);
+            pgViewEvents viewEventsPage = new pgViewEvents(_user, _sublocationManager);
             this.NavigationService.Navigate(viewEventsPage);
         }
 
@@ -604,5 +652,64 @@ namespace WPFPresentation
                 }
             }
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/17
+        /// 
+        /// Description:
+        /// Added click event for Event date. Adds the list of event dates to the database
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEventDateNext_Helper(object sender, RoutedEventArgs e)
+        {
+
+            if (newEventVM.EventDates.Count > 0)
+            {
+                try
+                {
+                    foreach (EventDate date in newEventVM.EventDates)
+                    {
+                        _eventDateManager.CreateEventDate(date);
+                    }
+
+                    String message = (newEventVM.EventDates.Count == 1) ? "The event date was successfully added." : "The " + newEventVM.EventDates.Count + " event dates were successfully added.";
+
+                    MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    Page page = new pgViewEvents(_user, _sublocationManager);
+                    this.NavigationService.Navigate(page);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you are finished with this tab?", "Finished?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Cancel:
+                        break;
+                    case MessageBoxResult.Yes:
+
+                        newEventVM.EventDates = new List<EventDate>();
+                        Page page = new pgViewEvents(_user, _sublocationManager);
+                        this.NavigationService.Navigate(page);
+
+                        break;
+                    case MessageBoxResult.No:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
     }
 }

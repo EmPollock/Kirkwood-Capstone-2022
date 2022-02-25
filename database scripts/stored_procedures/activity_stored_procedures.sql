@@ -43,8 +43,8 @@ AS
 			,[StartTime]			
 			,[EndTime]				
 			,[ActivityImageName]	
-			,[SublocationID]		
-			,[EventDateID]							
+			,[Activity].[SublocationID]
+			,[EventDateID]				
 		FROM [dbo].[Activity]
 		WHERE [EventID] = @EventID
 	END	
@@ -225,5 +225,42 @@ AS
 	
 	AND [UserActivity].[UserID] = @UserID
 	ORDER BY [Activity].[EventDateID] DESC	
+	END	
+GO
+
+/***************************************************************
+Logan Baccam
+Created: 2022/02/24
+
+Description:
+Stored procedure to select all activities in viewmodel for viewing an events activities
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_select_activities_by_eventID_for_activityvm'
+GO
+CREATE PROCEDURE [dbo].[sp_select_activities_by_eventID_for_activityvm](
+	@EventID			[int] 
+)
+AS
+	BEGIN
+		SELECT 
+			[ActivityID]			
+			,[ActivityName]			
+			,[ActivityDescription]	
+			,[PublicActivity]		
+			,[StartTime]			
+			,[EndTime]				
+			,[ActivityImageName]	
+			,[Activity].[SublocationID]
+			,[EventDateID]		
+			,[Sublocation].[SublocationName]
+		FROM [dbo].[Activity]
+		JOIN [Sublocation] ON [Sublocation].[SublocationID] = [Activity].[SublocationID]
+		WHERE [EventID] = @EventID
 	END	
 GO

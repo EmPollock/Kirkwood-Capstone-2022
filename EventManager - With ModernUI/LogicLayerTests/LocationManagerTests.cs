@@ -272,5 +272,27 @@ namespace LogicLayerTests
 
             Assert.AreEqual(expectedCount, actualCount);
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Test that returns the count of rows affected after deactivating a location
+        /// </summary>
+        [TestMethod]
+        public void TestDeactivateLocationReturnsCorrectAmount()
+        {
+            // arrange
+            int locationID = 100000;
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.DeactivateLocationByLocationID(locationID);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
     }
 }
