@@ -17,14 +17,14 @@ namespace LogicLayerTests
     /// Test Class to test the Tasks Logic Layer methods
     /// </summary>
     [TestClass]
-    public class TaskManagerTests
+    public class _taskManagerTests
     {
-        private ITaskManager taskManager = null;
+        private ITaskManager _taskManager = null;
 
         [TestInitialize]
         public void TestSetup()
         {
-            taskManager = new TaskManager(new TaskAccessorFakes());
+            _taskManager = new TaskManager(new TaskAccessorFakes());
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace LogicLayerTests
             bool actualResult;
 
             //act
-            actualResult = taskManager.AddTask(task);
+            actualResult = _taskManager.AddTask(task);
 
             //assert
             Assert.AreEqual(expectedResult, actualResult);
@@ -78,7 +78,7 @@ namespace LogicLayerTests
             };
 
             //act
-            taskManager.AddTask(task);
+            _taskManager.AddTask(task);
 
             //assert
             //checking for exception
@@ -107,7 +107,7 @@ namespace LogicLayerTests
             };
 
             //act
-            taskManager.AddTask(task);
+            _taskManager.AddTask(task);
 
             //assert
             //checking for exception
@@ -136,7 +136,7 @@ namespace LogicLayerTests
             };
 
             //act
-            taskManager.AddTask(task);
+            _taskManager.AddTask(task);
 
             //assert
             //checking for exception
@@ -165,7 +165,7 @@ namespace LogicLayerTests
             };
 
             //act
-            taskManager.AddTask(task);
+            _taskManager.AddTask(task);
 
             //assert
             //checking for exception
@@ -194,7 +194,7 @@ namespace LogicLayerTests
             };
 
             //act
-            taskManager.AddTask(task);
+            _taskManager.AddTask(task);
 
             //assert
             //checking for exception
@@ -218,7 +218,7 @@ namespace LogicLayerTests
             int actualCount;
 
             // act
-            actualCount = taskManager.RetrieveAllActiveTasksByEventID(eventID).Count;
+            actualCount = _taskManager.RetrieveAllActiveTasksByEventID(eventID).Count;
 
             // assert
             Assert.AreEqual(expectedCount, actualCount);
@@ -241,7 +241,7 @@ namespace LogicLayerTests
 
 
             // act
-            actualCount = taskManager.RetrieveAllActiveTasksByEventID(eventID).Count;
+            actualCount = _taskManager.RetrieveAllActiveTasksByEventID(eventID).Count;
 
             // assert
             Assert.AreNotEqual(expectedCount, actualCount);
@@ -264,7 +264,7 @@ namespace LogicLayerTests
             int actualCount;
 
             // act
-            actualCount = taskManager.RetrieveAllActiveTasksByEventID(badEventID).Count;
+            actualCount = _taskManager.RetrieveAllActiveTasksByEventID(badEventID).Count;
 
             // assert
             Assert.AreNotEqual(expectedCount, actualCount);
@@ -282,30 +282,36 @@ namespace LogicLayerTests
         public void TestUpdateTaskReturnsTrueIfSuccessful()
         {
             // arrange
-            Tasks oldTask = new Tasks()
+            TasksVM oldTask = new TasksVM()
             {
-                TaskID = 999997,
-                Name = "Sweep",
-                Description = "Sweep broken glass",
+                EventID = 1000000,
+                TaskID = 999999,
+                TaskEventName = "Test Event 1",
+                Name = "Mop",
+                Description = "Mop up spilled drink",
                 DueDate = DateTime.Now,
                 Priority = 3,
+                TaskPriority = "High",
                 Active = true
             };
 
-            Tasks newTask = new Tasks()
+            TasksVM newTask = new TasksVM()
             {
-                TaskID = 999997,
-                Name = "Test",
-                Description = "Big test energy",
-                DueDate = DateTime.Today.AddDays(2),
-                Priority = 2,
-                Active = true
+                EventID = 1000000,
+                TaskID = 999999,
+                TaskEventName = "Test Event 27",
+                Name = "Mop",
+                Description = "Test",
+                DueDate = DateTime.Today.AddDays(3),
+                Priority = 1,
+                TaskPriority = "Low",
+                Active = false
             };
             bool expectedResult = true;
             bool actualResult;
 
             // act
-            actualResult = taskManager.EditTask(oldTask, newTask);
+            actualResult = _taskManager.EditTask(oldTask, newTask);
 
             // assert
             Assert.AreEqual(expectedResult, actualResult);
@@ -345,7 +351,7 @@ namespace LogicLayerTests
             };
 
             // act
-            taskManager.EditTask(oldTask, newTask);
+            _taskManager.EditTask(oldTask, newTask);
 
             // assert
             // exception checking
@@ -386,7 +392,7 @@ namespace LogicLayerTests
             };
 
             // act
-            taskManager.EditTask(oldTask, newTask);
+            _taskManager.EditTask(oldTask, newTask);
 
             // assert
             // exception checking
@@ -426,7 +432,7 @@ namespace LogicLayerTests
             };
 
             // act
-            taskManager.EditTask(oldTask, newTask);
+            _taskManager.EditTask(oldTask, newTask);
 
             // assert
             // exception checking
@@ -466,7 +472,7 @@ namespace LogicLayerTests
             };
 
             // act
-            taskManager.EditTask(oldTask, newTask);
+            _taskManager.EditTask(oldTask, newTask);
 
             // assert
             // exception checking
@@ -505,7 +511,7 @@ namespace LogicLayerTests
             };
 
             // act
-            taskManager.EditTask(oldTask, newTask);
+            _taskManager.EditTask(oldTask, newTask);
 
             // assert
             // exception checking
@@ -544,7 +550,7 @@ namespace LogicLayerTests
             };
 
             // act
-            taskManager.EditTask(oldTask, newTask);
+            _taskManager.EditTask(oldTask, newTask);
 
             // assert
             // exception checking
@@ -583,7 +589,7 @@ namespace LogicLayerTests
             };
 
             // act
-            taskManager.EditTask(oldTask, newTask);
+            _taskManager.EditTask(oldTask, newTask);
 
             // assert
             // exception checking

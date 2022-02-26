@@ -27,7 +27,7 @@ namespace WPFPresentation
         private ISublocationManager _sublocationManager = null;
         private List<DataObjects.EventVM> _eventList = null;
         private List<DataObjects.Event> _searchResults = null;
-        private DataObjects.Event selectedEvent = null;
+        private DataObjects.EventVM selectedEvent = null;
         
         private User _user = null;
         private EventFilter eventFilter = EventFilter.AllUpcomingEvents;
@@ -338,7 +338,7 @@ namespace WPFPresentation
         /// </summary>
         private void btnActivity_Click(object sender, RoutedEventArgs e)
         {
-            selectedEvent = (DataObjects.Event)datActiveEvents.SelectedItem;
+            selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
             Event.pgViewActivities page;
             Uri pageURI = new Uri("Event/pgViewActivities.xaml", UriKind.Relative);
 
@@ -351,7 +351,7 @@ namespace WPFPresentation
                 }
                 else
                 {
-                    page = new Event.pgViewActivities(selectedEvent);
+                    page = new Event.pgViewActivities(selectedEvent, _sublocationManager);
                     this.NavigationService.Navigate(page, pageURI);
                 }
             }
@@ -364,7 +364,7 @@ namespace WPFPresentation
                 }
                 else 
                 {
-                    page = new Event.pgViewActivities(selectedEvent);
+                    page = new Event.pgViewActivities(selectedEvent, _sublocationManager);
                     this.NavigationService.Navigate(page, pageURI);
                 }
             }

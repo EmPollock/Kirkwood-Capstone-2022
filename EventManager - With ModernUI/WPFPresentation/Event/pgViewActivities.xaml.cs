@@ -26,7 +26,8 @@ namespace WPFPresentation.Event
     public partial class pgViewActivities : Page
     {
         IActivityManager _activityManager = null;
-        DataObjects.Event _event;
+        ISublocationManager _sublocationManager = null;
+        DataObjects.EventVM _event;
         List<ActivityVM> activities;
         User _user;
         ActivityFilter activityFilter;
@@ -39,12 +40,13 @@ namespace WPFPresentation.Event
         /// Initializes component and sets up activity manager with fake or default accessors
         /// </summary>
         /// <param name="eventParam"></param>
-        public pgViewActivities(DataObjects.Event eventParam)
+        public pgViewActivities(DataObjects.EventVM eventParam, ISublocationManager sublocationManager)
         {
             // fake accessor
             //_activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
 
             _event = eventParam;
+            _sublocationManager = sublocationManager;
             // real accessor
             _activityManager = new ActivityManager();
 
@@ -106,6 +108,76 @@ namespace WPFPresentation.Event
                 MessageBox.Show(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/21
+        /// 
+        /// Description:
+        /// Click event handler to launch pgViewActivityDetails.xaml
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datEventActivities_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ActivityVM selectedActivity = (ActivityVM)datEventActivities.SelectedItem;
+            pgViewActivityDetails activityDetailsPage = new pgViewActivityDetails(selectedActivity, _event, _sublocationManager, _user);
+            this.NavigationService.Navigate(activityDetailsPage);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Click event handler to send a user back to Event Edit Details page
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
+        {
+            pgEventEditDetail pgEventEditDetail = new pgEventEditDetail(_event, _sublocationManager, _user);
+            this.NavigationService.Navigate(pgEventEditDetail);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Click event handler to send a user to the Task list View page
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+            pgTaskListView ViewTaskListPage = new pgTaskListView(_event, _sublocationManager, _user);
+            this.NavigationService.Navigate(ViewTaskListPage);
+        }
+
         /// <summary>
         /// Logan Baccam
         /// Created: 2022/02/18
@@ -196,8 +268,6 @@ namespace WPFPresentation.Event
                     
             }
         }
-
-
 
         /// <summary>
         /// Logan Baccam

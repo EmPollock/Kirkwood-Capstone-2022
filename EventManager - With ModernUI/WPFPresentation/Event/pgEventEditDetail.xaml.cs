@@ -939,5 +939,25 @@ namespace WPFPresentation.Event
             VolunteerRequest currRequest = (VolunteerRequest)dgRequestList.SelectedItem;
             // Logic required to reject DNE
         }
+
+        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/21
+        /// 
+        /// Description:
+        /// Click event handler to bring up the View Activities page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnItinerary_Click(object sender, RoutedEventArgs e)
+        {
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _sublocationManager);
+            this.NavigationService.Navigate(viewActivitiesPage);
+        }
+
+
+        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }
