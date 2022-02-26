@@ -25,6 +25,8 @@
             Events
         </TextBlock>
 
+        
+        
         <!--An example of an alternate way that would use an itemtemplate-->
         <!--https://stackoverflow.com/questions/859227/looking-for-a-wpf-combobox-with-checkboxes-->
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -89,5 +91,6 @@
         </DataGrid>
 
         <Button x:Name="btnCreateEvent" Content="Create Event" Grid.Row="2" Grid.Column="1" Click="btnCreateEvent_Click" />
+        <Button x:Name="btnActivity" Content="Activities" Grid.Row="2" Grid.Column="1" Margin="120 0 0 0" Click="btnActivity_Click"/>
     </Grid>
 </Page>

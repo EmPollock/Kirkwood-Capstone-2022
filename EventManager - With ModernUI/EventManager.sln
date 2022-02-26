@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessInterfaces", "Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayerInterfaces", "LogicLayerInterfaces\LogicLayerInterfaces.csproj", "{693568DD-60BF-4D9E-A819-E5077E5539F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCPresentation", "MVCPresentation\MVCPresentation.csproj", "{17C1DA8E-2DC6-46CE-97F1-ED67F4E041B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{693568DD-60BF-4D9E-A819-E5077E5539F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{693568DD-60BF-4D9E-A819-E5077E5539F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{693568DD-60BF-4D9E-A819-E5077E5539F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17C1DA8E-2DC6-46CE-97F1-ED67F4E041B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17C1DA8E-2DC6-46CE-97F1-ED67F4E041B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17C1DA8E-2DC6-46CE-97F1-ED67F4E041B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17C1DA8E-2DC6-46CE-97F1-ED67F4E041B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -30,10 +30,11 @@ namespace WPFPresentation.Event
     public partial class pgViewActivityDetails : Page
     {
         IActivityManager _activityManager = null;
+        ISublocationManager _sublocationManager = null;
         DataObjects.ActivityVM _activity = null;
         DataObjects.EventVM _event = null;
 
-        public pgViewActivityDetails(DataObjects.ActivityVM selectedActivity, DataObjects.EventVM activityEvent)
+        public pgViewActivityDetails(DataObjects.ActivityVM selectedActivity, DataObjects.EventVM activityEvent, ISublocationManager sublocationManager)
         {
             // fake accessor for testing
             //_activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
@@ -41,6 +42,7 @@ namespace WPFPresentation.Event
             // real accessor
             _activityManager = new ActivityManager();
 
+            _sublocationManager = sublocationManager;
             _activity = selectedActivity;
             _event = activityEvent;
 
@@ -82,7 +84,7 @@ namespace WPFPresentation.Event
             }
             txtStartTime.Text = _activity.StartTime.ToShortTimeString();
             txtEndTime.Text = _activity.EndTime.ToShortTimeString();
-            txtEventSublocation.Text = _activity.ActivitySublocation.SublocationName;
+            txtEventSublocation.Text = _activity.SublocationName;
             txtEventDate.Text = _activity.EventDateID.ToShortDateString();
             txtEventName.Text = _event.EventName;
         }
@@ -121,7 +123,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnEventDetails_Click(object sender, RoutedEventArgs e)
         {
-            pgEventEditDetail eventEditDetaiPage = new pgEventEditDetail(_event);
+            pgEventEditDetail eventEditDetaiPage = new pgEventEditDetail(_event, _sublocationManager);
             this.NavigationService.Navigate(eventEditDetaiPage);
         }
 
@@ -136,7 +138,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnTasks_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListView taskListViewPage = new pgTaskListView(_event);
+            pgTaskListView taskListViewPage = new pgTaskListView(_event, _sublocationManager);
             this.NavigationService.Navigate(taskListViewPage);
         }
 
@@ -151,7 +153,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnItinerary_Click(object sender, RoutedEventArgs e)
         {
-            pgViewActivities viewActivitiesPage = new pgViewActivities(_event);
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _sublocationManager);
             this.NavigationService.Navigate(viewActivitiesPage);
         }
 

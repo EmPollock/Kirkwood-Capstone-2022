@@ -299,7 +299,7 @@ namespace LogicLayerTests
             {
                 EventID = 1000000,
                 TaskID = 999999,
-                TaskEventName = "Test Event 1",
+                TaskEventName = "Test Event 27",
                 Name = "Mop",
                 Description = "Test",
                 DueDate = DateTime.Today.AddDays(3),

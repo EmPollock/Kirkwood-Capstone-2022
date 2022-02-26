@@ -31,7 +31,7 @@ Description:
 ****************************************************************/
 
 print '' print '*** creating Volunteers table'
-CREATE TABLE [dbo].[Volunteers] (
+CREATE TABLE [dbo].[Volunteer] (
 	[VolunteerID]		[int] IDENTITY(100000,1)	NOT NULL
 	,[UserID]			[int] 						NOT NULL
 	,[Active]			[bit]						NOT NULL DEFAULT 1
@@ -57,7 +57,7 @@ GO
 ****************************************************************/
 print '' print '*** test records for Volunteers table'
 GO
-INSERT INTO [dbo].[Volunteers] (
+INSERT INTO [dbo].[Volunteer] (
 	[UserID],
 	[Active]	
 )VALUES 
@@ -79,17 +79,17 @@ GO
 ****************************************************************/
 print '' print '*** creating VolunteerReviews table'
 GO
-CREATE TABLE [dbo].[VolunteerReviews] (
+CREATE TABLE [dbo].[VolunteerReview] (
 	[ReviewID]			[int]						NOT NULL,
 	[EventID]			[int] 						NOT NULL,
 	[VolunteerID]		[int]						NOT NULL,
 	[Rating]			[int]						NOT NULL,
 	[Comments]			[nvarchar](300)				NULL,
 	
-	CONSTRAINT [fk_VolunteerReviews_EventID] FOREIGN KEY([EventID])
+	CONSTRAINT [fk_VolunteerReview_EventID] FOREIGN KEY([EventID])
 		REFERENCES [Event]([EventID]),
-	CONSTRAINT [fk_VolunteerReviews_VolunteerID] FOREIGN KEY([VolunteerID])
-		REFERENCES [Volunteers]([VolunteerID])
+	CONSTRAINT [fk_VolunteerReview_VolunteerID] FOREIGN KEY([VolunteerID])
+		REFERENCES [Volunteer]([VolunteerID])
 )
 GO
 
@@ -100,16 +100,16 @@ GO
  Created: 2022/01/26
  
  Description:
- Test records for VolunteerReviews table
+ Test records for VolunteerReview table
 ***************************************************************
  <Updater Name>
  Updated: yyyy/mm/dd
 
  Description: 
 ****************************************************************/
-print '' print '*** test records for VolunteerReviews table'
+print '' print '*** test records for VolunteerReview table'
 GO
-INSERT INTO [dbo].[VolunteerReviews] (
+INSERT INTO [dbo].[VolunteerReview] (
 	[ReviewID],
 	[EventID],
 	[VolunteerID],
@@ -195,7 +195,7 @@ CREATE TABLE [dbo].[VolunteerType] (
 	[RoleID]			[nvarchar](50) 						NOT NULL,
 	
 	CONSTRAINT [fk_VolunteerType_VolunteerID] FOREIGN KEY([VolunteerID])
-		REFERENCES [Volunteers]([VolunteerID]),
+		REFERENCES [Volunteer]([VolunteerID]),
 	CONSTRAINT [fk_VolunteerType_RoleID] FOREIGN KEY([RoleID])
 		REFERENCES [Role]([RoleID])
 )

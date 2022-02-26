@@ -32,16 +32,16 @@ CREATE PROCEDURE [dbo].[sp_select_all_volunteers]
 AS
 	BEGIN
 		SELECT 
-			[Volunteers].[VolunteerID],
+			[Volunteer].[VolunteerID],
 			[Users].[GivenName],
 			[Users].[FamilyName],			
 			[Users].[UserState],		
 			[Users].[City],			
 			[Users].[Zip],
 			[VolunteerType].[RoleID]
-		FROM [Volunteers] 
-		JOIN [Users] ON [Volunteers].[UserID] = [Users].[UserID]
-		JOIN [VolunteerType] ON [Volunteers].[VolunteerID] = [VolunteerType].[VolunteerID]
+		FROM [Volunteer] 
+		JOIN [Users] ON [Volunteer].[UserID] = [Users].[UserID]
+		JOIN [VolunteerType] ON [Volunteer].[VolunteerID] = [VolunteerType].[VolunteerID]
 	END	
 GO
 
@@ -65,9 +65,9 @@ CREATE PROCEDURE [dbo].[sp_select_all_volunteer_reviews]
 AS
 	BEGIN
 		SELECT 
-			[VolunteerReviews].[VolunteerID],
-			AVG([VolunteerReviews].[Rating])
-		FROM [VolunteerReviews] 
+			[VolunteerReview].[VolunteerID],
+			AVG([VolunteerReview].[Rating])
+		FROM [VolunteerReview] 
 		GROUP BY [VolunteerID]
 	END	
 GO
