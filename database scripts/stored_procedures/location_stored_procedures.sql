@@ -157,3 +157,32 @@ AS
 		(@LocationName, @LocationAddress1, @LocationCity, @LocationState, @LocationZipCode)		
 	END	
 GO
+
+/***************************************************************
+Jace Pettinger
+Created: 2022/02/22
+
+Description:
+Stored procedure to deactivate a location in the Location table
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_deactivate_location_by_locationID***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_location_by_locationID]
+(
+	@LocationID 				[int]
+)
+AS
+	BEGIN
+		UPDATE	[Location]
+		SET	
+			[LocationActive] = 0
+		WHERE
+			[LocationID] = @LocationID
+		RETURN @@ROWCOUNT
+	END
+GO

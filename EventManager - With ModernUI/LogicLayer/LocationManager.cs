@@ -267,5 +267,31 @@ namespace LogicLayer
 
             return locationAvailabilities;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Method to deactivate a location by its locationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>int number of rows affected</returns>
+        public int DeactivateLocationByLocationID(int locationID)
+        {
+            int rowsAffected = 0;
+
+            try
+            {
+                rowsAffected = _locationAccessor.DeactivateLocationByLocationID(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return rowsAffected;
+        }
     }
 }

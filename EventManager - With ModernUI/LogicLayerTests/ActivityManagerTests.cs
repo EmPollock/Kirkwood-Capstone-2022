@@ -35,7 +35,7 @@ namespace LogicLayerTests
             //arrange   
             const int eventID = 1;
             const int expectedCount = 2;
-            List<ActivityVM> activities;
+            List<Activity> activities;
             int actualCount;
 
             //act
@@ -60,7 +60,7 @@ namespace LogicLayerTests
         {
             //arrange   
             const int eventID = 10;
-            List<ActivityVM> activities;
+            List<Activity> activities;
 
             //act
             activities = _activityManager.RetrieveActivitiesByEventID(eventID);
@@ -146,6 +146,29 @@ namespace LogicLayerTests
             //assert
             Assert.AreEqual(expectedCount, actualCount);
         }
+
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// Test that checks to see if the amount of Activities returns is correct
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesBySublocationIDReturnsCorrectAmount()
+        {
+            //arrange   
+            const int sublocationID = 1000001;
+            const int expectedCount = 2;
+            int actualCount;
+
+            //act
+            actualCount = _activityManager.RetrieveActivitiesBySublocationID(sublocationID).Count;
+            //assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
         /// <summary>
         /// Logan Baccam
         /// Created: 2022/02/18
@@ -208,6 +231,75 @@ namespace LogicLayerTests
             activities = _activityManager.RetreiveUserActivitiesPastAndUpcomingDates(invalidUserID);
             //assert
             //nothing to assert
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitiesByEventIDForVM returns 
+        ///     correct count
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesByEventIDForVMRetrievesListWithCorrectEventID()
+        {
+            //arrange   
+            const int eventID = 1;
+            const int expectedCount = 2;
+            List<ActivityVM> activities;
+            int actualCount;
+
+            //act
+            activities = _activityManager.RetrieveActivitiesByEventIDForVM(eventID);
+            actualCount = activities.Count;
+
+            //assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// Test that checks to see if the amount of Activities returned is none with a 
+        /// bad sublocationID passed through
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesBySublocationIDWithBadSublocationIDReturnsEmptyList()
+        {
+            //arrange   
+            const int sublocationID = 1;
+            const int expectedCount = 0;
+            int actualCount;
+
+            //act
+            actualCount = _activityManager.RetrieveActivitiesBySublocationID(sublocationID).Count;
+
+
+            //assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// Logan Baccam
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that fails if RetrieveActivitiesByEventIDForVM with incorrect eventID
+        /// </summary>
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
+        public void TestRetrieveActivitiesByEventIDForVMFailsWithIncorrectEventID()
+        {
+            //arrange   
+            const int eventID = 10;
+            List<ActivityVM> activities;
+
+            //act
+            activities = _activityManager.RetrieveActivitiesByEventIDForVM(eventID);
+
+            //assert
+            //error testing, nothing to do here
         }
     }
 }

@@ -32,7 +32,9 @@ namespace WPFPresentation
         
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
+        ISublocationManager _sublocationManager = null;
         DataObjects.EventVM _event = null;
+        User _user = null;
 
         // priority values to populate cboPriority
         List<Priority> _priorities = new List<Priority>();
@@ -43,8 +45,13 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Initializes component and sets up task manager with either fake or default accessors
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
         /// </summary>
-        public pgTaskListCreate(DataObjects.EventVM selectedEvent)
+        public pgTaskListCreate(DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager, User user)
         {
             // fake accessor
             //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
@@ -53,6 +60,9 @@ namespace WPFPresentation
             _taskManager = new TaskManager();
             _eventManager = new LogicLayer.EventManager();
             _event = selectedEvent;
+            _user = user;
+
+            _sublocationManager = sublocationManager;
 
             InitializeComponent();
         }
@@ -83,7 +93,7 @@ namespace WPFPresentation
 
                 MessageBox.Show("Priority list was not retrieved." + "\n\n" + ex.Message);
             }
-        }   
+        }
 
         /// <summary>
         /// Mike Cahow
@@ -91,6 +101,11 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler to create a task
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         private void btnSaveTask_Click(object sender, RoutedEventArgs e)
         {
@@ -144,7 +159,7 @@ namespace WPFPresentation
             {
                 _taskManager.AddTask(task);
                 MessageBox.Show("Task has been added.");
-                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
             catch (Exception ex)
@@ -161,6 +176,11 @@ namespace WPFPresentation
         /// Event handler for the cancel button. If the yes is clicked in the dialog box
         /// it sends user back to pgTaskListView. If no is clicked then user remains on 
         /// current page
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -178,7 +198,7 @@ namespace WPFPresentation
             }
             else
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }

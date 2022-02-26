@@ -25,7 +25,7 @@
             Events
         </TextBlock>
 
-        <Button x:Name="btnActivity" Grid.Row="1" Width="190" HorizontalAlignment="Center" BorderBrush="#FF4388CC" Background="#FF4388CC" Foreground="White" Click="btnActivity_Click">Event Activities</Button>
+        
         
         <!--An example of an alternate way that would use an itemtemplate-->
         <!--https://stackoverflow.com/questions/859227/looking-for-a-wpf-combobox-with-checkboxes-->
@@ -91,5 +91,6 @@
         </DataGrid>
 
         <Button x:Name="btnCreateEvent" Content="Create Event" Grid.Row="2" Grid.Column="1" Click="btnCreateEvent_Click" />
+        <Button x:Name="btnActivity" Content="Activities" Grid.Row="2" Grid.Column="1" Margin="120 0 0 0" Click="btnActivity_Click"/>
     </Grid>
 </Page>

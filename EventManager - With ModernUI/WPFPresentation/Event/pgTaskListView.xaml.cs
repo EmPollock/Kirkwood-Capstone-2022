@@ -38,9 +38,11 @@ namespace WPFPresentation.Event
 
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
+        ISublocationManager _sublocationManager = null;
         DataObjects.EventVM _event = null;
+        User _user = null;
 
-        public pgTaskListView(DataObjects.EventVM selectedEvent)
+        public pgTaskListView(DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager, User user)
         {
             // fake accessor
             //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
@@ -49,6 +51,9 @@ namespace WPFPresentation.Event
             _taskManager = new TaskManager();
             _eventManager = new LogicLayer.EventManager();
             _event = selectedEvent;
+            _user = user;
+
+            _sublocationManager = sublocationManager;
 
             InitializeComponent();
         }
@@ -116,12 +121,17 @@ namespace WPFPresentation.Event
         /// Description:
         /// Add task button brings up pgTaskListCreate which will update the list upon 
         /// psTaskListCreate's closing
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnTaskListCreate_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListCreate createTaskPage = new pgTaskListCreate(_event);
+            pgTaskListCreate createTaskPage = new pgTaskListCreate(_event, _sublocationManager, _user);
             this.NavigationService.Navigate(createTaskPage);
         }
 
@@ -131,13 +141,18 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// View details of task. To be changed to Edit Task
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void datViewAllTasksForEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TasksVM selectedTask = (TasksVM)datViewAllTasksForEvent.SelectedItem;
-            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask, _event);
+            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask, _event, _sublocationManager, _user);
             this.NavigationService.Navigate(taskEditPage);
 
             updateTaskList();
@@ -145,7 +160,7 @@ namespace WPFPresentation.Event
 
         private void btnEventDetails_Click(object sender, RoutedEventArgs e)
         {
-            pgEventEditDetail editEventPage = new pgEventEditDetail(_event);
+            pgEventEditDetail editEventPage = new pgEventEditDetail(_event, _sublocationManager, _user);
             this.NavigationService.Navigate(editEventPage);
         }
     }

@@ -154,11 +154,21 @@ namespace DataAccessFakes
         /// </summary>
         /// <param name="eventID"></param>
         /// <returns>A List of Activities for an Event</returns>
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Reverted Changes
+        /// 
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns>A List of Activities for an Event</returns>
         public List<Activity> SelectActivitiesByEventID(int eventID)
         {
             List<Activity> result = new List<Activity>();
 
-            foreach (Activity activity in _fakeActivites)
+            foreach (ActivityVM activity in _fakeActivites)
             {
                 if(activity.EventID == eventID)
                 {
@@ -196,6 +206,59 @@ namespace DataAccessFakes
                 {
                     result.Add(activity);
                 }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// Select fake Activities that have the specific sublocation ID passed to it
+        /// 
+        /// </summary>
+        /// <param name="sublocationID"></param>
+        /// <returns>A List of Activities</returns>
+        public List<Activity> SelectActivitiesBySublocationID(int sublocationID)
+        {
+            List<Activity> activities = new List<Activity>();
+
+            foreach (Activity activity in _fakeActivites)
+            {
+                if (activity.SublocationID == sublocationID)
+                {
+                    activities.Add(activity);
+                }
+            }
+
+            return activities;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/14
+        /// 
+        /// Description:
+        /// Select fake Activities that are public  for viewing an activity by eventID
+        /// 
+        /// </summary>
+        /// <returns>A List of an events Activities in view model</returns>
+        public List<ActivityVM> SelectActivitiesByEventIDForVM(int eventID)
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+
+            foreach (ActivityVM activity in _fakeActivites)
+            {
+                if (activity.EventID == eventID)
+                {
+                    result.Add(activity);
+                }
+            }
+            if (result.Count == 0)
+            {
+                //Event has no activities
+                throw new ArgumentException();
             }
 
             return result;

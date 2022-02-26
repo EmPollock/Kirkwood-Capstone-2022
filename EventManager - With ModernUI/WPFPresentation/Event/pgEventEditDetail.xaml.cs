@@ -14,8 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using LogicLayer;
-using LogicLayerInterfaces;
 using DataObjects;
 using DataAccessFakes;
 using System.Text.RegularExpressions;
@@ -30,6 +28,7 @@ namespace WPFPresentation.Event
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
 
         DataObjects.Location _location = null;
         DataObjects.EventVM _event = null;
@@ -39,6 +38,9 @@ namespace WPFPresentation.Event
 
         bool _userCanEditEvent = false;
 
+        User _user = null;
+
+
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/01
@@ -46,16 +48,21 @@ namespace WPFPresentation.Event
         /// Description:
         /// Initializes component and sets up event manager with fake and default accessors
         /// 
-        /// /// Update:
+        /// Update:
         /// Derrick Nagy
         /// Update: 2022/02/23
         /// Description:
         /// Changed which data grid is used for viewing and editing.
         /// Added checks for the user to edit only if they are an event planner or manager.
         /// 
+        /// Update:
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
         /// </summary>
         /// <param name="selectedEvent">Must be pased an event object to view or edit</param>
-        public pgEventEditDetail(DataObjects.EventVM selectedEvent)
+        public pgEventEditDetail(DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager, User user)
         {
             // use fake accessor
             //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
@@ -69,6 +76,8 @@ namespace WPFPresentation.Event
             _volunteerRequestManager = new VolunteerRequestManager();
             _locationManager = new LocationManager();
             _event = selectedEvent;
+            _user = user;
+            _sublocationManager = sublocationManager;
 
             InitializeComponent();
 
@@ -76,7 +85,7 @@ namespace WPFPresentation.Event
             // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.
             try
             {
-                _userCanEditEvent = _eventManager.CheckUserEditPermissionForEvent(_event.EventID, MainWindow.User.UserID);
+                _userCanEditEvent = _eventManager.CheckUserEditPermissionForEvent(_event.EventID, _user.UserID);
                 if (_userCanEditEvent)
                 {
                     btnEventEditSave.Visibility = Visibility.Visible;
@@ -358,10 +367,23 @@ namespace WPFPresentation.Event
                 }
             }
         }
-
+        /// <summary>
+        /// ???
+        /// Created: ????/??/??
+        /// 
+        /// Description:
+        /// Click method for tasks button. Sends the user to the task list view.
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnTasks_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListView taskViewPage = new pgTaskListView(_event);
+            pgTaskListView taskViewPage = new pgTaskListView(_event, _sublocationManager, _user);
             this.NavigationService.Navigate(taskViewPage);
         }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
@@ -577,6 +599,12 @@ namespace WPFPresentation.Event
         /// Description:
         /// Changed which data grid is used for viewing and editing
         /// 
+        /// Update:
+        /// Jace Pettinger
+        /// Updated: 2022/02/25
+        /// 
+        /// Description:
+        /// Updated validation to fix 24 hour time errors
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -602,6 +630,17 @@ namespace WPFPresentation.Event
                     txtBlockEventAddValidationMessage.Text = "Please enter times for your event to start and end.";
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                 }
+                else if (Int32.Parse(txtBoxEventStartTimeHour.Text) > 12)
+                {
+                    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
+                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                }
+                else if (Int32.Parse(txtBoxEventEndTimeHour.Text) > 12)
+                {
+                    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
+                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                }
+
                 else
                 {
                     DateTime dateTimeToAdd = new DateTime();
@@ -633,6 +672,7 @@ namespace WPFPresentation.Event
                         isAMHour = cmbEndTimeAMPM.Text == "AM";
                         endHour = Int32.Parse(txtBoxEventEndTimeHour.Text).ConvertTo24HourTime(isAMHour);
                         endMin = Int32.Parse(txtBoxEventEndTimeMinute.Text);
+
                     }
                     catch (Exception ex)
                     {
@@ -644,7 +684,6 @@ namespace WPFPresentation.Event
                     {
                         txtBoxEventEndTimeHour.Text = "";
                         txtBoxEventEndTimeMinute.Text = "";
-                        txtBoxEventEndTimeHour.Focus();
                         txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                         txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                     }
@@ -653,66 +692,77 @@ namespace WPFPresentation.Event
                         if (startMin >= endMin)
                         {
                             txtBoxEventEndTimeMinute.Text = "";
-                            txtBoxEventEndTimeMinute.Focus();
                             txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                             txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                         }
                     }
-
                     // end of initial validation checks 
-
-                    EventDate newEventDate = new EventDate() // create event date object
-                    {
-                        EventDateID = dateTimeToAdd,
-                        EventID = _event.EventID,
-                        StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
-                        EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
-                        Active = true
-                    };
-
-                    if (btnEditEventDateAddSave.Content.Equals("Add")) // add a new event date
+                    else
                     {
 
-                        try
+
+
+                        if (btnEditEventDateAddSave.Content.Equals("Add")) // add a new event date
                         {
-                            _eventDateManager.CreateEventDate(newEventDate);
 
                             //datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
-
-
-                            // if the user can edit, use this table
-                            if (_userCanEditEvent)
+                            
+                            try
                             {
-                                datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                EventDate newEventDate = new EventDate()
+                                {
+                                    EventDateID = dateTimeToAdd,
+                                    EventID = _event.EventID,
+                                    StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
+                                    EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
+                                    Active = true
+                                };
+
+                                _eventDateManager.CreateEventDate(newEventDate);
+
+                                // if the user can edit, use this table
+                                if (_userCanEditEvent)
+                                {
+                                    datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                }
+                                else
+                                {
+                                    // use this table that can not be edited
+                                    datCurrentEventDatesNoEdit.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                }
+
+                                // prepare form to add another date
+                                setEventDateTabEditMode();
+
+
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                // use this table
-                                datCurrentEventDatesNoEdit.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
 
-                            // prepare form to add another date
-                            setEventDateTabEditMode();
-
-
                         }
-                        catch (Exception ex)
+                        else // update event date
                         {
-                            MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
+                            try
+                            {
+                                EventDate newEventDate = new EventDate()
+                                {
+                                    EventDateID = dateTimeToAdd,
+                                    EventID = _event.EventID,
+                                    StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
+                                    EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
+                                    Active = true
+                                };
 
-                    }
-                    else // update event date
-                    {
-                        try
-                        {
-                            _eventDateManager.UpdateEventDate(_selectedEventDate, newEventDate);
-                            setEventDatesTabDetailMode();
-                        }
-                        catch (Exception ex)
-                        {
+                                _eventDateManager.UpdateEventDate(_selectedEventDate, newEventDate);
+                                setEventDatesTabDetailMode();
+                            }
+                            catch (Exception ex)
+                            {
 
-                          MessageBox.Show("There was a problem updating the date.\n" + ex.Message, "Problem Updating Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show("There was a problem updating the date.\n" + ex.Message, "Problem Updating Date", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                     }
                 }
@@ -813,19 +863,25 @@ namespace WPFPresentation.Event
             datePickerEventDate.Focus();
         }
         // --------------------------------------------------------- End of Dates Tab -----------------------------------------------------------
+        // --------------------------------------------------------- Start of Location Tab -----------------------------------------------------------
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/15
         /// 
         /// Description:
         /// Helper method for loading location tab in location details page
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _locationManager);
+                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _locationManager, _sublocationManager);
                 locationFrame.Navigate(locationDetailsPage);
                 lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }

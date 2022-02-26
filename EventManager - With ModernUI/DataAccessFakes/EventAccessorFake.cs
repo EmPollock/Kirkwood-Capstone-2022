@@ -38,17 +38,176 @@ namespace DataAccessFakes
         /// Description:
         /// Removed location object from fake events
         /// 
-        /// Update:
-        /// Derrick Nagy
-        /// Created: 2022/02/22
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
         /// 
         /// Description:
-        /// Reorganized fake data into helper methods
+        /// Updated to include TotalBudget field
         /// 
         public EventAccessorFake()
         {
-            addFakeEvents();
-            addFakeEvenVMs();
+            
+               _fakeEvents.Add(new EventVM()
+            {
+                EventID = 1000000,
+                LocationID= 100000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                EventCreatedDate = DateTime.Now,
+                TotalBudget = 1000.00m,
+                Active = true
+            });
+
+            _fakeEvents.Add(new EventVM()
+            {
+                EventID = 1000001,
+                LocationID = 100001,
+                EventName = "Test Event 2",
+                EventDescription = "A description of test event 2",
+                EventCreatedDate = DateTime.Now.AddMinutes(1),
+                TotalBudget = 120.00m,
+                Active = true
+            });
+
+            _fakeEvents.Add(new EventVM()
+            {
+                EventID = 1000002,
+                LocationID = 100002,
+                EventName = "Test Event 3",
+                EventDescription = "A description of test event 3",
+                EventCreatedDate = DateTime.Now.AddMinutes(2),
+                TotalBudget = 222.00m,
+                Active = true
+            });
+
+
+            _fakeEvents.Add(new EventVM()
+            {
+                EventID = 1000003,
+                LocationID = 100003,
+                EventName = "Test Event 4",
+                EventDescription = "A description of test event 4",
+                EventCreatedDate = DateTime.Now.AddMinutes(3),
+                TotalBudget = 2938.00m,
+                Active = true
+            });
+
+
+            // fake eventVM 1000000
+            _fakeEventVMs.Add(new EventVM()
+            {
+                EventID = 100000,
+                EventName = "Test EventVM 1",
+                EventDescription = "A description of test event 1",
+                EventCreatedDate = DateTime.Now,
+                TotalBudget = 1000.00m,
+                Active = true,
+                EventDates = new List<EventDate>()
+            });
+
+            // fake eventVM 100000 Dates
+            _fakeEventVMs[0].EventDates.Add(new EventDate()
+            {
+                EventDateID = new DateTime(2023, 01, 01),
+                EventID = 100000,
+                StartTime = new DateTime(2023, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2023, 01, 01, 20, 0, 0),
+                Active = true
+            });
+
+            _fakeEventVMs[0].EventDates.Add(new EventDate()
+            {
+                EventDateID = new DateTime(2023, 01, 02),
+                EventID = 100000,
+                StartTime = new DateTime(2023, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2023, 01, 01, 20, 0, 0),
+                Active = true
+            });
+
+            _fakeEventVMs[0].EventDates.Add(new EventDate()
+            {
+                EventDateID = new DateTime(2023, 01, 03),
+                EventID = 100000,
+                StartTime = new DateTime(2023, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2023, 01, 01, 20, 0, 0),
+                Active = true
+            });
+
+            // Fake VM 100001
+            _fakeEventVMs.Add(new EventVM()
+            {
+                EventID = 100001,
+                EventName = "Test EventVM 2",
+                EventDescription = "A description of test event 2",
+                EventCreatedDate = DateTime.Now.AddMinutes(1),
+                TotalBudget = 120.00m,
+                Active = true,
+                EventDates = new List<EventDate>()
+            });
+
+            // Fake VM 100001 PAST DATES            
+            _fakeEventVMs[1].EventDates.Add(new EventDate()
+            {
+                EventDateID = new DateTime(2022, 01, 01),
+                EventID = 100001,
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            });
+
+            _fakeEventVMs[1].EventDates.Add(new EventDate()
+            {
+                EventDateID = new DateTime(2022, 01, 02),
+                EventID = 100001,
+                StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
+                EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
+                Active = true
+            });
+
+            // Fake VM 100002
+            _fakeEventVMs.Add(new EventVM()
+            {
+                EventID = 100002,
+                EventName = "Test EventVM 3",
+                EventDescription = "A description of test event 3",
+                EventCreatedDate = DateTime.Now.AddMinutes(2),
+                TotalBudget = 222.00m,
+                Active = true,
+                EventDates = new List<EventDate>()
+            });
+
+            // Fake VM 100002 add date
+            _fakeEventVMs[2].EventDates.Add(new EventDate()
+            {
+                EventDateID = new DateTime(2023, 02, 01),
+                EventID = 100002,
+                StartTime = new DateTime(2023, 02, 01, 9, 0, 0),
+                EndTime = new DateTime(2023, 02, 01, 17, 0, 0),
+                Active = true
+            });
+
+            // Fake VM 100003
+            _fakeEventVMs.Add(new EventVM()
+            {
+                EventID = 100003,
+                EventName = "Test EventVM 4",
+                EventDescription = "A description of test event 4",
+                EventCreatedDate = DateTime.Now.AddMinutes(3),
+                TotalBudget = 2938.00m,
+                Active = true,
+                EventDates = new List<EventDate>()
+            });
+
+            // Fake VM 100003 add date
+            _fakeEventVMs[3].EventDates.Add(new EventDate()
+            {
+                EventDateID = new DateTime(2023, 02, 01),
+                EventID = 100003,
+                StartTime = new DateTime(2023, 03, 01, 11, 0, 0),
+                EndTime = new DateTime(2023, 03, 01, 11, 0, 0),
+                Active = true
+            });
+
 
             // fake Event User data
             // [UserID, EventID]
@@ -78,8 +237,9 @@ namespace DataAccessFakes
         /// </summary>
         /// <param name="eventName">Name of the event</param>
         /// <param name="eventDescription">Description fo the event</param>
+        /// <param name="totalBudget">Total budget planned for event</param>
         /// <returns>Number of rows inserted</returns>
-        public int InsertEvent(string eventName, string eventDescription)
+        public int InsertEvent(string eventName, string eventDescription, decimal totalBudget)
         {
             int rowsAffected = 0;
             int eventID = _fakeEvents.Last().EventID + 1;
@@ -91,6 +251,7 @@ namespace DataAccessFakes
                 EventName = eventName,
                 EventDescription = eventDescription,
                 EventCreatedDate = DateTime.Now,
+                TotalBudget = totalBudget,
                 Active = true
             });
 
@@ -106,12 +267,18 @@ namespace DataAccessFakes
         /// Description:
         /// Inserts a fake event into the database and returns the auto-increment value created for the event id
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
-        /// <param name="eventName">The name of the event</param>
-        /// <param name="eventDescription">The name of the description</param>
-        /// <param name="userID">The user id to associate with the event</param>
+        /// <param name="eventName"></param>
+        /// <param name="eventDescription"></param>
+        /// <param name="totalBudget"></param>
         /// <returns></returns>
-        public int InsertEventReturnsEventID(string eventName, string eventDescription, int userID)
+        public int InsertEventReturnsEventID(string eventName, string eventDescription, decimal totalBudget, int userID)
         {
             int eventID = _fakeEvents.Last().EventID + 1;
 
@@ -121,6 +288,7 @@ namespace DataAccessFakes
                 EventName = eventName,
                 EventDescription = eventDescription,
                 EventCreatedDate = DateTime.Now,
+                TotalBudget = totalBudget,
                 Active = true,
                 LocationID = null
             });
@@ -336,6 +504,12 @@ namespace DataAccessFakes
         /// Description:
         /// Updates an event in fake data list
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
         /// <returns>int number of records affected</returns>
         public int UpdateEvent(Event oldEvent, Event newEvent)
@@ -346,10 +520,12 @@ namespace DataAccessFakes
             {
                 if (fakeEvent.EventID == newEvent.EventID && fakeEvent.EventName == oldEvent.EventName
                     && fakeEvent.EventDescription == oldEvent.EventDescription
+                    && fakeEvent.TotalBudget == oldEvent.TotalBudget
                     && fakeEvent.Active == oldEvent.Active)
                 {
                     fakeEvent.EventName = newEvent.EventName;
                     fakeEvent.EventDescription = newEvent.EventDescription;
+                    fakeEvent.TotalBudget = newEvent.TotalBudget;
                     fakeEvent.Active = newEvent.Active;
                     rowsAffected++;
                 }

@@ -36,19 +36,52 @@ namespace WPFPresentation
     {
         IUserManager _userManager = null;
         //User _user = null;
-        public static User User = null;
+        //public static User User = null;
 
+        IActivityManager _activityManager = null;
+        IEventDateManager _eventDateManager = null;
+        ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
+        ISupplierManager _supplierManager = null;
+        ITaskManager _taskManager = null;
+        IVolunteerManager _volunteerManager = null;
+        IVolunteerRequestManager _volunteerRequestManager = null;
+
+        User _user = null;
+        
         public MainWindow()
         {
 
-            this._userManager = new UserManager();
+            // fakes
             //this._userManager = new UserManager(new UserAccessorFake());
+            //this._activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
+            //this._eventDateManager = new EventDateManager(new EventDateAccessorFake());
+            //this._locationManager = new LocationManager(new LocationAccessorFake());
+            //this._sublocationManager = new SublocationManager(new SublocationAccessorFake());
+            //this._supplierManager = new SupplierManager(new SupplierAccessorFake());
+            //this._taskManager = new TaskManager(new TaskAccessorFakes());
+            //this._volunteerManager = new VolunteerManager(new VolunteerAccessorFake());
+            //this._volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
+
+            // real
+            this._userManager = new UserManager();
+            this._activityManager = new ActivityManager();
+            this._eventDateManager = new EventDateManager();
+            this._locationManager = new LocationManager();
+            this._sublocationManager = new SublocationManager();
+            this._supplierManager = new SupplierManager();
+            this._taskManager = new TaskManager();
+            this._volunteerManager = new VolunteerManager();
+            this._volunteerRequestManager = new VolunteerRequestManager();
+
+
             // Keep this always safe! 
 
             //_user = new User()
-            User = new User()
+            //User = new User()
+            _user = new User()
             {
-                UserID = 100001,
+                UserID = 100000,
                 GivenName = "Joanne",
                 FamilyName = "Smith",
                 EmailAddress = "joanne@company.com",
@@ -63,13 +96,13 @@ namespace WPFPresentation
             
         }
 
-        public MainWindow(User user, IUserManager userManager)
+        public MainWindow(User user, IUserManager userManager) : this()
         {
             InitializeComponent();
             //this._user = user;
-            MainWindow.User = user;
+            //MainWindow.User = user;
+            this._user = user;
             this._userManager = userManager;
-            this.btnBack.IsEnabled = false;
             this.mnuUser.Header = user.GivenName + " ▼";
         }
 
@@ -90,8 +123,8 @@ namespace WPFPresentation
         /// </summary>
         private void updateUIForLogout()
         {
-            //this._user = null;
-            MainWindow.User = null;
+            this._user = null;
+            //MainWindow.User = null;
 
             SplashScreen splash = new SplashScreen();
             splash.Show();
@@ -129,18 +162,26 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Changed the logged in user from internal to public static
+        ///
+        ///
+        /// Update
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// 
         /// </summary>
 
         private void btnCreateEvents_Click(object sender, RoutedEventArgs e)
         {
-            if(User == null)
+            if(_user == null)
             {
                 MessageBox.Show("Please log in to create an event");
             }
             else
             {
-                Page page = new pgCreateEvent(User);
+                //Page page = new pgCreateEvent(User);
+                Page page = new pgCreateEvent(_user, _sublocationManager);
                 this.MainFrame.NavigationService.Navigate(page);
             }
         }
@@ -166,18 +207,25 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Changed the logged in user from internal to public static
+        ///
+        /// Update
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// 
         /// </summary>
         private void btnViewEvents_Click(object sender, RoutedEventArgs e)
         {
-            if (User != null)
+            if (_user != null)
             {
-                pgViewEvents pgViewEvents = new pgViewEvents(User);
+                //pgViewEvents pgViewEvents = new pgViewEvents(User);
+                pgViewEvents pgViewEvents = new pgViewEvents(_user, _sublocationManager);
                 this.MainFrame.NavigationService.Navigate(pgViewEvents);
             }
             else
             {
-                Page page = new pgViewEvents();
+                Page page = new pgViewEvents(_sublocationManager);
                 this.MainFrame.NavigationService.Navigate(page);
             }
 
@@ -224,7 +272,7 @@ namespace WPFPresentation
 
         private void btnViewLocations_Click(object sender, RoutedEventArgs e)
         {
-            var page = new pgViewLocations();
+            var page = new pgViewLocations(_locationManager, _sublocationManager);
             this.MainFrame.NavigationService.Navigate(page);
         }
 
