@@ -84,6 +84,8 @@ namespace WPFPresentation.Event
                     datEditCurrentEventDates.Visibility = Visibility.Visible;
                     datCurrentEventDatesNoEdit.Visibility = Visibility.Collapsed;
                     tabEventVolunteerRequests.Visibility = Visibility.Visible;
+                    btnEditEventDateAddSave.Visibility = Visibility.Visible;
+                    btnEditEventDateCloseCancel.Visibility = Visibility.Visible;
                 }
             }
             catch (Exception ex)

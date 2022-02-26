@@ -174,8 +174,8 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button  Grid.Row="0" Grid.Column="0" x:Name="btnEditEventDateAddSave" Margin="0 0 40 0" Content="Add Dates" IsTabStop="False"  HorizontalAlignment="Right" Click="btnEditEventDateAddSave_Click"/>
-                        <Button x:Name="btnEditEventDateCloseCancel" Grid.Row="0" Grid.Column="1" Margin="40 0 0 0" Content="Close" HorizontalAlignment="Left" Click="btnEditEventDateCloseCancel_Click" />
+                        <Button  Grid.Row="0" Grid.Column="0" x:Name="btnEditEventDateAddSave" Margin="0 0 40 0" Content="Add Dates" IsTabStop="False"  HorizontalAlignment="Right" Click="btnEditEventDateAddSave_Click" Visibility="Hidden"/>
+                        <Button x:Name="btnEditEventDateCloseCancel" Grid.Row="0" Grid.Column="1" Margin="40 0 0 0" Content="Close" HorizontalAlignment="Left" Click="btnEditEventDateCloseCancel_Click" Visibility="Hidden" />
 
                     </Grid>
                 </Grid>
