@@ -327,11 +327,7 @@ namespace WPFPresentation.Event
             }
         }
 
-        private void btnTasks_Click(object sender, RoutedEventArgs e)
-        {
-            pgTaskListView taskViewPage = new pgTaskListView(_event);
-            this.NavigationService.Navigate(taskViewPage);
-        }
+        
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
 
         // --------------------------------------------------------- Start of Date Tab -----------------------------------------------------------
@@ -818,5 +814,40 @@ namespace WPFPresentation.Event
             VolunteerRequest currRequest = (VolunteerRequest)dgRequestList.SelectedItem;
             // Logic required to reject DNE
         }
+
+        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Click event handler to send a user to the View Task List page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+            pgTaskListView taskViewPage = new pgTaskListView(_event);
+            this.NavigationService.Navigate(taskViewPage);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/21
+        /// 
+        /// Description:
+        /// Click event handler to bring up the View Activities page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnItinerary_Click(object sender, RoutedEventArgs e)
+        {
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event);
+            this.NavigationService.Navigate(viewActivitiesPage);
+        }
+
+
+        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }

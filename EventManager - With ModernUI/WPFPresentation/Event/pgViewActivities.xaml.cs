@@ -26,7 +26,7 @@ namespace WPFPresentation.Event
     public partial class pgViewActivities : Page
     {
         IActivityManager _activityManager = null;
-        DataObjects.Event _event;
+        DataObjects.EventVM _event;
 
         /// <summary>
         /// Emma Pollock
@@ -36,7 +36,7 @@ namespace WPFPresentation.Event
         /// Initializes component and sets up activity manager with fake or default accessors
         /// </summary>
         /// <param name="eventParam"></param>
-        public pgViewActivities(DataObjects.Event eventParam)
+        public pgViewActivities(DataObjects.EventVM eventParam)
         {
             // fake accessor
             //_activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
@@ -66,6 +66,53 @@ namespace WPFPresentation.Event
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/21
+        /// 
+        /// Description:
+        /// Click event handler to launch pgViewActivityDetails.xaml
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datEventActivities_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ActivityVM selectedActivity = (ActivityVM)datEventActivities.SelectedItem;
+            pgViewActivityDetails activityDetailsPage = new pgViewActivityDetails(selectedActivity, _event);
+            this.NavigationService.Navigate(activityDetailsPage);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Click event handler to send a user back to Event Edit Details page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
+        {
+            pgEventEditDetail pgEventEditDetail = new pgEventEditDetail(_event);
+            this.NavigationService.Navigate(pgEventEditDetail);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Click event handler to send a user to the Task list View page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+            pgTaskListView ViewTaskListPage = new pgTaskListView(_event);
+            this.NavigationService.Navigate(ViewTaskListPage);
         }
     }
 }

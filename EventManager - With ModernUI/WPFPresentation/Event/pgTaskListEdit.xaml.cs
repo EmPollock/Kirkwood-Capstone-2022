@@ -190,5 +190,98 @@ namespace WPFPresentation.Event
         {
             MessageBox.Show("This feature has not been implemented yet.");
         }
+
+        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler to take users back to event details page
+        /// Works like cancel button for editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Task will not be saved if you stop now.";
+            string title = "Stop creating Task?";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            var result = MessageBox.Show(message, title, buttons, image);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+            else
+            {
+                pgEventEditDetail eventEditDetailPage = new pgEventEditDetail(_event);
+                this.NavigationService.Navigate(eventEditDetailPage);
+            }
+            
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler to take users back to View Task List page
+        /// Works like cancel button for editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+
+            string message = "Task will not be saved if you stop now.";
+            string title = "Stop creating Task?";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            var result = MessageBox.Show(message, title, buttons, image);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+            else
+            {
+                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                this.NavigationService.Navigate(viewTasksPage);
+            }
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler to take users to View Activities page
+        /// Works like cancel button for editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnItinerary_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Task will not be saved if you stop now.";
+            string title = "Stop creating Task?";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            var result = MessageBox.Show(message, title, buttons, image);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+            else
+            {
+                pgViewActivities viewActivitiesPage = new pgViewActivities(_event);
+                this.NavigationService.Navigate(viewActivitiesPage);
+            }
+        }
+
+        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }

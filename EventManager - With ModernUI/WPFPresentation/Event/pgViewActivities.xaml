@@ -15,13 +15,42 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.RowSpan="3" >
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="btnEventDetails" Grid.Row="0" HorizontalAlignment="Center" Padding="34 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White" Click="btnEventDetails_Click">Event Details</Button>
+            <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White" Click="btnTasks_Click" >Tasks</Button>
+            <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="#FFFFFF99">Itinerary</Button>
+            <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Budget</Button>
+            <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Advertising</Button>
+            <Button x:Name="btnAfterEventReport" Grid.Row="5" HorizontalAlignment="Center" Padding="17 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">After Event Report</Button>
+            <Button x:Name="btnFiles" Grid.Row="6" HorizontalAlignment="Center" Padding="63 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Files</Button>
+            <Button x:Name="btnInvitations" Grid.Row="7" HorizontalAlignment="Center" Padding="43 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Invitations</Button>
+        </Grid>
         <TextBox x:Name="txtSearch" Grid.Row="0" Grid.Column="1" Width="200" Height="20" HorizontalAlignment="Right" Margin="0,0,58,0" BorderBrush="#FF4388CC" Background="White" Foreground="#FF4388CC">Search</TextBox>
         <Button x:Name="btnFind" Grid.Row="0" Grid.Column="1" Width="50" Height="31" HorizontalAlignment="Right" Margin="0,0,10,0" Background="#FF4388CC" Foreground="White">Find</Button>
         <Label x:Name="lblActivityEventName" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24">Event Activities</Label>
-        <DataGrid x:Name="datEventActivities" Grid.Row="2" Grid.Column="1" SelectionMode="Single" AutoGenerateColumns="False">
+        <DataGrid x:Name="datEventActivities" Grid.Row="2" Grid.Column="1" SelectionMode="Single" AutoGenerateColumns="False" MouseDoubleClick="datEventActivities_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date" Binding="{Binding EventDateID, StringFormat=\{0:MMMM dd\, yyyy\}}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime, StringFormat=\{0:H:mm tt\}}"></DataGridTextColumn>

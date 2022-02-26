@@ -29,7 +29,7 @@
             <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
                     Background="#FF4388CC" Foreground="White" Click="btnTasks_Click">Tasks</Button>
             <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Itinerary</Button>
+                    Background="#FF4388CC" Foreground="White" Click="btnItinerary_Click">Itinerary</Button>
             <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
                     Background="#FF4388CC" Foreground="White">Budget</Button>
             <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
