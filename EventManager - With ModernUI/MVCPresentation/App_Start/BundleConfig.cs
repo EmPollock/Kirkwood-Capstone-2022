@@ -8,6 +8,9 @@ namespace MVCPresentation
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new Bundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/bootstrap.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -19,11 +22,23 @@ namespace MVCPresentation
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            //          "~/Scripts/bootstrap.js"));            
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      
+                      // comment lines for playing with themes
+
+                      "~/Content/bootstrap-theme-vapor.css",
+
+                      // Jumbotron text color needs to be switched to get an idea
+                      //"~/Content/bootstrap-theme-quartz.css",
+
+                      // Jumbotron text color needs to be switched to get an idea
+                      //"~/Content/bootstrap-theme-yeti.css",
+
+                      //"~/Content/bootstrap-theme-minty.css",
                       "~/Content/site.css"));
         }
     }
