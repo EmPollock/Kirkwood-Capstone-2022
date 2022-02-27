@@ -81,26 +81,31 @@ namespace WPFPresentation.Event
 
             InitializeComponent();
 
-
-            // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.
-            try
+            // if there is a user
+            if (_user != null)
             {
-                _userCanEditEvent = _eventManager.CheckUserEditPermissionForEvent(_event.EventID, _user.UserID);
-                if (_userCanEditEvent)
+                try
                 {
-                    btnEventEditSave.Visibility = Visibility.Visible;
-                    btnEventEditSave.Visibility = Visibility.Visible;
-                    datEditCurrentEventDates.Visibility = Visibility.Visible;
-                    datCurrentEventDatesNoEdit.Visibility = Visibility.Collapsed;
-                    tabEventVolunteerRequests.Visibility = Visibility.Visible;
-                    btnEditEventDateAddSave.Visibility = Visibility.Visible;
-                    btnEditEventDateCloseCancel.Visibility = Visibility.Visible;
+                    // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.   
+                    _userCanEditEvent = _eventManager.CheckUserEditPermissionForEvent(_event.EventID, _user.UserID);
+                    if (_userCanEditEvent)
+                    {
+                        btnEventEditSave.Visibility = Visibility.Visible;
+                        btnEventEditSave.Visibility = Visibility.Visible;
+                        datEditCurrentEventDates.Visibility = Visibility.Visible;
+                        datCurrentEventDatesNoEdit.Visibility = Visibility.Collapsed;
+                        tabEventVolunteerRequests.Visibility = Visibility.Visible;
+                        btnEditEventDateAddSave.Visibility = Visibility.Visible;
+                        btnEditEventDateCloseCancel.Visibility = Visibility.Visible;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Can not find permissions for the user. You will not be able to edit this event.\n" + ex.Message, "Permissions Not Found", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Can not find permissions for the user. You will not be able to edit this event.\n" + ex.Message, "Permissions Not Found", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.
+           
 
         }
 

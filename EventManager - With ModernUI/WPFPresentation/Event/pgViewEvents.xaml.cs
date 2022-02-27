@@ -84,12 +84,20 @@ namespace WPFPresentation
 
             // use default accessor
             _eventManager = new LogicLayer.EventManager();
-
             _sublocationManager = sublocationManager;
 
             InitializeComponent();
 
             _user = user;
+
+
+            // hide if no user
+            if (_user == null)
+            {
+                sepEventFilter.Visibility = Visibility.Collapsed;
+                cmbItemsChooseAllOrUserEvents.Visibility = Visibility.Collapsed;
+            }
+
         }
 
         /// <summary>
