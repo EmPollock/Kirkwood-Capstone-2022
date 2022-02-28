@@ -26,25 +26,31 @@ namespace WPFPresentation.Event
     /// 
     /// Description:
     /// Interaction logic for pgViewActivityDetails.xaml
+    /// 
+    /// Update:
+    /// Austin Timmerman
+    /// Updated: 2022/02/27
+    /// 
+    /// Description:
+    /// Added the ManagerProvider instance variable and modified page parameters
     /// </summary>
     public partial class pgViewActivityDetails : Page
     {
         IActivityManager _activityManager = null;
         ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
         DataObjects.ActivityVM _activity = null;
         DataObjects.EventVM _event = null;
 
         User _user = null;
 
-        public pgViewActivityDetails(DataObjects.ActivityVM selectedActivity, DataObjects.EventVM activityEvent, ISublocationManager sublocationManager, User user)
+        internal pgViewActivityDetails(DataObjects.ActivityVM selectedActivity, DataObjects.EventVM activityEvent, 
+            ManagerProvider managerProvider, User user)
         {
-            // fake accessor for testing
-            //_activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
+            _managerProvider = managerProvider;
+            _activityManager = managerProvider.ActivityManager;
 
-            // real accessor
-            _activityManager = new ActivityManager();
-
-            _sublocationManager = sublocationManager;
+            _sublocationManager = managerProvider.SublocationManager;
             _activity = selectedActivity;
             _event = activityEvent;
             _user = user;
@@ -134,7 +140,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnEventDetails_Click(object sender, RoutedEventArgs e)
         {
-            pgEventEditDetail eventEditDetaiPage = new pgEventEditDetail(_event, _sublocationManager, _user);
+            pgEventEditDetail eventEditDetaiPage = new pgEventEditDetail(_event, _managerProvider, _user);
             this.NavigationService.Navigate(eventEditDetaiPage);
         }
 
@@ -155,7 +161,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnTasks_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListView taskListViewPage = new pgTaskListView(_event, _sublocationManager, _user);
+            pgTaskListView taskListViewPage = new pgTaskListView(_event, _managerProvider, _user);
             this.NavigationService.Navigate(taskListViewPage);
         }
 
@@ -170,7 +176,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnItinerary_Click(object sender, RoutedEventArgs e)
         {
-            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _sublocationManager);
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
             this.NavigationService.Navigate(viewActivitiesPage);
         }
 

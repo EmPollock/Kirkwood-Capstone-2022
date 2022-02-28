@@ -27,6 +27,7 @@ namespace WPFPresentation.Event
     {
         IActivityManager _activityManager = null;
         ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
         DataObjects.EventVM _event;
         List<ActivityVM> activities;
         User _user;
@@ -38,30 +39,37 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Initializes component and sets up activity manager with fake or default accessors
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
         /// <param name="eventParam"></param>
-        public pgViewActivities(DataObjects.EventVM eventParam, ISublocationManager sublocationManager)
+        /// <param name="managerProvider"></param>
+        internal pgViewActivities(DataObjects.EventVM eventParam, ManagerProvider managerProvider)
         {
-            // fake accessor
-            //_activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
-
             _event = eventParam;
-            _sublocationManager = sublocationManager;
-            // real accessor
-            _activityManager = new ActivityManager();
+            _managerProvider = managerProvider;
+            _sublocationManager = managerProvider.SublocationManager;
+            _activityManager = managerProvider.ActivityManager;
 
             InitializeComponent();
         }
-        public pgViewActivities(User user)
+        internal pgViewActivities(User user, ManagerProvider managerProvider)
         {
-            _activityManager = new ActivityManager();
+            _managerProvider = managerProvider;
+            _activityManager = managerProvider.ActivityManager;
             _user = user;
 
             InitializeComponent();
         }
-        public pgViewActivities()
+        internal pgViewActivities(ManagerProvider managerProvider)
         {
-            _activityManager = new ActivityManager();
+            _managerProvider = managerProvider;
+            _activityManager = managerProvider.ActivityManager;
 
             InitializeComponent();
         }
@@ -129,7 +137,7 @@ namespace WPFPresentation.Event
         private void datEventActivities_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ActivityVM selectedActivity = (ActivityVM)datEventActivities.SelectedItem;
-            pgViewActivityDetails activityDetailsPage = new pgViewActivityDetails(selectedActivity, _event, _sublocationManager, _user);
+            pgViewActivityDetails activityDetailsPage = new pgViewActivityDetails(selectedActivity, _event, _managerProvider, _user);
             this.NavigationService.Navigate(activityDetailsPage);
         }
 
@@ -151,7 +159,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnEventDetails_Click(object sender, RoutedEventArgs e)
         {
-            pgEventEditDetail pgEventEditDetail = new pgEventEditDetail(_event, _sublocationManager, _user);
+            pgEventEditDetail pgEventEditDetail = new pgEventEditDetail(_event, _managerProvider, _user);
             this.NavigationService.Navigate(pgEventEditDetail);
         }
 
@@ -174,7 +182,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnTasks_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListView ViewTaskListPage = new pgTaskListView(_event, _sublocationManager, _user);
+            pgTaskListView ViewTaskListPage = new pgTaskListView(_event, _managerProvider, _user);
             this.NavigationService.Navigate(ViewTaskListPage);
         }
 

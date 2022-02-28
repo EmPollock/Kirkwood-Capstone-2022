@@ -28,6 +28,7 @@ namespace WPFPresentation
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
         ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
         DataObjects.Event newEvent = null;
 
         User _user = null;
@@ -56,21 +57,24 @@ namespace WPFPresentation
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
-        /// <param name="sender"></param>
-        public pgCreateEvent(User user, ISublocationManager sublocationManager)
+        /// <param name="user"></param>
+        /// <param name="managerProvider"></param>
+        internal pgCreateEvent(User user, ManagerProvider managerProvider)
         {
-            // use fake accessor
-            //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
-            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            //_locationManager = new LocationManager(new LocationAccessorFake());
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
+            _eventDateManager = managerProvider.EventDateManager;
+            _locationManager = managerProvider.LocationManager;
 
-            // use default accessor
-            _eventManager = new LogicLayer.EventManager();
-            _eventDateManager = new EventDateManager();
-            _locationManager = new LocationManager();
-
-            _sublocationManager = sublocationManager;
+            _sublocationManager = managerProvider.SublocationManager;
             _user = user;
 
             InitializeComponent();
@@ -193,7 +197,7 @@ namespace WPFPresentation
 
             if (result == MessageBoxResult.Yes)
             {
-                Page page = new pgViewEvents(_user, _sublocationManager);
+                Page page = new pgViewEvents(_user, _managerProvider);
                 this.NavigationService.Navigate(page);
             }
             
@@ -522,7 +526,7 @@ namespace WPFPresentation
         private void btnVolunteersNext_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Event details added");
-            pgViewEvents viewEventsPage = new pgViewEvents(_user, _sublocationManager);
+            pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
             this.NavigationService.Navigate(viewEventsPage);
         }
 
@@ -679,7 +683,7 @@ namespace WPFPresentation
 
                     MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    Page page = new pgViewEvents(_user, _sublocationManager);
+                    Page page = new pgViewEvents(_user, _managerProvider);
                     this.NavigationService.Navigate(page);
 
                 }
@@ -699,7 +703,7 @@ namespace WPFPresentation
                     case MessageBoxResult.Yes:
 
                         newEventVM.EventDates = new List<EventDate>();
-                        Page page = new pgViewEvents(_user, _sublocationManager);
+                        Page page = new pgViewEvents(_user, _managerProvider);
                         this.NavigationService.Navigate(page);
 
                         break;

@@ -34,26 +34,35 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Setting up and Initializing default/fake accessors
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
 
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
+        ManagerProvider _managerProvider = null;
         ISublocationManager _sublocationManager = null;
         DataObjects.EventVM _event = null;
         User _user = null;
 
-        public pgTaskListView(DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager, User user)
+        internal pgTaskListView(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
             // fake accessor
             //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
 
             // default accessor
-            _taskManager = new TaskManager();
-            _eventManager = new LogicLayer.EventManager();
+            _managerProvider = managerProvider;
+            _taskManager = managerProvider.TaskManager;
+            _eventManager = managerProvider.EventManager;
             _event = selectedEvent;
             _user = user;
 
-            _sublocationManager = sublocationManager;
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
         }
@@ -131,7 +140,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnTaskListCreate_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListCreate createTaskPage = new pgTaskListCreate(_event, _sublocationManager, _user);
+            pgTaskListCreate createTaskPage = new pgTaskListCreate(_event, _managerProvider, _user);
             this.NavigationService.Navigate(createTaskPage);
         }
 
@@ -152,7 +161,7 @@ namespace WPFPresentation.Event
         private void datViewAllTasksForEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TasksVM selectedTask = (TasksVM)datViewAllTasksForEvent.SelectedItem;
-            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask, _event, _sublocationManager, _user);
+            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask, _event, _managerProvider, _user);
             this.NavigationService.Navigate(taskEditPage);
 
             updateTaskList();
@@ -171,7 +180,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnEventDetails_Click(object sender, RoutedEventArgs e)
         {
-            pgEventEditDetail editEventPage = new pgEventEditDetail(_event, _sublocationManager, _user);
+            pgEventEditDetail editEventPage = new pgEventEditDetail(_event, _managerProvider, _user);
             this.NavigationService.Navigate(editEventPage);
         }
 
@@ -186,7 +195,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnItinerary_Click(object sender, RoutedEventArgs e)
         {
-            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _sublocationManager);
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
             this.NavigationService.Navigate(viewActivitiesPage);
         }
 

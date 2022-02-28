@@ -33,6 +33,7 @@ namespace WPFPresentation
         IEventDateManager _eventDateManager;
         ISublocationManager _sublocationManager;
         IActivityManager _activityManager;
+        ManagerProvider _managerProvider;
         
         DataObjects.Location _location;
         int _locationID;
@@ -52,25 +53,23 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// The custom constructor for the ViewAllVolunteersPage
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
         /// <param name="locationID"></param>
-        /// <param name="locationManager"></param>
-        public pgViewLocationDetails(int locationID, ILocationManager locationManager, ISublocationManager sublocationManager)
+        /// <param name="managerProvider"></param>
+        internal pgViewLocationDetails(int locationID, ManagerProvider managerProvider)
         {
-            // use fake accessor
-            //_locationManager = new LocationManager(new LocationAccessorFake());
-            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            //_sublocationManager = new SublocationManager(new SublocationAccessorFake());
-            //_activityManager = new ActivityManager(new ActivityAccessorFake());
-
-            // use default accessor
-            //_locationManager = new LocationManager();
-            _eventDateManager = new EventDateManager();
-            _sublocationManager = new SublocationManager();
-            _activityManager = new ActivityManager();
-
-            _locationManager = locationManager;
-            _sublocationManager = sublocationManager;
+            _managerProvider = managerProvider;
+            _locationManager = managerProvider.LocationManager;
+            _eventDateManager = managerProvider.EventDateManager;
+            _sublocationManager = managerProvider.SublocationManager;
+            _activityManager = managerProvider.ActivityManager;
 
             _locationID = locationID;
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
@@ -646,7 +645,7 @@ namespace WPFPresentation
                     int rowsAffected = _locationManager.DeactivateLocationByLocationID(_locationID);
                     if (rowsAffected == 1) 
                     {
-                        pgViewLocations viewLocations = new pgViewLocations(_locationManager, _sublocationManager);
+                        pgViewLocations viewLocations = new pgViewLocations(_managerProvider);
                         this.NavigationService.Navigate(viewLocations);
                     }
                 } catch (Exception ex)

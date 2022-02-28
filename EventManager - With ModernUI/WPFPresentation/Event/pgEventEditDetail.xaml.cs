@@ -29,6 +29,7 @@ namespace WPFPresentation.Event
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
         ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
 
         DataObjects.Location _location = null;
         DataObjects.EventVM _event = null;
@@ -60,24 +61,27 @@ namespace WPFPresentation.Event
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
         /// <param name="selectedEvent">Must be pased an event object to view or edit</param>
-        public pgEventEditDetail(DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager, User user)
+        /// <param name="managerProvider"></param>
+        /// <param name="user"></param>
+        internal pgEventEditDetail(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
-            // use fake accessor
-            //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
-            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            //_locationManager = new LocationManager(new LocationAccessorFake());
-            //_volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
-
-            // use default accessor
-            _eventManager = new LogicLayer.EventManager();
-            _eventDateManager = new EventDateManager();
-            _volunteerRequestManager = new VolunteerRequestManager();
-            _locationManager = new LocationManager();
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
+            _eventDateManager = managerProvider.EventDateManager;
+            _volunteerRequestManager = managerProvider.VolunteerRequestManager;
+            _locationManager = managerProvider.LocationManager;
             _event = selectedEvent;
             _user = user;
-            _sublocationManager = sublocationManager;
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
 
@@ -388,7 +392,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnTasks_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListView taskViewPage = new pgTaskListView(_event, _sublocationManager, _user);
+            pgTaskListView taskViewPage = new pgTaskListView(_event, _managerProvider, _user);
             this.NavigationService.Navigate(taskViewPage);
         }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
@@ -886,7 +890,7 @@ namespace WPFPresentation.Event
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _locationManager, _sublocationManager);
+                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider);
                 locationFrame.Navigate(locationDetailsPage);
                 lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }
@@ -958,7 +962,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnItinerary_Click(object sender, RoutedEventArgs e)
         {
-            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _sublocationManager);
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
             this.NavigationService.Navigate(viewActivitiesPage);
         }
 

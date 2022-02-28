@@ -21,6 +21,13 @@ namespace WPFPresentation.Supplier
 {
     /// <summary>
     /// Interaction logic for pgViewSupplierListing.xaml
+    /// 
+    /// Update:
+    /// Austin Timmerman
+    /// Updated: 2022/02/27
+    /// 
+    /// Description:
+    /// Added the ManagerProvider instance variable and modified page parameters
     /// </summary>
     public partial class pgViewSupplierListing : Page
     {
@@ -28,19 +35,14 @@ namespace WPFPresentation.Supplier
         private List<Reviews> _reviews;
         private List<string> _images;
         private ISupplierManager _supplierManager;
+        private ManagerProvider _managerProvider;
 
-        public pgViewSupplierListing(DataObjects.Supplier supplier)
+        internal pgViewSupplierListing(DataObjects.Supplier supplier, ManagerProvider managerProvider)
         {
             InitializeComponent();
             _supplier = supplier;
-            _supplierManager = new SupplierManager();
-        }
-
-        public pgViewSupplierListing(DataObjects.Supplier supplier, ISupplierManager supplierManager)
-        {
-            InitializeComponent();
-            _supplier = supplier;
-            _supplierManager = supplierManager;
+            _managerProvider = managerProvider;
+            _supplierManager = managerProvider.SupplierManager;
         }
 
         /// <summary>

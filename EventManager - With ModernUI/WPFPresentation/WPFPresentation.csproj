@@ -92,6 +92,7 @@
     <Compile Include="Location\pgViewLocations.xaml.cs">
       <DependentUpon>pgViewLocations.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManagerProvider.cs" />
     <Compile Include="RegisterUser.xaml.cs">
       <DependentUpon>RegisterUser.xaml</DependentUpon>
     </Compile>

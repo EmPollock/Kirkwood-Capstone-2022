@@ -20,14 +20,23 @@ namespace WPFPresentation
 {
     /// <summary>
     /// Interaction logic for SplashScreen.xaml
+    /// 
+    /// Update:
+    /// Austin Timmerman
+    /// Updated: 2022/02/27
+    /// 
+    /// Description:
+    /// Added the ManagerProvider instance variable
     /// </summary>
     public partial class SplashScreen : Window
     {
         private IUserManager _userManager;
+        ManagerProvider _managerProvider = new ManagerProvider();
+
         public SplashScreen()
         {
             InitializeComponent();
-            this._userManager = new UserManager();
+            this._userManager = _managerProvider.UserManager;
         }
 
         /// <summary>
