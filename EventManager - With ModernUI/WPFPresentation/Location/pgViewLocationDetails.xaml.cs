@@ -46,7 +46,7 @@ namespace WPFPresentation
 
         Uri _src;
         int _imageNumber = 0;
-        bool edittingLocationAreas = false;
+        bool editingLocationAreas = false;
 
         /// <summary>
         /// Austin Timmerman
@@ -92,7 +92,7 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationDetails()
         {
-            if (edittingLocationAreas)
+            if (editingLocationAreas)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
@@ -101,7 +101,7 @@ namespace WPFPresentation
                 }
                 else
                 {
-                    edittingLocationAreas = false;
+                    editingLocationAreas = false;
                 }
             }
             hideDetails();
@@ -341,7 +341,7 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationSchedule()
         {
-            if (edittingLocationAreas)
+            if (editingLocationAreas)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
@@ -350,7 +350,7 @@ namespace WPFPresentation
                 }
                 else
                 {
-                    edittingLocationAreas = false;
+                    editingLocationAreas = false;
                 }
             }
             hideDetails();
@@ -693,7 +693,7 @@ namespace WPFPresentation
         {
             btnCancelEditAreas.Visibility = Visibility.Collapsed;
             btnSaveAreas.Visibility = Visibility.Collapsed;
-            if (edittingLocationAreas)
+            if (editingLocationAreas)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
@@ -701,7 +701,7 @@ namespace WPFPresentation
                     return;
                 } else
                 {
-                    edittingLocationAreas = false;
+                    editingLocationAreas = false;
                 }
             }
             this.hideDetails();
@@ -774,23 +774,25 @@ namespace WPFPresentation
 
                     Label nameLabel = new Label();
                     nameLabel.Content = _sublocations[i].SublocationName;
-                    nameLabel.Margin = new Thickness(30, 10, 0, 110);
+                    nameLabel.Margin = new Thickness(30, 10, 0, 105);
                     nameLabel.FontSize = 18.0d;
                     nameLabel.FontWeight = FontWeights.Bold;
                     
 
                     TextBox nameText = new TextBox();
                     nameText.Text = _sublocations[i].SublocationName;
-                    nameText.Margin = new Thickness(0, 10, 30, 110);
+                    nameText.Margin = new Thickness(0, 10, 30, 105);
                     nameText.IsReadOnly = true;
                     nameText.Visibility = Visibility.Hidden;
                     nameText.Name = "txtSublocationName" + i;
+                    nameText.MaxLength = 100;
 
                     TextBox descriptionText = new TextBox();
                     descriptionText.Text = _sublocations[i].SublocationDescription;
                     descriptionText.Margin = new Thickness(30, 50, 30, 10);
                     descriptionText.IsReadOnly = true;
                     descriptionText.Name = "txtSublocationDescription" + i;
+                    descriptionText.TextWrapping = TextWrapping.Wrap;
 
 
                     Grid.SetRow(nameLabel, i);
@@ -851,7 +853,7 @@ namespace WPFPresentation
             }
             // Need to manually update this.
             txtSublocationName.Text = _sublocations[0].SublocationName;
-            edittingLocationAreas = true;
+            editingLocationAreas = true;
         }
 
         /// <summary>
@@ -870,17 +872,31 @@ namespace WPFPresentation
             {
                 if(!txtSublocationDescription.Text.Equals(_sublocations[0].SublocationDescription) || !txtSublocationName.Text.Equals(_sublocations[0].SublocationName))
                 {
-                    Sublocation newSublocation = new Sublocation()
+                    if (txtSublocationName.Text.Trim().Length > 0 && txtSublocationName.Text.Trim().Length < 160) 
                     {
-                        SublocationID = _sublocations[0].SublocationID,
-                        LocationID = _sublocations[0].LocationID,
-                        SublocationName = txtSublocationName.Text,
-                        SublocationDescription = txtSublocationDescription.Text,
-                        Active = _sublocations[0].Active,
-                    };
+                        if (txtSublocationDescription.Text.Trim().Length < 1000)
+                        {
+                            Sublocation newSublocation = new Sublocation()
+                            {
+                                SublocationID = _sublocations[0].SublocationID,
+                                LocationID = _sublocations[0].LocationID,
+                                SublocationName = txtSublocationName.Text,
+                                SublocationDescription = txtSublocationDescription.Text,
+                                Active = _sublocations[0].Active,
+                            };
+                            this._managerProvider.SublocationManager.EditSublocationBySublocationID(_sublocations[0], newSublocation);
+                            _sublocations[0] = newSublocation;
 
-                    this._managerProvider.SublocationManager.EditSublocationBySublocationID(_sublocations[0], newSublocation);
-                    _sublocations[0] = newSublocation;
+                        } else
+                        {
+                            MessageBox.Show("Area description must be less than 1000 characters.");
+                            return;
+                        }
+                    } else
+                    {
+                        MessageBox.Show("Area name must be between 1-100 characters.");
+                        return;
+                    }
                 }
                 for (int i = 1; i < _sublocations.Count; i++)
                 {
@@ -889,20 +905,35 @@ namespace WPFPresentation
                     if (!(txtName is null) && !(txtDescription is null) &&
                         (!txtName.Text.Equals(_sublocations[i].SublocationName) || !txtDescription.Text.Equals(_sublocations[i].SublocationDescription)))
                     {
-                        Sublocation newSublocation = new Sublocation()
+                        if (txtName.Text.Trim().Length > 0 && txtName.Text.Trim().Length < 160)
                         {
-                            SublocationID = _sublocations[i].SublocationID,
-                            LocationID = _sublocations[i].LocationID,
-                            SublocationName = txtName.Text,
-                            SublocationDescription = txtDescription.Text,
-                            Active = _sublocations[i].Active,
-                        };
+                            if(txtDescription.Text.Trim().Length < 1000)
+                            {
+                                Sublocation newSublocation = new Sublocation()
+                                {
+                                    SublocationID = _sublocations[i].SublocationID,
+                                    LocationID = _sublocations[i].LocationID,
+                                    SublocationName = txtName.Text,
+                                    SublocationDescription = txtDescription.Text,
+                                    Active = _sublocations[i].Active,
+                                };
 
-                        this._managerProvider.SublocationManager.EditSublocationBySublocationID(_sublocations[i], newSublocation);
-                        _sublocations[i] = newSublocation;
+                                this._managerProvider.SublocationManager.EditSublocationBySublocationID(_sublocations[i], newSublocation);
+                                _sublocations[i] = newSublocation;
+                            } else
+                            {
+                                MessageBox.Show("Area description must be less than 1000 characters.");
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Area name must be between 1-100 characters.");
+                            return;
+                        }
                     }
                 }
-                edittingLocationAreas = false;
+                editingLocationAreas = false;
                 btnSiteAreas_Click(sender, e);
             } catch(Exception ex)
             {

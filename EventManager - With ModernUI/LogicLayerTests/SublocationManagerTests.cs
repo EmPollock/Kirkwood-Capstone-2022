@@ -230,7 +230,7 @@ namespace LogicLayerTests
         /// Created 2022/03/03
         /// 
         /// Description:
-        /// Tests that EditSublocationByLocationID returns 1 for a single editted row
+        /// Tests that EditSublocationByLocationID returns 0 when there are no matching rows
         /// </summary>
         [TestMethod]
         public void TestEditSublocationByLocationIDReturnsZeroForBadValue()
