@@ -45,6 +45,7 @@
     <Compile Include="EventDateManager.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="LocationManager.cs" />
+    <Compile Include="ParkingLotManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SublocationManager.cs" />
     <Compile Include="SupplierManager.cs" />

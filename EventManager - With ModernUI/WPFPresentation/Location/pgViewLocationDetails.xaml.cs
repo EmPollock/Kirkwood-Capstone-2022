@@ -47,6 +47,8 @@ namespace WPFPresentation
         Uri _src;
         int _imageNumber = 0;
 
+        User _user;
+
         /// <summary>
         /// Austin Timmerman
         /// Created: 2022/02/03
@@ -60,10 +62,18 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to constructor
         /// </summary>
         /// <param name="locationID"></param>
         /// <param name="managerProvider"></param>
-        internal pgViewLocationDetails(int locationID, ManagerProvider managerProvider)
+        /// <param name="user">The current User</param>        
+        internal pgViewLocationDetails(int locationID, ManagerProvider managerProvider, User user)
         {
             _managerProvider = managerProvider;
             _locationManager = managerProvider.LocationManager;
@@ -76,6 +86,8 @@ namespace WPFPresentation
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
             _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
             _sublocations = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
+
+            _user = user;
 
             InitializeComponent();
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
@@ -416,6 +428,9 @@ namespace WPFPresentation
             btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+
+
+            frmViewLocationDetails.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -628,6 +643,13 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler for deactivating a location
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to the page being called 
         /// </summary>
         /// <param name="e"></param>
         /// <param name="sender"></param>
@@ -645,7 +667,7 @@ namespace WPFPresentation
                     int rowsAffected = _locationManager.DeactivateLocationByLocationID(_locationID);
                     if (rowsAffected == 1) 
                     {
-                        pgViewLocations viewLocations = new pgViewLocations(_managerProvider);
+                        pgViewLocations viewLocations = new pgViewLocations(_managerProvider, _user);
                         this.NavigationService.Navigate(viewLocations);
                     }
                 } catch (Exception ex)
@@ -741,6 +763,29 @@ namespace WPFPresentation
         private void hideSublocations()
         {
             scrSublocations.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created 2022/03/01
+        /// 
+        /// Description:
+        /// Click event handler for creating a site parking page
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSiteParking_Click(object sender, RoutedEventArgs e)
+        {
+            hideDetails();
+            btnSiteParking.Background = new SolidColorBrush(Colors.Gray);
+
+            frmViewLocationDetails.Visibility = Visibility.Visible;
+
+            Page page = new pgParkingLot(_managerProvider, _location, _user);
+            this.frmViewLocationDetails.NavigationService.Navigate(page);
+
+
         }
     }
 }
