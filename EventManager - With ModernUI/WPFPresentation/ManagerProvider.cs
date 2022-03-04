@@ -27,6 +27,7 @@ namespace WPFPresentation
         public IUserManager UserManager { get; set; }
         public IVolunteerManager VolunteerManager { get; set; }
         public IVolunteerRequestManager VolunteerRequestManager { get; set; }
+        public IServiceManager ServiceManager { get; set; }
 
         public ManagerProvider()
         {
@@ -41,6 +42,7 @@ namespace WPFPresentation
             UserManager = new UserManager();
             VolunteerManager = new VolunteerManager();
             VolunteerRequestManager = new VolunteerRequestManager();
+            ServiceManager = new ServiceManager();
 
             // Fake versions here
             //ActivityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
@@ -53,6 +55,7 @@ namespace WPFPresentation
             //UserManager = new UserManager(new UserAccessorFake());
             //VolunteerManager = new VolunteerManager(new VolunteerAccessorFake());
             //VolunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
+            //ServiceManager = new ServiceManager(new ServiceAccessorFake());
         }
     }
 }

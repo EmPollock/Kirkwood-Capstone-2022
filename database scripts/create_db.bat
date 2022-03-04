@@ -22,6 +22,7 @@ sqlcmd -S localhost -E -i tables/review.sql
 sqlcmd -S localhost -E -i tables/availability.sql
 sqlcmd -S localhost -E -i tables/tags.sql
 sqlcmd -S localhost -E -i tables/supplier_image.sql
+sqlcmd -S localhost -E -i tables/service.sql
 sqlcmd -S localhost -E -i stored_procedures/event_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/event_date_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/user_stored_procedures.sql
@@ -36,6 +37,7 @@ sqlcmd -S localhost -E -i stored_procedures/volunteer_request_stored_procedures.
 sqlcmd -S localhost -E -i stored_procedures/location_image_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/review_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/availability_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/service_stored_procedures.sql
 
 rem list depenecies after this line:
 rem task.sql requires event.sql
@@ -79,6 +81,9 @@ REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 ::  availability.sql
 ::  
 :: 
+:: ************************
+:: FILES WHICH REQUIRE:  supplier.sql
+::  service.sql
 :: ************************
 
 ECHO .

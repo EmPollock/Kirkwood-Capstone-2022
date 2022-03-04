@@ -18,4 +18,10 @@ namespace DataObjects
         public int LocationID { get; set; }
         public string ImageName { get; set; }
     }
+
+    public class ServiceImage
+    {
+        public int ServiceID { get; set; }
+        public string ImageName { get; set; }
+    }
 }

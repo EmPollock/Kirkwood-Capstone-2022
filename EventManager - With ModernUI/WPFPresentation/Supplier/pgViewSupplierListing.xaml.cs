@@ -34,7 +34,9 @@ namespace WPFPresentation.Supplier
         private DataObjects.Supplier _supplier;
         private List<Reviews> _reviews;
         private List<string> _images;
+        private List<Service> _services = null;
         private ISupplierManager _supplierManager;
+        private IServiceManager _serviceManager = null;
         private ManagerProvider _managerProvider;
 
         internal pgViewSupplierListing(DataObjects.Supplier supplier, ManagerProvider managerProvider)
@@ -43,6 +45,9 @@ namespace WPFPresentation.Supplier
             _supplier = supplier;
             _managerProvider = managerProvider;
             _supplierManager = managerProvider.SupplierManager;
+            _serviceManager = managerProvider.ServiceManager;
+            // CHANGE FOLDER NAME FROM LocationImages, TO SERVICE IMAGES ONCE CREATED
+            AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
         }
 
         /// <summary>
@@ -215,6 +220,21 @@ namespace WPFPresentation.Supplier
                 return;
             }
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/02
+        /// 
+        /// Description:
+        /// Helper method to hide different grids and scroll viewers 
+        /// when moving between details
+        /// </summary>
+        private void hideDetails()
+        {
+            grdSupplierListing.Visibility = Visibility.Collapsed;
+            grdSupplierPricing.Visibility = Visibility.Collapsed;
+        }
+
         /// <summary>
         /// Christopher Repko
         /// Created: 2022/02/11
@@ -243,6 +263,74 @@ namespace WPFPresentation.Supplier
             }
             box.Text += "     " + review.FullName;
             box.Text += "\n" + review.Review + "\n";
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/02
+        /// 
+        /// Description:
+        /// Method that loads the supplier's services page up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSupplierPricing_Click(object sender, RoutedEventArgs e)
+        {
+            hideDetails();
+            grdSupplierPricing.Visibility = Visibility.Visible;
+
+            loadSupplierServices();
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/02
+        /// 
+        /// Description:
+        /// Helper method to populate the screen with the supplier's services
+        /// </summary>
+        private void loadSupplierServices()
+        {
+            _services = _serviceManager.RetrieveServicesBySupplierID(_supplier.SupplierID);
+            txtSupplierServices.Text = _supplier.Name + "'s Services";
+
+            List<ServiceVM> serviceVMs = new List<ServiceVM>();
+            foreach (Service service in _services)
+            {
+                if(service.ServiceImagePath == null)
+                {
+                    serviceVMs.Add(new ServiceVM()
+                    {
+                        ServiceID = service.ServiceID,
+                        SupplierID = service.SupplierID,
+                        ServiceName = service.ServiceName,
+                        Price = service.Price,
+                        Description = service.Description
+                    });
+                }
+                else
+                {
+                    try
+                    {
+                        Uri _src;                        
+                        _src = new Uri(AppData.DataPath + @"\" + service.ServiceImagePath, UriKind.Absolute);
+                        serviceVMs.Add(new ServiceVM()
+                        {
+                            ServiceID = service.ServiceID,
+                            SupplierID = service.SupplierID,
+                            ServiceName = service.ServiceName,
+                            Price = service.Price,
+                            Description = service.Description,
+                            ImageUri = _src
+                        });
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Error");
+                    }
+                }
+                }
+            imageDataGrid.ItemsSource = serviceVMs;
         }
     }
 }
