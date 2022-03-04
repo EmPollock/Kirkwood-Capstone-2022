@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ActivityAccessorFake.cs" />
     <Compile Include="ActivityResultAccessorFake.cs" />
+    <Compile Include="EntranceAccessorFake.cs" />
     <Compile Include="EventAccessorFake.cs" />
     <Compile Include="EventDateAccessorFake.cs" />
     <Compile Include="LocationAccessorFake.cs" />

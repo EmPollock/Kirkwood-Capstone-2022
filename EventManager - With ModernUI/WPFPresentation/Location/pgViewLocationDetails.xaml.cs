@@ -33,6 +33,7 @@ namespace WPFPresentation
         IEventDateManager _eventDateManager;
         ISublocationManager _sublocationManager;
         IActivityManager _activityManager;
+        IEntranceManager _entranceManager;
         
         DataObjects.Location _location;
         int _locationID;
@@ -68,6 +69,7 @@ namespace WPFPresentation
             _eventDateManager = new EventDateManager();
             _sublocationManager = new SublocationManager();
             _activityManager = new ActivityManager();
+            _entranceManager = new EntranceManager();
 
             _locationManager = locationManager;
             _sublocationManager = sublocationManager;
@@ -93,6 +95,7 @@ namespace WPFPresentation
         private void loadLocationDetails()
         {
             hideDetails();
+            hideEntrances();
             hideSublocations();
             btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
             scrLocationDetails.Visibility = Visibility.Visible;
@@ -331,6 +334,7 @@ namespace WPFPresentation
         {
 
             hideDetails();
+            hideEntrances();
             hideSublocations();
             btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
             scrLocationSchedule.Visibility = Visibility.Visible;
@@ -550,6 +554,7 @@ namespace WPFPresentation
 
 
             hideDetails();
+            hideEntrances();
             btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
             scrLocationSchedule.Visibility = Visibility.Visible;
 
@@ -668,6 +673,7 @@ namespace WPFPresentation
         private void btnSiteAreas_Click(object sender, RoutedEventArgs e)
         {
             this.hideDetails();
+            this.hideEntrances();
             btnSiteAreas.Background = new SolidColorBrush(Colors.Gray);
             try
             {
@@ -742,6 +748,51 @@ namespace WPFPresentation
         private void hideSublocations()
         {
             scrSublocations.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/04
+        /// 
+        /// Description:
+        /// Helper to hide View Entrances screen
+        /// </summary>
+        private void hideEntrances()
+        {
+            scrViewEntrance.Visibility = Visibility.Collapsed;
+            btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+        }
+
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/04
+        /// 
+        /// Description:
+        /// Click event handler to send a user to the view Entrances page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSiteEntrances_Click(object sender, RoutedEventArgs e)
+        {
+            hideDetails();
+            hideSublocations();
+            btnSiteEntrances.Background = new SolidColorBrush(Colors.Gray);
+            scrViewEntrance.Visibility = Visibility.Visible;
+            try
+            {
+                this.lblLocationName.Text = _location.Name + " Entrances";
+                List<Entrance> entrances = _entranceManager.RetrieveEntranceByLocationID(_locationID);
+                if(entrances.Count == 0)
+                {
+                    lblNoEntrances.Content = "No entrances for this location yet. Use the Add button to add entrances.";
+                }
+                datViewEntrances.ItemsSource = entrances;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

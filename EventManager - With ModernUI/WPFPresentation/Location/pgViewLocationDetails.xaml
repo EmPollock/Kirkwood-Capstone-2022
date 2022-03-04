@@ -30,7 +30,7 @@
             <Button x:Name="btnSiteSchedule" Content="Site Schedule" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteSchedule_Click"/>
             <Button x:Name="btnSiteMap" Content="Site Map" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
             <Button x:Name="btnSiteParking" Content="Site Parking" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-            <Button x:Name="btnSiteEntrances" Content="Site Entrances" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
+            <Button x:Name="btnSiteEntrances" Content="Site Entrances" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteEntrances_Click"/>
             <Button x:Name="btnSiteSupplies" Content="Site Supplies" Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
         </Grid>
 
@@ -201,6 +201,34 @@
                 </Grid.RowDefinitions>
                 <Label x:Name="lblSublocationName" Content="No sublocations found." Margin="30 10 0 110" FontSize="18" FontWeight="Bold"/>
                 <TextBox x:Name="txtSublocationDescription" Text="" Margin="30 40 30 10" IsReadOnly="True"/>
+            </Grid>
+        </ScrollViewer>
+
+        <ScrollViewer x:Name="scrViewEntrance" Grid.Column="1" Visibility="Collapsed">
+            <Grid Grid.Column="1" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="lblLocationName" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Style="{StaticResource TitleTextBlockStyle}">Filler</TextBlock>
+                <Label x:Name="lblNoEntrances" Grid.Row="1" HorizontalAlignment="Center"></Label>
+                <DataGrid x:Name="datViewEntrances" Grid.Row="1" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="True" CanUserAddRows="False" SelectionMode="Single" GridLinesVisibility="Horizontal" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Entrance Name" Binding="{Binding EntranceName}" />
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="btnCreateEntrance" Grid.Row="0" Grid.Column="0" Margin="70,30" Content="Create Entrance" IsTabStop="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                </Grid>
             </Grid>
         </ScrollViewer>
     </Grid>

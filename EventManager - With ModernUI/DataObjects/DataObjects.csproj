@@ -45,6 +45,7 @@
     <Compile Include="ActivityResult.cs" />
     <Compile Include="ActivityVM.cs" />
     <Compile Include="AppData.cs" />
+    <Compile Include="Entrance.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventDate.cs" />
     <Compile Include="IntegerValidationHelpers.cs" />

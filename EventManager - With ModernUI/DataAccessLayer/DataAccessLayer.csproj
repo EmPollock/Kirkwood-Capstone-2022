@@ -44,6 +44,7 @@
     <Compile Include="ActivityAccessor.cs" />
     <Compile Include="ActivityResultAccessor.cs" />
     <Compile Include="DBConnection.cs" />
+    <Compile Include="EntranceAccessor.cs" />
     <Compile Include="EventAccessor.cs" />
     <Compile Include="EventDateAccessor.cs" />
     <Compile Include="HelperMethods.cs" />
