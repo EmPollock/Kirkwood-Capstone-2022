@@ -47,6 +47,7 @@
     <Compile Include="IEventAccessor.cs" />
     <Compile Include="IEventDateAccessor.cs" />
     <Compile Include="ILocationAccessor.cs" />
+    <Compile Include="IParkingLotAccessor.cs" />
     <Compile Include="ISublocationAccessor.cs" />
     <Compile Include="ISupplierAccessor.cs" />
     <Compile Include="ITaskAccessor.cs" />

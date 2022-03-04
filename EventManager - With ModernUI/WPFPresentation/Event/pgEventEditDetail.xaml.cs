@@ -29,12 +29,18 @@ namespace WPFPresentation.Event
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
         ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
 
         DataObjects.Location _location = null;
         DataObjects.EventVM _event = null;
         List<EventDate> _eventDates = null;
         EventDate _selectedEventDate = null;
         IVolunteerRequestManager _volunteerRequestManager = null;
+
+        bool _userCanEditEvent = false;
+
+        User _user = null;
+
 
         /// <summary>
         /// Jace Pettinger
@@ -43,30 +49,68 @@ namespace WPFPresentation.Event
         /// Description:
         /// Initializes component and sets up event manager with fake and default accessors
         /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Update: 2022/02/23
+        /// Description:
+        /// Changed which data grid is used for viewing and editing.
+        /// Added checks for the user to edit only if they are an event planner or manager.
+        /// 
+        /// Update:
         /// Christopher Repko
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
         /// <param name="selectedEvent">Must be pased an event object to view or edit</param>
-        public pgEventEditDetail(DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager)
+        /// <param name="managerProvider"></param>
+        /// <param name="user"></param>
+        internal pgEventEditDetail(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
-            // use fake accessor
-            //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
-            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            //_locationManager = new LocationManager(new LocationAccessorFake());
-            //_volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
-
-            // use default accessor
-            _eventManager = new LogicLayer.EventManager();
-            _eventDateManager = new EventDateManager();
-            _volunteerRequestManager = new VolunteerRequestManager();
-            _locationManager = new LocationManager();
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
+            _eventDateManager = managerProvider.EventDateManager;
+            _volunteerRequestManager = managerProvider.VolunteerRequestManager;
+            _locationManager = managerProvider.LocationManager;
             _event = selectedEvent;
-
-            _sublocationManager = sublocationManager;
+            _user = user;
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
+
+            // if there is a user
+            if (_user != null)
+            {
+                try
+                {
+                    // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.   
+                    _userCanEditEvent = _eventManager.CheckUserEditPermissionForEvent(_event.EventID, _user.UserID);
+                    if (_userCanEditEvent)
+                    {
+                        btnEventEditSave.Visibility = Visibility.Visible;
+                        btnEventEditSave.Visibility = Visibility.Visible;
+                        datEditCurrentEventDates.Visibility = Visibility.Visible;
+                        datCurrentEventDatesNoEdit.Visibility = Visibility.Collapsed;
+                        tabEventVolunteerRequests.Visibility = Visibility.Visible;
+                        btnEditEventDateAddSave.Visibility = Visibility.Visible;
+                        btnEditEventDateCloseCancel.Visibility = Visibility.Visible;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Can not find permissions for the user. You will not be able to edit this event.\n" + ex.Message, "Permissions Not Found", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.
+           
+
         }
 
         /// <summary>
@@ -332,6 +376,25 @@ namespace WPFPresentation.Event
                 }
             }
         }
+        /// <summary>
+        /// ???
+        /// Created: ????/??/??
+        /// 
+        /// Description:
+        /// Click method for tasks button. Sends the user to the task list view.
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+            pgTaskListView taskViewPage = new pgTaskListView(_event, _managerProvider, _user);
+            this.NavigationService.Navigate(taskViewPage);
+        }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
 
         // --------------------------------------------------------- Start of Date Tab -----------------------------------------------------------
@@ -342,6 +405,10 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method for setting Event Dates tab to detail mode
+        /// 
+        /// Update
+        /// Derrick Nagy
+        /// Updated: 2020/02/24
         /// </summary>
         private void setEventDatesTabDetailMode()
         {
@@ -364,7 +431,17 @@ namespace WPFPresentation.Event
             }
             else
             {
-                datEditCurrentEventDates.ItemsSource = _eventDates;
+                // if the user can edit, use this table
+                if (_userCanEditEvent)
+                {
+                    datEditCurrentEventDates.ItemsSource = _eventDates;
+                }
+                else
+                {
+                    // use this table
+                    datCurrentEventDatesNoEdit.ItemsSource = _eventDates;
+                }
+                
             }
         }
 
@@ -525,6 +602,13 @@ namespace WPFPresentation.Event
         /// Description:
         /// Click handler for either starting edit mode, adding a date to an event, or updating an en event date
         /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Update: 2022/02/23
+        /// Description:
+        /// Changed which data grid is used for viewing and editing
+        /// 
+        /// Update:
         /// Jace Pettinger
         /// Updated: 2022/02/25
         /// 
@@ -630,6 +714,8 @@ namespace WPFPresentation.Event
                         if (btnEditEventDateAddSave.Content.Equals("Add")) // add a new event date
                         {
 
+                            //datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                            
                             try
                             {
                                 EventDate newEventDate = new EventDate()
@@ -643,7 +729,16 @@ namespace WPFPresentation.Event
 
                                 _eventDateManager.CreateEventDate(newEventDate);
 
-                                datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                // if the user can edit, use this table
+                                if (_userCanEditEvent)
+                                {
+                                    datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                }
+                                else
+                                {
+                                    // use this table that can not be edited
+                                    datCurrentEventDatesNoEdit.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                }
 
                                 // prepare form to add another date
                                 setEventDateTabEditMode();
@@ -789,13 +884,20 @@ namespace WPFPresentation.Event
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to constructor
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _locationManager, _sublocationManager);
+                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
                 locationFrame.Navigate(locationDetailsPage);
                 lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }
@@ -858,21 +960,6 @@ namespace WPFPresentation.Event
 
         /// <summary>
         /// Mike Cahow
-        /// Created: 2022/02/18
-        /// 
-        /// Description:
-        /// Click event handler to send a user to the View Task List page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnTasks_Click(object sender, RoutedEventArgs e)
-        {
-            pgTaskListView taskViewPage = new pgTaskListView(_event, _sublocationManager);
-            this.NavigationService.Navigate(taskViewPage);
-        }
-
-        /// <summary>
-        /// Mike Cahow
         /// Created: 2022/02/21
         /// 
         /// Description:
@@ -882,7 +969,7 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnItinerary_Click(object sender, RoutedEventArgs e)
         {
-            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _sublocationManager);
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
             this.NavigationService.Navigate(viewActivitiesPage);
         }
 

@@ -86,12 +86,18 @@
     <Compile Include="Event\pgViewEvents.xaml.cs">
       <DependentUpon>pgViewEvents.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IImageHelper.cs" />
+    <Compile Include="ImageHelperDevelopment.cs" />
+    <Compile Include="Location\pgParkingLot.xaml.cs">
+      <DependentUpon>pgParkingLot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Location\pgViewLocationDetails.xaml.cs">
       <DependentUpon>pgViewLocationDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Location\pgViewLocations.xaml.cs">
       <DependentUpon>pgViewLocations.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManagerProvider.cs" />
     <Compile Include="RegisterUser.xaml.cs">
       <DependentUpon>RegisterUser.xaml</DependentUpon>
     </Compile>
@@ -131,6 +137,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Event\pgViewEventDateActivities.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgParkingLot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

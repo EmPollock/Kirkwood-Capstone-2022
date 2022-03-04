@@ -50,10 +50,13 @@ GO
  Description:
  Test records for UserEvent table
 ***************************************************************
-<name>
- Updated: <date>
+ Derrick Nagy
+ Updated: 2022/02/23
 
  Description: 
+ Added test records 
+	(100000, 'Event Planner', 100003)
+	(100000, 'Event Manager', 100003)
 
 ****************************************************************/
 print '' print '*** test records for UserEvent table'
@@ -76,5 +79,7 @@ INSERT INTO [dbo].[UserEvent] (
 	,(100002, 'Attendee', 100006)
 	,(100002, 'Attendee', 100007) -- Past Event
 	,(100000, 'Event Planner', 100008)-- Past Event
+	,(100000, 'Event Planner', 100003)
+	,(100000, 'Event Manager', 100003)
 
 GO

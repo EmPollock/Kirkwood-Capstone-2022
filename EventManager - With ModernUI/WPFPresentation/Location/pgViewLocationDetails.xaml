@@ -29,8 +29,8 @@
             <Button x:Name="btnSiteAreas" Grid.Row="1" Content="Site Areas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteAreas_Click"/>
             <Button x:Name="btnSiteSchedule" Content="Site Schedule" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteSchedule_Click"/>
             <Button x:Name="btnSiteMap" Content="Site Map" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
-            <Button x:Name="btnSiteParking" Content="Site Parking" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
             <Button x:Name="btnSiteEntrances" Content="Site Entrances" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteEntrances_Click"/>
+            <Button x:Name="btnSiteParking" Content="Site Parking" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Click="btnSiteParking_Click" />
             <Button x:Name="btnSiteSupplies" Content="Site Supplies" Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
         </Grid>
 
@@ -192,6 +192,8 @@
                 </DataGrid>
             </Grid>
         </ScrollViewer>
+
+        <Frame x:Name="frmViewLocationDetails" Grid.Row="0" Grid.Column="1" Visibility="Collapsed"/>
 
         <ScrollViewer x:Name="scrSublocations" Grid.Column="1" Visibility="Visible">
             <Grid x:Name="grdSublocations" Grid.Column="1" Visibility="Visible">

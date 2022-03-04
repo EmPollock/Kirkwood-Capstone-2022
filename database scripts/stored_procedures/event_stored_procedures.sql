@@ -526,3 +526,105 @@ AS
 
 	END	
 GO
+
+
+-- sp_insert_event_with_user_ID_return_event_id
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/18
+
+Description:
+Stored procedure to insert an event into the events table that returns the EventID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_insert_event_with_user_ID_return_event_id'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_event_with_user_ID_return_event_id]
+(
+	@EventName			nvarchar(50)
+	,@EventDescription	nvarchar(1000)
+	,@TotalBudget		money
+	,@UserID			int
+)
+AS
+	BEGIN -- SP
+		BEGIN TRAN
+			BEGIN TRY
+			
+				DECLARE @EventID INT
+			
+				-- insert into event the record	
+				INSERT INTO [dbo].[Event]
+				(
+					[EventName],
+					[EventDescription],
+					[TotalBudget]
+				)
+				OUTPUT Inserted.EventID
+				VALUES
+				(
+					@EventName, 
+					@EventDescription,
+					@TotalBudget
+				)
+				
+				SET @EventID = SCOPE_IDENTITY()
+								
+				-- insert into UserEvent				
+				INSERT INTO [dbo].[UserEvent]
+				(
+					[UserID]
+					, [RoleID]
+					, [EventID]
+				)
+				VALUES
+				(@UserID, 'Event Planner', @EventID)
+				--, (@UserID, 'Event Manager', @EventID) -- Event Manager was dropped
+				
+				COMMIT TRANSACTION
+				
+			END TRY
+			BEGIN CATCH
+				ROLLBACK TRANSACTION
+			END CATCH
+	END	-- SP
+GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/22
+
+Description:
+Stored procedure to select the roles that a user has for an event
+**************************************************************
+
+Updated: 
+
+Description: 
+
+****************************************************************/
+print '' print '*** creating sp_select_user_roles_for_event'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_roles_for_event]
+(
+	@EventID	[int]
+	,@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[UserEvent].[RoleID]
+		FROM [dbo].[UserEvent]
+		WHERE [UserEvent].[EventID] = @EventID
+			AND [UserEvent].[UserID] = @UserID
+	END	
+GO	
+	
+	
+	

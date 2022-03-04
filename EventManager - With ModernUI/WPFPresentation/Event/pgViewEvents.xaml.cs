@@ -25,6 +25,7 @@ namespace WPFPresentation
     {
         private IEventManager _eventManager = null;
         private ISublocationManager _sublocationManager = null;
+        private ManagerProvider _managerProvider = null;
         private List<DataObjects.EventVM> _eventList = null;
         private List<DataObjects.Event> _searchResults = null;
         private DataObjects.EventVM selectedEvent = null;
@@ -43,18 +44,21 @@ namespace WPFPresentation
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager
-        /// </summary>
-        /// Description:
         /// 
-        public pgViewEvents(ISublocationManager sublocationManager)
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
+        /// </summary>
+        /// <param name="managerProvider"></param>
+        internal pgViewEvents(ManagerProvider managerProvider)
         {
-            // use fake accessor
-            //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
 
-            // use default accessor
-            _eventManager = new LogicLayer.EventManager();
-
-            _sublocationManager = sublocationManager;
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
 
@@ -75,21 +79,33 @@ namespace WPFPresentation
         /// 
         /// Description: Added sublocation manager
         /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
         /// <param name="user"></param>
-        public pgViewEvents(User user, ISublocationManager sublocationManager)
+        /// <param name="managerProvider"></param>
+        internal pgViewEvents(User user, ManagerProvider managerProvider)
         {
-            // use fake accessor
-            //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
-
-            // use default accessor
-            _eventManager = new LogicLayer.EventManager();
-
-            _sublocationManager = sublocationManager;
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
 
             _user = user;
+
+
+            // hide if no user
+            if (_user == null)
+            {
+                sepEventFilter.Visibility = Visibility.Collapsed;
+                cmbItemsChooseAllOrUserEvents.Visibility = Visibility.Collapsed;
+            }
+
         }
 
         /// <summary>
@@ -155,7 +171,7 @@ namespace WPFPresentation
                 MessageBox.Show("Please log in to create an event");
             } else
             {
-                pgCreateEvent createEventPage = new pgCreateEvent(_user, _sublocationManager);
+                pgCreateEvent createEventPage = new pgCreateEvent(_user, _managerProvider);
                 this.NavigationService.Navigate(createEventPage);
             }
            
@@ -174,7 +190,7 @@ namespace WPFPresentation
         private void datActiveEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             DataObjects.EventVM selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
-            pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _sublocationManager);
+            pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _managerProvider, _user);
             this.NavigationService.Navigate(viewEditPage);
         }
 
@@ -346,12 +362,12 @@ namespace WPFPresentation
             {
                 if (selectedEvent is null)
                 {
-                    page = new Event.pgViewActivities(_user);
+                    page = new Event.pgViewActivities(_user, _managerProvider);
                     this.NavigationService.Navigate(page, pageURI);
                 }
                 else
                 {
-                    page = new Event.pgViewActivities(selectedEvent, _sublocationManager);
+                    page = new Event.pgViewActivities(selectedEvent, _managerProvider);
                     this.NavigationService.Navigate(page, pageURI);
                 }
             }
@@ -359,12 +375,12 @@ namespace WPFPresentation
             {
                 if (selectedEvent is null)
                 {
-                    page = new Event.pgViewActivities();
+                    page = new Event.pgViewActivities(_managerProvider);
                     this.NavigationService.Navigate(page, pageURI);
                 }
                 else 
                 {
-                    page = new Event.pgViewActivities(selectedEvent, _sublocationManager);
+                    page = new Event.pgViewActivities(selectedEvent, _managerProvider);
                     this.NavigationService.Navigate(page, pageURI);
                 }
             }

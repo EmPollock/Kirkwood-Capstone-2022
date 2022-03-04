@@ -797,9 +797,10 @@ namespace LogicLayerTests
 
             Assert.AreEqual(expected, actual);
         }
+
         /// <summary>
         /// Derrick Nagy
-        /// Created: 2022/02/17
+        /// Created: 2022/02/18
         /// 
         /// Description:
         /// Test that returns the event id
@@ -811,21 +812,95 @@ namespace LogicLayerTests
         /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
-        public void TestCreateEventReturnsEventIDIfCreated()
+        public void TestCreateEventWithUserReturnsEventIDIfCreated()
         {
             // arrange
             const string eventName = "Test";
             const string eventDescription = "Test Description";
             const decimal totalBudget = 1000.00m;
             const int expectedEventID = 1000004;
+            const int userID = 100000;
             int actualEventID = 0;
 
-            // act
-            actualEventID = _eventManager.CreateEventReturnsEventID(eventName, eventDescription, totalBudget);
+            // act            
+            actualEventID = _eventManager.CreateEventReturnsEventID(eventName, eventDescription, totalBudget, userID );
 
             // assert
             Assert.AreEqual(expectedEventID, actualEventID);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that throws an application exception if there is no name
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestCreateEventWithUserReturnsEventIDThrowsApplicationExceptionIfNoDescription()
+        {
+            // arrange
+            const string eventName = "Test";
+            const string eventDescription = null;
+            const decimal budget = 1;
+            const int userID = 100000;
+
+            // act
+            _eventManager.CreateEventReturnsEventID(eventName, eventDescription, budget, userID);
+
+
+            // assert
+            // nothing to assert, exception testing
+        }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Test that returns true if the user can edit the event
+        /// </summary>
+        [TestMethod]
+        public void TestEventEditPermissionsReturnsTrueIFUserCanEdit()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int userID = 100000;
+            const bool expected = true;
+            bool actual;
+
+            // act
+            actual = _eventManager.CheckUserEditPermissionForEvent(eventID, userID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
 
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Test that returns true if the user can edit the event
+        /// </summary>
+        [TestMethod]
+        public void TestEventEditPermissionsReturnsFalseIfUserCannotEdit()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int userID = 100002;
+            const bool expected = false;
+            bool actual;
+
+            // act
+            actual = _eventManager.CheckUserEditPermissionForEvent(eventID, userID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
     }
 }

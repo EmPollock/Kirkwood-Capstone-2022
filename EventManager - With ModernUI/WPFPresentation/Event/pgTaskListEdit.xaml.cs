@@ -29,6 +29,9 @@ namespace WPFPresentation.Event
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
         ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
+
+        User _user = null;
 
         // create a priority list to populate in a bit
         List<Priority> _priorities = new List<Priority>();
@@ -45,23 +48,32 @@ namespace WPFPresentation.Event
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager 
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
         /// <param name="selectedTask"></param>
-        public pgTaskListEdit(DataObjects.TasksVM selectedTask, DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager)
+        /// <param name="selectedEvent"></param>
+        /// <param name="managerProvider"></param>
+        /// <param name="user"></param>
+        internal pgTaskListEdit(DataObjects.TasksVM selectedTask, DataObjects.EventVM selectedEvent, 
+            ManagerProvider managerProvider, User user)
         {
-            // fake accessors for testing purposes
-            //_taskManager = new TaskManager(new TaskAccessorFakes());
-            //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
-
-            // default accessors for running program
-            _taskManager = new TaskManager();
-            _eventManager = new LogicLayer.EventManager();
+            _taskManager = managerProvider.TaskManager;
+            _eventManager = managerProvider.EventManager;
+            _managerProvider = managerProvider;
 
             _task = selectedTask;
             _event = selectedEvent;
-            _sublocationManager = sublocationManager;
+            _sublocationManager = managerProvider.SublocationManager;
             _task.TaskEventName = _event.EventName;
             _task.EventID = _event.EventID;
+            _user = user;
+
 
             InitializeComponent();
         }
@@ -131,7 +143,7 @@ namespace WPFPresentation.Event
             }
             else
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }
@@ -187,7 +199,7 @@ namespace WPFPresentation.Event
             }
             finally
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }
@@ -216,6 +228,14 @@ namespace WPFPresentation.Event
         /// Description:
         /// Click event handler to take users back to event details page
         /// Works like cancel button for editing
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -233,7 +253,7 @@ namespace WPFPresentation.Event
             }
             else
             {
-                pgEventEditDetail eventEditDetailPage = new pgEventEditDetail(_event, _sublocationManager);
+                pgEventEditDetail eventEditDetailPage = new pgEventEditDetail(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(eventEditDetailPage);
             }
             
@@ -246,6 +266,15 @@ namespace WPFPresentation.Event
         /// Description:
         /// Click event handler to take users back to View Task List page
         /// Works like cancel button for editing
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -264,7 +293,7 @@ namespace WPFPresentation.Event
             }
             else
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }
@@ -293,7 +322,7 @@ namespace WPFPresentation.Event
             }
             else
             {
-                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _sublocationManager);
+                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
                 this.NavigationService.Navigate(viewActivitiesPage);
             }
         }

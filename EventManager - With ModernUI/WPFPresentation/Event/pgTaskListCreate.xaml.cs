@@ -33,7 +33,9 @@ namespace WPFPresentation
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
         ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
         DataObjects.EventVM _event = null;
+        User _user = null;
 
         // priority values to populate cboPriority
         List<Priority> _priorities = new List<Priority>();
@@ -49,18 +51,26 @@ namespace WPFPresentation
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
-        public pgTaskListCreate(DataObjects.EventVM selectedEvent, ISublocationManager sublocationManager)
+        /// <param name="selectedEvent"></param>
+        /// <param name="managerProvider"></param>
+        /// <param name="user"></param>
+        internal pgTaskListCreate(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
-            // fake accessor
-            //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
-
-            // default accessor
-            _taskManager = new TaskManager();
-            _eventManager = new LogicLayer.EventManager();
+            _managerProvider = managerProvider;
+            _taskManager = managerProvider.TaskManager;
+            _eventManager = managerProvider.EventManager;
             _event = selectedEvent;
+            _user = user;
 
-            _sublocationManager = sublocationManager;
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
         }
@@ -157,7 +167,7 @@ namespace WPFPresentation
             {
                 _taskManager.AddTask(task);
                 MessageBox.Show("Task has been added.");
-                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
             catch (Exception ex)
@@ -196,7 +206,7 @@ namespace WPFPresentation
             }
             else
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }
@@ -210,6 +220,13 @@ namespace WPFPresentation
         /// Description:
         /// Click event handler to take users back to the Event Edit Detail Page
         /// Works like the cancel button and checks with the user before leaving page
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -227,7 +244,7 @@ namespace WPFPresentation
             }
             else
             {
-                pgEventEditDetail eventEditDetailPage = new pgEventEditDetail(_event, _sublocationManager);
+                pgEventEditDetail eventEditDetailPage = new pgEventEditDetail(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(eventEditDetailPage);
             }
         }
@@ -239,6 +256,14 @@ namespace WPFPresentation
         /// Description:
         /// Click event handler to take users back to the Task List View Page
         /// Works like the cancel button and checks with the user before leaving page
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -256,7 +281,7 @@ namespace WPFPresentation
             }
             else
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event, _sublocationManager);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }
@@ -285,7 +310,7 @@ namespace WPFPresentation
             }
             else
             {
-                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _sublocationManager);
+                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
                 this.NavigationService.Navigate(viewActivitiesPage);
             }
         }

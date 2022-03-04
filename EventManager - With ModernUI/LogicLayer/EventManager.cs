@@ -219,7 +219,6 @@ namespace LogicLayer
             return eventToGet;
         }
 
-
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/02/06
@@ -432,44 +431,6 @@ namespace LogicLayer
             return result;
 
         }
-        /// <summary>
-        /// Derrick Nagy
-        /// Created: 2022/02/17
-        /// 
-        /// Description:
-        /// Called the accessor that creates an event the event id
-        /// 
-        /// Alaina Gilson
-        /// Updated: 2022/02/22
-        /// 
-        /// Description:
-        /// Updated to include an application exception for budget field
-        /// </summary>
-        /// <param name="eventName">The name of the event</param>
-        /// <param name="eventDescription">The description of the event</param>
-        /// <returns>Event ID as an int</returns>
-        public int CreateEventReturnsEventID(string eventName, string eventDescription, decimal totalBudget)
-        {
-            int eventID;
-            // green
-            // eventID = 1000000;
-            throwExceptionsForBadEventNameOrDescription(eventName, eventDescription);
-            if (totalBudget < 0)
-            {
-                throw new ApplicationException("Budget cannot be less than zero.");
-            }
-
-            try
-            {
-                eventID = _eventAccessor.InsertEventReturnsEventID(eventName, eventDescription, totalBudget);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return eventID;
-        }
 
         /// <summary>
         /// Derrick Nagy
@@ -500,6 +461,78 @@ namespace LogicLayer
             {
                 throw new ApplicationException("Description can not over 1000 characters.");
             }
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Creates an event and returns the event id        
+        /// 
+        /// Update:
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include an application exception for budget field
+        /// </summary>
+        /// <param name="eventName">The name of the event</param>
+        /// <param name="eventDescription">The description of the event</param>
+        /// <param name="totalBudget">The budget for the event></param>
+        /// <param name="userID">The userO</param>        
+        /// <returns>Event ID as an int</returns>
+        public int CreateEventReturnsEventID(string eventName, string eventDescription, decimal totalBudget, int userID)
+        {
+            int eventID;
+            // green
+            //eventID = 1000004;
+
+            throwExceptionsForBadEventNameOrDescription(eventName, eventDescription);
+            if (totalBudget < 0)
+            {
+                throw new ApplicationException("Budget cannot be less than zero.");
+            }
+
+            try
+            {                
+                eventID = _eventAccessor.InsertEventReturnsEventID(eventName, eventDescription, totalBudget, userID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventID;
+        }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Checks to see if the user has the correct roles to edit the event
+        /// </summary>
+        /// <param name="eventID">The event ID</param>
+        /// <param name="userID">The user ID</param>
+        /// <returns>True if the user can edit this event, false if not</returns>
+        public bool CheckUserEditPermissionForEvent(int eventID, int userID)
+        {
+            bool result = false;
+            // green
+            //result = true;
+
+            try
+            {
+                result = _eventAccessor.CheckUserEditPermissionForEvent(eventID, userID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
     }
 }

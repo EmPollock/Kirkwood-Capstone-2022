@@ -48,6 +48,12 @@ Created: 2022/02/03
  
 Description:
 Test records for location table
+**************************************************************
+Derrick Nagy
+Updated: 2022/03/02
+
+Description:
+Added Lincolnway park and The Hotel at Kirkwood
 ****************************************************************/
 print '' print '*** test records for Location table ***'
 GO
@@ -65,6 +71,13 @@ INSERT INTO [dbo].[Location] (
 	,[LocationZipCode]		
 	,[LocationImagePath]
 )VALUES 
+	-- LocationID 100000
 	(100000, "Locations R Us", "I'm a Locations R Us kid.", "5 bucks a night.", "888-888-8888", "locationsrus@locations.com", "123 Location Ave", null, "Cedar Rapids", "Iowa", "52404", "http://imagehost.com/locationsrus.png"),
-	(100000, "Testy2", "This is a testy place.", "Why pay for a test?", "888-883-8888", "test@locations.com", "123 Test Ave", null, "Cedar Rapids", "Iowa", "52404", "http://imagehost.com/testy.png")
+	-- LocationID 100001
+	(100000, "Testy2", "This is a testy place.", "Why pay for a test?", "888-883-8888", "test@locations.com", "123 Test Ave", null, "Cedar Rapids", "Iowa", "52404", "http://imagehost.com/testy.png"),
+	-- LocationID 100002
+	(100001, 'Lincolnway Park', 'Park in Cedar Rapids, Iowa', 'Free', null, NULL, 'J St SW', null, 'Cedar Rapids', 'Iowa', '52404', 'lincolnway-park.jpg'),
+	-- LocationID 100003
+	(100002, 'The Hotel at Kirkwood', 'Hotel and Conference Center', 'Request prices', '319-848-8700', 'hotel@kirkwood.edu', '7725 Kirkwood Blvd SW', null, 'Cedar Rapids', 'Iowa', '52404', 'the-hotel-at-kirkwood.jpg')
 GO
+
