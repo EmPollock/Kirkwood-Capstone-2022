@@ -30,7 +30,7 @@ namespace MVCPresentation
                       
                       // comment lines for playing with themes
 
-                      "~/Content/bootstrap-theme-vapor.css",
+                      //"~/Content/bootstrap-theme-vapor.css",
 
                       // Jumbotron text color needs to be switched to get an idea
                       //"~/Content/bootstrap-theme-quartz.css",
@@ -38,7 +38,7 @@ namespace MVCPresentation
                       // Jumbotron text color needs to be switched to get an idea
                       //"~/Content/bootstrap-theme-yeti.css",
 
-                      //"~/Content/bootstrap-theme-minty.css",
+                      "~/Content/bootstrap-theme-minty.css",
                       "~/Content/site.css"));
         }
     }

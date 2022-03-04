@@ -884,13 +884,20 @@ namespace WPFPresentation.Event
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to constructor
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider);
+                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
                 locationFrame.Navigate(locationDetailsPage);
                 lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }

@@ -278,9 +278,21 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
+        /// Original author and creation date missing.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to page constructor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnViewLocations_Click(object sender, RoutedEventArgs e)
         {
-            var page = new pgViewLocations(_managerProvider);
+            var page = new pgViewLocations(_managerProvider, _user);
             this.MainFrame.NavigationService.Navigate(page);
         }
 

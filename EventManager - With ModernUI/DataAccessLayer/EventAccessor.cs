@@ -855,12 +855,12 @@ namespace DataAccessLayer
             cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);            
             cmd.Parameters.Add("@TotalBudget", SqlDbType.Money);
             cmd.Parameters.Add("@UserID", SqlDbType.Int);
-            
+
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
             cmd.Parameters["@TotalBudget"].Value = totalBudget;
             cmd.Parameters["@UserID"].Value = userID;
-            
+
             try
             {
                 conn.Open();

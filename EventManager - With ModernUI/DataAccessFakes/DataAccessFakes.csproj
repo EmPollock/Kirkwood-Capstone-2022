@@ -43,9 +43,11 @@
   <ItemGroup>
     <Compile Include="ActivityAccessorFake.cs" />
     <Compile Include="ActivityResultAccessorFake.cs" />
+    <Compile Include="EntranceAccessorFake.cs" />
     <Compile Include="EventAccessorFake.cs" />
     <Compile Include="EventDateAccessorFake.cs" />
     <Compile Include="LocationAccessorFake.cs" />
+    <Compile Include="ParkingLotAccessorFake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceAccessorFake.cs" />
     <Compile Include="SublocationAccessorFake.cs" />

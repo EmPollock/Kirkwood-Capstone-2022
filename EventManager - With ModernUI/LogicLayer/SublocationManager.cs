@@ -49,6 +49,32 @@ namespace LogicLayer
 
         /// <summary>
         /// Christopher Repko
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Replaces one sublocation with another.
+        /// 
+        /// </summary>
+        /// <param name="oldSublocation">Sublocation to replace</param>
+        /// <param name="newSublocation">Sublocation to replace with</param>
+        /// <returns>Integer value representing number of rows affected.</returns>
+        public int EditSublocationBySublocationID(Sublocation oldSublocation, Sublocation newSublocation)
+        {
+            int result = 0;
+            try
+            {
+                result = _sublocationAccessor.UpdateSublocation(oldSublocation, newSublocation);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to update sublocation", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
         /// Created 2022/02/24
         /// 
         /// Description:
