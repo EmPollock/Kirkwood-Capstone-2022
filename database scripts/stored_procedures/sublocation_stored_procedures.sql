@@ -75,3 +75,40 @@ AS
 		WHERE [LocationID] = @LocationID
 	END	
 GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/03/03
+
+Description:
+Stored procedure to update a sublocation record
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_update_sublocation'
+GO
+CREATE PROCEDURE [dbo].[sp_update_sublocation](
+	@SublocationID				[int],
+	@OldLocationID				[int],
+	@OldSublocationName			[nvarchar](160),
+	@OldSublocationDescription	[nvarchar](1000),
+	@NewLocationID				[int],
+	@NewSublocationName			[nvarchar](160),
+	@NewSublocationDescription	[nvarchar](1000)
+	
+)
+AS
+	BEGIN
+		UPDATE [dbo].[Sublocation]
+			SET [SublocationName] = @NewSublocationName,
+				[SublocationDescription] = @NewSublocationDescription,
+				[LocationID] = @NewLocationID
+		WHERE [LocationID] = @OldLocationID AND
+			[SublocationName] = @OldSublocationName AND
+			[SublocationDescription] = @OldSublocationDescription
+	END	
+GO

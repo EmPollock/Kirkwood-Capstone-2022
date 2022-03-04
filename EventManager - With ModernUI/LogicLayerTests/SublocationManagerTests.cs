@@ -184,5 +184,85 @@ namespace LogicLayerTests
             Assert.IsTrue(result.Count == 0);
 
         }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/03/03
+        /// 
+        /// Description:
+        /// Tests that EditSublocationByLocationID returns 1 for a single editted row
+        /// </summary>
+        [TestMethod]
+        public void TestEditSublocationByLocationIDReturnsCorrectValue()
+        {
+            //arrange
+            Sublocation oldSublocation = new Sublocation()
+            {
+                SublocationID = 1000001,
+
+                LocationID = 1000000,
+
+                SublocationName = "Fake Sublocation 1",
+                SublocationDescription = "The first fake sublocation"
+            };
+            Sublocation newSublocation = new Sublocation()
+            {
+                SublocationID = 1211,
+
+                LocationID = 1002313123,
+
+                SublocationName = "Fake sadfsafasdf",
+                SublocationDescription = "Theasdfasdfasfasfn"
+            };
+            const int expected = 1;
+            int result;
+
+            //act
+            result = _sublocationManager.EditSublocationBySublocationID(oldSublocation, newSublocation);
+
+            //assert
+            Assert.AreEqual(expected, result);
+
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/03/03
+        /// 
+        /// Description:
+        /// Tests that EditSublocationByLocationID returns 1 for a single editted row
+        /// </summary>
+        [TestMethod]
+        public void TestEditSublocationByLocationIDReturnsZeroForBadValue()
+        {
+            //arrange
+            Sublocation oldSublocation = new Sublocation()
+            {
+                SublocationID = 1000001,
+
+                LocationID = 102310,
+
+                SublocationName = "Fake Sublocation 1",
+                SublocationDescription = "The first fake sublocation"
+            };
+            Sublocation newSublocation = new Sublocation()
+            {
+                SublocationID = 1211,
+
+                LocationID = 1002313123,
+
+                SublocationName = "Fake sadfsafasdf",
+                SublocationDescription = "Theasdfasdfasfasfn"
+            };
+            const int expected = 0;
+            int result;
+
+            //act
+            result = _sublocationManager.EditSublocationBySublocationID(oldSublocation, newSublocation);
+
+            //assert
+            Assert.AreEqual(expected, result);
+
+        }
     }
 }

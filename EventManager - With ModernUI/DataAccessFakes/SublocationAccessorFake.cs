@@ -152,5 +152,34 @@ namespace DataAccessFakes
 
             return sublocations;
         }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Replaces one sublocation with another.
+        /// </summary>
+        /// <param name="oldSublocation">Sublocation to replace</param>
+        /// <param name="newSublocation">Sublocation to replace with</param>
+        /// <returns>integer representing the number of rows affected.</returns>
+        public int UpdateSublocation(Sublocation oldSublocation, Sublocation newSublocation)
+        {
+            int totalRows = 0;
+            for(int i = 0; i < _fakeSublocations.Count; i++)
+            {
+                Sublocation sublocation = _fakeSublocations[i];
+                if(sublocation.LocationID == oldSublocation.LocationID && 
+                    sublocation.SublocationName.Equals(oldSublocation.SublocationName) &&
+                    sublocation.SublocationDescription.Equals(oldSublocation.SublocationDescription))
+                {
+                    int index = _fakeSublocations.IndexOf(sublocation);
+                    _fakeSublocations.Remove(sublocation);
+                    _fakeSublocations.Insert(index, newSublocation);
+                    totalRows++;
+                }
+            }
+            return totalRows;
+        }
     }
 }
