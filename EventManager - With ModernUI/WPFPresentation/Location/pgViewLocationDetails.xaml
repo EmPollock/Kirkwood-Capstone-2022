@@ -222,13 +222,13 @@
                         <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="2" Loaded="Grid_Loaded">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="btnCreateEntrance" Grid.Row="0" Grid.Column="0" Margin="70,30" Content="Create Entrance" IsTabStop="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    <Button x:Name="btnCreateEntrance" Grid.Row="0" Grid.Column="0" Margin="70,30" Content="Create Entrance" IsTabStop="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnCreateEntrance_Click"/>
 
                 </Grid>
             </Grid>

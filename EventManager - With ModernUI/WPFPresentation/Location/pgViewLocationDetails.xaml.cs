@@ -49,6 +49,7 @@ namespace WPFPresentation
         int _imageNumber = 0;
 
         User _user;
+        int _where = 0;
 
         /// <summary>
         /// Austin Timmerman
@@ -70,11 +71,18 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Added _user to constructor
+        /// 
+        /// Update:
+        /// Alaina Gilson
+        /// Updated 2022/03/04
+        /// 
+        /// Description:
+        /// Added where field to pass along information to load event
         /// </summary>
         /// <param name="locationID"></param>
         /// <param name="managerProvider"></param>
         /// <param name="user">The current User</param>        
-        internal pgViewLocationDetails(int locationID, ManagerProvider managerProvider, User user)
+        internal pgViewLocationDetails(int locationID, ManagerProvider managerProvider, User user, int where = 0)
         {
             // use fake accessor
             //_locationManager = new LocationManager(new LocationAccessorFake());
@@ -105,6 +113,53 @@ namespace WPFPresentation
 
             InitializeComponent();
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
+
+            _where = 0;
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/03/04
+        /// 
+        /// Description:
+        /// Load event to confirm it loads on the right page from a 
+        /// previous action. Add more if necessary
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            switch (_where)
+            {
+                case 1:
+                    btnSiteEntrances_Click(sender, e);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/03/04
+        /// 
+        /// Description:
+        /// Helper method that hides all scroll viewers
+        /// </summary>
+        private void hideAll()
+        {
+            frmViewLocationDetails.Visibility = Visibility.Collapsed;
+
+            scrLocationDetails.Visibility = Visibility.Collapsed;
+            scrSublocations.Visibility = Visibility.Collapsed;
+            scrLocationSchedule.Visibility = Visibility.Collapsed;
+            scrViewEntrance.Visibility = Visibility.Collapsed;
+            
+            btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteParking.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
         }
 
         /// <summary>
@@ -114,12 +169,17 @@ namespace WPFPresentation
         /// Description:
         /// The helper method that fills the text boxes, text blocks, images, and reviews for the
         /// Location Details page
+        /// 
+        /// Update:
+        /// Alaina Gilson
+        /// Updated: 2022/03/04
+        /// 
+        /// Description: 
+        /// Revised the hide methods into a general hideAll method
         /// </summary>
         private void loadLocationDetails()
         {
-            hideDetails();
-            hideEntrances();
-            hideSublocations();
+            hideAll();
             btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
             scrLocationDetails.Visibility = Visibility.Visible;
 
@@ -352,13 +412,17 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// The helper method that loads the specific location's schedule
+        /// 
+        /// Update:
+        /// Alaina Gilson
+        /// Updated: 2022/03/04
+        /// 
+        /// Description: 
+        /// Revised the hide methods into a general hideAll method
         /// </summary>
         private void loadLocationSchedule()
         {
-
-            hideDetails();
-            hideEntrances();
-            hideSublocations();
+            hideAll();
             btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
             scrLocationSchedule.Visibility = Visibility.Visible;
 
@@ -577,10 +641,7 @@ namespace WPFPresentation
         /// <param name="sender"></param>
         private void btnSiteSchedule_Click(object sender, RoutedEventArgs e)
         {
-
-
-            hideDetails();
-            hideEntrances();
+            hideAll();
             btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
             scrLocationSchedule.Visibility = Visibility.Visible;
 
@@ -700,14 +761,22 @@ namespace WPFPresentation
         /// 
         /// Description
         /// Event handler for the "Site Areas" button. Grabs a list of location sublocations and populates the screen.
+        /// 
+        /// Update:
+        /// Alaina Gilson
+        /// Updated: 2022/03/04
+        /// 
+        /// Description: 
+        /// Revised the hide methods into a general hideAll method
+        /// Also got rid of unnecessary "collapse scrollviewer" fields
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnSiteAreas_Click(object sender, RoutedEventArgs e)
         {
-            this.hideDetails();
-            this.hideEntrances();
+            hideAll();
             btnSiteAreas.Background = new SolidColorBrush(Colors.Gray);
+            scrSublocations.Visibility = Visibility.Visible;
             try
             {
                 _sublocations = _sublocationManager.RetrieveSublocationsByLocationID(_locationID);
@@ -715,10 +784,6 @@ namespace WPFPresentation
             {
                 MessageBox.Show(ex.Message + "\n\n\n" + ex.InnerException.Message);
             }
-
-            scrSublocations.Visibility = Visibility.Visible;
-            scrLocationDetails.Visibility = Visibility.Collapsed;
-            scrLocationSchedule.Visibility = Visibility.Collapsed;
 
             // redraw sublocations
             grdSublocations.RowDefinitions.Clear();
@@ -771,31 +836,6 @@ namespace WPFPresentation
                 lblSublocationName.Content = "No sublocations found.";
             }
         }
-        /// <summary>
-        /// Christopher Repko
-        /// Created 2022/02/24
-        /// 
-        /// Description:
-        /// Small helper method to hide sublocation screen.
-        /// </summary>
-        private void hideSublocations()
-        {
-            scrSublocations.Visibility = Visibility.Collapsed;
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/03/04
-        /// 
-        /// Description:
-        /// Helper to hide View Entrances screen
-        /// </summary>
-        private void hideEntrances()
-        {
-            scrViewEntrance.Visibility = Visibility.Collapsed;
-            btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-        }
-
 
         /// <summary>
         /// Mike Cahow
@@ -803,13 +843,19 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler to send a user to the view Entrances page
+        /// 
+        /// Update:
+        /// Alaina Gilson
+        /// Updated: 2022/03/04
+        /// 
+        /// Description: 
+        /// Revised the hide methods into a general hideAll method
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnSiteEntrances_Click(object sender, RoutedEventArgs e)
+        public void btnSiteEntrances_Click(object sender, RoutedEventArgs e)
         {
-            hideDetails();
-            hideSublocations();
+            hideAll();
             btnSiteEntrances.Background = new SolidColorBrush(Colors.Gray);
             scrViewEntrance.Visibility = Visibility.Visible;
             try
@@ -848,6 +894,22 @@ namespace WPFPresentation
             this.frmViewLocationDetails.NavigationService.Navigate(page);
 
 
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created 2022/03/04
+        /// 
+        /// Description:
+        /// Click event handler for creating an add edit entrance page
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCreateEntrance_Click(object sender, RoutedEventArgs e)
+        {
+            Page page = new pgAddEditEntrance(_locationID, _managerProvider, _user);
+            this.NavigationService.Navigate(page);
         }
     }
 }
