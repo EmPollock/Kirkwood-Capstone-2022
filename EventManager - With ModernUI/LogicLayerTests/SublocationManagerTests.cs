@@ -262,6 +262,109 @@ namespace LogicLayerTests
 
             //assert
             Assert.AreEqual(expected, result);
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Tests that InsertSublocationsByLocationID returns the correct rows affected
+        /// </summary>
+        [TestMethod]
+        public void TestInsertSublocationByLocationReturnsCorrectRowsAffected()
+        {
+            //arrange
+            const int expected = 1;
+            const string sublocationName = "New Sublocation Name";
+            const string sublocationDesc = "Newest sublocation";
+            const int locationID = 100000;
+
+            //act
+            int actual = _sublocationManager.CreateSublocationByLocationID(locationID, sublocationName, sublocationDesc);
+
+            //assert
+            Assert.AreEqual(expected, actual);
+
+        }
+            /// <summary>
+            /// Logan Baccam
+            /// Created 2022/02/24
+            /// 
+            /// Description:
+            /// Tests that InsertSublocationsByLocationID returns an application exception with invalid locationID
+            /// </summary>
+            [ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
+        public void TestInsertSublocationByLocationIDFailsWithIncorrectLocationID()
+        {
+            //arrange
+            const string sublocationName = "New Sublocation Name";
+            const string sublocationDesc = "Newest sublocation";
+            const int locationID = 1;
+            int result = 0;
+
+            //act
+            result = _sublocationManager.CreateSublocationByLocationID(locationID, sublocationName, sublocationDesc);
+
+            //assert
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Tests that InsertSublocationsByLocationID returns an application exception with the sublocation name
+        /// exceeding 1000
+        /// </summary>
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
+        public void TestInsertSublocationByLocationIDFailsWithInvalidSublocationName()
+        {
+            //arrange
+            const string sublocationName = "New Sublocation NameNew Sublocation NameNew Sublocation" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Name" +
+                "NameNew Sublocation NameNew Sublocation Name";
+            const string sublocationDesc = "Newest sublocation";
+            const int locationID = 1;
+            int result = 0;
+
+            //act
+            result = _sublocationManager.CreateSublocationByLocationID(locationID, sublocationName, sublocationDesc);
+
+            //assert
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Tests that InsertSublocationsByLocationID returns an application exception with the sublocation name
+        /// exceeding 1000
+        /// </summary>
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
+        public void TestInsertSublocationByLocationIDFailsWithInvalidSublocationDesc()
+        {
+            //arrange
+            const string sublocationName = "New Sublocation";
+            const string sublocationDesc = "Newest sublocation NameNew Sublocation NameNew Sublocation" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name" +
+                " NameNew Sublocation NameNew Sublocation NameNew Sublocation New Sublocation Nameation Nameation Name";
+            const int locationID = 1;
+            int result = 0;
+            //act
+            result = _sublocationManager.CreateSublocationByLocationID(locationID, sublocationName, sublocationDesc);
+            //assert
 
         }
     }

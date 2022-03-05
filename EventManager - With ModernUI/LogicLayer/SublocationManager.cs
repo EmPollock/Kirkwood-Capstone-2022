@@ -48,6 +48,48 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/26
+        /// 
+        /// Description:
+        /// Inserts a sublocation into the sublocation table
+        ///
+        /// </summary>
+        /// <param name="sublocationID"></param>
+        /// <param name="sublocationName"></param>
+        /// <param name="sublocationDescription"></param>
+        /// <returns>the rows affected</returns>
+        public int CreateSublocationByLocationID(int locationID, string sublocationName, string sublocationDesc)
+        {
+            int rows = 0;
+            if (locationID >= 100000 && locationID <= 999999)
+            {
+                if (sublocationDesc.Length >= 1001 && sublocationDesc.Length <= 0)
+                {
+                    throw new ArgumentException("Description must be between 1-1000 characters.");
+                }
+                if (sublocationName.Length >= 161 && sublocationName.Length <= 0)
+                {
+                    throw new ArgumentException("Name must be between 1-160 characters.");
+
+                }
+                try
+                {
+                    rows = _sublocationAccessor.InsertSublocationByLocationID(locationID, sublocationName, sublocationDesc);
+
+                }
+                catch (Exception ex)
+                { throw ex; }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid LocationID.");
+            }
+            return rows;
+
+        }
+
+        /// <summary>
         /// Christopher Repko
         /// Created: 2022/03/03
         /// 

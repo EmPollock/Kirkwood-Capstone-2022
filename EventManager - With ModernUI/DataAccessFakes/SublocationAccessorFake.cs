@@ -74,21 +74,31 @@ namespace DataAccessFakes
                 SublocationDescription = "The fith fake sublocation"
             });
         }
-
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/26
+        /// 
+        /// Description:
+        /// Inserts a sublocation into the sublocation table
+        ///
+        /// </summary>
+        /// <param name="sublocationID"></param>
+        /// <param name="sublocationName"></param>
+        /// <param name="sublocationDescription"></param>
+        /// <returns>a fake Sublocation object</returns>
         public int InsertSublocationByLocationID(int locationID, string sublocationName, string description)
         {
             int rows = 0;
-            _fakeSublocations.Add(new Sublocation() 
+
+            _fakeSublocations.Add(new Sublocation()
             {
-                LocationID = 1000005,
-                SublocationID = 1000005,
-                SublocationName = "Fake Sublocation",
-                SublocationDescription = ""
+                LocationID = locationID,
+                SublocationName = sublocationName,
+                SublocationDescription = description
             });
             rows++;
 
             return rows;
-            
         }
 
         /// <summary>

@@ -587,6 +587,7 @@ namespace WPFPresentation
         /// <param name="sender"></param>
         private void btnSiteDetails_Click(object sender, RoutedEventArgs e)
         {
+            hideAddSublocationScreen();
             loadLocationDetails();
         }
 
@@ -1065,6 +1066,101 @@ namespace WPFPresentation
             this.frmViewLocationDetails.NavigationService.Navigate(page);
 
 
+        }
+
+        
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/28
+        /// 
+        /// Description:
+        /// Handler to make the addsublocation page visible
+        /// </summary>
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            scrSublocations.Visibility = Visibility.Collapsed;
+            grdAddsublocation.Visibility = Visibility.Visible;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/28
+        /// 
+        /// Description:
+        /// Handler to hide the add sublocation screen
+        /// </summary>
+        private void hideAddSublocationScreen() 
+        {
+            txtNewSublocationName.Text = "";
+            txtNewSublocationDesc.Text = "";
+            grdAddsublocation.Visibility = Visibility.Collapsed;
+            scrSublocations.Visibility = Visibility.Visible;
+           
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/28
+        /// 
+        /// Description:
+        /// Handler to add a new sublocation to a location
+        /// </summary>
+        private void btnAddNewSublocation_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (txtNewSublocationDesc.Text.Length >= 1001)
+                {
+                    MessageBox.Show("must be between 1-1000 characters.");
+                    txtNewSublocationDesc.Focus();
+                }
+                else if (txtNewSublocationName.Text.Length >= 161 || txtNewSublocationName.Text.Length <= 0)
+                {
+                    MessageBox.Show("must be between 1-160 characters.");
+                    txtNewSublocationName.Focus();
+                }
+                else
+                {
+                    _sublocationManager.CreateSublocationByLocationID(_locationID, txtNewSublocationName.Text, txtNewSublocationDesc.Text);
+                    hideAddSublocationScreen();
+                    scrSublocations.Visibility = Visibility.Visible;
+                    btnSiteAreas_Click(sender, e);
+
+                    MessageBox.Show("Area added.");
+                    txtNewSublocationName.Text = "";
+                    txtNewSublocationDesc.Text = "";
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong trying to add this area.");
+                txtNewSublocationName.Focus();
+            }
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/03/01
+        /// 
+        /// Description:
+        /// Handler to cancel adding a new sublocation to a location
+        /// </summary>
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you would like to cancel? Any unsaved work will be lost.", "Are you sure you would like to cancel?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+            switch (result)
+            {
+                case MessageBoxResult.Cancel:
+                    break;
+                case MessageBoxResult.Yes:
+                    MessageBox.Show("Canceled");
+                    txtNewSublocationDesc.Text = "";
+                    txtNewSublocationName.Text = "";
+                    hideAddSublocationScreen();
+                    scrSublocations.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

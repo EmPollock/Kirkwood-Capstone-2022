@@ -12,7 +12,46 @@ namespace DataAccessLayer
 {
     public class SublocationAccessor : ISublocationAccessor
     {
-      
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/26
+        /// 
+        /// Description:
+        /// Inserts a sublocation into the sublocation table
+        ///
+        /// </summary>
+        /// <param name="sublocationID"></param>
+        /// <param name="sublocationName"></param>
+        /// <param name="sublocationDescription"></param>
+        /// <returns>the rows affected</returns>
+        public int InsertSublocationByLocationID(int locationID, string sublocationName, string sublocationDesc)
+        {
+            int rows = 0;
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_insert_sublocation_by_locationID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters["@LocationID"].Value = locationID;
+
+            cmd.Parameters.Add("@SublocationName", SqlDbType.NVarChar, 160);
+            cmd.Parameters["@SublocationName"].Value = sublocationName;
+
+            cmd.Parameters.Add("@SublocationDescription", SqlDbType.NVarChar, 1000);
+            cmd.Parameters["@SublocationDescription"].Value = sublocationDesc;
+
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            { throw; }
+
+            return rows;
+        }
+
         /// <summary>
         /// Emma Pollock
         /// Created: 2022/02/03
