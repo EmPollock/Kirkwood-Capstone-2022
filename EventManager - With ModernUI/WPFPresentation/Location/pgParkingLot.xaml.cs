@@ -58,6 +58,13 @@ namespace WPFPresentation.Location
         /// 
         /// Description:
         /// Helper method for creating the Dictionary that holds the ParkingLot object and the image associated
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated 2022/03/06
+        /// 
+        /// Description:
+        /// Now displaces a blank picture when there is no picture to return 
         /// </summary>
         private void setupParkingLotImageDictionary()
         {
@@ -74,13 +81,14 @@ namespace WPFPresentation.Location
                     }
                     else
                     {
-                        Uri source = _managerProvider.ImageHelper.FindImageSource(parkingLot.ImageName);
-
-                        parkingLotAndImage.Add(parkingLot, new BitmapImage(source));
+                        BitmapImage image = _managerProvider.ImageHelper.ReturnBitMapImage(parkingLot.ImageName);
+                        parkingLotAndImage.Add(parkingLot, image);
                     }
                 }
 
+                txtBlockErrors.Text = "";
                 icParkingLots.ItemsSource = parkingLotAndImage;
+                
 
             }
             catch (Exception ex)
@@ -191,6 +199,11 @@ namespace WPFPresentation.Location
             {
                 MessageBox.Show("Please enter a name for the parking lot in order to add a location.", "Add Lot Name", MessageBoxButton.OK, MessageBoxImage.Information);
 
+
+
+            }
+            else
+            {
                 if (_originalImagePath != "")
                 {
                     try
@@ -219,10 +232,7 @@ namespace WPFPresentation.Location
                 {
                     MessageBox.Show("There was an issue adding the parking lot information.\n" + ex.Message, "Problem Adding Parking Lot", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
-
             }
-
 
         }
 
@@ -286,6 +296,23 @@ namespace WPFPresentation.Location
                 button.Content = "Added! Save the image or hit cancel.";
                 button.IsEnabled = false;
             }
+        }
+
+        private void Image_Initialized(object sender, EventArgs e)
+        {
+            Image image = (Image)sender;
+
+            // if the source for the image is null and it has a tag with a value
+            // show an error message
+            if(image.Source != null)
+            {
+                if (image.Source.ToString() == "System.Windows.Media.Imaging.BitmapImage" && image.Tag != null)
+                {
+                    txtBlockErrors.Text = txtBlockErrors.Text.ToString() + "*Problem loading: The file \"" + image.Tag.ToString() + "\" can not be found." + "\n";
+                }
+            }
+
+
         }
     }
 }

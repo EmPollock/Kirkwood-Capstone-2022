@@ -459,18 +459,32 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// The helper method that hides all details when switching to a different detail page
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated 2022/03/06
+        /// 
+        /// Description:
+        /// Hide details turns all the buttons back to their defaul gray.
+        /// 
         /// </summary>
         private void hideDetails()
         {
             scrLocationDetails.Visibility = Visibility.Collapsed;
             scrLocationSchedule.Visibility = Visibility.Collapsed;
+            scrParkingLot.Visibility = Visibility.Collapsed;
 
             btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-            btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteMap.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteParking.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteSupplies.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
 
 
-            frmViewLocationDetails.Visibility = Visibility.Collapsed;
+
+            //frmViewLocationDetails.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -1046,11 +1060,20 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
         /// Derrick Nagy
         /// Created 2022/03/01
         /// 
         /// Description:
         /// Click event handler for creating a site parking page
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created 2022/03/01
+        /// 
+        /// Description:
+        /// Moved the location of the frame in the xaml to a scroll viewer
+        /// 
         /// 
         /// </summary>
         /// <param name="sender"></param>
@@ -1060,10 +1083,14 @@ namespace WPFPresentation
             hideDetails();
             btnSiteParking.Background = new SolidColorBrush(Colors.Gray);
 
-            frmViewLocationDetails.Visibility = Visibility.Visible;
+            //frmViewLocationDetails.Visibility = Visibility.Visible;
+            scrParkingLot.Visibility = Visibility.Visible;
 
             Page page = new pgParkingLot(_managerProvider, _location, _user);
             this.frmViewLocationDetails.NavigationService.Navigate(page);
+
+            scrParkingLot.Visibility = Visibility.Visible;
+
 
 
         }

@@ -205,7 +205,6 @@
             <Label x:Name="lblLocationAreasMainName" Content="Location Name" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" Grid.ColumnSpan="2"/>
             <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5px" Click="btnEdit_Click" Grid.Column="1" />
             <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 5 50 0" Height="30" Grid.Column="1" Click="btnAdd_Click" />
-            <Frame x:Name="frmViewLocationDetails" Grid.Row="0" Grid.Column="1" Visibility="Collapsed"/>
             <ScrollViewer x:Name="scrSublocations" Grid.Row="1" Visibility="Visible" Grid.ColumnSpan="2">
                 <Grid x:Name="grdSublocationsRows" Visibility="Visible">
                     <Grid.RowDefinitions>
@@ -265,5 +264,17 @@
                 </Grid>
             </Grid>
         </ScrollViewer>
+
+        <ScrollViewer x:Name="scrParkingLot" Grid.Column="1" Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Frame Grid.Row="0" x:Name="frmViewLocationDetails"/>                
+            </Grid>
+
+        </ScrollViewer>
+        
+        
     </Grid>
 </Page>
