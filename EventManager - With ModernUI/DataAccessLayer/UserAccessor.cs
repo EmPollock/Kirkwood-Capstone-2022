@@ -257,6 +257,7 @@ namespace DataAccessLayer
 
             return user;
         }
+
         /// <summary>
         /// Christopher Repko
         /// Created: 2022/01/21

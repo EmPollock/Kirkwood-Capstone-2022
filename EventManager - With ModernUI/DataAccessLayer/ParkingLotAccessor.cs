@@ -13,6 +13,7 @@ namespace DataAccessLayer
     public class ParkingLotAccessor : IParkingLotAccessor
     {
 
+
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/03/01
@@ -130,5 +131,122 @@ namespace DataAccessLayer
             return parkingLots;
 
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Deletes parking lot
+        /// </summary>
+        /// <param name="lotID">The lot to delete</param>
+        /// <returns>True is removed, false if not</returns>
+        public bool DeleteParkingLotByLotID(int lotID)
+        {
+            bool isDeleted = false;
+            
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_delete_parking_lot";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@LotID", SqlDbType.Int);
+
+            cmd.Parameters["@LotID"].Value = lotID;
+
+            try
+            {
+                conn.Open();
+                isDeleted = (1 == cmd.ExecuteNonQuery());
+
+                try
+                {
+
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return isDeleted;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Checks to see if the user can edit the parking lot
+        /// </summary>
+        /// <param name="userID">The ID for the user</param>
+        /// <returns>True if removed, false if not</returns>
+        public bool UserCanEditParkingLot(int userID)
+        {
+            bool result = false;
+            List<Role> roles = new List<Role>();
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_user_roles_from_event_users_table";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(new Role()
+                        {
+                            RoleID = reader.GetString(0)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            foreach (Role role in roles)
+            {
+                if (role.RoleID == "Event Planner")
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
     }
+    
 }

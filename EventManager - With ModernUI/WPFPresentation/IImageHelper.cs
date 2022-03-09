@@ -14,6 +14,7 @@ namespace WPFPresentation
         //string PathToSaveImage();
         string SaveImageReturnsNewImageName(string fileName, string sourceFile);
         BitmapImage ReturnBitMapImage(string imageName);
+        bool DeleteImage(string imageName);
 
     }
 }

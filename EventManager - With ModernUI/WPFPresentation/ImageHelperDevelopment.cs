@@ -1,6 +1,7 @@
 ﻿using DataObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -178,6 +179,36 @@ namespace WPFPresentation
             return source;
         }
 
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Deletes an image from the folder that it is currently in
+        /// Work in progress. It needs to make sure that the image is not being using first.
+        /// 
+        /// </summary>
+        /// <param name="imageName">The name of the image</param>
+        /// <returns>If deleting the image was successfull</returns>
+        public bool DeleteImage(string imageName)
+        {
+            bool result = false;
 
+            try
+            {
+                File.Delete(pathToSaveImage() + imageName);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return result;
+
+
+        }
     }
 }

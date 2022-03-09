@@ -137,3 +137,32 @@ AS
 		RETURN @@ROWCOUNT
 	END
 GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/03/08
+
+Description:
+Stored procedure to select the roles that a user has from the event users table
+**************************************************************
+
+Updated: 
+
+Description: 
+
+****************************************************************/
+print '' print '*** creating sp_select_user_roles_from_event_users_table'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_roles_from_event_users_table]
+(
+	@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[UserEvent].[RoleID]
+		FROM [dbo].[UserEvent]
+		WHERE [UserEvent].[UserID] = @UserID
+	END	
+GO
