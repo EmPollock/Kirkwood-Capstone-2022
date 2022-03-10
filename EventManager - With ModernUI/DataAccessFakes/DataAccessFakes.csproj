@@ -49,6 +49,7 @@
     <Compile Include="LocationAccessorFake.cs" />
     <Compile Include="ParkingLotAccessorFake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceAccessorFake.cs" />
     <Compile Include="SublocationAccessorFake.cs" />
     <Compile Include="SupplierAccessorFake.cs" />
     <Compile Include="TaskAccessorFakes.cs" />

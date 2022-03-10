@@ -47,6 +47,7 @@ namespace WPFPresentation
 
         Uri _src;
         int _imageNumber = 0;
+        bool editingLocationAreas = false;
 
         User _user;
         int _where = 0;
@@ -140,29 +141,6 @@ namespace WPFPresentation
         }
 
         /// <summary>
-        /// Alaina Gilson
-        /// Created: 2022/03/04
-        /// 
-        /// Description:
-        /// Helper method that hides all scroll viewers
-        /// </summary>
-        private void hideAll()
-        {
-            frmViewLocationDetails.Visibility = Visibility.Collapsed;
-
-            scrLocationDetails.Visibility = Visibility.Collapsed;
-            scrSublocations.Visibility = Visibility.Collapsed;
-            scrLocationSchedule.Visibility = Visibility.Collapsed;
-            scrViewEntrance.Visibility = Visibility.Collapsed;
-            
-            btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-            btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-            btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-            btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-            btnSiteParking.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-        }
-
-        /// <summary>
         /// Austin Timmerman
         /// Created: 2022/02/09
         /// 
@@ -179,7 +157,21 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationDetails()
         {
-            hideAll();
+            if (editingLocationAreas)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    editingLocationAreas = false;
+                }
+            }
+            hideDetails();
+            hideEntrances();
+            hideSublocations();
             btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
             scrLocationDetails.Visibility = Visibility.Visible;
 
@@ -422,7 +414,21 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationSchedule()
         {
-            hideAll();
+            if (editingLocationAreas)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    editingLocationAreas = false;
+                }
+            }
+            hideDetails();
+            hideEntrances();
+            hideSublocations();
             btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
             scrLocationSchedule.Visibility = Visibility.Visible;
 
@@ -499,18 +505,32 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// The helper method that hides all details when switching to a different detail page
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated 2022/03/06
+        /// 
+        /// Description:
+        /// Hide details turns all the buttons back to their defaul gray.
+        /// 
         /// </summary>
         private void hideDetails()
         {
             scrLocationDetails.Visibility = Visibility.Collapsed;
             scrLocationSchedule.Visibility = Visibility.Collapsed;
+            scrParkingLot.Visibility = Visibility.Collapsed;
 
             btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-            btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteMap.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteParking.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSiteSupplies.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
 
 
-            frmViewLocationDetails.Visibility = Visibility.Collapsed;
+
+            //frmViewLocationDetails.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -627,6 +647,7 @@ namespace WPFPresentation
         /// <param name="sender"></param>
         private void btnSiteDetails_Click(object sender, RoutedEventArgs e)
         {
+            hideAddSublocationScreen();
             loadLocationDetails();
         }
 
@@ -641,7 +662,9 @@ namespace WPFPresentation
         /// <param name="sender"></param>
         private void btnSiteSchedule_Click(object sender, RoutedEventArgs e)
         {
-            hideAll();
+            hideDetails();
+            hideEntrances();
+            hideSublocations();
             btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
             scrLocationSchedule.Visibility = Visibility.Visible;
 
@@ -774,7 +797,21 @@ namespace WPFPresentation
         /// <param name="e"></param>
         private void btnSiteAreas_Click(object sender, RoutedEventArgs e)
         {
-            hideAll();
+            btnCancelEditAreas.Visibility = Visibility.Collapsed;
+            btnSaveAreas.Visibility = Visibility.Collapsed;
+            if (editingLocationAreas)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                } else
+                {
+                    editingLocationAreas = false;
+                }
+            }
+            this.hideDetails();
+            this.hideEntrances();
             btnSiteAreas.Background = new SolidColorBrush(Colors.Gray);
             scrSublocations.Visibility = Visibility.Visible;
             try
@@ -785,13 +822,16 @@ namespace WPFPresentation
                 MessageBox.Show(ex.Message + "\n\n\n" + ex.InnerException.Message);
             }
 
+            grdSublocations.Visibility = Visibility.Visible;
+            scrLocationDetails.Visibility = Visibility.Collapsed;
+            scrLocationSchedule.Visibility = Visibility.Collapsed;
+
             // redraw sublocations
-            grdSublocations.RowDefinitions.Clear();
+            grdSublocationsRows.RowDefinitions.Clear();
             RowDefinition row = new RowDefinition();
             row.Height = new GridLength(150);
-            grdSublocations.RowDefinitions.Add(row);
-            grdSublocations.RowDefinitions.Add(new RowDefinition());
-
+            grdSublocationsRows.RowDefinitions.Add(row);
+            grdSublocationsRows.RowDefinitions.Add(new RowDefinition());
             this.populateSublocations();
         }
 
@@ -804,38 +844,246 @@ namespace WPFPresentation
         /// </summary>
         private void populateSublocations()
         {
-            if(_sublocations.Count > 0)
+
+            txtSublocationDescription.IsReadOnly = true;
+            txtSublocationName.IsReadOnly = true;
+            lblLocationAreasMainName.Content = _location.Name;
+            // Purge elements from previous renders
+            for(int i = 0; i < grdSublocationsRows.Children.Count; i++)
+            {
+                UIElement element = grdSublocationsRows.Children[i];
+                if(element != lblSublocationName && element != txtSublocationDescription && element != txtSublocationName)
+                {
+                    grdSublocationsRows.Children.Remove(element);
+                    i--;
+                    try
+                    {
+                        if(element is TextBox text)
+                        {
+                            UnregisterName(text.Name);
+                        }
+                    } catch(Exception)
+                    {
+
+                    }
+                }
+            }
+            if (_sublocations.Count > 0)
             {
                 lblSublocationName.Content = _sublocations[0].SublocationName;
                 txtSublocationDescription.Text = _sublocations[0].SublocationDescription;
+                txtSublocationName.Visibility = Visibility.Hidden;
 
                 for(int i = 1; i < _sublocations.Count; i++)
                 {
                     RowDefinition row = new RowDefinition();
                     row.Height = new GridLength(150);
-                    grdSublocations.RowDefinitions.Insert(i, row);
+                    grdSublocationsRows.RowDefinitions.Insert(i, row);
 
                     Label nameLabel = new Label();
                     nameLabel.Content = _sublocations[i].SublocationName;
-                    nameLabel.Margin = new Thickness(30, 10, 0, 110);
+                    nameLabel.Margin = new Thickness(30, 10, 0, 105);
                     nameLabel.FontSize = 18.0d;
                     nameLabel.FontWeight = FontWeights.Bold;
+                    
+
+                    TextBox nameText = new TextBox();
+                    nameText.Text = _sublocations[i].SublocationName;
+                    nameText.Margin = new Thickness(0, 10, 30, 105);
+                    nameText.IsReadOnly = true;
+                    nameText.Visibility = Visibility.Hidden;
+                    nameText.Name = "txtSublocationName" + i;
+                    nameText.MaxLength = 100;
 
                     TextBox descriptionText = new TextBox();
                     descriptionText.Text = _sublocations[i].SublocationDescription;
-                    descriptionText.Margin = new Thickness(30, 40, 30, 10);
+                    descriptionText.Margin = new Thickness(30, 50, 30, 10);
                     descriptionText.IsReadOnly = true;
+                    descriptionText.Name = "txtSublocationDescription" + i;
+                    descriptionText.TextWrapping = TextWrapping.Wrap;
 
-                    Grid.SetRow(nameLabel, i); 
+
+                    Grid.SetRow(nameLabel, i);
+                    Grid.SetColumnSpan(nameLabel, 2);
                     Grid.SetRow(descriptionText, i);
-                    grdSublocations.Children.Add(nameLabel);
-                    grdSublocations.Children.Add(descriptionText);
+                    Grid.SetColumnSpan(descriptionText, 2);
+                    Grid.SetRow(nameText, i);
+                    Grid.SetColumn(nameText, 1);
+                    grdSublocationsRows.Children.Add(nameLabel);
+                    grdSublocationsRows.Children.Add(descriptionText);
+                    grdSublocationsRows.Children.Add(nameText);
+                    RegisterName(descriptionText.Name, descriptionText);
+                    RegisterName(nameText.Name, nameText);
                 }
             } else
             {
                 lblSublocationName.Content = "No sublocations found.";
+                btnEdit.IsEnabled = false;
             }
         }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Small helper method to hide sublocation screen.
+        /// </summary>
+        private void hideSublocations()
+        {
+            grdSublocations.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Click event for edit button. Sets the sublocations view to edit mode.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            btnCancelEditAreas.Visibility = Visibility.Visible;
+            btnSaveAreas.Visibility = Visibility.Visible;
+            foreach (UIElement element in grdSublocationsRows.Children)
+            {
+                if(element is Label label)
+                {
+                    label.Content = "Area Name: ";
+                } else if(element is TextBox textbox)
+                {
+                    textbox.IsReadOnly = false;
+                    textbox.IsEnabled = true;
+                    textbox.Visibility = Visibility.Visible;
+                }
+            }
+            // Need to manually update this.
+            txtSublocationName.Text = _sublocations[0].SublocationName;
+            editingLocationAreas = true;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Click event for save button. Saves changes to sublocations.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSaveAreas_Click(object sender, RoutedEventArgs e)
+        {
+            // Stick the whole thing in a try block. We don't want to skip only one sublocation if an error occurs.
+            try
+            {
+                if(!txtSublocationDescription.Text.Equals(_sublocations[0].SublocationDescription) || !txtSublocationName.Text.Equals(_sublocations[0].SublocationName))
+                {
+                    if (txtSublocationName.Text.Trim().Length > 0 && txtSublocationName.Text.Trim().Length < 160) 
+                    {
+                        if (txtSublocationDescription.Text.Trim().Length < 1000)
+                        {
+                            Sublocation newSublocation = new Sublocation()
+                            {
+                                SublocationID = _sublocations[0].SublocationID,
+                                LocationID = _sublocations[0].LocationID,
+                                SublocationName = txtSublocationName.Text,
+                                SublocationDescription = txtSublocationDescription.Text,
+                                Active = _sublocations[0].Active,
+                            };
+                            this._managerProvider.SublocationManager.EditSublocationBySublocationID(_sublocations[0], newSublocation);
+                            _sublocations[0] = newSublocation;
+
+                        } else
+                        {
+                            MessageBox.Show("Area description must be less than 1000 characters.");
+                            return;
+                        }
+                    } else
+                    {
+                        MessageBox.Show("Area name must be between 1-100 characters.");
+                        return;
+                    }
+                }
+                for (int i = 1; i < _sublocations.Count; i++)
+                {
+                    TextBox txtName = (TextBox)grdSublocationsRows.FindName("txtSublocationName" + i);
+                    TextBox txtDescription = (TextBox)grdSublocationsRows.FindName("txtSublocationDescription" + i);
+                    if (!(txtName is null) && !(txtDescription is null) &&
+                        (!txtName.Text.Equals(_sublocations[i].SublocationName) || !txtDescription.Text.Equals(_sublocations[i].SublocationDescription)))
+                    {
+                        if (txtName.Text.Trim().Length > 0 && txtName.Text.Trim().Length < 160)
+                        {
+                            if(txtDescription.Text.Trim().Length < 1000)
+                            {
+                                Sublocation newSublocation = new Sublocation()
+                                {
+                                    SublocationID = _sublocations[i].SublocationID,
+                                    LocationID = _sublocations[i].LocationID,
+                                    SublocationName = txtName.Text,
+                                    SublocationDescription = txtDescription.Text,
+                                    Active = _sublocations[i].Active,
+                                };
+
+                                this._managerProvider.SublocationManager.EditSublocationBySublocationID(_sublocations[i], newSublocation);
+                                _sublocations[i] = newSublocation;
+                            } else
+                            {
+                                MessageBox.Show("Area description must be less than 1000 characters.");
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Area name must be between 1-100 characters.");
+                            return;
+                        }
+                    }
+                }
+                editingLocationAreas = false;
+                btnSiteAreas_Click(sender, e);
+            } catch(Exception ex)
+            {
+                try
+                {
+                    MessageBox.Show(ex.Message + "\n\n\n" + ex.InnerException.Message);
+                } catch(Exception)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/02/24
+        /// 
+        /// Description:
+        /// Click event for edit button. Discards any changes to sublocations.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancelEditAreas_Click(object sender, RoutedEventArgs e)
+        {
+            btnSiteAreas_Click(sender, e);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/04
+        /// 
+        /// Description:
+        /// Helper to hide View Entrances screen
+        /// </summary>
+        private void hideEntrances()
+        {
+            scrViewEntrance.Visibility = Visibility.Collapsed;
+            btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+        }
+
 
         /// <summary>
         /// Mike Cahow
@@ -855,7 +1103,7 @@ namespace WPFPresentation
         /// <param name="e"></param>
         public void btnSiteEntrances_Click(object sender, RoutedEventArgs e)
         {
-            hideAll();
+            hideDetails();
             btnSiteEntrances.Background = new SolidColorBrush(Colors.Gray);
             scrViewEntrance.Visibility = Visibility.Visible;
             try
@@ -874,11 +1122,20 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
         /// Derrick Nagy
         /// Created 2022/03/01
         /// 
         /// Description:
         /// Click event handler for creating a site parking page
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created 2022/03/01
+        /// 
+        /// Description:
+        /// Moved the location of the frame in the xaml to a scroll viewer
+        /// 
         /// 
         /// </summary>
         /// <param name="sender"></param>
@@ -888,12 +1145,111 @@ namespace WPFPresentation
             hideDetails();
             btnSiteParking.Background = new SolidColorBrush(Colors.Gray);
 
-            frmViewLocationDetails.Visibility = Visibility.Visible;
+            //frmViewLocationDetails.Visibility = Visibility.Visible;
+            scrParkingLot.Visibility = Visibility.Visible;
 
             Page page = new pgParkingLot(_managerProvider, _location, _user);
             this.frmViewLocationDetails.NavigationService.Navigate(page);
 
+            scrParkingLot.Visibility = Visibility.Visible;
 
+
+
+        }
+
+        
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/28
+        /// 
+        /// Description:
+        /// Handler to make the addsublocation page visible
+        /// </summary>
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            scrSublocations.Visibility = Visibility.Collapsed;
+            grdAddsublocation.Visibility = Visibility.Visible;
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/28
+        /// 
+        /// Description:
+        /// Handler to hide the add sublocation screen
+        /// </summary>
+        private void hideAddSublocationScreen() 
+        {
+            txtNewSublocationName.Text = "";
+            txtNewSublocationDesc.Text = "";
+            grdAddsublocation.Visibility = Visibility.Collapsed;
+            scrSublocations.Visibility = Visibility.Visible;
+           
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/02/28
+        /// 
+        /// Description:
+        /// Handler to add a new sublocation to a location
+        /// </summary>
+        private void btnAddNewSublocation_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (txtNewSublocationDesc.Text.Length >= 1001)
+                {
+                    MessageBox.Show("must be between 1-1000 characters.");
+                    txtNewSublocationDesc.Focus();
+                }
+                else if (txtNewSublocationName.Text.Length >= 161 || txtNewSublocationName.Text.Length <= 0)
+                {
+                    MessageBox.Show("must be between 1-160 characters.");
+                    txtNewSublocationName.Focus();
+                }
+                else
+                {
+                    _sublocationManager.CreateSublocationByLocationID(_locationID, txtNewSublocationName.Text, txtNewSublocationDesc.Text);
+                    hideAddSublocationScreen();
+                    scrSublocations.Visibility = Visibility.Visible;
+                    btnSiteAreas_Click(sender, e);
+
+                    MessageBox.Show("Area added.");
+                    txtNewSublocationName.Text = "";
+                    txtNewSublocationDesc.Text = "";
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong trying to add this area.");
+                txtNewSublocationName.Focus();
+            }
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/03/01
+        /// 
+        /// Description:
+        /// Handler to cancel adding a new sublocation to a location
+        /// </summary>
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you would like to cancel? Any unsaved work will be lost.", "Are you sure you would like to cancel?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+            switch (result)
+            {
+                case MessageBoxResult.Cancel:
+                    break;
+                case MessageBoxResult.Yes:
+                    MessageBox.Show("Canceled");
+                    txtNewSublocationDesc.Text = "";
+                    txtNewSublocationName.Text = "";
+                    hideAddSublocationScreen();
+                    scrSublocations.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>

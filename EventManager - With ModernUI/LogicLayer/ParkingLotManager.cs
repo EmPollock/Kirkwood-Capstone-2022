@@ -90,6 +90,38 @@ namespace LogicLayer
 
         /// <summary>
         /// Derrick Nagy
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Deletes parking lot
+        /// </summary>
+        /// <param name="lotID">The lot to delete</param>
+        /// <returns>True is removed, false if not</returns>
+        public bool RemoveParkingLotByLotID(int lotID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = _parkingLotAccessor.DeleteParkingLotByLotID(lotID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (!result)
+            {
+                throw new ApplicationException("The parking lot was not deleted");
+            }
+
+            return result;
+
+
+        }
+
+        /// <summary>
+        /// Derrick Nagy
         /// Created: 2022/03/01
         /// 
         /// Description:
@@ -120,5 +152,30 @@ namespace LogicLayer
             return parkingLots;
         }
 
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Checks to see if the user can edit the parking lot
+        /// </summary>
+        /// <param name="userID">The ID for the user</param>
+        /// <returns>True if removed, false if not</returns>
+        public bool UserCanEditParkingLot(int userID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = _parkingLotAccessor.UserCanEditParkingLot(userID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
     }
 }

@@ -27,9 +27,9 @@ namespace WPFPresentation
         public IUserManager UserManager { get; set; }
         public IVolunteerManager VolunteerManager { get; set; }
         public IVolunteerRequestManager VolunteerRequestManager { get; set; }
+        public IServiceManager ServiceManager { get; set; }
         public IParkingLotManager ParkingLotManager { get; set; }
         public IImageHelper ImageHelper { get; set; }
-
 
         public ManagerProvider()
         {
@@ -44,6 +44,7 @@ namespace WPFPresentation
             UserManager = new UserManager();
             VolunteerManager = new VolunteerManager();
             VolunteerRequestManager = new VolunteerRequestManager();
+            ServiceManager = new ServiceManager();
             ParkingLotManager = new ParkingLotManager();
 
 
@@ -58,6 +59,7 @@ namespace WPFPresentation
             //UserManager = new UserManager(new UserAccessorFake());
             //VolunteerManager = new VolunteerManager(new VolunteerAccessorFake());
             //VolunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
+            //ServiceManager = new ServiceManager(new ServiceAccessorFake());
             //ParkingLotManager = new ParkingLotManager(new ParkingLotAccessorFake());
 
 

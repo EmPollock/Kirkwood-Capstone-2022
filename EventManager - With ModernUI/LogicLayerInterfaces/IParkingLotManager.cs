@@ -11,5 +11,9 @@ namespace LogicLayerInterfaces
     {
         List<ParkingLotVM> RetrieveParkingLotByLocationID(int locationID);
         int CreateParkingLot(ParkingLot parkingLot);
+
+        bool UserCanEditParkingLot(int userID);
+        bool RemoveParkingLotByLotID(int lotID);
+
     }
 }

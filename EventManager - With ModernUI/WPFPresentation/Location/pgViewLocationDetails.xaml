@@ -192,20 +192,51 @@
                 </DataGrid>
             </Grid>
         </ScrollViewer>
+        <Grid x:Name="grdSublocations" Grid.Column="1" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition />
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="lblLocationAreasMainName" Content="Location Name" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20" Grid.ColumnSpan="2"/>
+            <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5px" Click="btnEdit_Click" Grid.Column="1" />
+            <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 5 50 0" Height="30" Grid.Column="1" Click="btnAdd_Click" />
+            <ScrollViewer x:Name="scrSublocations" Grid.Row="1" Visibility="Visible" Grid.ColumnSpan="2">
+                <Grid x:Name="grdSublocationsRows" Visibility="Visible">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="lblSublocationName" Content="No locations found." Grid.ColumnSpan="2" Margin="30 10 0 105" FontSize="18" FontWeight="Bold"/>
+                    <TextBox x:Name="txtSublocationDescription" Text="" Grid.ColumnSpan="2" Margin="30 50 30 10" IsReadOnly="True" TextWrapping="Wrap"/>
+                    <TextBox x:Name="txtSublocationName" Grid.Column="1" Margin="0 10 30 105" Visibility="Hidden" MaxLength="100"/>
+                    
+                </Grid>
 
-        <Frame x:Name="frmViewLocationDetails" Grid.Row="0" Grid.Column="1" Visibility="Collapsed"/>
+            </ScrollViewer>
 
-        <ScrollViewer x:Name="scrSublocations" Grid.Column="1" Visibility="Visible">
-            <Grid x:Name="grdSublocations" Grid.Column="1" Visibility="Visible">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Label x:Name="lblSublocationName" Content="No sublocations found." Margin="30 10 0 110" FontSize="18" FontWeight="Bold"/>
-                <TextBox x:Name="txtSublocationDescription" Text="" Margin="30 40 30 10" IsReadOnly="True"/>
+            <Grid x:Name="grdAddsublocation" Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="2" Visibility="Collapsed">
+                <Label x:Name="lblAddSublocationName" Content="Enter Area Name:" FontWeight="Bold" FontSize="18" Margin="30 40 30 0"/>
+                <TextBox x:Name="txtNewSublocationName" Grid.Row="0" Height="50" VerticalAlignment="Top" TextWrapping="Wrap" Margin="30 70 30 0"/>
+
+                <Label x:Name="lblAddSublocationDesc" Content="Enter Area Description:" FontWeight="Bold" FontSize="18" Margin="30 150 0 0"/>
+                <TextBox x:Name="txtNewSublocationDesc" Grid.Row="0" Height="100" VerticalAlignment="Top" TextWrapping="Wrap" Margin="30 180 30 0"/>
+
+                <Button x:Name="btnAddNewSublocation" Content="Add Area" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 0 75 0" Click="btnAddNewSublocation_Click" />
+                <Button x:Name="btnCancel" Content="Cancel" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="72 0 0 0" Click="btnCancel_Click"  />
             </Grid>
-        </ScrollViewer>
 
+                <Button x:Name="btnSaveAreas" Content="Save" Grid.Row="2" HorizontalAlignment="Right" Margin="5px" Click="btnSaveAreas_Click" Width="60"/>
+            <Button x:Name="btnCancelEditAreas" Content="Cancel" Grid.Row="2" Grid.Column="1" Margin="5px" Width="60" Click="btnCancelEditAreas_Click"/>
+        </Grid>
         <ScrollViewer x:Name="scrViewEntrance" Grid.Column="1" Visibility="Collapsed">
             <Grid Grid.Column="1" Visibility="Visible">
                 <Grid.RowDefinitions>
@@ -233,5 +264,17 @@
                 </Grid>
             </Grid>
         </ScrollViewer>
+
+        <ScrollViewer x:Name="scrParkingLot" Grid.Column="1" Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Frame Grid.Row="0" x:Name="frmViewLocationDetails"/>                
+            </Grid>
+
+        </ScrollViewer>
+        
+        
     </Grid>
 </Page>

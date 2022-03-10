@@ -89,3 +89,30 @@ AS
 		
 	END	
 GO
+
+-- sp_delete_parking_lot	@LotID	int	IParkingLotAccessor
+print '' print '*** creating sp_delete_parking_lot'
+GO
+/***************************************************************
+Derrick Nagy
+Created: 2022/03/08
+
+Description:
+Stored procedure for deleting parking lots by the LotID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description:
+<Decription> 
+****************************************************************/
+CREATE PROCEDURE [dbo].[sp_delete_parking_lot]
+(
+	@LotID 	[int]
+)
+AS
+	BEGIN
+		DELETE FROM [dbo].[ParkingLot] WHERE @LotID = [ParkingLot].[ParkingLotID]
+		RETURN @@ROWCOUNT
+	END
+GO

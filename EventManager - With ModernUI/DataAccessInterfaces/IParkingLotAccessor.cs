@@ -11,5 +11,8 @@ namespace DataAccessInterfaces
     {
         int InsertParkingLot(ParkingLot parkingLot);
         List<ParkingLotVM> SelectParkingLotByLocationID(int locationID);
+
+        bool DeleteParkingLotByLotID(int lotID);
+        bool UserCanEditParkingLot(int userID);
     }
 }

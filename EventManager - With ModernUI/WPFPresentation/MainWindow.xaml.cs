@@ -61,10 +61,8 @@ namespace WPFPresentation
 
             managerInitializer();
 
-            // Keep this always safe! 
-
-            //_user = new User()
-            //User = new User()
+            // Keep this always safe!
+            //_user = new User();
             _user = new User()
             {
                 UserID = 100000,
@@ -85,7 +83,7 @@ namespace WPFPresentation
         public MainWindow(User user, IUserManager userManager) : this()
         {
             InitializeComponent();
-            //this._user = user;
+            this._user = user;
             //MainWindow.User = user;
             //this._user = user;
             //this._userManager = userManager;
@@ -179,7 +177,6 @@ namespace WPFPresentation
         /// Description: Added sublocation manager to navigated page.
         /// 
         /// </summary>
-
         private void btnCreateEvents_Click(object sender, RoutedEventArgs e)
         {
             if(_user == null)

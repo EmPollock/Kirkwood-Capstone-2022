@@ -74,21 +74,31 @@ namespace DataAccessFakes
                 SublocationDescription = "The fith fake sublocation"
             });
         }
-
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/26
+        /// 
+        /// Description:
+        /// Inserts a sublocation into the sublocation table
+        ///
+        /// </summary>
+        /// <param name="sublocationID"></param>
+        /// <param name="sublocationName"></param>
+        /// <param name="sublocationDescription"></param>
+        /// <returns>a fake Sublocation object</returns>
         public int InsertSublocationByLocationID(int locationID, string sublocationName, string description)
         {
             int rows = 0;
-            _fakeSublocations.Add(new Sublocation() 
+
+            _fakeSublocations.Add(new Sublocation()
             {
-                LocationID = 1000005,
-                SublocationID = 1000005,
-                SublocationName = "Fake Sublocation",
-                SublocationDescription = ""
+                LocationID = locationID,
+                SublocationName = sublocationName,
+                SublocationDescription = description
             });
             rows++;
 
             return rows;
-            
         }
 
         /// <summary>
@@ -151,6 +161,35 @@ namespace DataAccessFakes
             }
 
             return sublocations;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Replaces one sublocation with another.
+        /// </summary>
+        /// <param name="oldSublocation">Sublocation to replace</param>
+        /// <param name="newSublocation">Sublocation to replace with</param>
+        /// <returns>integer representing the number of rows affected.</returns>
+        public int UpdateSublocation(Sublocation oldSublocation, Sublocation newSublocation)
+        {
+            int totalRows = 0;
+            for(int i = 0; i < _fakeSublocations.Count; i++)
+            {
+                Sublocation sublocation = _fakeSublocations[i];
+                if(sublocation.LocationID == oldSublocation.LocationID && 
+                    sublocation.SublocationName.Equals(oldSublocation.SublocationName) &&
+                    sublocation.SublocationDescription.Equals(oldSublocation.SublocationDescription))
+                {
+                    int index = _fakeSublocations.IndexOf(sublocation);
+                    _fakeSublocations.Remove(sublocation);
+                    _fakeSublocations.Insert(index, newSublocation);
+                    totalRows++;
+                }
+            }
+            return totalRows;
         }
     }
 }
