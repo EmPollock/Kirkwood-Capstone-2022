@@ -7,13 +7,13 @@ sqlcmd -S localhost -E -i tables/location.sql
 sqlcmd -S localhost -E -i tables/event.sql
 sqlcmd -S localhost -E -i tables/event_date.sql
 sqlcmd -S localhost -E -i tables/role.sql
-sqlcmd -S localhost -E -i tables/supplier.sql
 sqlcmd -S localhost -E -i tables/volunteer.sql
 sqlcmd -S localhost -E -i tables/task.sql
 sqlcmd -S localhost -E -i tables/sublocation.sql
 sqlcmd -S localhost -E -i tables/activity.sql
 sqlcmd -S localhost -E -i tables/activity_result.sql
 sqlcmd -S localhost -E -i tables/volunteer_request.sql
+sqlcmd -S localhost -E -i tables/supplier.sql
 sqlcmd -S localhost -E -i tables/user_role.sql
 sqlcmd -S localhost -E -i tables/user_event.sql
 sqlcmd -S localhost -E -i tables/user_activity.sql
@@ -93,6 +93,8 @@ REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 :: FILES WHICH REQUIRE:  supplier.sql
 ::  service.sql
 :: ************************
+:: FILES WHICH REQUIRE:  activity.sql
+::  supplier.sql
 
 ECHO .
 ECHO if no errors appear DB was created

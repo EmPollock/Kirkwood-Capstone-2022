@@ -6,6 +6,7 @@ using LogicLayer;
 using LogicLayerInterfaces;
 using System.Collections.Generic;
 using DataAccessFakes;
+using System.Linq;
 
 namespace LogicLayerTests
 {
@@ -300,6 +301,54 @@ namespace LogicLayerTests
 
             //assert
             //error testing, nothing to do here
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitiesBySupplierID returns a correct
+        /// list of activities for the given supplier.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesBySupplierIDRetrievesCorrectList()
+        {
+            //arrange
+            const int supplierID = 100000;
+            DateTime date = new DateTime(2022, 01, 01);
+            List<ActivityVM> activities;
+            int actualCount = 2;
+            int expectedCount = 2;
+
+            // act
+            activities = _activityManager.RetrieveActivitiesBySupplierIDAndDate(supplierID, date);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitiesBySupplierID returns an empty list
+        /// when given a bad supplierID.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesBySupplierIDRetrievesEmptyListWithBadID()
+        {
+            // arrange
+            const int badID = 1;
+            DateTime date = new DateTime(2022, 01, 01);
+            List<ActivityVM> actualList;
+
+            // act
+            actualList = _activityManager.RetrieveActivitiesBySupplierIDAndDate(badID, date);
+
+            // assert
+            Assert.IsFalse(actualList.Any());
         }
     }
 }

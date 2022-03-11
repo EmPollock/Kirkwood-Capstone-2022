@@ -297,3 +297,39 @@ AS
 		WHERE [EventID] = @EventID
 	END	
 GO
+
+/***************************************************************
+Kris Howell
+Created: 2022/02/24
+
+Description:
+Select all activities occuring on a given date that a
+given supplier is associated with
+****************************************************************/
+print '' print '*** creating sp_select_activities_by_supplierID_and_date ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_activities_by_supplierID_and_date]
+(
+    @SupplierID     [int]
+	,@ActivityDate	[date]
+)
+AS
+	BEGIN
+		SELECT
+			[SupplierAttendance].[ActivityID]
+			,[ActivityName]
+			,[ActivityDescription]
+			,[PublicActivity]
+			,[StartTime]
+			,[EndTime]
+			,[ActivityImageName]
+			,[SublocationID]
+			,[EventDateID]
+			,[EventID]
+		FROM [dbo].[Activity]
+		JOIN [dbo].[SupplierAttendance]
+			ON [Activity].[ActivityID] = [SupplierAttendance].[ActivityID]
+		WHERE [SupplierAttendance].[SupplierID] = @SupplierID
+			AND [Activity].[EventDateID] = @ActivityDate
+	END
+GO

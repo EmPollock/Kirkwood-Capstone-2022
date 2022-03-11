@@ -132,5 +132,46 @@ namespace LogicLayer
             }
             return result;
         }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Retrieve supplier availability on a given date by SupplierID 
+        /// First tries to get any availability exceptions for the given date.
+        /// If it fails to find any, then it retrieves the regular weekly availability.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of Availability objects</returns>
+        public List<Availability> RetrieveSupplierAvailabilityBySupplierIDAndDate(int supplierID, DateTime date)
+        {
+            List<Availability> supplierAvailabilities = new List<Availability>();
+
+            try
+            {
+                supplierAvailabilities = _supplierAccessor.SelectSupplierAvailabilityExceptionBySupplierIDAndDate(supplierID, date);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve supplier availability exceptions", ex);
+            }
+
+            // if failed to find any exceptions, get regular weekly availability
+            if (supplierAvailabilities.Count == 0)
+            {
+                try
+                {
+                    supplierAvailabilities = _supplierAccessor.SelectSupplierAvailabilityBySupplierIDAndDate(supplierID, date);
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("Failed to retrieve supplier availability", ex);
+                }
+            }
+
+            return supplierAvailabilities;
+        }
     }
 }

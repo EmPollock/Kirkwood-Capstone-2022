@@ -388,5 +388,64 @@ namespace DataAccessLayer
             catch (Exception ex) { throw ex; }
             return activeActivities;
         }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Returns a list of activities which are associated with a specific supplier
+        /// 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of activity objects</returns>
+        public List<Activity> SelectActivitiesBySupplierIDAndDate(int supplierID, DateTime date)
+        {
+            List<Activity> result = new List<Activity>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_activities_by_supplierID_and_date";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+            cmd.Parameters.Add("@ActivityDate", SqlDbType.Date);
+            cmd.Parameters["@ActivityDate"].Value = date;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(new Activity()
+                        {
+                            ActivityID = reader.GetInt32(0),
+                            ActivityName = reader.GetString(1),
+                            ActivityDescription = reader.GetString(2),
+                            PublicActivity = reader.GetBoolean(3),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            ActivityImageName = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            SublocationID = reader.GetInt32(7),
+                            EventDateID = DateTime.Parse(reader[8].ToString()),
+                            EventID = reader.GetInt32(9)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return result;
+        }
     }
 }
