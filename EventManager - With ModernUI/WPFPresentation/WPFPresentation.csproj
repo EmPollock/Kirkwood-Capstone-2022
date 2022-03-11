@@ -88,6 +88,9 @@
     </Compile>
     <Compile Include="IImageHelper.cs" />
     <Compile Include="ImageHelperDevelopment.cs" />
+    <Compile Include="Location\pgAddEditEntrance.xaml.cs">
+      <DependentUpon>pgAddEditEntrance.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Location\pgParkingLot.xaml.cs">
       <DependentUpon>pgParkingLot.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Event\pgViewEventDateActivities.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgAddEditEntrance.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

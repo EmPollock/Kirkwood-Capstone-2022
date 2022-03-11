@@ -53,6 +53,37 @@ namespace DataAccessFakes
         }
 
         /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/02/27
+        /// 
+        /// Description:
+        /// Insert fake entrance for testing
+        /// 
+        /// </summary>
+        /// <param name="locationID">ID of associated location</param>
+        /// <param name="entranceName">Name of entrance location</param>
+        /// <param name="description">Description of entrance, may include directions</param>
+        /// <returns>Number of rows inserted</returns>
+        public int InsertEntrance(int locationID, string entranceName, string description)
+        {
+            int rowsAffected = 0;
+            int entranceID = _fakeEntrances.Last().EntranceID + 1;
+
+
+            _fakeEntrances.Add(new Entrance()
+            {
+                EntranceID = entranceID,
+                LocationID = locationID,
+                EntranceName = entranceName,
+                Description = description
+            });
+
+            rowsAffected++;
+
+            return rowsAffected;
+        }
+
+        /// <summary>
         /// Mike Cahow
         /// Created: 2022/03/04
         /// 

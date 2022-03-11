@@ -41,6 +41,53 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/02/27
+        /// 
+        /// Description:
+        /// Creates an entrance
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="entranceName"></param>
+        /// <param name="description"></param>
+        /// <returns>Number of rows added</returns>
+        public int CreateEntrance(int locationID, string entranceName, string description)
+        {
+            int rowsAffected = 0;
+
+
+            if (entranceName == "" || entranceName == null)
+            {
+                throw new ApplicationException("Name can not be empty.");
+            }
+            if (entranceName.Length > 100)
+            {
+                throw new ApplicationException("Name can not be over 100 characters.");
+            }
+
+            if (description == "" || description == null)
+            {
+                throw new ApplicationException("Description can not empty.");
+            }
+            if (description.Length >= 255)
+            {
+                throw new ApplicationException("Description can not over 255 characters.");
+            }
+
+
+            try
+            {
+                rowsAffected = _entranceAccessor.InsertEntrance(locationID, entranceName, description);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
         /// Mike Cahow
         /// Created: 2022/03/04
         /// 
