@@ -13,5 +13,6 @@ namespace DataAccessInterfaces
         List<Sublocation> SelectSublocationsByLocationID(int locationID);
         int UpdateSublocation(Sublocation oldSublocation, Sublocation newSublocation);
         int InsertSublocationByLocationID(int locationID, string sublocationName, string sublocationDesc);
+        int DeactivateSublocationBySublocationID(int sublocationID);
     }
 }
