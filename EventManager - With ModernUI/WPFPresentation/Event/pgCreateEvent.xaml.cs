@@ -83,7 +83,6 @@ namespace WPFPresentation
             // https://stackoverflow.com/questions/17401488/how-to-disable-past-days-in-calender-in-wpf/45780931
             datePickerEventDate.DisplayDateStart = DateTime.Today;
             sldrNumVolunteers.Value = 25;
-            
 
             //disable tabs that should not be viewed
             tabAddEventDate.IsEnabled = false;
@@ -269,6 +268,12 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// 2022/03/12
+        /// Description:
+        /// Changes to update hour controls to combo boxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -281,7 +286,7 @@ namespace WPFPresentation
             {
                 if (textBox.Length == 2)
                 {
-                    txtBoxEventEndTimeMinute.Focus();
+                    //txtBoxEventEndTimeMinute.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
                 }
             }
@@ -299,6 +304,12 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// 2022/03/12
+        /// Description:
+        /// Changes to update hour controls to combo boxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -311,7 +322,7 @@ namespace WPFPresentation
             {
                 if (textBox.Length == 2)
                 {
-                    cmbEndTimeAMPM.Focus();
+                    //cmbEndTimeAMPM.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
                 }
             }
@@ -329,6 +340,12 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click handler for adding a date to an event
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// 2022/03/12
+        /// Description:
+        /// Changes to update hour controls to combo boxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -338,15 +355,7 @@ namespace WPFPresentation
             {
                 txtBlockEventAddValidationMessage.Text = "Please enter a date.";
                 txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-            }
-            else if (txtBoxEventStartTimeHour.Text == "" || 
-                            txtBoxEventStartTimeMinute.Text == "" || 
-                            txtBoxEventEndTimeHour.Text == "" || 
-                            txtBoxEventEndTimeMinute.Text == "")
-            {
-                txtBlockEventAddValidationMessage.Text = "Please enter times for your event to start and end.";
-                txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-            }
+            }            
             else
             {
                 DateTime dateTimeToAdd = new DateTime();
@@ -354,11 +363,11 @@ namespace WPFPresentation
                 int month = 0;
                 int day = 0;
                 int secconds = 0;
-                // am pm logic
-                int startHour = 0;
-                int startMin = 0;
-                int endHour = 0;
-                int endMin = 0;
+
+                int startHour = ucStartTime.Hour;
+                int startMin = ucStartTime.Minutes;
+                int endHour = ucEndTime.Hour;
+                int endMin = ucEndTime.Minutes;
 
                 try
                 {
@@ -366,78 +375,37 @@ namespace WPFPresentation
                     year = dateTimeToAdd.Year;
                     month = dateTimeToAdd.Month;
                     day = dateTimeToAdd.Day;
-                    secconds = 0;
-                    bool isAMHour;
 
-                    // add 12 if the start time is in the PM
-                    isAMHour = cmbStartTimeAMPM.Text == "AM";
-                    startHour = Int32.Parse(txtBoxEventStartTimeHour.Text).ConvertTo24HourTime(isAMHour);
-                    startMin = Int32.Parse(txtBoxEventStartTimeMinute.Text);
+                    // validate time
+                    IntegerValidationHelpers.ValidateStartTimeBeforeEndTime(startHour, startMin, endHour, endMin);
 
-                    // add 12 if the end time is in the PM
-                    isAMHour = cmbEndTimeAMPM.Text == "AM";
-                    endHour = Int32.Parse(txtBoxEventEndTimeHour.Text).ConvertTo24HourTime(isAMHour);
-                    endMin = Int32.Parse(txtBoxEventEndTimeMinute.Text);
+                    EventDate eventDate = new EventDate()
+                    {
+                        EventDateID = dateTimeToAdd,
+                        EventID = newEvent.EventID,
+                        StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
+                        EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
+                        Active = true
+                    };
+                    
+                    newEventVM.EventDates.Add(eventDate);
+
+                    // show event date summary table
+                    datCurrentEventDates.ItemsSource = null;
+                    datCurrentEventDates.ItemsSource = newEventVM.EventDates;
+                    datCurrentEventDates.Visibility = Visibility.Visible;
+                    txtBlkCurrentEventDates.Visibility = Visibility.Visible;
+
+                    // prepare form to add another date
+                    datePickerEventDate.SelectedDate = null;
+                    datePickerEventDate.BlackoutDates.Add(new CalendarDateRange(dateTimeToAdd));
+                    ucStartTime.Reset();
+                    ucEndTime.Reset();
+                    txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-
-                // check to see that one time comes after the other
-                if (startHour > endHour)
-                {
-                    txtBoxEventEndTimeHour.Focus();
-                    txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                }
-                else if (startHour == endHour && startMin >= endMin)
-                {   
-                    txtBoxEventEndTimeMinute.Focus();
-                    txtBlockEventAddValidationMessage.Text = "The end time is before the start time or at the same time. Please change.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                    
-                }
-                else
-                {
-                    try
-                    {
-                        EventDate eventDate = new EventDate()
-                        {
-                            EventDateID = dateTimeToAdd,
-                            EventID = newEvent.EventID,
-                            StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
-                            EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
-                            Active = true
-                        };
-
-                        //datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(eventID);
-                        newEventVM.EventDates.Add(eventDate);
-
-                        datCurrentEventDates.ItemsSource = null;
-                        datCurrentEventDates.ItemsSource = newEventVM.EventDates;
-                        
-                        
-                        datCurrentEventDates.Visibility = Visibility.Visible;
-                        txtBlkCurrentEventDates.Visibility = Visibility.Visible;
-
-                        // prepare form to add another date
-                        datePickerEventDate.SelectedDate = null;
-                        datePickerEventDate.BlackoutDates.Add(new CalendarDateRange(dateTimeToAdd));
-                        txtBoxEventStartTimeHour.Text = "";
-                        txtBoxEventStartTimeMinute.Text = "";
-                        cmbStartTimeAMPM.SelectedItem = "AM";
-                        txtBoxEventEndTimeHour.Text = "";
-                        txtBoxEventEndTimeMinute.Text = "";
-                        cmbEndTimeAMPM.SelectedItem = "AM";
-
-                        txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
-
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
                 }
             }
         }
@@ -715,5 +683,5 @@ namespace WPFPresentation
             }
         }
 
-    }
+    }    
 }
