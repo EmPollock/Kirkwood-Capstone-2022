@@ -20,5 +20,6 @@ namespace LogicLayerInterfaces
         List<Sublocation> RetrieveSublocationsByLocationID(int locationID);
         int EditSublocationBySublocationID(Sublocation oldSublocation, Sublocation newSublocation);
         int CreateSublocationByLocationID(int locationID, string sublocationName, string sublocationDesc);
+        int DeactivateSublocationBySublocationID(int sublocationID);
     }
 }
