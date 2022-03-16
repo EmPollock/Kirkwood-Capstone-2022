@@ -512,12 +512,21 @@ namespace WPFPresentation
         /// Description:
         /// Hide details turns all the buttons back to their defaul gray.
         /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated 2022/03/15
+        /// 
+        /// Description:
+        /// Added remaining scrollviews to the collapsed
+        /// 
         /// </summary>
         private void hideDetails()
         {
             scrLocationDetails.Visibility = Visibility.Collapsed;
             scrLocationSchedule.Visibility = Visibility.Collapsed;
             scrParkingLot.Visibility = Visibility.Collapsed;
+            scrSublocations.Visibility = Visibility.Collapsed;
+            scrViewEntrance.Visibility = Visibility.Collapsed;
 
             btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
