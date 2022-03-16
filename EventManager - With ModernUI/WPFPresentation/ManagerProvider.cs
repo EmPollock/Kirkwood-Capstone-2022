@@ -30,6 +30,7 @@ namespace WPFPresentation
         public IServiceManager ServiceManager { get; set; }
         public IParkingLotManager ParkingLotManager { get; set; }
         public IImageHelper ImageHelper { get; set; }
+        public IEntranceManager EntranceManager { get; set; }
 
         public ManagerProvider()
         {
@@ -46,6 +47,7 @@ namespace WPFPresentation
             VolunteerRequestManager = new VolunteerRequestManager();
             ServiceManager = new ServiceManager();
             ParkingLotManager = new ParkingLotManager();
+            EntranceManager = new EntranceManager();
 
 
             // Fake versions here
@@ -61,6 +63,7 @@ namespace WPFPresentation
             //VolunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
             //ServiceManager = new ServiceManager(new ServiceAccessorFake());
             //ParkingLotManager = new ParkingLotManager(new ParkingLotAccessorFake());
+            //EntranceManager = new EntranceManager(new EntranceAccessorFake());
 
 
             ImageHelper = new ImageHelperDevelopment();

@@ -92,16 +92,17 @@ namespace WPFPresentation
 
             // use default accessor
             //_locationManager = new LocationManager();
-            _eventDateManager = new EventDateManager();
-            _sublocationManager = new SublocationManager();
-            _activityManager = new ActivityManager();
-            _entranceManager = new EntranceManager();
+            //_eventDateManager = new EventDateManager();
+            //_sublocationManager = new SublocationManager();
+            //_activityManager = new ActivityManager();
+            //_entranceManager = new EntranceManager();
 
             _managerProvider = managerProvider;
             _locationManager = managerProvider.LocationManager;
             _eventDateManager = managerProvider.EventDateManager;
             _sublocationManager = managerProvider.SublocationManager;
             _activityManager = managerProvider.ActivityManager;
+            _entranceManager = managerProvider.EntranceManager;
 
             _locationID = locationID;
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
