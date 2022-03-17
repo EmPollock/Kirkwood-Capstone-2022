@@ -53,6 +53,7 @@
     <Compile Include="ISupplierAccessor.cs" />
     <Compile Include="ITaskAccessor.cs" />
     <Compile Include="IVolunteerAccessor.cs" />
+    <Compile Include="IVolunteerNeedAccessor.cs" />
     <Compile Include="IVolunteerRequestAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IUserAccessor.cs" />

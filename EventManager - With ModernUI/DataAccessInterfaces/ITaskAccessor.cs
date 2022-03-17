@@ -23,10 +23,16 @@ namespace DataAccessInterfaces
         /// 
         /// Description:
         /// An insert method for a new task into database
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/05
+        /// 
+        /// Description: modified to accept an extra
+        /// parameter during task creation.
         /// </summary>
         /// <param name="newTask"></param>
         /// <returns>int</returns>
-        int InsertTasks(Tasks newTask);
+        int InsertTasks(Tasks newTask, int numTotalVolunteers);
 
         /// <summary>
         /// Mike Cahow

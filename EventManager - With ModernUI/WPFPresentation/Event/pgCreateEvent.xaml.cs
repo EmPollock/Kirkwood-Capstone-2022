@@ -28,6 +28,8 @@ namespace WPFPresentation
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
         ISublocationManager _sublocationManager = null;
+        ITaskManager _taskManager = null;
+
         ManagerProvider _managerProvider = null;
         DataObjects.Event newEvent = null;
 
@@ -73,6 +75,7 @@ namespace WPFPresentation
             _eventManager = managerProvider.EventManager;
             _eventDateManager = managerProvider.EventDateManager;
             _locationManager = managerProvider.LocationManager;
+            _taskManager = managerProvider.TaskManager;
 
             _sublocationManager = managerProvider.SublocationManager;
             _user = user;
@@ -499,13 +502,19 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
+        /// Vinyak Deshpande
+        /// Created: 2022/01/29
+        /// Description: Allows the user to create a generic event after selecting the I need volunteers checkbox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void chkBxNeedVolunteers_Checked(object sender, RoutedEventArgs e)
         {
             txtBlkNumVolunteers.Visibility = Visibility.Visible;
             dcPnlNumVolunteers.Visibility = Visibility.Visible;
-            sldrNumVolunteers.Value = 25;
-            txtBlkNumVolunteerDescription.Visibility = Visibility.Visible;
-            txtBxNumVolunteerDescription.Visibility = Visibility.Visible;
+            sldrNumVolunteers.Value = 0;
+            btnRequestVolunteers.Visibility = Visibility.Visible;
 
         }
 
@@ -715,5 +724,48 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Added 2022/03/04
+        /// Description: Adds a generic event with the number of volunteers
+        /// the organziers would like on hand to use as needed.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRequestVolunteers_Click(object sender, RoutedEventArgs e)
+        {
+            int numTotalVolunteers = (int)sldrNumVolunteers.Value;
+            DataObjects.Tasks genericTask = new Tasks()
+            {
+                EventID = newEvent.EventID,
+                Name = "General Help",
+                Description = "Help out with the event as needed on the day of.",
+                // cboAssign variable,
+                DueDate = _eventDateManager.RetrieveEventDatesByEventID(newEvent.EventID).ElementAt(0).EventDateID,
+                Priority = 3
+            };
+            try
+            {
+                if(_taskManager.AddTask(genericTask, numTotalVolunteers))
+                {
+                    MessageBox.Show("Volunteers have been requested.");
+                    btnRequestVolunteers.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    MessageBox.Show("Request has failed!");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
+
+            
+
+        }
     }
 }

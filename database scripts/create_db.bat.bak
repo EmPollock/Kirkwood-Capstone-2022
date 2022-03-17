@@ -65,7 +65,7 @@ rem tags.sql requires supplier.sql
 rem review.sql requires supplier.sql and location.sql
 rem entrance.sql requires location.sql
 rem tables/parking_lot.sql requires location.sql
-rem tables/volunteer_need requires task.sql 	
+rem tables/volunteer_need requires task.sql
 
 REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 :: ************************

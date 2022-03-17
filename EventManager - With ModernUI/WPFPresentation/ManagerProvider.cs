@@ -30,7 +30,7 @@ namespace WPFPresentation
         public IServiceManager ServiceManager { get; set; }
         public IParkingLotManager ParkingLotManager { get; set; }
         public IImageHelper ImageHelper { get; set; }
-
+        public IVolunteerNeedManager NeedManager {get; set;}
         public ManagerProvider()
         {
             // Live versions here
@@ -46,6 +46,7 @@ namespace WPFPresentation
             VolunteerRequestManager = new VolunteerRequestManager();
             ServiceManager = new ServiceManager();
             ParkingLotManager = new ParkingLotManager();
+            NeedManager = new VolunteerNeedManager();
 
 
             // Fake versions here

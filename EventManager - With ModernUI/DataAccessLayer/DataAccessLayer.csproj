@@ -57,6 +57,7 @@
     <Compile Include="TaskAccessor.cs" />
     <Compile Include="UserAccessor.cs" />
     <Compile Include="VolunteerAccessor.cs" />
+    <Compile Include="VolunteerNeedAccessor.cs" />
     <Compile Include="VolunteerRequestAccessor.cs" />
   </ItemGroup>
   <ItemGroup>

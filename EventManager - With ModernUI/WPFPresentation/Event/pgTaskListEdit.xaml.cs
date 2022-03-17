@@ -26,9 +26,11 @@ namespace WPFPresentation.Event
     {
         DataObjects.TasksVM _task = null;
         DataObjects.EventVM _event = null;
+        DataObjects.VolunteerNeed _need = null;
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
         ISublocationManager _sublocationManager = null;
+        IVolunteerNeedManager _needManager = null;
         ManagerProvider _managerProvider = null;
 
         User _user = null;
@@ -66,6 +68,7 @@ namespace WPFPresentation.Event
             _taskManager = managerProvider.TaskManager;
             _eventManager = managerProvider.EventManager;
             _managerProvider = managerProvider;
+            _needManager = managerProvider.NeedManager;
 
             _task = selectedTask;
             _event = selectedEvent;
@@ -73,6 +76,7 @@ namespace WPFPresentation.Event
             _task.TaskEventName = _event.EventName;
             _task.EventID = _event.EventID;
             _user = user;
+            _need = _needManager.RetrieveVolunteerNeedByTaskID(_task.TaskID);
 
 
             InitializeComponent();
@@ -113,6 +117,7 @@ namespace WPFPresentation.Event
             cboAssign.SelectedItem = "Unavailable"; // pass up volunteer when available
             dtpTaskDueDate.SelectedDate = _task.DueDate;
             cboPriority.SelectedItem = _task.TaskPriority;
+            sldrNumVolunteers.Value = _need.NumTotalVolunteers;
         }
 
         /// <summary>
@@ -159,6 +164,11 @@ namespace WPFPresentation.Event
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/05
+        /// 
+        /// Description: Added logic to handle requesting a certain number of volunteers
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -185,10 +195,10 @@ namespace WPFPresentation.Event
                 TaskPriority = cboPriority.Text.ToString(),
                 Active = true
             };
-
+            int numTotalVolunteers = (int)sldrNumVolunteers.Value;
             try
             {
-                if(_taskManager.EditTask(_task, task))
+                if (_taskManager.EditTask(_task, task) && _needManager.UpdateVolunteerNeed(_need, numTotalVolunteers))
                 {
                     MessageBox.Show("Task updated");
                 }

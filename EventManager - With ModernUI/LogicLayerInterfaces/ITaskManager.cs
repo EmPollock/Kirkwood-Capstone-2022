@@ -23,10 +23,16 @@ namespace LogicLayerInterfaces
         /// 
         /// Description:
         /// Method that inserts a new task into the database
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/08
+        /// 
+        /// Description: Modified task creation to include number of needed
+        /// volunteers
         /// </summary>
         /// <param name="newTask"></param>
         /// <returns>bool result</returns>
-        bool AddTask(Tasks newTask);
+        bool AddTask(Tasks newTask, int numTotalVolunteers);
 
         /// <summary>
         /// Mike Cahow
