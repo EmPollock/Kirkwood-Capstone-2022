@@ -202,7 +202,7 @@ namespace WPFPresentation
                 Page page = new pgViewEvents(_user, _managerProvider);
                 this.NavigationService.Navigate(page);
             }
-            
+
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace WPFPresentation
                 {
                     txtBoxEventStartTimeMinute.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
-                } 
+                }
             }
             else
             {
@@ -358,7 +358,7 @@ namespace WPFPresentation
             {
                 txtBlockEventAddValidationMessage.Text = "Please enter a date.";
                 txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-            }            
+            }
             else
             {
                 DateTime dateTimeToAdd = new DateTime();
@@ -390,7 +390,7 @@ namespace WPFPresentation
                         EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
                         Active = true
                     };
-                    
+
                     newEventVM.EventDates.Add(eventDate);
 
                     // show event date summary table
@@ -445,7 +445,8 @@ namespace WPFPresentation
                     tabsetAddEventLocation.Focus();
                 }
             }
-            else { 
+            else
+            {
 
                 // add dates
                 try
@@ -466,7 +467,7 @@ namespace WPFPresentation
                 catch (Exception ex)
                 {
                     MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
-                }               
+                }
             }
         }
 
@@ -566,7 +567,7 @@ namespace WPFPresentation
                 txtBoxStreet.Focus();
             }
             else if (!ValidationHelpers.IsValidCityName(locationCity)) // added validation -jp
-            { 
+            {
                 txtBlockLocationValidationMessage.Text = "Please enter a valid city name";
                 txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
                 txtBoxCity.Focus();
@@ -582,7 +583,7 @@ namespace WPFPresentation
                 txtBlockLocationValidationMessage.Text = "Please enter a valid zip code";
                 txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
                 txtBoxZip.Focus();
-            } 
+            }
             else
             {
                 txtBlockLocationValidationMessage.Visibility = Visibility.Hidden;
@@ -691,9 +692,47 @@ namespace WPFPresentation
                 }
             }
         }
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Added 2022/03/04
+        /// Description: Adds a generic event with the number of volunteers
+        /// the organziers would like on hand to use as needed.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRequestVolunteers_Click(object sender, RoutedEventArgs e)
+        {
+            int numTotalVolunteers = (int)sldrNumVolunteers.Value;
+            DataObjects.Tasks genericTask = new Tasks()
+            {
+                EventID = newEvent.EventID,
+                Name = "General Help",
+                Description = "Help out with the event as needed on the day of.",
+                // cboAssign variable,
+                DueDate = _eventDateManager.RetrieveEventDatesByEventID(newEvent.EventID).ElementAt(0).EventDateID,
+                Priority = 3
+            };
+            try
+            {
+                if (_taskManager.AddTask(genericTask, numTotalVolunteers))
+                {
+                    MessageBox.Show("Volunteers have been requested.");
+                    btnRequestVolunteers.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    MessageBox.Show("Request has failed!");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
 
 
-            
+
 
         }
     }
