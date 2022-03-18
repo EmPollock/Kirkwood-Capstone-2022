@@ -88,13 +88,14 @@ namespace WPFPresentation
             _eventDateManager = new EventDateManager();
             _sublocationManager = new SublocationManager();
             _activityManager = new ActivityManager();
-            _entranceManager = new EntranceManager();
+            //_entranceManager = new EntranceManager();
 
             _managerProvider = managerProvider;
             _locationManager = managerProvider.LocationManager;
             _eventDateManager = managerProvider.EventDateManager;
             _sublocationManager = managerProvider.SublocationManager;
             _activityManager = managerProvider.ActivityManager;
+            _entranceManager = managerProvider.EntranceManager;
 
             _locationID = locationID;
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
@@ -1081,6 +1082,7 @@ namespace WPFPresentation
         private void btnSiteParking_Click(object sender, RoutedEventArgs e)
         {
             hideDetails();
+            hideEntrances();
             btnSiteParking.Background = new SolidColorBrush(Colors.Gray);
 
             //frmViewLocationDetails.Visibility = Visibility.Visible;

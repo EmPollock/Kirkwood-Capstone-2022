@@ -17,7 +17,7 @@ namespace LogicLayerTests
     /// Test Class to test the Tasks Logic Layer methods
     /// </summary>
     [TestClass]
-    public class _taskManagerTests
+    public class TaskManagerTests
     {
         private ITaskManager _taskManager = null;
 
@@ -302,7 +302,7 @@ namespace LogicLayerTests
                 TaskEventName = "Test Event 27",
                 Name = "Mop",
                 Description = "Test",
-                DueDate = DateTime.Today.AddDays(3),
+                DueDate = DateTime.Now,
                 Priority = 1,
                 TaskPriority = "Low",
                 Active = false
