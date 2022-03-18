@@ -31,7 +31,7 @@ namespace WPFPresentation
         public IParkingLotManager ParkingLotManager { get; set; }
         public IImageHelper ImageHelper { get; set; }
         public IEntranceManager EntranceManager { get; set; }
-
+        public IVolunteerNeedManager NeedManager { get; set; }
         public ManagerProvider()
         {
             // Live versions here
@@ -48,7 +48,7 @@ namespace WPFPresentation
             ServiceManager = new ServiceManager();
             ParkingLotManager = new ParkingLotManager();
             EntranceManager = new EntranceManager();
-
+            NeedManager = new VolunteerNeedManager();
 
             // Fake versions here
             //ActivityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
@@ -64,6 +64,7 @@ namespace WPFPresentation
             //ServiceManager = new ServiceManager(new ServiceAccessorFake());
             //ParkingLotManager = new ParkingLotManager(new ParkingLotAccessorFake());
             //EntranceManager = new EntranceManager(new EntranceAccessorFake());
+            //NeedManager = new VolunteerNeedManager(new VolunteerNeedAccessorFake());
 
 
             ImageHelper = new ImageHelperDevelopment();

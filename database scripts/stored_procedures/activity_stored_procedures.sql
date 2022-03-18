@@ -297,3 +297,80 @@ AS
 		WHERE [EventID] = @EventID
 	END	
 GO
+
+/***************************************************************
+Kris Howell
+Created: 2022/02/24
+
+Description:
+Select all activities occuring on a given date that a
+given supplier is associated with
+****************************************************************/
+print '' print '*** creating sp_select_activities_by_supplierID_and_date ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_activities_by_supplierID_and_date]
+(
+    @SupplierID     [int]
+	,@ActivityDate	[date]
+)
+AS
+	BEGIN
+		SELECT
+			[SupplierAttendance].[ActivityID]
+			,[ActivityName]
+			,[ActivityDescription]
+			,[PublicActivity]
+			,[StartTime]
+			,[EndTime]
+			,[ActivityImageName]
+			,[SublocationID]
+			,[EventDateID]
+			,[EventID]
+		FROM [dbo].[Activity]
+		JOIN [dbo].[SupplierAttendance]
+			ON [Activity].[ActivityID] = [SupplierAttendance].[ActivityID]
+		WHERE [SupplierAttendance].[SupplierID] = @SupplierID
+			AND [Activity].[EventDateID] = @ActivityDate
+	END
+GO
+
+/***************************************************************
+Vinayak Deshpande
+Created: 2022/03/14
+
+Description:
+Stored PROCEDURE that allows the user to remove an activity from
+a sublocation
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_update_activity_sublocation_by_activity_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_activity_sublocation_by_activity_id]
+(
+	@ActivityID 		[int],
+	@OldSublocationID	[int],
+	@SublocationID	[int]
+)
+AS
+	BEGIN
+		UPDATE [dbo].[Activity]
+		SET		
+			[SublocationID] = @SublocationID
+		WHERE 	
+			[ActivityID] = @ActivityID
+		  AND	
+			(
+				@OldSublocationID = [SublocationID] OR
+				(
+					@OldSublocationID IS NULL AND
+					[SublocationID] IS NULL
+				)
+			)
+		RETURN @@ROWCOUNT
+	END
+GO

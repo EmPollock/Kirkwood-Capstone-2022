@@ -53,6 +53,7 @@
     <Compile Include="ITaskManager.cs" />
     <Compile Include="IUserManager.cs" />
     <Compile Include="IVolunteerManager.cs" />
+    <Compile Include="IVolunteerNeedManager.cs" />
     <Compile Include="IVolunteerRequestManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -6,6 +6,7 @@ using LogicLayer;
 using LogicLayerInterfaces;
 using System.Collections.Generic;
 using DataAccessFakes;
+using System.Linq;
 
 namespace LogicLayerTests
 {
@@ -300,6 +301,123 @@ namespace LogicLayerTests
 
             //assert
             //error testing, nothing to do here
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitiesBySupplierID returns a correct
+        /// list of activities for the given supplier.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesBySupplierIDRetrievesCorrectList()
+        {
+            //arrange
+            const int supplierID = 100000;
+            DateTime date = new DateTime(2022, 01, 01);
+            List<ActivityVM> activities;
+            int actualCount = 2;
+            int expectedCount = 2;
+
+            // act
+            activities = _activityManager.RetrieveActivitiesBySupplierIDAndDate(supplierID, date);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitiesBySupplierID returns an empty list
+        /// when given a bad supplierID.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesBySupplierIDRetrievesEmptyListWithBadID()
+        {
+            // arrange
+            const int badID = 1;
+            DateTime date = new DateTime(2022, 01, 01);
+            List<ActivityVM> actualList;
+
+            // act
+            actualList = _activityManager.RetrieveActivitiesBySupplierIDAndDate(badID, date);
+
+            // assert
+            Assert.IsFalse(actualList.Any());
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/14
+        /// 
+        /// Description:
+        /// Test that updates activity sublocation and makes sure the method returns true when doing so.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateActivitySublocationByActivityIDReturnsTrue()
+        {
+            // arrange
+            const int activityID = 1000000;
+            const int oldSublocationID = 1000003;
+            const int newSublocationID = 1000004;
+
+            const bool expected = true;
+
+            // act
+            bool actual = _activityManager.UpdateActivitySublocationByActivityID(activityID, oldSublocationID, newSublocationID);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/14
+        /// 
+        /// Description:
+        /// Test that updates event location and makes sure the method returns false when provided a bad event ID.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateActivitySublocationByActivityIDReturnsFalseForBadActivityID()
+        {
+            // arrange
+            const int activityID = 2000;
+            const int oldSublocationID = 100000;
+            const int newSublocationID = 100001;
+
+            const bool expected = false;
+
+            // act
+            bool actual = _activityManager.UpdateActivitySublocationByActivityID(activityID, oldSublocationID, newSublocationID);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/14
+        /// 
+        /// Description:
+        /// Test that updates event location and makes sure the method returns false when provided a bad old location ID.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateActivitySublocationByActivityIDReturnsFalseForBadOldSublocationID()
+        {
+            // arrange
+            const int activityID = 1000000;
+            const int oldSublocationID = 200;
+            const int newSublocationID = 100001;
+
+            const bool expected = false;
+
+            // act
+            bool actual = _activityManager.UpdateActivitySublocationByActivityID(activityID, oldSublocationID, newSublocationID);
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }

@@ -351,59 +351,6 @@ namespace DataAccessLayer
         }
 
         /// <summary>
-        /// Austin Timmerman
-        /// Created: 2022/02/10
-        /// 
-        /// Description:
-        /// Accessor method that that selects the location availability matching the locationID provided and returns a location 
-        /// availability data object. Will be null if no location is found
-        /// </summary>
-        /// <param name="locationID"></param>
-        /// <returns>A Location object</returns>
-        public List<LocationAvailability> SelectLocationAvailability(int locationID)
-        {
-            List<LocationAvailability> locationAvailabilities = new List<LocationAvailability>();
-
-            var conn = DBConnection.GetConnection();
-            var cmdText = "sp_select_location_availability";
-
-            var cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
-            cmd.Parameters["@LocationID"].Value = locationID;
-
-            try
-            {
-                conn.Open();
-                var reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        locationAvailabilities.Add(new LocationAvailability()
-                        {
-                            AvailabilityID = reader.GetInt32(0),
-                            LocationID = reader.GetInt32(1),
-                            AvailableDay = reader.GetDateTime(2),
-                            AvailableTimeStart = DateTime.ParseExact(reader["AvailableTimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
-                            AvailableTimeEnd = DateTime.ParseExact(reader["AvailableTimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
-                        });
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                conn.Close();
-            }
-
-            return locationAvailabilities;
-        }
-
-        /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/24
         /// 
@@ -439,6 +386,125 @@ namespace DataAccessLayer
             }
 
             return rowsAffected;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Select regular weekly availability records matching the given locationID and date.
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of availability objects for a Location on a given date</returns>
+        public List<Availability> SelectLocationAvailabilityByLocationIDAndDate(int locationID, DateTime date)
+        {
+            List<Availability> locationAvailabilities = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_by_locationID_and_date";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters["@LocationID"].Value = locationID;
+            cmd.Parameters.Add("@AvailabilityDate", SqlDbType.Date);
+            cmd.Parameters["@AvailabilityDate"].Value = date;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        locationAvailabilities.Add(new Availability()
+                        {
+                            ForeignID = locationID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return locationAvailabilities;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Select one-off availability exception records matching the given locationID and date.
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of availability objects for a Location on a given date</returns>
+        public List<Availability> SelectLocationAvailabilityExceptionByLocationIDAndDate(int locationID, DateTime date)
+        {
+            List<Availability> locationAvailabilities = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_exception_by_locationID_and_date";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters["@LocationID"].Value = locationID;
+            cmd.Parameters.Add("@ExceptionDate", SqlDbType.Date);
+            cmd.Parameters["@ExceptionDate"].Value = date;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.IsDBNull(1))
+                        {
+                            // null start time in DB means user made exception to have no availability on this date
+                            // return blank availability object so that no availability is displayed on this date per the exception
+                            return new List<Availability>(){
+                                new Availability()
+                                {
+                                    ForeignID = locationID,
+                                    AvailabilityID = reader.GetInt32(0)
+                                }
+                            };
+                        }
+
+                        locationAvailabilities.Add(new Availability()
+                        {
+                            ForeignID = locationID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return locationAvailabilities;
         }
     }
 }

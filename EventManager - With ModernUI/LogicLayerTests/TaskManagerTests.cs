@@ -50,7 +50,7 @@ namespace LogicLayerTests
             bool actualResult;
 
             //act
-            actualResult = _taskManager.AddTask(task);
+            actualResult = _taskManager.AddTask(task, 1);
 
             //assert
             Assert.AreEqual(expectedResult, actualResult);
@@ -78,7 +78,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -107,7 +107,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -136,7 +136,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -165,7 +165,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -194,7 +194,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception

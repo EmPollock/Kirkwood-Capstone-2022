@@ -249,10 +249,10 @@ GO
 /				 for a specific eventID
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Vinayak Deshpande
+/ Updated: 2022/03/05
 /
-/ Description: 
+/ Description: Task creation now returns the scope identity
 ****************************************************************/
 
 print '' print '*** creating sp_insert_new_task_by_eventID...'
@@ -274,7 +274,7 @@ AS
 			VALUES
 				(@Name, @Description, @DueDate,
 					@Priority, @EventID)
-	
+			SELECT  SCOPE_IDENTITY()
 	END
 GO
 

@@ -12,6 +12,54 @@ namespace DataAccessLayer
 {
     public class EntranceAccessor : IEntranceAccessor
     {
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Insert entrance into tadpole_db
+        /// 
+        /// </summary>
+        /// <param name="locationID">ID of associated location</param>
+        /// <param name="entranceName">Name of entrance location</param>
+        /// <param name="description">Description of entrance, may include directions</param>
+        /// <returns>Number of rows inserted</returns>
+        public int InsertEntrance(int locationID, string entranceName, string description)
+        {
+            int rowsAffected = 0;
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_insert_entrance";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters.Add("@EntranceName", SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 255);
+
+            cmd.Parameters["@LocationID"].Value = locationID;
+            cmd.Parameters["@EntranceName"].Value = entranceName;
+            cmd.Parameters["@Description"].Value = description;
+
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return rowsAffected;
+        }
 
         /// <summary>
         /// Mike Cahow

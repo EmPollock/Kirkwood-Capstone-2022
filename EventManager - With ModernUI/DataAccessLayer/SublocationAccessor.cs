@@ -13,6 +13,42 @@ namespace DataAccessLayer
     public class SublocationAccessor : ISublocationAccessor
     {
         /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Deactivates a sublocation from sublocation table.
+        /// </summary>
+        /// <param name="sublocationID">ID of sublocation to be deleted.</param>
+        /// <returns></returns>
+        public int DeactivateSublocationBySublocationID(int sublocationID)
+        {
+            int result = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_deactivate_sublocation";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SublocationID", SqlDbType.Int);
+
+            cmd.Parameters["@SublocationID"].Value = sublocationID;
+
+            try
+            {
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Logan Baccam
         /// Created: 2022/02/26
         /// 

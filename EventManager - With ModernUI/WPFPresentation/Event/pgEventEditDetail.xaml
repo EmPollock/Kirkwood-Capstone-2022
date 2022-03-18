@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WPFPresentation.Event"
+      xmlns:local="clr-namespace:WPFPresentation.Event" xmlns:uc="clr-namespace:WPFPresentation.CustomControls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="pgEventEditDetail" Loaded="Page_Loaded">
@@ -142,25 +142,30 @@
 
                         <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Start Time:</TextBlock>
                         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
-                            <TextBox x:Name="txtBoxEventStartTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventStartTimeHour_TextChanged" ></TextBox>
+                            <!--<TextBox x:Name="txtBoxEventStartTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventStartTimeHour_TextChanged" ></TextBox>
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" VerticalAlignment="Center" >:</TextBlock>
                             <TextBox x:Name="txtBoxEventStartTimeMinute" Margin="10px" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" Height="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventStartTimeMinute_TextChanged" ></TextBox>
                             <ComboBox x:Name="cmbStartTimeAMPM" VerticalAlignment="Center" Margin="10" >
                                 <ComboBoxItem IsSelected="True">AM</ComboBoxItem>
                                 <ComboBoxItem>PM</ComboBoxItem>
-                            </ComboBox>
+                            </ComboBox>-->
+
+                            <uc:TimeComboBoxes x:Name="ucStartTime"/>
+
                         </StackPanel>
 
 
                         <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">End  Time:</TextBlock>
                         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-                            <TextBox x:Name="txtBoxEventEndTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeHour_TextChanged" ></TextBox>
+                            <!--<TextBox x:Name="txtBoxEventEndTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeHour_TextChanged" ></TextBox>
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" VerticalAlignment="Center" >:</TextBlock>
                             <TextBox x:Name="txtBoxEventEndTimeMinute" Margin="10px" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" Height="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeMinute_TextChanged"></TextBox>
                             <ComboBox x:Name="cmbEndTimeAMPM" VerticalAlignment="Center" Margin="10" >
                                 <ComboBoxItem IsSelected="True">AM</ComboBoxItem>
                                 <ComboBoxItem>PM</ComboBoxItem>
-                            </ComboBox>
+                            </ComboBox>-->
+                            <uc:TimeComboBoxes x:Name="ucEndTime"/>
+                        
                         </StackPanel>
 
 

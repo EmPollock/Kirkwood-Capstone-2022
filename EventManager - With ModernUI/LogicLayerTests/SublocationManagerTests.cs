@@ -367,5 +367,47 @@ namespace LogicLayerTests
             //assert
 
         }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/03/03
+        /// 
+        /// Description:
+        /// Tests that DeactivateSublocationBySublocationID returns 1 when the argument matches a sublocationID.
+        /// </summary>
+        [TestMethod]
+        public void TestDeactivateSublocationBySublocationIDReturnsCorrectValue()
+        {
+            const int sublocationID = 1000001;
+            const int expected = 1;
+            int result;
+
+            //act
+            result = _sublocationManager.DeactivateSublocationBySublocationID(sublocationID);
+
+            //assert
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created 2022/03/03
+        /// 
+        /// Description:
+        /// Tests that DeactivateSublocationBySublocationID returns 0 when there are no matching rows
+        /// </summary>
+        [TestMethod]
+        public void TestDeactivateSublocationBySublocationIDReturnsZeroForBadValue()
+        {
+            const int sublocationID = 10;
+            const int expected = 0;
+            int result;
+
+            //act
+            result = _sublocationManager.DeactivateSublocationBySublocationID(sublocationID);
+
+            //assert
+            Assert.AreEqual(expected, result);
+        }
     }
 }

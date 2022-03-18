@@ -7,6 +7,7 @@ using DataAccessInterfaces;
 using DataObjects;
 using System.Data.SqlClient;
 using System.Data;
+using System.Globalization;
 
 namespace DataAccessLayer
 {
@@ -226,6 +227,125 @@ namespace DataAccessLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Select regular weekly availability records matching the given supplierID and date.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of availability objects for a Supplier on a given date</returns>
+        public List<Availability> SelectSupplierAvailabilityBySupplierIDAndDate(int supplierID, DateTime date)
+        {
+            List<Availability> supplierAvailabilities = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_by_supplierID_and_date";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+            cmd.Parameters.Add("@AvailabilityDate", SqlDbType.Date);
+            cmd.Parameters["@AvailabilityDate"].Value = date;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        supplierAvailabilities.Add(new Availability()
+                        {
+                            ForeignID = supplierID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return supplierAvailabilities;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Select one-off availability exception records matching the given supplierID and date.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of availability objects for a Supplier on a given date</returns>
+        public List<Availability> SelectSupplierAvailabilityExceptionBySupplierIDAndDate(int supplierID, DateTime date)
+        {
+            List<Availability> supplierAvailabilities = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_exception_by_supplierID_and_date";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+            cmd.Parameters.Add("@ExceptionDate", SqlDbType.Date);
+            cmd.Parameters["@ExceptionDate"].Value = date;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.IsDBNull(1))
+                        {
+                            // null start time in DB means user made exception to have no availability on this date
+                            // return blank availability object so that no availability is displayed on this date per the exception
+                            return new List<Availability>(){
+                                new Availability()
+                                {
+                                    ForeignID = supplierID,
+                                    AvailabilityID = reader.GetInt32(0)
+                                }
+                            };
+                        }
+
+                        supplierAvailabilities.Add(new Availability()
+                        {
+                            ForeignID = supplierID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return supplierAvailabilities;
         }
     }
 }

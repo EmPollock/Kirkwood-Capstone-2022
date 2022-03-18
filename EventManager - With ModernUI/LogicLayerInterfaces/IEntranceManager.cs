@@ -9,6 +9,7 @@ namespace LogicLayerInterfaces
 {
     public interface IEntranceManager
     {
+        int CreateEntrance(int locationID, string entranceName, string description);
         List<Entrance> RetrieveEntranceByLocationID(int locationID);
     }
 }

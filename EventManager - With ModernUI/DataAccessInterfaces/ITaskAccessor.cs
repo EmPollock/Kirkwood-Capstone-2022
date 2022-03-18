@@ -11,7 +11,7 @@ namespace DataAccessInterfaces
     
     public interface ITaskAccessor
     {
-        int InsertTasks(Tasks newTask);
+        int InsertTasks(Tasks newTask, int numTotalVolunteers);
         int UpdateTasks(Tasks oldTask, Tasks newTask);
         List<Priority> SelectAllPriorities();
         List<TasksVM> SelectAllActiveTasksByEventID(int eventID);

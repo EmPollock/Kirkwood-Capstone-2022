@@ -28,6 +28,13 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Constructor for task manager using the task accessor
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/05
+        /// 
+        /// Description: modified to accept an extra
+        /// parameter during task creation.
+        ///
         /// </summary>
         public TaskManager()
         {
@@ -56,7 +63,7 @@ namespace LogicLayer
         /// </summary>
         /// <param name="newtask"></param>
         /// <returns>bool result that returns true if successful</returns>
-        public bool AddTask(Tasks newtask)
+        public bool AddTask(Tasks newtask, int numTotalVolunteers)
         {
             bool result = false;
 
@@ -88,7 +95,7 @@ namespace LogicLayer
 
             try
             {
-                result = (1 == _taskAccessor.InsertTasks(newtask));
+                result = (1 == _taskAccessor.InsertTasks(newtask, numTotalVolunteers));
             }
             catch (Exception)
             {
