@@ -383,5 +383,29 @@ namespace DataAccessFakes
 
             return result;
         }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/14
+        /// 
+        /// Description: Update activity sublocation
+        /// </summary>
+        /// <param name="activityID"></param>
+        /// <param name="oldSublocationID"></param>
+        /// <param name="newSublocationID"></param>
+        /// <returns></returns>
+        public int UpdateActivitySublocationByActivityID(int activityID, int? oldSublocationID, int? newSublocationID)
+        {
+            int rowsAffected = 0;
+            foreach (var fakeActivity in _fakeActivites)
+            {
+                if (fakeActivity.ActivityID == activityID && fakeActivity.SublocationID == oldSublocationID)
+                {
+                    fakeActivity.SublocationID = (int)newSublocationID;
+                    rowsAffected++;
+                }
+            }
+            return rowsAffected;
+        }
     }
 }

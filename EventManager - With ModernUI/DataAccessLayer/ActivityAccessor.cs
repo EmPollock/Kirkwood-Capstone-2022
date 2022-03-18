@@ -447,5 +447,63 @@ namespace DataAccessLayer
 
             return result;
         }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/14
+        /// 
+        /// Description: Allows user to either assign a new sublocation or remove a sublocation entirely from an activity.
+        /// </summary>
+        /// <param name="activityID"></param>
+        /// <param name="oldSublocationID"></param>
+        /// <param name="newSublocationID"></param>
+        /// <returns></returns>
+        public int UpdateActivitySublocationByActivityID(int activityID, int? oldSublocationID, int? newSublocationID)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_update_activity_sublocation_by_activity_id";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@ActivityID", activityID);
+            if (oldSublocationID is null)
+            {
+                cmd.Parameters.Add("@OldSublocationID", SqlDbType.Int);
+                cmd.Parameters["@OldSublocationID"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@OldSublocationID", SqlDbType.Int);
+                cmd.Parameters["@OldSublocationID"].Value = oldSublocationID;
+            }
+            if (newSublocationID is null)
+            {
+
+                cmd.Parameters.Add("@SublocationID", SqlDbType.Int);
+                cmd.Parameters["@SublocationID"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@SublocationID", SqlDbType.Int);
+                cmd.Parameters["@SublocationID"].Value = newSublocationID;
+            }
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return rowsAffected;
+        }
     }
 }

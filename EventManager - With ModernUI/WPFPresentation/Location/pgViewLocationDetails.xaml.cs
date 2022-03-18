@@ -34,6 +34,7 @@ namespace WPFPresentation
         ISublocationManager _sublocationManager;
         IActivityManager _activityManager;
         IEntranceManager _entranceManager;
+        IEventManager _eventManager;
         ManagerProvider _managerProvider;
         
         DataObjects.Location _location;
@@ -103,6 +104,7 @@ namespace WPFPresentation
             _sublocationManager = managerProvider.SublocationManager;
             _activityManager = managerProvider.ActivityManager;
             _entranceManager = managerProvider.EntranceManager;
+            _eventManager = managerProvider.EventManager;
 
             _locationID = locationID;
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
@@ -1411,6 +1413,66 @@ namespace WPFPresentation
                     MessageBox.Show("Failed to delete sublocation: \n\n\n\n\n" + ex.Message);
                 }
             }
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created 2022/03/01
+        /// 
+        /// Description: Button to delete the schedule item in the same line
+        /// </summary>
+        private void btnDeleteScheduleItem_Click(object sender, RoutedEventArgs e)
+        {
+            EventDateVM selectedEventDateVM = new EventDateVM();
+            Activity selectedActivity = new Activity();
+            int selectedEventID = 0;
+            bool isEvent = true;
+            if (datLocationSchedule.SelectedItem.GetType().Equals(selectedEventDateVM.GetType()))
+            {
+                selectedEventDateVM = (EventDateVM)datLocationSchedule.SelectedItem;
+                selectedEventID = selectedEventDateVM.EventID;
+                isEvent = true;
+            }
+            else if (datLocationSchedule.SelectedItem.GetType().Equals(selectedActivity.GetType()))
+            {
+                selectedActivity = (Activity)datLocationSchedule.SelectedItem;
+                selectedEventID = selectedActivity.ActivityID;
+                isEvent = false;
+            }
+
+            if (MessageBox.Show("Delete Schedule Item", "Are You Sure?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                MessageBox.Show("Scheduled Item was not Deleted.");
+            }
+            else
+            {
+                try
+                {
+                    if (isEvent)
+                    {
+                        _eventManager.UpdateEventLocationByEventID(selectedEventID, _locationID, null);
+                        _eventDatesForLocation.Remove(selectedEventDateVM);
+                    }
+                    else
+                    {
+                        _activityManager.UpdateActivitySublocationByActivityID(selectedEventID, _sublocationID, null);
+                        _activitiesForSublocation.Remove(selectedActivity);
+                    }
+                    _eventManager.UpdateEventLocationByEventID(selectedEventID, _locationID, null);
+                    _eventDatesForLocation.Remove(selectedEventDateVM);
+                    loadCalendarData();
+                    loadLocationSchedule();
+                    loadSublocationSchedule();
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show("Could not Delete Schedule Item!", ex.Message);
+                }
+            }
+
+
+
         }
     }
 }

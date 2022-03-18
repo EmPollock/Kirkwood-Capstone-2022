@@ -128,7 +128,15 @@ namespace LogicLayer
                     List<ActivityResult> activityResults = _activityResultAccessor.SelectActivityResultsByActivityID(activity.ActivityID);
 
                     //set ActivitySublocation
-                    Sublocation activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID(activity.SublocationID);
+                    Sublocation activitySublocation;
+                    if (activity.SublocationID.HasValue)
+                    {
+                        activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID((int)activity.SublocationID);
+                    }
+                    else
+                    {
+                        activitySublocation = null;
+                    }
 
                     //set EventDate
                     EventDate activityEventDate = _eventDateAccessor.SelectEventDateByEventDateIDAndEventID(activity.EventDateID, eventID);
@@ -183,7 +191,15 @@ namespace LogicLayer
                     List<ActivityResult> activityResults = _activityResultAccessor.SelectActivityResultsByActivityID(activity.ActivityID);
 
                     //set ActivitySublocation
-                    Sublocation activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID(activity.SublocationID);
+                    Sublocation activitySublocation;
+                    if (activity.SublocationID.HasValue)
+                    {
+                        activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID((int)activity.SublocationID);
+                    }
+                    else
+                    {
+                        activitySublocation = null;
+                    }
 
                     //set EventDate
                     EventDate activityEventDate = _eventDateAccessor.SelectEventDateByEventDateIDAndEventID(activity.EventDateID, eventID);
@@ -284,7 +300,15 @@ namespace LogicLayer
                     List<ActivityResult> activityResults = _activityResultAccessor.SelectActivityResultsByActivityID(activity.ActivityID);
 
                     //set ActivitySublocation
-                    Sublocation activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID(activity.SublocationID);
+                    Sublocation activitySublocation;
+                    if (activity.SublocationID.HasValue)
+                    {
+                        activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID((int)activity.SublocationID);
+                    }
+                    else
+                    {
+                        activitySublocation = null;
+                    }
 
                     //set EventDate
                     EventDate activityEventDate = _eventDateAccessor.SelectEventDateByEventDateIDAndEventID(activity.EventDateID, activity.EventID);
@@ -314,5 +338,32 @@ namespace LogicLayer
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/14
+        /// 
+        /// Description: Allows for changing of sublocation id to new or null
+        /// </summary>
+        /// <param name="activityID"></param>
+        /// <param name="oldSublocationID"></param>
+        /// <param name="newSublocationID"></param>
+        /// <returns></returns>
+        public bool UpdateActivitySublocationByActivityID(int activityID, int? oldSublocationID, int? newSublocationID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = 1 == _activityAccessor.UpdateActivitySublocationByActivityID(activityID, oldSublocationID, newSublocationID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to update activity sublocation", ex);
+            }
+
+            return result;
+        }
+
     }
 }

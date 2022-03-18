@@ -17,5 +17,6 @@ namespace DataAccessInterfaces
         List<ActivityVM> SelectActivitiesPastAndUpcomingDates();
         List<ActivityVM> SelectUserActivitiesPastAndUpcomingDates(int userID);
         List<Activity> SelectActivitiesBySupplierIDAndDate(int supplierID, DateTime date);
+        int UpdateActivitySublocationByActivityID(int activityID, int? oldSublocationID, int? newSublocationID);
     }
 }
