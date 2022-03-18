@@ -9,6 +9,30 @@ namespace WPFPresentation
 {
     public static class ValidationHelpers
     {
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/11
+        /// 
+        /// Description:
+        /// Boolean value for checking if we are currently editing. Made public by EditOngoing.
+        /// </summary>
+        private static bool editing = false;
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/11
+        /// 
+        /// Description:
+        /// Boolean value for checking if we are currently editing. 
+        /// </summary>
+        public static bool EditOngoing {
+            get {
+                return editing;
+            }
+            set
+            {
+                editing = value;
+            }
+        }
 
         /// <summary>
         /// Christopher Repko

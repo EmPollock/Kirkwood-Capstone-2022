@@ -75,5 +75,35 @@ namespace WPFPresentation
             return hour;
         }
 
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Validation method for determining if the start time is before the end time
+        /// </summary>
+        /// <param name="startHour"></param>
+        /// <param name="startMinutes"></param>
+        /// <param name="endHour"></param>
+        /// <param name="endMinutes"></param>
+        /// <returns></returns>
+        public static bool ValidateStartTimeBeforeEndTime(int startHour, int startMinutes, int endHour, int endMinutes)
+        {
+            bool result = false;
+
+            // check to see that one time comes after the other
+            if (startHour > endHour)
+            {                
+                throw new ApplicationException("The end time is before the start time. Please change.");                
+            }
+            else if (startHour == endHour && startMinutes >= endMinutes)
+            {
+                throw new ApplicationException("The end time is before the start time or at the same time. Please change.");
+            }
+
+            return result;
+        }
+
+
     }
 }

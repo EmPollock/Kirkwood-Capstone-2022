@@ -72,7 +72,8 @@ AS
 			,[Active]	
 			,[SublocationID]			
 		FROM [dbo].[Sublocation]
-		WHERE [LocationID] = @LocationID
+		WHERE [LocationID] = @LocationID AND
+			[Active] = 1
 	END	
 GO
 
@@ -110,5 +111,31 @@ AS
 		WHERE [LocationID] = @OldLocationID AND
 			[SublocationName] = @OldSublocationName AND
 			[SublocationDescription] = @OldSublocationDescription
+	END	
+GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/03/03
+
+Description:
+Stored procedure to update a sublocation record
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_deactivate_sublocation'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_sublocation](
+	@SublocationID				[int]
+)
+AS
+	BEGIN
+		UPDATE [dbo].[Sublocation]
+			SET [Active] = 0
+		WHERE [SublocationID] = @SublocationID
 	END	
 GO

@@ -47,7 +47,6 @@ namespace WPFPresentation
 
         Uri _src;
         int _imageNumber = 0;
-        bool editingLocationAreas = false;
 
         User _user;
         int _where = 0;
@@ -93,16 +92,17 @@ namespace WPFPresentation
 
             // use default accessor
             //_locationManager = new LocationManager();
-            _eventDateManager = new EventDateManager();
-            _sublocationManager = new SublocationManager();
-            _activityManager = new ActivityManager();
-            _entranceManager = new EntranceManager();
+            //_eventDateManager = new EventDateManager();
+            //_sublocationManager = new SublocationManager();
+            //_activityManager = new ActivityManager();
+            //_entranceManager = new EntranceManager();
 
             _managerProvider = managerProvider;
             _locationManager = managerProvider.LocationManager;
             _eventDateManager = managerProvider.EventDateManager;
             _sublocationManager = managerProvider.SublocationManager;
             _activityManager = managerProvider.ActivityManager;
+            _entranceManager = managerProvider.EntranceManager;
 
             _locationID = locationID;
             _location = _locationManager.RetrieveLocationByLocationID(locationID);
@@ -157,7 +157,7 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationDetails()
         {
-            if (editingLocationAreas)
+            if (ValidationHelpers.EditOngoing)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
@@ -166,7 +166,7 @@ namespace WPFPresentation
                 }
                 else
                 {
-                    editingLocationAreas = false;
+                    ValidationHelpers.EditOngoing = false;
                 }
             }
             hideDetails();
@@ -414,7 +414,7 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationSchedule()
         {
-            if (editingLocationAreas)
+            if (ValidationHelpers.EditOngoing)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
@@ -423,7 +423,7 @@ namespace WPFPresentation
                 }
                 else
                 {
-                    editingLocationAreas = false;
+                    ValidationHelpers.EditOngoing = false;
                 }
             }
             hideDetails();
@@ -513,12 +513,21 @@ namespace WPFPresentation
         /// Description:
         /// Hide details turns all the buttons back to their defaul gray.
         /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated 2022/03/15
+        /// 
+        /// Description:
+        /// Added remaining scrollviews to the collapsed
+        /// 
         /// </summary>
         private void hideDetails()
         {
             scrLocationDetails.Visibility = Visibility.Collapsed;
             scrLocationSchedule.Visibility = Visibility.Collapsed;
             scrParkingLot.Visibility = Visibility.Collapsed;
+            scrSublocations.Visibility = Visibility.Collapsed;
+            scrViewEntrance.Visibility = Visibility.Collapsed;
 
             btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
@@ -662,6 +671,18 @@ namespace WPFPresentation
         /// <param name="sender"></param>
         private void btnSiteSchedule_Click(object sender, RoutedEventArgs e)
         {
+            if (ValidationHelpers.EditOngoing)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    ValidationHelpers.EditOngoing = false;
+                }
+            }
             hideDetails();
             hideEntrances();
             hideSublocations();
@@ -797,19 +818,21 @@ namespace WPFPresentation
         /// <param name="e"></param>
         private void btnSiteAreas_Click(object sender, RoutedEventArgs e)
         {
-            btnCancelEditAreas.Visibility = Visibility.Collapsed;
-            btnSaveAreas.Visibility = Visibility.Collapsed;
-            if (editingLocationAreas)
+            if (ValidationHelpers.EditOngoing)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                 {
                     return;
-                } else
+                }
+                else
                 {
-                    editingLocationAreas = false;
+                    ValidationHelpers.EditOngoing = false;
                 }
             }
+            btnCancelEditAreas.Visibility = Visibility.Collapsed;
+            btnSaveAreas.Visibility = Visibility.Collapsed;
+            
             this.hideDetails();
             this.hideEntrances();
             btnSiteAreas.Background = new SolidColorBrush(Colors.Gray);
@@ -848,11 +871,13 @@ namespace WPFPresentation
             txtSublocationDescription.IsReadOnly = true;
             txtSublocationName.IsReadOnly = true;
             lblLocationAreasMainName.Content = _location.Name;
+            txtSublocationName.Visibility = Visibility.Hidden;
+            btnDelete0.Visibility = Visibility.Hidden;
             // Purge elements from previous renders
-            for(int i = 0; i < grdSublocationsRows.Children.Count; i++)
+            for (int i = 0; i < grdSublocationsRows.Children.Count; i++)
             {
                 UIElement element = grdSublocationsRows.Children[i];
-                if(element != lblSublocationName && element != txtSublocationDescription && element != txtSublocationName)
+                if(element != lblSublocationName && element != txtSublocationDescription && element != txtSublocationName && element != btnDelete0)
                 {
                     grdSublocationsRows.Children.Remove(element);
                     i--;
@@ -861,6 +886,9 @@ namespace WPFPresentation
                         if(element is TextBox text)
                         {
                             UnregisterName(text.Name);
+                        } else if(element is Button btn)
+                        {
+                            UnregisterName(btn.Name);
                         }
                     } catch(Exception)
                     {
@@ -872,7 +900,6 @@ namespace WPFPresentation
             {
                 lblSublocationName.Content = _sublocations[0].SublocationName;
                 txtSublocationDescription.Text = _sublocations[0].SublocationDescription;
-                txtSublocationName.Visibility = Visibility.Hidden;
 
                 for(int i = 1; i < _sublocations.Count; i++)
                 {
@@ -889,7 +916,7 @@ namespace WPFPresentation
 
                     TextBox nameText = new TextBox();
                     nameText.Text = _sublocations[i].SublocationName;
-                    nameText.Margin = new Thickness(0, 10, 30, 105);
+                    nameText.Margin = new Thickness(0, 10, 100, 105);
                     nameText.IsReadOnly = true;
                     nameText.Visibility = Visibility.Hidden;
                     nameText.Name = "txtSublocationName" + i;
@@ -902,6 +929,16 @@ namespace WPFPresentation
                     descriptionText.Name = "txtSublocationDescription" + i;
                     descriptionText.TextWrapping = TextWrapping.Wrap;
 
+                    Button delete = new Button();
+                    delete.Content = "Delete";
+                    delete.Visibility = Visibility.Hidden;
+                    delete.HorizontalAlignment = HorizontalAlignment.Right;
+                    delete.VerticalAlignment = VerticalAlignment.Top;
+                    delete.Margin = new Thickness(0, 10, 30, 0);
+                    delete.Height = 30;
+                    delete.Click += new RoutedEventHandler((sender, e) => btnDelete0_Click(sender, e));
+                    delete.Name = "btnDelete" + i;
+
 
                     Grid.SetRow(nameLabel, i);
                     Grid.SetColumnSpan(nameLabel, 2);
@@ -909,15 +946,21 @@ namespace WPFPresentation
                     Grid.SetColumnSpan(descriptionText, 2);
                     Grid.SetRow(nameText, i);
                     Grid.SetColumn(nameText, 1);
+                    Grid.SetRow(delete, i);
+                    Grid.SetColumn(delete, 1);
                     grdSublocationsRows.Children.Add(nameLabel);
                     grdSublocationsRows.Children.Add(descriptionText);
                     grdSublocationsRows.Children.Add(nameText);
+                    grdSublocationsRows.Children.Add(delete);
                     RegisterName(descriptionText.Name, descriptionText);
                     RegisterName(nameText.Name, nameText);
+                    RegisterName(delete.Name, delete);
+
                 }
             } else
             {
                 lblSublocationName.Content = "No sublocations found.";
+                txtSublocationDescription.Text = "";
                 btnEdit.IsEnabled = false;
             }
         }
@@ -958,11 +1001,17 @@ namespace WPFPresentation
                     textbox.IsReadOnly = false;
                     textbox.IsEnabled = true;
                     textbox.Visibility = Visibility.Visible;
+                } else if(element is Button btn)
+                {
+                    if(btn.Name.Contains("btnDelete"))
+                    {
+                        btn.Visibility = Visibility.Visible;
+                    }
                 }
             }
             // Need to manually update this.
             txtSublocationName.Text = _sublocations[0].SublocationName;
-            editingLocationAreas = true;
+            ValidationHelpers.EditOngoing = true;
         }
 
         /// <summary>
@@ -1042,7 +1091,7 @@ namespace WPFPresentation
                         }
                     }
                 }
-                editingLocationAreas = false;
+                ValidationHelpers.EditOngoing = false;
                 btnSiteAreas_Click(sender, e);
             } catch(Exception ex)
             {
@@ -1103,6 +1152,18 @@ namespace WPFPresentation
         /// <param name="e"></param>
         public void btnSiteEntrances_Click(object sender, RoutedEventArgs e)
         {
+            if (ValidationHelpers.EditOngoing)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    ValidationHelpers.EditOngoing = false;
+                }
+            }
             hideDetails();
             btnSiteEntrances.Background = new SolidColorBrush(Colors.Gray);
             scrViewEntrance.Visibility = Visibility.Visible;
@@ -1142,6 +1203,18 @@ namespace WPFPresentation
         /// <param name="e"></param>
         private void btnSiteParking_Click(object sender, RoutedEventArgs e)
         {
+            if (ValidationHelpers.EditOngoing)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    ValidationHelpers.EditOngoing = false;
+                }
+            }
             hideDetails();
             btnSiteParking.Background = new SolidColorBrush(Colors.Gray);
 
@@ -1164,9 +1237,27 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Handler to make the addsublocation page visible
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/03/11
+        /// 
+        /// Description:
+        /// Added check for the edit flag
         /// </summary>
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            if (ValidationHelpers.EditOngoing)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    ValidationHelpers.EditOngoing = false;
+                }
+            }
             scrSublocations.Visibility = Visibility.Collapsed;
             grdAddsublocation.Visibility = Visibility.Visible;
         }
@@ -1221,7 +1312,7 @@ namespace WPFPresentation
 
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong trying to add this area.");
+                MessageBox.Show("Something went wrong trying to add this area.", ex.Message);
                 txtNewSublocationName.Focus();
             }
         }
@@ -1266,6 +1357,60 @@ namespace WPFPresentation
         {
             Page page = new pgAddEditEntrance(_locationID, _managerProvider, _user);
             this.NavigationService.Navigate(page);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Click event for delete buttons. Deactivates the sublocation for that delete button.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnDelete0_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("This will permanently remove the area. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+            if (sender is Button btn)
+            {
+                string index = btn.Name.Replace("btnDelete", "");
+                try
+                {
+                    int i = int.Parse(index);
+                    if(i < _sublocations.Count())
+                    {
+                        this._sublocationManager.DeactivateSublocationBySublocationID(_sublocations[i].SublocationID);
+
+                        // Redraw the screen for the new set of sublocations
+                        ValidationHelpers.EditOngoing = false;
+                        this.btnSiteAreas_Click(sender, e);
+                        if(_sublocations.Count() > 0)
+                        {
+                            this.btnEdit_Click(sender, e);
+                        } else
+                        {
+                            MessageBox.Show("All sublocations have been removed. Exiting edit mode...");
+                        }
+                    } else
+                    {
+                        throw new IndexOutOfRangeException("Sublocation index was out of range");
+                    }
+                } catch(FormatException ex)
+                {
+                    MessageBox.Show("Delete button is no longer valid.");
+                } catch(ApplicationException ex)
+                {
+                    MessageBox.Show(ex.Message + "\n\n\n\n\n" + ex.InnerException.Message);
+                } catch(Exception ex)
+                {
+                    MessageBox.Show("Failed to delete sublocation: \n\n\n\n\n" + ex.Message);
+                }
+            }
         }
     }
 }
