@@ -55,6 +55,7 @@
     <Compile Include="UserImageManager.cs" />
     <Compile Include="UserManager.cs" />
     <Compile Include="VolunteerManager.cs" />
+    <Compile Include="VolunteerNeedManager.cs" />
     <Compile Include="VolunteerRequestManager.cs" />
     <Compile Include="VolunteerReviewManager.cs" />
     <Compile Include="VolunteerSkillSetManager.cs" />

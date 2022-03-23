@@ -388,5 +388,122 @@ namespace DataAccessLayer
             catch (Exception ex) { throw ex; }
             return activeActivities;
         }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Returns a list of activities which are associated with a specific supplier
+        /// 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of activity objects</returns>
+        public List<Activity> SelectActivitiesBySupplierIDAndDate(int supplierID, DateTime date)
+        {
+            List<Activity> result = new List<Activity>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_activities_by_supplierID_and_date";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+            cmd.Parameters.Add("@ActivityDate", SqlDbType.Date);
+            cmd.Parameters["@ActivityDate"].Value = date;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(new Activity()
+                        {
+                            ActivityID = reader.GetInt32(0),
+                            ActivityName = reader.GetString(1),
+                            ActivityDescription = reader.GetString(2),
+                            PublicActivity = reader.GetBoolean(3),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            ActivityImageName = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            SublocationID = reader.GetInt32(7),
+                            EventDateID = DateTime.Parse(reader[8].ToString()),
+                            EventID = reader.GetInt32(9)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/14
+        /// 
+        /// Description: Allows user to either assign a new sublocation or remove a sublocation entirely from an activity.
+        /// </summary>
+        /// <param name="activityID"></param>
+        /// <param name="oldSublocationID"></param>
+        /// <param name="newSublocationID"></param>
+        /// <returns></returns>
+        public int UpdateActivitySublocationByActivityID(int activityID, int? oldSublocationID, int? newSublocationID)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_update_activity_sublocation_by_activity_id";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@ActivityID", activityID);
+            if (oldSublocationID is null)
+            {
+                cmd.Parameters.Add("@OldSublocationID", SqlDbType.Int);
+                cmd.Parameters["@OldSublocationID"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@OldSublocationID", SqlDbType.Int);
+                cmd.Parameters["@OldSublocationID"].Value = oldSublocationID;
+            }
+            if (newSublocationID is null)
+            {
+
+                cmd.Parameters.Add("@SublocationID", SqlDbType.Int);
+                cmd.Parameters["@SublocationID"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@SublocationID", SqlDbType.Int);
+                cmd.Parameters["@SublocationID"].Value = newSublocationID;
+            }
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return rowsAffected;
+        }
     }
 }

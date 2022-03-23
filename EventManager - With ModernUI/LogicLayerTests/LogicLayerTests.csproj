@@ -59,7 +59,11 @@
     <Compile Include="SublocationManagerTests.cs" />
     <Compile Include="EntranceManagerTests.cs" />
     <Compile Include="ParkingLotManagerTests.cs" />
+<<<<<<< HEAD
     <Compile Include="UserImageManagerTests.cs" />
+=======
+    <Compile Include="VolunteerNeedManagerTests.cs" />
+>>>>>>> origin/main
     <Compile Include="UserManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VolunteerManagerTests.cs" />

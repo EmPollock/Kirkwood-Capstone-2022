@@ -107,7 +107,7 @@ namespace DataAccessFakes
         /// </summary>
         /// <param name="newTask"></param>
         /// <returns>int rowsAffected</returns>
-        public int InsertTasks(Tasks newTask)
+        public int InsertTasks(Tasks newTask, int numTotalVolunteers = 0)
         {
             int rowsAffected = 0;
 

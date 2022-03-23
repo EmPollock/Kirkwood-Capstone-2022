@@ -9,6 +9,7 @@ namespace DataAccessInterfaces
 {
     public interface IEntranceAccessor
     {
+        int InsertEntrance(int locationID, string entranceName, string description);
         List<Entrance> SelectEntranceByLocationID(int locationID);
     }
 }

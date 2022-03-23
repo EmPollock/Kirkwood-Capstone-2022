@@ -58,6 +58,7 @@
     <Compile Include="UserAccessor.cs" />
     <Compile Include="UserImageAccessor.cs" />
     <Compile Include="VolunteerAccessor.cs" />
+    <Compile Include="VolunteerNeedAccessor.cs" />
     <Compile Include="VolunteerRequestAccessor.cs" />
     <Compile Include="VolunteerReviewAccessor.cs" />
     <Compile Include="VolunteerSkillSetAccessor.cs" />

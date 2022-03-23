@@ -29,9 +29,17 @@ namespace DataAccessLayer
         /// </summary>
         /// <param name="newTask"></param>
         /// <returns>int rowsAffected = 1</returns>
-        public int InsertTasks(Tasks newTask)
+        /// 
+        /// Vinayak Deshpande
+        /// Update: 2022/02/28
+        /// Description: Adding functionality to return taskID instead of rows affected.
+        /// and then create volunteer need
+
+
+        public int InsertTasks(Tasks newTask, int numTotalVolunteers)
         {
             int rowsAffected = 0;
+            int taskID;
 
             var conn = DBConnection.GetConnection();
             var cmdText = "sp_insert_new_task_by_eventID";
@@ -52,14 +60,42 @@ namespace DataAccessLayer
             try
             {
                 conn.Open();
-                rowsAffected = cmd.ExecuteNonQuery();
+                taskID = Convert.ToInt32(cmd.ExecuteScalar());
+                
             }
             catch (Exception ex)
             {
 
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
+            cmdText = "sp_insert_new_volunteer_need";
+            var cmd2 = new SqlCommand(cmdText, conn);
+            cmd2.CommandType = CommandType.StoredProcedure;
+
+            cmd2.Parameters.Add("@TaskID", SqlDbType.Int);
+            cmd2.Parameters["@TaskID"].Value = taskID;
+            cmd2.Parameters.Add("@NumTotalVolunteers", SqlDbType.Int);
+            cmd2.Parameters["@NumTotalVolunteers"].Value = numTotalVolunteers;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd2.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
             return rowsAffected;
         }
 

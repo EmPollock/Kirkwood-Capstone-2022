@@ -54,6 +54,7 @@
     <Compile Include="IUserImageManager.cs" />
     <Compile Include="IUserManager.cs" />
     <Compile Include="IVolunteerManager.cs" />
+    <Compile Include="IVolunteerNeedManager.cs" />
     <Compile Include="IVolunteerRequestManager.cs" />
     <Compile Include="IVolunteerReviewManager.cs" />
     <Compile Include="IVolunteerSkillSetManager.cs" />

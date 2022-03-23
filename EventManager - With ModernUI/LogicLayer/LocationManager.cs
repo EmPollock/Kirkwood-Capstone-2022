@@ -243,32 +243,6 @@ namespace LogicLayer
         }
 
         /// <summary>
-        /// Austin Timmerman
-        /// Created: 2022/02/10
-        /// 
-        /// Description:
-        /// Method to retrieve location availability by its LocationID
-        /// </summary>
-        /// <param name="locationID"></param>
-        /// <returns>A list of LocationAvailability objects</returns>
-        public List<LocationAvailability> RetrieveLocationAvailability(int locationID)
-        {
-            List<LocationAvailability> locationAvailabilities = new List<LocationAvailability>();
-
-            try
-            {
-                locationAvailabilities = _locationAccessor.SelectLocationAvailability(locationID);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return locationAvailabilities;
-        }
-
-        /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/24
         /// 
@@ -292,6 +266,47 @@ namespace LogicLayer
             }
 
             return rowsAffected;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Retrieve location availability on a given date by LocationID 
+        /// First tries to get any availability exceptions for the given date.
+        /// If it fails to find any, then it retrieves the regular weekly availability.
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of Availability objects</returns>
+        public List<Availability> RetrieveLocationAvailabilityByLocationIDAndDate(int locationID, DateTime date)
+        {
+            List<Availability> locationAvailabilities = new List<Availability>();
+
+            try
+            {
+                locationAvailabilities = _locationAccessor.SelectLocationAvailabilityExceptionByLocationIDAndDate(locationID, date);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve location availability exceptions", ex);
+            }
+
+            // if failed to find any exceptions, get regular weekly availability
+            if (locationAvailabilities.Count == 0)
+            {
+                try
+                {
+                    locationAvailabilities = _locationAccessor.SelectLocationAvailabilityByLocationIDAndDate(locationID, date);
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("Failed to retrieve location availability", ex);
+                }
+            }
+
+            return locationAvailabilities;
         }
     }
 }

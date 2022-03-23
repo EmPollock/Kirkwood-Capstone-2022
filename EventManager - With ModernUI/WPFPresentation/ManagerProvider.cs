@@ -33,6 +33,8 @@ namespace WPFPresentation
         public IVolunteerSkillSetManager VolunteerSkillSetManager { get; set; }
         public IUserImageManager UserImageManager { get; set; }
         public IVolunteerReviewManager VolunteerReviewManager { get; set; }
+        public IEntranceManager EntranceManager { get; set; }
+        public IVolunteerNeedManager NeedManager { get; set; }
 
         public ManagerProvider()
         {
@@ -52,7 +54,8 @@ namespace WPFPresentation
             VolunteerSkillSetManager = new VolunteerSkillSetManager();
             UserImageManager = new UserImageManager();
             VolunteerReviewManager = new VolunteerReviewManager();
-
+            EntranceManager = new EntranceManager();
+            NeedManager = new VolunteerNeedManager();
 
             // Fake versions here
             //ActivityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
@@ -70,6 +73,8 @@ namespace WPFPresentation
             //VolunteerSkillSetManager = new VolunteerSkillSetManager(new VolunteerSkillSetAccessorFake());
             //UserImageManager = new UserImageManager(new UserImageAccessorFake());
             //VolunteerReviewManager = new VolunteerReviewManager(new VolunteerReviewAccessorFake());
+            //EntranceManager = new EntranceManager(new EntranceAccessorFake());
+            //NeedManager = new VolunteerNeedManager(new VolunteerNeedAccessorFake());
 
             ImageHelper = new ImageHelperDevelopment();
         }

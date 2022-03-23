@@ -46,12 +46,12 @@
     <Compile Include="ActivityResult.cs" />
     <Compile Include="ActivityVM.cs" />
     <Compile Include="AppData.cs" />
+    <Compile Include="Availability.cs" />
     <Compile Include="Entrance.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventDate.cs" />
     <Compile Include="IntegerValidationHelpers.cs" />
     <Compile Include="Location.cs" />
-    <Compile Include="LocationAvailability.cs" />
     <Compile Include="LocationImage.cs" />
     <Compile Include="ParkingLot.cs" />
     <Compile Include="Reviews.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="UserImage.cs" />
     <Compile Include="ValidationHelpers.cs" />
     <Compile Include="Volunteer.cs" />
+    <Compile Include="VolunteerNeed.cs" />
     <Compile Include="VolunteerRequest.cs" />
     <Compile Include="VolunteerSkillSet.cs" />
   </ItemGroup>

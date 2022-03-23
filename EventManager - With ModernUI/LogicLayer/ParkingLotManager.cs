@@ -89,6 +89,84 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/09
+        /// 
+        /// Description:
+        /// Edits the selected Parking lot
+        /// </summary>
+        /// <param name="lotID">ID of Parking lot being edited</param>
+        /// <param name="oldParkingLot">Parking lot object before edit</param>
+        /// <param name="newParkingLot">Parking lot object after edit</param>
+        /// <returns>Number of rows affected. Should be one if successful</returns>
+        public int EditParkingLotByLotID(int lotID, ParkingLot oldParkingLot, ParkingLot newParkingLot)
+        {
+            int rowsAffected = 0;
+
+            if(newParkingLot.LocationID == 0)
+            {
+                throw new ApplicationException("No Location to associate with the parking lot. Add a location.");
+            }
+            if (newParkingLot.Name == "" || newParkingLot.Name == null)
+            {
+                throw new ApplicationException("Please enter a name for the parking lot.");
+            }
+
+            if (newParkingLot.Name.Length > 160)
+            {
+                throw new ApplicationException("The name of the parking lot is too long.");
+            }
+
+            if (newParkingLot.Description.Length > 3000)
+            {
+                throw new ApplicationException("The description of the parking lot is too long.");
+            }
+
+            try
+            {
+                rowsAffected = _parkingLotAccessor.UpdateParkingLotByLotID(lotID, oldParkingLot, newParkingLot);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Deletes parking lot
+        /// </summary>
+        /// <param name="lotID">The lot to delete</param>
+        /// <returns>True is removed, false if not</returns>
+        public bool RemoveParkingLotByLotID(int lotID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = _parkingLotAccessor.DeleteParkingLotByLotID(lotID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (!result)
+            {
+                throw new ApplicationException("The parking lot was not deleted");
+            }
+
+            return result;
+
+
+        }
+
+        /// <summary>
         /// Derrick Nagy
         /// Created: 2022/03/01
         /// 
@@ -120,5 +198,56 @@ namespace LogicLayer
             return parkingLots;
         }
 
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/11
+        /// 
+        /// Description:
+        /// Retrieves a Parking lot VM based on Lot ID
+        /// </summary>
+        /// <param name="lotID">ID of the selected Parking Lot</param>
+        /// <returns>Parking lot object of the same lotID</returns>
+        public ParkingLotVM RetrieveParkingLotByLotID(int lotID)
+        {
+            ParkingLotVM requestedParkingLot = null;
+
+            try
+            {
+                requestedParkingLot = _parkingLotAccessor.SelectParkingLotByLotID(lotID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return requestedParkingLot;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Checks to see if the user can edit the parking lot
+        /// </summary>
+        /// <param name="userID">The ID for the user</param>
+        /// <returns>True if removed, false if not</returns>
+        public bool UserCanEditParkingLot(int userID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = _parkingLotAccessor.UserCanEditParkingLot(userID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
     }
 }

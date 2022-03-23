@@ -13,7 +13,7 @@ namespace DataAccessFakes
         private List<Location> _fakeLocations = new List<Location>();
         private List<Reviews> _fakeLocationReviews = new List<Reviews>();
         private List<LocationImage> _fakeLocationImages = new List<LocationImage>();
-        private List<LocationAvailability> _fakeLocationAvailability = new List<LocationAvailability>();
+        private List<LocationAvailabilityTableFake> _dbFake = new List<LocationAvailabilityTableFake>();
 
         /// <summary>
         /// Kris Howell
@@ -161,77 +161,96 @@ namespace DataAccessFakes
                 ImageName = "7263a839-3428-49f2-b26f-875d3811ef85.jpg"
             });
 
-            _fakeLocationAvailability.Add(new LocationAvailability()
+            _dbFake.Add(new LocationAvailabilityTableFake()
             {
-                AvailabilityID = 100000,
-                LocationID = 100000,
-                AvailableDay = new DateTime(2022, 02, 09),
-                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
-                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+                Date = new DateTime(2022, 01, 01),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100000,
+                        AvailabilityID = 100000,
+                        TimeStart = new DateTime(2022, 01, 01, 8, 00, 00),
+                        TimeEnd = new DateTime(2022, 01, 01, 11, 00, 00),
+                    },
+                    new Availability()
+                    {
+                        ForeignID = 100000,
+                        AvailabilityID = 100001,
+                        TimeStart = new DateTime(2022, 01, 01, 13, 00, 00),
+                        TimeEnd = new DateTime(2022, 01, 01, 21, 00, 00)
+                    }
+                },
+                IsException = false
             });
 
-            _fakeLocationAvailability.Add(new LocationAvailability()
+            _dbFake.Add(new LocationAvailabilityTableFake()
             {
-                AvailabilityID = 100000,
-                LocationID = 100000,
-                AvailableDay = new DateTime(2022, 02, 10),
-                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
-                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+                Date = new DateTime(2022, 01, 02),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100000,
+                        AvailabilityID = 100002,
+                        TimeStart = new DateTime(2022, 01, 02, 5, 30, 00),
+                        TimeEnd = new DateTime(2022, 01, 02, 8, 30, 00)
+                    }
+                },
+                IsException = false
             });
 
-            _fakeLocationAvailability.Add(new LocationAvailability()
+            _dbFake.Add(new LocationAvailabilityTableFake()
             {
-                AvailabilityID = 100000,
-                LocationID = 100000,
-                AvailableDay = new DateTime(2022, 02, 11),
-                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
-                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+                Date = new DateTime(2022, 01, 01),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100001,
+                        AvailabilityID = 100003,
+                        TimeStart = new DateTime(2022, 01, 01, 22, 15, 00),
+                        TimeEnd = new DateTime(2022, 01, 01, 23, 00, 00)
+                    }
+                },
+                IsException = false
             });
 
-            _fakeLocationAvailability.Add(new LocationAvailability()
+            _dbFake.Add(new LocationAvailabilityTableFake()
             {
-                AvailabilityID = 100000,
-                LocationID = 100000,
-                AvailableDay = new DateTime(2022, 02, 12),
-                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
-                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+                Date = new DateTime(2022, 01, 01),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100001,
+                        AvailabilityID = 100004,
+                        TimeStart = new DateTime(2022, 01, 01, 2, 45, 00),
+                        TimeEnd = new DateTime(2022, 01, 01, 4, 45, 00)
+                    }
+                },
+                IsException = true
             });
 
-            _fakeLocationAvailability.Add(new LocationAvailability()
+            _dbFake.Add(new LocationAvailabilityTableFake()
             {
-                AvailabilityID = 100000,
-                LocationID = 100000,
-                AvailableDay = new DateTime(2022, 02, 13),
-                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
-                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
+                Date = new DateTime(2022, 01, 03),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100000,
+                        AvailabilityID = 100005
+                    }
+                },
+                IsException = true
             });
-
-            _fakeLocationAvailability.Add(new LocationAvailability()
-            {
-                AvailabilityID = 100000,
-                LocationID = 100000,
-                AvailableDay = new DateTime(2022, 02, 14),
-                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
-                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
-            });
-
-            _fakeLocationAvailability.Add(new LocationAvailability()
-            {
-                AvailabilityID = 100000,
-                LocationID = 100000,
-                AvailableDay = new DateTime(2022, 02, 20),
-                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
-                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
-            });
-
-            _fakeLocationAvailability.Add(new LocationAvailability()
-            {
-                AvailabilityID = 100000,
-                LocationID = 100000,
-                AvailableDay = new DateTime(2022, 02, 23),
-                AvailableTimeStart = new DateTime(2022, 02, 09, 12, 00, 00),
-                AvailableTimeEnd = new DateTime(2022, 02, 09, 20, 00, 00)
-            });
+        }
+        private class LocationAvailabilityTableFake
+        {
+            public DateTime Date { get; set; }
+            public List<Availability> Availabilities { get; set; }
+            public bool IsException { get; set; }
         }
 
         /// <summary>
@@ -391,30 +410,6 @@ namespace DataAccessFakes
         }
 
         /// <summary>
-        /// Austin Timmerman
-        /// Created: 2022/02/09
-        /// 
-        /// Description:
-        /// The method that selects a location availability by its LocationID
-        /// </summary>
-        /// <param name="locationID"></param>
-        /// <returns>A list of location availability objects</returns>
-        public List<LocationAvailability> SelectLocationAvailability(int locationID)
-        {
-            List<LocationAvailability> locationAvailabilities = new List<LocationAvailability>();
-
-            foreach (LocationAvailability fakeLocationAvailability in _fakeLocationAvailability)
-            {
-                if (fakeLocationAvailability.LocationID == locationID)
-                {
-                    locationAvailabilities.Add(fakeLocationAvailability);
-                }
-            }
-
-            return locationAvailabilities;
-        }
-
-        /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/24
         /// 
@@ -437,6 +432,68 @@ namespace DataAccessFakes
             }
 
             return rowsAffected;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Select regular weekly availability records matching the given locationID and date.
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of availability objects for a Location on a given date</returns>
+        public List<Availability> SelectLocationAvailabilityByLocationIDAndDate(int locationID, DateTime date)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            foreach (LocationAvailabilityTableFake fake in _dbFake)
+            {
+                if (fake.Date == date && !fake.IsException)
+                {
+                    foreach (Availability a in fake.Availabilities)
+                    {
+                        if (a.ForeignID == locationID)
+                        {
+                            availabilities.Add(a);
+                        }
+                    }
+                }
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Select one-off availability exception records matching the given locationID and date.
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of availability objects for a Location on a given date</returns>
+        public List<Availability> SelectLocationAvailabilityExceptionByLocationIDAndDate(int locationID, DateTime date)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            foreach (LocationAvailabilityTableFake fake in _dbFake)
+            {
+                if (fake.Date == date && fake.IsException)
+                {
+                    foreach (Availability a in fake.Availabilities)
+                    {
+                        if (a.ForeignID == locationID)
+                        {
+                            availabilities.Add(a);
+                        }
+                    }
+                }
+            }
+
+            return availabilities;
         }
     }
 }
