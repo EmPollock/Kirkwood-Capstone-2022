@@ -122,16 +122,13 @@
     <Compile Include="Volunteer\pgViewAllVolunteers.xaml.cs">
       <DependentUpon>pgViewAllVolunteers.xaml</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Volunteer\pgViewVolunteerDetails.xaml.cs">
       <DependentUpon>pgViewVolunteerDetails.xaml</DependentUpon>
     </Compile>
-=======
     <Page Include="CustomControls\TimeComboBoxes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
->>>>>>> origin/main
     <Page Include="Event\pgEventEditDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
