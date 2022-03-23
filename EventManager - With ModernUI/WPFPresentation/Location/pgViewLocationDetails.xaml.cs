@@ -77,19 +77,6 @@ namespace WPFPresentation
         /// <param name="user">The current User</param>        
         internal pgViewLocationDetails(int locationID, ManagerProvider managerProvider, User user)
         {
-            // use fake accessor
-            //_locationManager = new LocationManager(new LocationAccessorFake());
-            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            //_sublocationManager = new SublocationManager(new SublocationAccessorFake());
-            //_activityManager = new ActivityManager(new ActivityAccessorFake());
-
-            // use default accessor
-            //_locationManager = new LocationManager();
-            _eventDateManager = new EventDateManager();
-            _sublocationManager = new SublocationManager();
-            _activityManager = new ActivityManager();
-            _entranceManager = new EntranceManager();
-
             _managerProvider = managerProvider;
             _locationManager = managerProvider.LocationManager;
             _eventDateManager = managerProvider.EventDateManager;
@@ -852,6 +839,7 @@ namespace WPFPresentation
                 btnEdit.IsEnabled = false;
             }
         }
+
         /// <summary>
         /// Christopher Repko
         /// Created 2022/02/24
@@ -1014,7 +1002,6 @@ namespace WPFPresentation
             btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
         }
 
-
         /// <summary>
         /// Mike Cahow
         /// Created: 2022/03/04
@@ -1081,6 +1068,7 @@ namespace WPFPresentation
             scrSublocations.Visibility = Visibility.Collapsed;
             grdAddsublocation.Visibility = Visibility.Visible;
         }
+
         /// <summary>
         /// Logan Baccam
         /// Created 2022/02/28

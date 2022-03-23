@@ -32,6 +32,7 @@ CREATE PROCEDURE [dbo].[sp_select_all_volunteers]
 AS
 	BEGIN
 		SELECT 
+			[Volunteer].[UserID],
 			[Volunteer].[VolunteerID],
 			[Users].[GivenName],
 			[Users].[FamilyName],			
@@ -59,6 +60,7 @@ Updated: yyyy/mm/dd
 
 Description: 
 ****************************************************************/
+/*
 print '' print '*** creating sp_select_all_volunteer_reviews'
 GO
 CREATE PROCEDURE [dbo].[sp_select_all_volunteer_reviews]
@@ -71,3 +73,4 @@ AS
 		GROUP BY [VolunteerID]
 	END	
 GO
+*/

@@ -116,6 +116,9 @@
     <Compile Include="Volunteer\pgViewAllVolunteers.xaml.cs">
       <DependentUpon>pgViewAllVolunteers.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Volunteer\pgViewVolunteerDetails.xaml.cs">
+      <DependentUpon>pgViewVolunteerDetails.xaml</DependentUpon>
+    </Compile>
     <Page Include="Event\pgEventEditDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Volunteer\pgViewAllVolunteers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Volunteer\pgViewVolunteerDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -64,9 +64,11 @@
     <Compile Include="Supplier.cs" />
     <Compile Include="Tasks.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserImage.cs" />
     <Compile Include="ValidationHelpers.cs" />
     <Compile Include="Volunteer.cs" />
     <Compile Include="VolunteerRequest.cs" />
+    <Compile Include="VolunteerSkillSet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
