@@ -1,9 +1,4 @@
-﻿/// <summary>
-/// Vinayak Deshpande
-/// 2022/01/26
-/// 
-/// Volunteer Request Accessor
-/// </summary>
+﻿
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,12 +8,25 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessInterfaces;
 using DataObjects;
-
+/// <summary>
+/// Vinayak Deshpande
+/// 2022/01/26
+/// 
+/// Volunteer Request Accessor
+/// </summary>
 
 namespace DataAccessLayer
 {
     public class VolunteerRequestAccessor : IVolunteerRequestAccessor
     {
+        /// <summary>
+        /// Vinayak Deshpande
+        /// 2022/01/26
+        /// 
+        /// Description: returns all requests for an event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
         public List<VolunteerRequestViewModel> SelectVolunteerRequestsByEventID(int eventID)
         {
             List<VolunteerRequestViewModel> requests = new List<VolunteerRequestViewModel>();

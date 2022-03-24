@@ -15,7 +15,7 @@ namespace DataObjects
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string ActivityImageName { get; set; }
-        public int SublocationID { get; set; }
+        public int? SublocationID { get; set; }
         public DateTime EventDateID { get; set; }
         public int EventID { get; set; }
     }

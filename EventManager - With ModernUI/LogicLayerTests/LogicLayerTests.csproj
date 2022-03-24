@@ -60,10 +60,14 @@
     <Compile Include="SublocationManagerTests.cs" />
     <Compile Include="EntranceManagerTests.cs" />
     <Compile Include="ParkingLotManagerTests.cs" />
+    <Compile Include="UserImageManagerTests.cs" />
+    <Compile Include="VolunteerNeedManagerTests.cs" />
     <Compile Include="UserManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VolunteerManagerTests.cs" />
     <Compile Include="VolunteerRequestManagerTests.cs" />
+    <Compile Include="VolunteerReviewManagerTests.cs" />
+    <Compile Include="VolunteerSkillSetManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">

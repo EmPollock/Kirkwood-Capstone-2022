@@ -27,10 +27,13 @@ namespace WPFPresentation.Location
         ManagerProvider _managerProvider = null;
         Dictionary<ParkingLotVM, BitmapImage> parkingLotAndImage = new Dictionary<ParkingLotVM, BitmapImage>();
         bool _isAddingNewLot = false;
+        bool _isEditingLot = false;
         string _originalImagePath = "";
         string _oldFileName = "";
         string _newFileName = "";
         bool _canEditDelete = false;
+
+        ParkingLotVM parkingLotBeforeEdit = null;
 
         /// <summary>
         /// Derrick Nagy
@@ -164,6 +167,12 @@ namespace WPFPresentation.Location
         /// Description:
         /// Initialization handler for text boxes in the icParkingLot items control.
         /// Changes the text box from read only true to read only false.
+        /// 
+        /// Update:
+        /// Mike Cahow
+        /// 2022/03/11
+        /// 
+        /// Adding an edit mode check to initialize textboxes for editing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -171,7 +180,7 @@ namespace WPFPresentation.Location
         {
             TextBox textBox = (TextBox)sender;
 
-            if (textBox.Text == "")
+            if (textBox.Text == "" || (_isEditingLot))
             {
                 textBox.IsReadOnly = false;
             }
@@ -185,6 +194,12 @@ namespace WPFPresentation.Location
         /// 
         /// Description:
         /// Inserts a parking lot object into the database
+        /// 
+        /// Update:
+        /// Mike Cahow
+        /// 2022/03/11
+        /// 
+        /// Adding an edit mode check to help initialize buttons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -193,10 +208,20 @@ namespace WPFPresentation.Location
             Button button = (Button)sender;
 
             //if (button.Tag.ToString() == "" || button.Tag.ToString() == "System.Windows.Media.Imaging.BitmapImage")
-            if (_isAddingNewLot && button.Tag.ToString() == "")
+            if (_isAddingNewLot && button.Tag.ToString() == "" || (_isEditingLot && parkingLotBeforeEdit.Name == (string)button.Tag))
             {
                 button.Visibility = Visibility.Visible;
+
+                if(_isEditingLot && button.Content.ToString() == "Add Picture")
+                {
+                    if(parkingLotBeforeEdit.ImageName != "")
+                    {
+                        button.Content = "Change Picture";
+                        button.Width = 150;
+                    }
+                }
             }
+
         }
 
         /// <summary>
@@ -204,21 +229,29 @@ namespace WPFPresentation.Location
         /// Created: 2022/03/02
         /// Description:
         /// Save button click event handler. Creates a new parking lot object and updates the list
+        /// 
+        /// Update:
+        /// Mike Cahow
+        /// 2022/03/11
+        /// 
+        /// Added separate logic for edit mode
         /// </summary>        
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Save button click
-            ParkingLotVM lotToCreate = parkingLotAndImage.First(l => l.Key.LotID == 0).Key;
+            if (_isEditingLot)
+            {
+                Button button = (Button)sender;
 
-            if (lotToCreate.Name == null || lotToCreate.Name == "")
-            {
-                MessageBox.Show("Please enter a name for the parking lot in order to add a location.", "Add Lot Name", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                if (_originalImagePath != "")
+                // set the old values
+                ParkingLotVM oldParkingLot = parkingLotBeforeEdit;
+
+                // set new values
+                ParkingLotVM newParkingLot = parkingLotAndImage.First(npl => npl.Key.LotID == oldParkingLot.LotID).Key;
+
+                
+                if (_originalImagePath != "" || _originalImagePath != null)
                 {
                     try
                     {
@@ -230,23 +263,70 @@ namespace WPFPresentation.Location
                     }
                 }
 
-                // send off to get added to db
+                // try saving edit to database
                 try
                 {
-                    lotToCreate.ImageName = _newFileName;
-                    _managerProvider.ParkingLotManager.CreateParkingLot(lotToCreate);
+                    if(newParkingLot.ImageName == "")
+                    {
+                        _originalImagePath = "";
+                    }
+                    newParkingLot.ImageName = _newFileName;
+                    _managerProvider.ParkingLotManager.EditParkingLotByLotID(oldParkingLot.LotID, oldParkingLot, newParkingLot);
                     parkingLotAndImage = new Dictionary<ParkingLotVM, BitmapImage>();
                     setupParkingLotImageDictionary();
-                    _isAddingNewLot = false;
+                    _isEditingLot = false;
+                    btnAddParkingLot.IsEnabled = true;
                     _newFileName = "";
                     _oldFileName = "";
                     _originalImagePath = "";
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("There was an issue adding the parking lot information.\n" + ex.Message, "Problem Adding Parking Lot", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("There was a problem updating this parking lot entry.\n" + ex.Message, "Problem Updating Parking Lot", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            else
+            {
+                // Save button click
+                ParkingLotVM lotToCreate = parkingLotAndImage.First(l => l.Key.LotID == 0).Key;
+
+                if (lotToCreate.Name == null || lotToCreate.Name == "")
+                {
+                    MessageBox.Show("Please enter a name for the parking lot in order to add a location.", "Add Lot Name", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    if (_originalImagePath != "")
+                    {
+                        try
+                        {
+                            _newFileName = _managerProvider.ImageHelper.SaveImageReturnsNewImageName(_oldFileName, _originalImagePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Problem saving this image.\n" + ex.Message, "Image Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+
+                    // send off to get added to db
+                    try
+                    {
+                        lotToCreate.ImageName = _newFileName;
+                        _managerProvider.ParkingLotManager.CreateParkingLot(lotToCreate);
+                        parkingLotAndImage = new Dictionary<ParkingLotVM, BitmapImage>();
+                        setupParkingLotImageDictionary();
+                        _isAddingNewLot = false;
+                        _newFileName = "";
+                        _oldFileName = "";
+                        _originalImagePath = "";
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was an issue adding the parking lot information.\n" + ex.Message, "Problem Adding Parking Lot", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            
 
         }
 
@@ -271,6 +351,7 @@ namespace WPFPresentation.Location
                     break;
                 case MessageBoxResult.Yes:
                     _isAddingNewLot = false;
+                    _isEditingLot = false;
                     parkingLotAndImage = new Dictionary<ParkingLotVM, BitmapImage>();
                     setupParkingLotImageDictionary();
                     break;
@@ -333,7 +414,7 @@ namespace WPFPresentation.Location
         {
             Button button = (Button)sender;
             
-            if (_canEditDelete && (int)button.Tag != 0)
+            if (_canEditDelete && (int)button.Tag != 0 && !_isEditingLot)
             {
                 button.Visibility = Visibility.Visible;
             }
@@ -383,5 +464,46 @@ namespace WPFPresentation.Location
 
             }
         }
+
+        private void EditButton_Initialized(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+
+            if (_canEditDelete && (int)button.Tag != 0 && !_isEditingLot)
+            {
+                button.Visibility = Visibility.Visible;
+            }
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Click event handler to help re-initialize textboxes for editing purposes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            btnAddParkingLot.IsEnabled = false;
+            Button button = (Button)sender;
+            int lotID = (int)button.Tag;
+
+            parkingLotBeforeEdit = parkingLotAndImage.Keys.First(npl => npl.LotID == lotID);
+
+            if (_isEditingLot)
+            {
+                MessageBox.Show("Already editing a parking lot.", "Already Editing", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                _isEditingLot = true;
+                parkingLotAndImage = new Dictionary<ParkingLotVM, BitmapImage>();
+                setupParkingLotImageDictionary();
+                
+            }
+        }
+
     }
 }

@@ -17,7 +17,7 @@ namespace LogicLayerTests
     /// Test Class to test the Tasks Logic Layer methods
     /// </summary>
     [TestClass]
-    public class _taskManagerTests
+    public class TaskManagerTests
     {
         private ITaskManager _taskManager = null;
 
@@ -50,7 +50,7 @@ namespace LogicLayerTests
             bool actualResult;
 
             //act
-            actualResult = _taskManager.AddTask(task);
+            actualResult = _taskManager.AddTask(task, 1);
 
             //assert
             Assert.AreEqual(expectedResult, actualResult);
@@ -78,7 +78,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -107,7 +107,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -136,7 +136,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -165,7 +165,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -194,7 +194,7 @@ namespace LogicLayerTests
             };
 
             //act
-            _taskManager.AddTask(task);
+            _taskManager.AddTask(task, 1);
 
             //assert
             //checking for exception
@@ -302,7 +302,7 @@ namespace LogicLayerTests
                 TaskEventName = "Test Event 27",
                 Name = "Mop",
                 Description = "Test",
-                DueDate = DateTime.Today.AddDays(3),
+                DueDate = DateTime.Now,
                 Priority = 1,
                 TaskPriority = "Low",
                 Active = false

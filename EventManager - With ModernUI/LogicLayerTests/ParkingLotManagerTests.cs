@@ -288,6 +288,204 @@ namespace LogicLayerTests
             // nothing to assert, exception testing
         }
 
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Test that returns one row affected if update succeeds
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateParkingLotReturnsOneRowAffectedIfSuccessful()
+        {
+            // arrange
+            const int expectedResult = 1;
+            int actualResult;
+            int lotID = 100000;
 
+            ParkingLot oldParkingLot = new ParkingLot()
+            {
+                LotID = lotID,
+                LocationID = 100000,
+                Name = "Test Parking Lot A",
+                Description = "A description for test parking lot A",
+                ImageName = null
+            };
+
+            ParkingLot newParkingLot = new ParkingLot()
+            {
+                LotID = lotID,
+                LocationID = 100001,
+                Name = "Test Name",
+                Description = "Test Description",
+                ImageName = null
+            };
+
+            // act
+            actualResult = _parkingLotManager.EditParkingLotByLotID(lotID, oldParkingLot, newParkingLot);
+
+            // assert
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Test Update Parking Lot fails with no Location ID
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateParkingLotFailsWithNoLocationID()
+        {
+            // arrange
+            int lotID = 100000;
+
+            ParkingLot oldParkingLot = new ParkingLot()
+            {
+                LotID = lotID,
+                LocationID = 100000,
+                Name = "Test Parking Lot A",
+                Description = "A description for test parking lot A",
+                ImageName = null
+            };
+
+            ParkingLot newParkingLot = new ParkingLot()
+            {
+                LotID = lotID,
+                Name = "Test Name",
+                Description = "Test Description",
+                ImageName = null
+            };
+
+            // act
+            _parkingLotManager.EditParkingLotByLotID(lotID, oldParkingLot, newParkingLot);
+
+            // assert
+            // exception checking, nothing to do
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Test Update parking lot fails with no name
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateParkingLotFailsWithNoNameValue()
+        {
+            // arrange
+            int lotID = 100000;
+
+            ParkingLot oldParkingLot = new ParkingLot()
+            {
+                LotID = lotID,
+                LocationID = 100000,
+                Name = "Test Parking Lot A",
+                Description = "A description for test parking lot A",
+                ImageName = null
+            };
+
+            ParkingLot newParkingLot = new ParkingLot()
+            {
+                LotID = lotID,
+                LocationID = 100001,
+                Name = "",
+                Description = "Test Description",
+                ImageName = null
+            };
+
+            // act
+            _parkingLotManager.EditParkingLotByLotID(lotID, oldParkingLot, newParkingLot);
+
+            // assert
+            // exception checking, nothing to do
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Test Update Parking lot fails with too long of a name
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateParkingLotFailsWithLongName()
+        {
+            // arrange
+            int lotID = 100000;
+
+            ParkingLot oldParkingLot = new ParkingLot()
+            {
+                LotID = lotID,
+                LocationID = 100000,
+                Name = "Test Parking Lot A",
+                Description = "A description for test parking lot A",
+                ImageName = null
+            };
+
+            ParkingLot newParkingLot = new ParkingLot()
+            {
+                LotID = lotID,
+                LocationID = 100001,
+                Name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaah",
+                Description = "Test Description",
+                ImageName = null
+            };
+
+            // act
+            _parkingLotManager.EditParkingLotByLotID(lotID, oldParkingLot, newParkingLot);
+
+            // assert
+            // exception checking, nothing to do
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/11
+        /// 
+        /// Description:
+        /// Test that returns correct Parking lot with expected lot ID
+        /// </summary>
+        [TestMethod]
+        public void TestSelectParkingLotByLotIDReturnsCorrectParkingLot()
+        {
+            // arrange
+            ParkingLotVM parkingLot = null;
+            const int expectedLotID = 100000;
+            string expectedLotName = "Test Parking Lot A";
+            string actualLotName = "";
+
+            // act
+            parkingLot = _parkingLotManager.RetrieveParkingLotByLotID(expectedLotID);
+            actualLotName = parkingLot.Name;
+
+            // assert
+            Assert.AreEqual(expectedLotName, actualLotName);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestSelectParkingLotByLotIDReturnsApplicationExceptionWithBadLotID()
+        {
+            // arrange
+            ParkingLotVM parkingLot = null;
+            const int badLotID = -1;
+
+            // act
+            parkingLot = _parkingLotManager.RetrieveParkingLotByLotID(badLotID);
+
+            // assert
+            // Exception checking, nothing to do
+
+        }
+           
     }
 }

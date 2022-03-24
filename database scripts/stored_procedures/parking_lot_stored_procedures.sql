@@ -116,3 +116,82 @@ AS
 		RETURN @@ROWCOUNT
 	END
 GO
+
+print '' print '*** creating sp_select_parking_lot_by_lotID'
+GO
+/***************************************************************
+Mike Cahow
+Created: 2022/03/10
+
+Description:
+Stored procedure for selecting parking lots by the LotID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description:
+<Decription> 
+****************************************************************/
+CREATE PROCEDURE [dbo].[sp_select_parking_lot_by_lotID]
+(
+	@LotID	[int]
+)
+AS
+	BEGIN
+		SELECT	[ParkingLotID]	
+				,[ParkingLot].[LocationID]	
+				,[Name]			
+				,[Description]	
+				,[ImageName]	
+				,[Location].[LocationName]
+		FROM 	[dbo].[ParkingLot] JOIN [dbo].[Location] 
+				ON [Location].[LocationID] = [ParkingLot].[LocationID]
+		WHERE	[Active] = 1
+		 AND	[ParkingLotID] = @LotID
+		
+	END
+GO
+
+print '' print '*** creating sp_update_parking_lot_by_lotID'
+GO
+/***************************************************************
+Mike Cahow
+Created: 2022/03/09
+
+Description:
+Stored procedure for editing parking lots by the LotID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description:
+<Decription> 
+****************************************************************/
+CREATE PROCEDURE [dbo].[sp_update_parking_lot_by_lotID]
+(
+	@LotID				[int],
+	@LocationID			[int],
+	@OldLocationID		[int],
+	@LotName			[nvarchar](160),
+	@OldLotName			[nvarchar](160),
+	@LotDescription		[nvarchar](3000),
+	@OldLotDescription	[nvarchar](3000),
+	@LotImagePath		[nvarchar](200),
+	@OldLotImagePath	[nvarchar](200)
+)
+AS
+	BEGIN
+	
+		UPDATE	[ParkingLot]
+		SET		[LocationID]	= @LocationID,
+				[Name]			= @LotName,
+				[Description]	= @LotDescription,
+				[ImageName]		= @LotImagePath
+		WHERE	[ParkingLotID]	= @LotID
+		 /*AND	[LocationID]	= @OldLocationID
+		 AND	[Name]			= @OldLotName
+		 AND	[Description]	= @OldLotDescription
+		 AND	[ImageName]		= @OldLotImagePath*/
+		 
+	END
+GO

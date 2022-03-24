@@ -136,6 +136,10 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void datEventActivities_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if(datEventActivities.SelectedItem == null)
+            {
+                return;
+            }
             ActivityVM selectedActivity = (ActivityVM)datEventActivities.SelectedItem;
             pgViewActivityDetails activityDetailsPage = new pgViewActivityDetails(selectedActivity, _event, _managerProvider, _user);
             this.NavigationService.Navigate(activityDetailsPage);

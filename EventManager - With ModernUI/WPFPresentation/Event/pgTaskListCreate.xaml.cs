@@ -114,6 +114,11 @@ namespace WPFPresentation
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/05
+        /// 
+        /// Description: Added logic to handle requesting volunteers during task creation
         /// </summary>
         private void btnSaveTask_Click(object sender, RoutedEventArgs e)
         {
@@ -163,9 +168,10 @@ namespace WPFPresentation
                 DueDate = taskDueDate,
                 Priority = priority
             };
+            int numTotalVolunteers = (int)sldrNumVolunteers.Value;
             try
             {
-                _taskManager.AddTask(task);
+                _taskManager.AddTask(task, numTotalVolunteers);
                 MessageBox.Show("Task has been added.");
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
