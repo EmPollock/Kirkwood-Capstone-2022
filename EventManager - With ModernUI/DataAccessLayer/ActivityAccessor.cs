@@ -13,9 +13,62 @@ namespace DataAccessLayer
 {
     public class ActivityAccessor : IActivityAccessor
     {
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Inserts an activity into the database
+        /// 
+        /// </summary>
+        /// <param name="activity">new activity object to be inserted into the database</param>
+        /// <returns>int number of rows affected</returns>
+        /// /// <summary>
         public int InsertActivity(Activity activity)
         {
-            throw new NotImplementedException();
+            int rowsAffected;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_insert_activity";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ActivityName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@ActivityDescription", SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@PublicActivity", SqlDbType.Bit);
+            cmd.Parameters.Add("@StartTime", SqlDbType.Time);
+            cmd.Parameters.Add("@EndTime", SqlDbType.Time);
+            cmd.Parameters.Add("@ActivityImageName", SqlDbType.NVarChar, 25);
+            cmd.Parameters.Add("@SublocationID", SqlDbType.Int);
+            cmd.Parameters.Add("@EventDateID", SqlDbType.Date);
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+
+            cmd.Parameters["@ActivityName"].Value = activity.ActivityName;
+            cmd.Parameters["@ActivityDescription"].Value = activity.ActivityDescription;
+            cmd.Parameters["@PublicActivity"].Value = activity.PublicActivity;
+            cmd.Parameters["@StartTime"].Value = activity.StartTime.TimeOfDay;
+            cmd.Parameters["@EndTime"].Value = activity.EndTime.TimeOfDay;
+            cmd.Parameters["@ActivityImageName"].Value = activity.ActivityImageName;
+            cmd.Parameters["@SublocationID"].Value = activity.SublocationID;
+            cmd.Parameters["@EventDateID"].Value = activity.EventDateID;
+            cmd.Parameters["@EventID"].Value = activity.EventID;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
         }
 
         /// <summary>

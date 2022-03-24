@@ -401,5 +401,20 @@ namespace WPFPresentation.Event
                     break;
             }
         }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Click handler for button to add activity to current event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAddActivity_Click(object sender, RoutedEventArgs e)
+        {
+            pgCreateActivity CreateActivityPage = new pgCreateActivity(_user, _event, _managerProvider);
+            this.NavigationService.Navigate(CreateActivityPage);
+        }
     }
 }

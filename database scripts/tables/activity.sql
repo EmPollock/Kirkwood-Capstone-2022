@@ -28,12 +28,17 @@ Vinayak Deshpande
 Updated: 2022/03/14
 
 Description: Changed sublocationID field to be nullable.
+**************************************************************
+Kris Howell
+Updated: 2022/03/24
+
+Description: Changed sublocationID field to be non-nullable.
 ****************************************************************/
 
 print '' print '*** creating Activity table'
 CREATE TABLE [dbo].[Activity] (
 	[ActivityID]			[int] IDENTITY(100000,1)	NOT NULL
-	,[ActivityName]			[nvarchar](50)				NULL
+	,[ActivityName]			[nvarchar](50)				NOT NULL
 	,[ActivityDescription]	[nvarchar](250)				NULL
 	,[PublicActivity]		[bit]						NOT NULL DEFAULT 1
 	,[StartTime]			[time](0)					NOT NULL
