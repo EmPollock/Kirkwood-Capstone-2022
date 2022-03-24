@@ -39,10 +39,12 @@ GO
 / Description:
 / Creating Table for Task, user story 1023_Task List Create
 ****************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Emma Pollock
+/ Updated: 2022/03/09
 /
 / Description: 
+/ Removed TaskAssignmentID field so that a Task can have multiple
+/ 	TaskAssignments
 ****************************************************************/
 
 
@@ -58,7 +60,6 @@ CREATE TABLE [dbo].[Task] (
 	[ProofID]			[int]							NULL,
 	[IsDone]			[bit]							NOT NULL
 									DEFAULT 0,
-	[TaskAssignmentID]	[int]							NULL,
 	[EventID]			[int]							NOT NULL,
 	[Active]			[bit]							NOT NULL
 									DEFAULT 1,
@@ -100,10 +101,12 @@ GO
 / Description: Creating the TaskAssignment table
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Emma Pollock
+/ Updated: 2022/03/09
 /
 / Description: 
+/ Changed RoleID from int to nvarchar and added foreign key 
+/ 	references for UserID and RoleID
 ****************************************************************/
 
 
@@ -114,11 +117,36 @@ CREATE TABLE [dbo].[TaskAssignment] (
 									DEFAULT GETDATE(),
 	[TaskID]			[int]							NOT NULL,
 	[UserID]			[int]							NULL,
-	[RoleID]			[int]							NULL,
+	[RoleID]			[nvarchar](50)					NULL,
 	CONSTRAINT [fk_Task_TaskID] FOREIGN KEY ([TaskID])
 		REFERENCES [dbo].[Task] ([TaskID]),
+	CONSTRAINT [fk_User_UserID] FOREIGN KEY ([UserID])
+		REFERENCES [dbo].[Users] ([UserID]),
+	CONSTRAINT [fk_Role_RoleID] FOREIGN KEY ([RoleID])
+		REFERENCES [dbo].[Role] ([RoleID]),
 	CONSTRAINT [pk_TaskAssignmentID] PRIMARY KEY ([TaskAssignmentID])
 )
+GO
+
+/***************************************************************
+/ Emma Pollock
+/ Created: 2022/03/09
+/ 
+/ Description: Creating TaskAssignment Table records
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print '*** creating sample TaskAssignment records...'
+GO
+INSERT INTO [dbo].[TaskAssignment]
+		([DateAssigned], [TaskID], [UserID], [RoleID])
+	VALUES
+		('2022-01-30', 100000, 100000, 'Event Planner')
 GO
 
 /***************************************************************

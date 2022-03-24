@@ -209,5 +209,29 @@ namespace LogicLayer
             return tasks;
         }
 
+        /// <summary>
+        /// Emma Pollock
+        /// 2022/03/10
+        /// 
+        /// Description:
+        /// Method that retrieves all task assignments for a task
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>list TaskAssignements</returns>
+        public List<TaskAssignmentVM> RetrieveTaskAssignmentsByTaskID(int taskID)
+        {
+            List<TaskAssignmentVM> taskAssignments = new List<TaskAssignmentVM>();
+
+            try
+            {
+                taskAssignments = _taskAccessor.SelectTaskAssignmentsByTaskID(taskID);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            return taskAssignments;
+        }
     }
 }

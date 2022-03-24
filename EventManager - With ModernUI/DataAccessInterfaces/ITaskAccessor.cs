@@ -58,5 +58,7 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <returns>List Tasks</returns>
         List<TasksVM> SelectAllActiveTasksByEventID(int eventID);
+
+        List<TaskAssignmentVM> SelectTaskAssignmentsByTaskID(int taskID);
     }
 }

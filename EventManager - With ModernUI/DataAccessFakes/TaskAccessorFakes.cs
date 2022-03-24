@@ -16,10 +16,16 @@ namespace DataAccessFakes
     /// Description:
     /// Class of fakes used to test the methods related to Tasks
     /// </summary>
+    /// /// <remarks>
+	/// Emma Pollock
+	/// Updated: 2022/03/10
+    /// added taskAssignements
+	/// </remarks>
     public class TaskAccessorFakes : ITaskAccessor
     {
         private List<TasksVM> _fakeTasks = new List<TasksVM>();
         private List<Priority> _priorities = new List<Priority>();
+        private List<TaskAssignmentVM> _taskAssignments = new List<TaskAssignmentVM>();
 
         public TaskAccessorFakes()
         {
@@ -96,6 +102,42 @@ namespace DataAccessFakes
                 PriorityID = 3,
                 Description = "High"
             });
+
+            /// <summary>
+            /// Emma Pollock
+            /// Created: 2022/03/10
+            /// 
+            /// Description:
+            /// Creating a "fake" list of taskAssignments to use for testing purposes
+            /// </summary>
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 1,
+                DateAssigned = new DateTime(2022, 1, 20),
+                TaskID = 999999,
+                RoleID = "Event Planner",
+                UserID = 999999,
+                Name = "Tess Data"
+            });
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 2,
+                DateAssigned = new DateTime(2022, 2, 3),
+                TaskID = 999999,
+                RoleID = "Volunteer",
+                UserID = 999998,
+                Name = "Tess Data"
+            });
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 1,
+                DateAssigned = new DateTime(2022, 3, 7),
+                TaskID = 999998,
+                RoleID = "Event Planner",
+                UserID = 999999,
+                Name = "Tess Data"
+            });
+
         }
 
         /// <summary>
@@ -208,5 +250,27 @@ namespace DataAccessFakes
             return tasks;
         }
 
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Select method that gets a list of the fake taskAssignments 
+        ///     for a task.
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>List TaskAssignments</returns>
+        public List<TaskAssignmentVM> SelectTaskAssignmentsByTaskID(int taskID)
+        {
+            List<TaskAssignmentVM> assignments = new List<TaskAssignmentVM>();
+            foreach(TaskAssignmentVM taskAssignment in _taskAssignments)
+            {
+                if(taskAssignment.TaskID == taskID)
+                {
+                    assignments.Add(taskAssignment);
+                }
+            }
+            return assignments;
+        }
     }
 }

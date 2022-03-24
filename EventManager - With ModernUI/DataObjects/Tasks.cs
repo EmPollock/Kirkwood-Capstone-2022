@@ -23,7 +23,6 @@ namespace DataObjects
         public DateTime CompletionDate { get; set; }
         public int ProofID { get; set; }
         public bool isDone { get; set; }
-        public int TaskAssignmentID { get; set; }
         public int EventID { get; set; }
         public bool Active { get; set; }
     }

@@ -595,5 +595,69 @@ namespace LogicLayerTests
             // exception checking
         }
 
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Test that returns a list of the correct size
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveTaskAssignmentsByTaskIDReturnsCorrectList()
+        {
+            // arrange
+            const int taskID = 999999;
+            List<TaskAssignmentVM> expectedList = new List<TaskAssignmentVM>();
+            expectedList.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 1,
+                DateAssigned = new DateTime(2022, 1, 20),
+                TaskID = 999999,
+                RoleID = "Event Planner",
+                UserID = 999999,
+                Name = "Tess Data"
+            });
+            expectedList.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 2,
+                DateAssigned = new DateTime(2022, 2, 3),
+                TaskID = 999999,
+                RoleID = "Volunteer",
+                UserID = 999998,
+                Name = "Tess Data"
+            });
+
+            List<TaskAssignmentVM> actualList;
+
+            // act
+            
+            actualList = _taskManager.RetrieveTaskAssignmentsByTaskID(taskID);
+
+            // assert
+            ReflectionHelper.AssertReflectiveEqualsEnumerable(expectedList, actualList);
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/11
+        /// 
+        /// Description:
+        /// Test that returns a list of the correct size
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveTaskAssignmentsByTaskIDReturnsEmptyListWithInvalidTaskID()
+        {
+            // arrange
+            const int taskID = 1;
+            const int expectedCount = 0;
+            int actualCount;
+
+            // act
+            actualCount = _taskManager.RetrieveTaskAssignmentsByTaskID(taskID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
     }
 }

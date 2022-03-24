@@ -59,5 +59,7 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <returns>list Tasks</returns>
         List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID = 100000);
+
+        List<TaskAssignmentVM> RetrieveTaskAssignmentsByTaskID(int taskID);
     }
 }
