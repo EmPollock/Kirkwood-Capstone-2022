@@ -140,7 +140,7 @@ namespace WPFPresentation.Event
             txtBoxEventName.Text = _event.EventName.ToString();
             txtBoxEventDateCreated.Text = _event.EventCreatedDate.ToShortDateString();
             txtBoxEventDescription.Text = _event.EventDescription.ToString();
-            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet
+            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet\
 
         }
 
