@@ -38,6 +38,10 @@ namespace WPFPresentation.Location
         /// 
         /// Description:
         /// Initializes component and sets up entrance manager with fake and default accessors
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/25
+        /// Description: added manager provider and removed fake
         /// </summary>
         /// <param name="entrance"></param>
         /// <param name="locationID"></param>
@@ -46,13 +50,12 @@ namespace WPFPresentation.Location
         /// <param name="mode">1 == add, 2 == edit</param>
         internal pgAddEditEntrance(Entrance entrance, int locationID, ManagerProvider managerProvider, User user, int mode)
         {
-            //for fakes
-            //_entranceManager = new EntranceManager(new EntranceAccessorFake());
-
-            _entranceManager = new EntranceManager();
+            
+            
             _entrance = entrance;
             _locationID = locationID;
             _managerProvider = managerProvider;
+            _entranceManager = _managerProvider.EntranceManager;
             _user = user;
             _mode = mode;
             InitializeComponent();
