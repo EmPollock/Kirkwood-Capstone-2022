@@ -172,14 +172,14 @@ namespace LogicLayerTests
             // arrange
             Entrance oldEntrance = new Entrance()
             {
-                EntranceID = 1000000,
+                EntranceID = 100000,
                 EntranceName = "Test Entrance 1",
                 Description = "A description of test entrance 1"
             };
 
             Entrance newEntrance = new Entrance()
             {
-                EntranceID = 1000000,
+                EntranceID = 100000,
                 EntranceName = "Test Entrance",
                 Description = "Description"
             };
@@ -316,8 +316,8 @@ namespace LogicLayerTests
             Entrance newEntrance = new Entrance()
             {
                 EntranceID = 1000000,
-                EntranceName = "Test Entrance",
-                Description = "fdshajklfhdsuailhfuidsahlfjkdsabfjiehaulfhjdskafhjdhsuaifnejkalfdhsljfjdsahfuieoawhjfdsjalkfhdsialhfuegabjklfgsulaifhjsaldhfjdslahfuilshafjelshajfhsldafheiwahfdsjkalhfuieslahfjelsahdueilwhafesjalkhfues"
+                EntranceName = "Test Entrance 1",
+                Description = "fdshajklfhdsuailhfuidsahlfjkdshjskdlhfdskalhfjkdslahfudslahfjkdslafhjksdlahfjkdslahfjkdsafhljkdhueilashfjkdlshafjkdlhsaufihldasjlkhfjdkslahfjkdslahfudsilahfejklafhjkdashlfjkdhsafjklhdsajkflhdsjkalfhsmanfdmsafhjldhabfjiehaulfhjdskafhjdhsuaifnejkalfdhsljfjdsahfuieoawhjfdsjalkfhdsialhfuegabjklfgsulaifhjsaldhfjdslahfuilshafjelshajfhsldafheiwahfdsjkalhfuieslahfjelsahdueilwhafesjalkhfues"
             };
 
             // act
