@@ -1429,17 +1429,25 @@ namespace WPFPresentation
         /// Created 2022/03/01
         /// 
         /// Description: Button to delete the schedule item in the same line
+        /// 
+        /// Updated:
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/25
+        /// Description: Added functionality to remove activites from sub locations
+        /// if associated event is removed from location.
         /// </summary>
         private void btnDeleteScheduleItem_Click(object sender, RoutedEventArgs e)
         {
             EventDateVM selectedEventDateVM = new EventDateVM();
             Activity selectedActivity = new Activity();
+            List<Activity> eventActivities = new List<Activity>();
             int selectedEventID = 0;
             bool isEvent = true;
             if (datLocationSchedule.SelectedItem.GetType().Equals(selectedEventDateVM.GetType()))
             {
                 selectedEventDateVM = (EventDateVM)datLocationSchedule.SelectedItem;
                 selectedEventID = selectedEventDateVM.EventID;
+                eventActivities = _activityManager.RetrieveActivitiesByEventID(selectedEventID);
                 isEvent = true;
             }
             else if (datLocationSchedule.SelectedItem.GetType().Equals(selectedActivity.GetType()))
@@ -1460,6 +1468,11 @@ namespace WPFPresentation
                     if (isEvent)
                     {
                         _eventManager.UpdateEventLocationByEventID(selectedEventID, _locationID, null);
+                        foreach(var activ in eventActivities)
+                        {
+                            _activityManager.UpdateActivitySublocationByActivityID(activ.ActivityID, activ.SublocationID, null);
+                            _activitiesForSublocation.Remove(activ);
+                        }
                         _eventDatesForLocation.Remove(selectedEventDateVM);
                     }
                     else
