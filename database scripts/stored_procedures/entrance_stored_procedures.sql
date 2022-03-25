@@ -74,10 +74,8 @@ GO
 CREATE PROCEDURE [dbo].[sp_update_entrance_by_entranceID]
 (
 	@EntranceID 			[int],
-	@OldLocationID 			[int],
 	@OldEntranceName		[nvarchar](100),
 	@OldDescription			[nvarchar](255),
-	@NewLocationID 			[int],
 	@NewEntranceName		[nvarchar](100),
 	@NewDescription			[nvarchar](255)
 )
@@ -85,13 +83,10 @@ AS
 	BEGIN
 		UPDATE [dbo].[Entrance]
 		SET		
-			[LocationID] = @NewLocationID,
 			[EntranceName] = @NewEntranceName,
 			[Description] = @NewDescription
 		WHERE 	
 			[EntranceID] = @EntranceID
-		  AND	
-			@OldLocationID = [LocationID]
 		  AND
 			@OldEntranceName = [EntranceName]
 		  AND

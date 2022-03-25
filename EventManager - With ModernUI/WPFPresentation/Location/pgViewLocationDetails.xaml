@@ -247,7 +247,7 @@
 
                 <TextBlock x:Name="lblLocationName" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Style="{StaticResource TitleTextBlockStyle}">Filler</TextBlock>
                 <Label x:Name="lblNoEntrances" Grid.Row="1" HorizontalAlignment="Center"></Label>
-                <DataGrid x:Name="datViewEntrances" Grid.Row="1" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="True" CanUserAddRows="False" SelectionMode="Single" GridLinesVisibility="Horizontal" >
+                <DataGrid x:Name="datViewEntrances" Grid.Row="1" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="True" CanUserAddRows="False" SelectionMode="Single" GridLinesVisibility="Horizontal" MouseDoubleClick="datViewEntrances_MouseDoubleClick" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Entrance Name" Binding="{Binding EntranceName}" />
                         <DataGridTextColumn Header="Description" Binding="{Binding Description}" />

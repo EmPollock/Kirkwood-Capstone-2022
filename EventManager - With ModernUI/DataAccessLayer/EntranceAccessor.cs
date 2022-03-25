@@ -109,5 +109,55 @@ namespace DataAccessLayer
 
             return entrances;
         }
+
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Update entrance using entrance ID
+        /// 
+        /// </summary>
+        /// <param name="oldEntrance"></param>
+        /// <param name="newEntrance"></param>
+        /// <returns>Number of rows affected</returns>
+        public int UpdateEntrance(Entrance oldEntrance, Entrance newEntrance)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+            string cmdTxt = "sp_update_entrance_by_entranceID";
+            var cmd = new SqlCommand(cmdTxt, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@EntranceID", oldEntrance.EntranceID);
+
+            cmd.Parameters.Add("@OldEntranceName", SqlDbType.NVarChar, 100);
+            cmd.Parameters["@OldEntranceName"].Value = oldEntrance.EntranceName;
+            cmd.Parameters.Add("@OldDescription", SqlDbType.NVarChar, 255);
+            cmd.Parameters["@OldDescription"].Value = oldEntrance.Description;
+
+            cmd.Parameters.Add("@NewEntranceName", SqlDbType.NVarChar, 100);
+            cmd.Parameters["@NewEntranceName"].Value = newEntrance.EntranceName;
+            cmd.Parameters.Add("@NewDescription", SqlDbType.NVarChar, 255);
+            cmd.Parameters["@NewDescription"].Value = newEntrance.Description;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
+        }
     }
 }

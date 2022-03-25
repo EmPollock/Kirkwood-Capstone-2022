@@ -44,6 +44,7 @@ namespace WPFPresentation
         List<EventDateVM> _eventDatesForLocation;
         List<Sublocation> _sublocations;
         List<Activity> _activitiesForSublocation;
+        List<Entrance> _entrances;
 
         Uri _src;
         int _imageNumber = 0;
@@ -51,6 +52,7 @@ namespace WPFPresentation
 
         User _user;
         int _where = 0;
+        Entrance _entrance;
 
         /// <summary>
         /// Austin Timmerman
@@ -1109,17 +1111,52 @@ namespace WPFPresentation
             try
             {
                 this.lblLocationName.Text = _location.Name + " Entrances";
-                List<Entrance> entrances = _entranceManager.RetrieveEntranceByLocationID(_locationID);
-                if (entrances.Count == 0)
+                _entrances = _entranceManager.RetrieveEntranceByLocationID(_locationID);
+                if (_entrances.Count == 0)
                 {
-                    lblNoEntrances.Content = "No entrances for this location yet. Use the Add button to add entrances.";
+                    lblNoEntrances.Content = "No entrances for this location yet. Use the Create button to create an entrance.";
                 }
-                datViewEntrances.ItemsSource = entrances;
+                datViewEntrances.ItemsSource = _entrances;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created 2022/03/04
+        /// 
+        /// Description:
+        /// Click event handler for going to the add edit entrance page
+        /// in create mode
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCreateEntrance_Click(object sender, RoutedEventArgs e)
+        {
+            Page page = new pgAddEditEntrance(_entrance, _locationID, _managerProvider, _user, 1);
+            this.NavigationService.Navigate(page);
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created 2022/03/08
+        /// 
+        /// Description:
+        /// Click event handler for going to the add edit entrance page
+        /// in update mode
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datViewEntrances_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _entrance = (Entrance)datViewEntrances.SelectedItem;
+            Page page = new pgAddEditEntrance(_entrance, _locationID, _managerProvider, _user, 2);
+            this.NavigationService.Navigate(page);
         }
 
         /// <summary>
@@ -1252,20 +1289,5 @@ namespace WPFPresentation
             }
         }
 
-        /// <summary>
-        /// Alaina Gilson
-        /// Created 2022/03/04
-        /// 
-        /// Description:
-        /// Click event handler for creating an add edit entrance page
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnCreateEntrance_Click(object sender, RoutedEventArgs e)
-        {
-            Page page = new pgAddEditEntrance(_locationID, _managerProvider, _user);
-            this.NavigationService.Navigate(page);
-        }
     }
 }

@@ -26,8 +26,11 @@ namespace WPFPresentation.Location
     {
         IEntranceManager _entranceManager;
         ManagerProvider _managerProvider;
+
+        Entrance _entrance;
         int _locationID;
         User _user;
+        int _mode;
 
         /// <summary>
         /// Alaina Gilson
@@ -36,56 +39,50 @@ namespace WPFPresentation.Location
         /// Description:
         /// Initializes component and sets up entrance manager with fake and default accessors
         /// </summary>
+        /// <param name="entrance"></param>
         /// <param name="locationID"></param>
         /// <param name="managerProvider"></param>
         /// <param name="user"></param>
-        internal pgAddEditEntrance(int locationID, ManagerProvider managerProvider, User user)
+        /// <param name="mode">1 == add, 2 == edit</param>
+        internal pgAddEditEntrance(Entrance entrance, int locationID, ManagerProvider managerProvider, User user, int mode)
         {
             //for fakes
             //_entranceManager = new EntranceManager(new EntranceAccessorFake());
 
             _entranceManager = new EntranceManager();
+            _entrance = entrance;
             _locationID = locationID;
             _managerProvider = managerProvider;
             _user = user;
+            _mode = mode;
             InitializeComponent();
         }
 
         /// <summary>
         /// Alaina Gilson
-        /// Created 2022/03/03
+        /// Created: 2022/03/08
         /// 
         /// Description:
-        /// Adds a new entrance to database
+        /// Checks which mode the page should be in and
+        /// updates labels accordingly
         /// </summary>
-        private void btnEntranceAdd_Click(object sender, RoutedEventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            string name = txtBoxEntranceName.Text;
-            string description = txtBoxEntranceDescription.Text;
+            // create entrance mode
+            if(_mode == 1)
+            {
+                txtBlkAddEditEntrance.Text = "Create New Entrance";
+                btnEntranceAddEdit.Content = "Add";
+            }
 
-            try
+            if (_mode == 2)
             {
-                if (name == "" || description == "")
-                {
-                    MessageBox.Show("Please enter all fields for the entrance.");
-                    txtBoxEntranceName.Focus();
-                }
-                else
-                {
-                    _entranceManager.CreateEntrance(_locationID, name, description);
-                    //MessageBox.Show("Entrance has been added successfully.");
-                }
+                txtBlkAddEditEntrance.Text = "Update Entrance";
+                btnEntranceAddEdit.Content = "Save";
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There was a problem creating a new entrance.\n\n" + ex.Message);
-            }
-            finally
-            {
-                pgViewLocationDetails page = new pgViewLocationDetails(_locationID, _managerProvider, _user, 1);
-                this.NavigationService.Navigate(page);            }
         }
-
 
         /// <summary>
         /// Alaina Gilson
@@ -107,5 +104,97 @@ namespace WPFPresentation.Location
                 this.NavigationService.Navigate(page);
             }
         }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created 2022/03/03
+        /// 
+        /// Description:
+        /// Adds a new entrance to database
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/03/08
+        /// 
+        /// Description:
+        /// Added edit mode
+        /// </summary>
+        private void btnEntranceAddEdit_Click(object sender, RoutedEventArgs e)
+        {
+            string name = txtBoxEntranceName.Text;
+            string description = txtBoxEntranceDescription.Text;
+
+            // create entrance mode
+            if(_mode == 1)
+            {
+                if (name == "")
+                {
+                    MessageBox.Show("Please enter an entrance name.");
+                    txtBoxEntranceName.Focus();
+                }
+                else if (description == "")
+                {
+                    MessageBox.Show("Please enter an entrance description.");
+                    txtBoxEntranceDescription.Focus();
+                }
+                else
+                {
+                    try
+                    {
+                        _entranceManager.CreateEntrance(_locationID, name, description);
+                        //MessageBox.Show("Entrance has been added successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was a problem creating a new entrance.\n\n" + ex.Message);
+                    }
+                    finally
+                    {
+                        pgViewLocationDetails page = new pgViewLocationDetails(_locationID, _managerProvider, _user, 1);
+                        this.NavigationService.Navigate(page);
+                    }
+                }
+            }
+
+            // update entrance mode
+            if (_mode == 2)
+            {
+                if (name == "")
+                {
+                    MessageBox.Show("Please enter an entrance name.");
+                    txtBoxEntranceName.Focus();
+                }
+                else if (description == "")
+                {
+                    MessageBox.Show("Please enter an entrance description.");
+                    txtBoxEntranceDescription.Focus();
+                }
+                else
+                {
+                    try
+                    {
+                        Entrance newEntrance = new Entrance()
+                        {
+                            EntranceID = _entrance.EntranceID,
+                            EntranceName = name,
+                            Description = description
+                        };
+
+                        _entranceManager.UpdateEntrance(_entrance, newEntrance);
+                        MessageBox.Show("Entrance has been saved successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was a problem saving the entrance.\n\n" + ex.Message);
+                    }
+                    finally
+                    {
+                        pgViewLocationDetails page = new pgViewLocationDetails(_locationID, _managerProvider, _user, 1);
+                        this.NavigationService.Navigate(page);
+                    }
+                }
+            }
+        }
+
+        
     }
 }

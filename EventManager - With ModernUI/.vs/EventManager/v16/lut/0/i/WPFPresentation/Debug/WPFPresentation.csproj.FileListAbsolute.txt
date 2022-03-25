@@ -1,18 +1,54 @@
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\WPFPresentation\bin\Debug\WPFPresentation.exe.config
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\WPFPresentation\bin\Debug\WPFPresentation.exe
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\WPFPresentation\bin\Debug\WPFPresentation.pdb
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.csprojAssemblyReference.cache
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\MainWindow.g.cs
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\UpdatePasswordWindow.g.cs
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\App.g.cs
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation_MarkupCompile.cache
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation_MarkupCompile.lref
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\MainWindow.baml
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\UpdatePasswordWindow.baml
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.g.resources
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.Properties.Resources.resources
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.csproj.GenerateResource.cache
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.csproj.CoreCompileInputs.cache
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.csproj.CopyComplete
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.exe
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.pdb
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\WPFPresentation\bin\Debug\WPFPresentation.exe.config
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\WPFPresentation\bin\Debug\WPFPresentation.exe
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\WPFPresentation\bin\Debug\WPFPresentation.pdb
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgEventEditDetail.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgTaskListCreate.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgTaskListEdit.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgTaskListView.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgViewActivityDetails.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgViewEventDateActivities.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Location\pgAddEditEntrance.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Location\pgParkingLot.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Location\pgViewLocationDetails.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Location\pgViewLocations.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgViewActivities.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\MainWindow.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgCreateEvent.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgViewEvents.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\RegisterUser.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\SplashScreen.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Supplier\pgViewSupplierListing.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Supplier\pgViewSuppliers.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\UpdatePasswordWindow.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Volunteer\pgViewAllVolunteers.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\App.g.cs
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation_MarkupCompile.cache
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation_MarkupCompile.lref
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\App.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgEventEditDetail.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgTaskListCreate.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgTaskListEdit.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgTaskListView.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgViewActivityDetails.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgViewEventDateActivities.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Location\pgAddEditEntrance.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Location\pgParkingLot.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Location\pgViewLocationDetails.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Location\pgViewLocations.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgViewActivities.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\MainWindow.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgCreateEvent.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Event\pgViewEvents.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\RegisterUser.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\SplashScreen.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Supplier\pgViewSupplierListing.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Supplier\pgViewSuppliers.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\UpdatePasswordWindow.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\Volunteer\pgViewAllVolunteers.baml
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.g.resources
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.Properties.Resources.resources
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.csproj.GenerateResource.cache
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.csproj.CoreCompileInputs.cache
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.csproj.CopyComplete
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.exe
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\WPFPresentation\Debug\WPFPresentation.pdb
