@@ -167,6 +167,23 @@ namespace WPFPresentation.Event
             updateTaskList();
         }
 
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// shows and populates list of volunteers for the selected task
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datViewAllTasksForEvent_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            TasksVM selectedTask = (TasksVM)datViewAllTasksForEvent.SelectedItem;
+            lblVolunteers.Content = "Volunteers assigned to " + selectedTask.Name + ":";
+            datTaskVolunteers.ItemsSource = _taskManager.RetrieveTaskAssignmentsByTaskID(selectedTask.TaskID);
+        }
+
         // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
 
         /// <summary>
@@ -198,7 +215,6 @@ namespace WPFPresentation.Event
             pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
             this.NavigationService.Navigate(viewActivitiesPage);
         }
-
         // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }

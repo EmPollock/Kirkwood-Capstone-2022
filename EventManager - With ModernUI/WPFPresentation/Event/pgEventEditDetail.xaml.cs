@@ -451,19 +451,31 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method for setting Event Dates tab to edit mode
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes
         /// </summary>
         private void setEventDateTabEditMode()
         {
             // prepare add event grid
             grdAddEventDate.Visibility = Visibility.Visible;
             datePickerEventDate.SelectedDate = null;
-            txtBoxEventStartTimeHour.Text = "";
-            txtBoxEventStartTimeMinute.Text = "";
-            cmbStartTimeAMPM.SelectedItem = "AM";
-            txtBoxEventEndTimeHour.Text = "";
-            txtBoxEventEndTimeMinute.Text = "";
-            cmbEndTimeAMPM.SelectedItem = "AM";
+            //txtBoxEventStartTimeHour.Text = "";
+            //txtBoxEventStartTimeMinute.Text = "";
+            //cmbStartTimeAMPM.SelectedItem = "AM";
+            //txtBoxEventEndTimeHour.Text = "";
+            //txtBoxEventEndTimeMinute.Text = "";
+            //cmbEndTimeAMPM.SelectedItem = "AM";
+            ucStartTime.Reset();
+            ucEndTime.Reset();
+
+
             txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+            txtBlockEventAddValidationMessage.Text = "";
 
             btnEditEventDateAddSave.Content = "Add";
             // change buttons
@@ -481,6 +493,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so this event is no longer called
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -493,8 +513,9 @@ namespace WPFPresentation.Event
             {
                 if (textBox.Length == 2)
                 {
-                    txtBoxEventStartTimeMinute.Focus();
+                    //txtBoxEventStartTimeMinute.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+                    txtBlockEventAddValidationMessage.Text = "";
                 }
             }
             else
@@ -511,6 +532,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so this event is no longer called
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -523,8 +552,9 @@ namespace WPFPresentation.Event
             {
                 if (textBox.Length == 2)
                 {
-                    cmbStartTimeAMPM.Focus();
+                    //cmbStartTimeAMPM.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+                    txtBlockEventAddValidationMessage.Text = "";
                 }
             }
             else
@@ -541,6 +571,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so this event is no longer called
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -553,8 +591,9 @@ namespace WPFPresentation.Event
             {
                 if (textBox.Length == 2)
                 {
-                    txtBoxEventEndTimeMinute.Focus();
+                    //txtBoxEventEndTimeMinute.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+                    txtBlockEventAddValidationMessage.Text = "";
                 }
             }
             else
@@ -571,6 +610,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so this event is no longer called
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -583,8 +630,9 @@ namespace WPFPresentation.Event
             {
                 if (textBox.Length == 2)
                 {
-                    cmbEndTimeAMPM.Focus();
+                    //cmbEndTimeAMPM.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+                    txtBlockEventAddValidationMessage.Text = "";
                 }
             }
             else
@@ -614,6 +662,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Updated validation to fix 24 hour time errors
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -631,24 +687,24 @@ namespace WPFPresentation.Event
                     txtBlockEventAddValidationMessage.Text = "Please enter a date.";
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                 }
-                else if (txtBoxEventStartTimeHour.Text == "" ||
-                                txtBoxEventStartTimeMinute.Text == "" ||
-                                txtBoxEventEndTimeHour.Text == "" ||
-                                txtBoxEventEndTimeMinute.Text == "")
-                {
-                    txtBlockEventAddValidationMessage.Text = "Please enter times for your event to start and end.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                }
-                else if (Int32.Parse(txtBoxEventStartTimeHour.Text) > 12)
-                {
-                    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                }
-                else if (Int32.Parse(txtBoxEventEndTimeHour.Text) > 12)
-                {
-                    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                }
+                //else if (txtBoxEventStartTimeHour.Text == "" ||
+                //                txtBoxEventStartTimeMinute.Text == "" ||
+                //                txtBoxEventEndTimeHour.Text == "" ||
+                //                txtBoxEventEndTimeMinute.Text == "")
+                //{
+                //    txtBlockEventAddValidationMessage.Text = "Please enter times for your event to start and end.";
+                //    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                //}
+                //else if (Int32.Parse(txtBoxEventStartTimeHour.Text) > 12)
+                //{
+                //    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
+                //    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                //}
+                //else if (Int32.Parse(txtBoxEventEndTimeHour.Text) > 12)
+                //{
+                //    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
+                //    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                //}
 
                 else
                 {
@@ -657,11 +713,11 @@ namespace WPFPresentation.Event
                     int month = 0;
                     int day = 0;
                     int secconds = 0;
-                    // am pm logic
-                    int startHour = 0;
-                    int startMin = 0;
-                    int endHour = 0;
-                    int endMin = 0;
+
+                    int startHour = ucStartTime.Hour;
+                    int startMin = ucStartTime.Minutes;
+                    int endHour = ucEndTime.Hour;
+                    int endMin = ucEndTime.Minutes;
 
                     try
                     {
@@ -670,17 +726,21 @@ namespace WPFPresentation.Event
                         month = dateTimeToAdd.Month;
                         day = dateTimeToAdd.Day;
                         secconds = 0;
-                        bool isAMHour;
+                        //bool isAMHour;
 
                         // add 12 if the start time is in the PM
-                        isAMHour = cmbStartTimeAMPM.Text == "AM";
-                        startHour = Int32.Parse(txtBoxEventStartTimeHour.Text).ConvertTo24HourTime(isAMHour);
-                        startMin = Int32.Parse(txtBoxEventStartTimeMinute.Text);
+                        //isAMHour = cmbStartTimeAMPM.Text == "AM";
+                        //startHour = Int32.Parse(txtBoxEventStartTimeHour.Text).ConvertTo24HourTime(isAMHour);
+                        //startMin = Int32.Parse(txtBoxEventStartTimeMinute.Text);
 
                         // add 12 if the end time is in the PM
-                        isAMHour = cmbEndTimeAMPM.Text == "AM";
-                        endHour = Int32.Parse(txtBoxEventEndTimeHour.Text).ConvertTo24HourTime(isAMHour);
-                        endMin = Int32.Parse(txtBoxEventEndTimeMinute.Text);
+                        //isAMHour = cmbEndTimeAMPM.Text == "AM";
+                        //endHour = Int32.Parse(txtBoxEventEndTimeHour.Text).ConvertTo24HourTime(isAMHour);
+                        //endMin = Int32.Parse(txtBoxEventEndTimeMinute.Text);
+
+                        // validate time
+                        IntegerValidationHelpers.ValidateStartTimeBeforeEndTime(startHour, startMin, endHour, endMin);
+
 
                     }
                     catch (Exception ex)
@@ -691,8 +751,8 @@ namespace WPFPresentation.Event
                     // check to see that one time comes after the other
                     if (startHour > endHour)
                     {
-                        txtBoxEventEndTimeHour.Text = "";
-                        txtBoxEventEndTimeMinute.Text = "";
+                        //txtBoxEventEndTimeHour.Text = "";
+                        //txtBoxEventEndTimeMinute.Text = "";
                         txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                         txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                     }
@@ -700,7 +760,7 @@ namespace WPFPresentation.Event
                     {
                         if (startMin >= endMin)
                         {
-                            txtBoxEventEndTimeMinute.Text = "";
+                            //txtBoxEventEndTimeMinute.Text = "";
                             txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                             txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                         }
@@ -817,6 +877,19 @@ namespace WPFPresentation.Event
             setEventDatesTabDetailMode();
         }
 
+        /// <summary>
+        /// Orginal method contained no comment
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so validation of the text box is no longer relevant
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEditEventDatesDatGrid_Click(object sender, RoutedEventArgs e)
         {
             // make sure the add/edit dates grid is visable
@@ -831,35 +904,35 @@ namespace WPFPresentation.Event
             int startMin = startTime.Minute;
             int endHour = endTime.Hour;
             int endMin = endTime.Minute;
-            int startTimeAMPM = 0; // 0 is the index for AM 1 is PM
-            int endTimeAMPM = 0;
+            //int startTimeAMPM = 0; // 0 is the index for AM 1 is PM
+            //int endTimeAMPM = 0;
 
-            // subtract 12 if the start time is in the PM
-            if (startHour > 12)
-            {
-                startHour -= 12;
-                startTimeAMPM = 1;
-            }
-            // subtract 12 if the end time is in the PM
-            if (endHour > 12)
-            {
-                endHour -= 12;
-                endTimeAMPM = 1;
-            }
-            //12 am is 00:00 on 24hr clock
-            if (startHour == 0) 
-            {
-                startHour = 12;
-            }
+            //// subtract 12 if the start time is in the PM
+            //if (startHour > 12)
+            //{
+            //    startHour -= 12;
+            //    startTimeAMPM = 1;
+            //}
+            //// subtract 12 if the end time is in the PM
+            //if (endHour > 12)
+            //{
+            //    endHour -= 12;
+            //    endTimeAMPM = 1;
+            //}
+            ////12 am is 00:00 on 24hr clock
+            //if (startHour == 0) 
+            //{
+            //    startHour = 12;
+            //}
             
             // set the content with the data
             datePickerEventDate.SelectedDate = selectedDate;
-            txtBoxEventStartTimeHour.Text = startHour.ToString(); 
-            txtBoxEventStartTimeMinute.Text = startMin.ToString("D2"); // "D2" will give number formatting of 00
-            txtBoxEventEndTimeHour.Text = endHour.ToString();
-            txtBoxEventEndTimeMinute.Text = endMin.ToString("D2");
-            cmbStartTimeAMPM.SelectedIndex = startTimeAMPM;
-            cmbEndTimeAMPM.SelectedIndex = endTimeAMPM;
+            //txtBoxEventStartTimeHour.Text = startHour.ToString(); 
+            //txtBoxEventStartTimeMinute.Text = startMin.ToString("D2"); // "D2" will give number formatting of 00
+            //txtBoxEventEndTimeHour.Text = endHour.ToString();
+            //txtBoxEventEndTimeMinute.Text = endMin.ToString("D2");
+            //cmbStartTimeAMPM.SelectedIndex = startTimeAMPM;
+            //cmbEndTimeAMPM.SelectedIndex = endTimeAMPM;
 
             // do not show past dates in calendar picker
             datePickerEventDate.DisplayDateStart = DateTime.Today;

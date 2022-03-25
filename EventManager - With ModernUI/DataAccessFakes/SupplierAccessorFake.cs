@@ -13,6 +13,7 @@ namespace DataAccessFakes
         private List<Supplier> _fakeSuppliers = new List<Supplier>();
         private List<Reviews> _fakeReviews = new List<Reviews>();
         private List<List<string>> _fakeImages = new List<List<string>>();
+        private List<SupplierAvailabilityTableFake> _dbFake = new List<SupplierAvailabilityTableFake>();
 
         /// <summary>
         /// Kris Howell
@@ -157,6 +158,98 @@ namespace DataAccessFakes
             {
                 "Fakepath.png"
             });
+
+            _dbFake.Add(new SupplierAvailabilityTableFake()
+            {
+                Date = new DateTime(2022, 01, 01),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100000,
+                        AvailabilityID = 100000,
+                        TimeStart = new DateTime(2022, 01, 01, 8, 00, 00),
+                        TimeEnd = new DateTime(2022, 01, 01, 11, 00, 00),
+                    },
+                    new Availability()
+                    {
+                        ForeignID = 100000,
+                        AvailabilityID = 100001,
+                        TimeStart = new DateTime(2022, 01, 01, 13, 00, 00),
+                        TimeEnd = new DateTime(2022, 01, 01, 21, 00, 00)
+                    }
+                },
+                IsException = false
+            });
+
+            _dbFake.Add(new SupplierAvailabilityTableFake()
+            {
+                Date = new DateTime(2022, 01, 02),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100000,
+                        AvailabilityID = 100002,
+                        TimeStart = new DateTime(2022, 01, 02, 5, 30, 00),
+                        TimeEnd = new DateTime(2022, 01, 02, 8, 30, 00)
+                    }
+                },
+                IsException = false
+            });
+
+            _dbFake.Add(new SupplierAvailabilityTableFake()
+            {
+                Date = new DateTime(2022, 01, 01),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100001,
+                        AvailabilityID = 100003,
+                        TimeStart = new DateTime(2022, 01, 01, 22, 15, 00),
+                        TimeEnd = new DateTime(2022, 01, 01, 23, 00, 00)
+                    }
+                },
+                IsException = false
+            });
+
+            _dbFake.Add(new SupplierAvailabilityTableFake()
+            {
+                Date = new DateTime(2022, 01, 01),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100001,
+                        AvailabilityID = 100004,
+                        TimeStart = new DateTime(2022, 01, 01, 2, 45, 00),
+                        TimeEnd = new DateTime(2022, 01, 01, 4, 45, 00)
+                    }
+                },
+                IsException = true
+            });
+
+            _dbFake.Add(new SupplierAvailabilityTableFake()
+            {
+                Date = new DateTime(2022, 01, 03),
+                Availabilities = new List<Availability>()
+                {
+                    new Availability()
+                    {
+                        ForeignID = 100000,
+                        AvailabilityID = 100005
+                    }
+                },
+                IsException = true
+            });
+        }
+
+        private class SupplierAvailabilityTableFake
+        {
+            public DateTime Date { get; set; }
+            public List<Availability> Availabilities { get; set; }
+            public bool IsException { get; set; }
         }
 
         /// <summary>
@@ -249,6 +342,68 @@ namespace DataAccessFakes
                 }
             }
             return result;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Select regular weekly availability records matching the given supplierID and date.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of availability objects for a Supplier on a given date</returns>
+        public List<Availability> SelectSupplierAvailabilityBySupplierIDAndDate(int supplierID, DateTime date)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            foreach (SupplierAvailabilityTableFake fake in _dbFake)
+            {
+                if (fake.Date == date && !fake.IsException)
+                {
+                    foreach (Availability a in fake.Availabilities)
+                    {
+                        if (a.ForeignID == supplierID)
+                        {
+                            availabilities.Add(a);
+                        }
+                    }
+                }
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Select one-off availability exception records matching the given supplierID and date.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of availability objects for a Supplier on a given date</returns>
+        public List<Availability> SelectSupplierAvailabilityExceptionBySupplierIDAndDate(int supplierID, DateTime date)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            foreach (SupplierAvailabilityTableFake fake in _dbFake)
+            {
+                if (fake.Date == date && fake.IsException)
+                {
+                    foreach (Availability a in fake.Availabilities)
+                    {
+                        if (a.ForeignID == supplierID)
+                        {
+                            availabilities.Add(a);
+                        }
+                    }
+                }
+            }
+
+            return availabilities;
         }
     }
 }

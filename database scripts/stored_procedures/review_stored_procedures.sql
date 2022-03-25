@@ -84,3 +84,65 @@ AS
         WHERE [SupplierID] = @SupplierID
 	END	
 GO
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/01/26
+
+Description:
+Stored procedure to select all reviews for the volunteers
+**************************************************************
+Austin Timmerman
+Updated: 2022/03/10
+
+Description: 
+Updated to match the current review
+****************************************************************/
+print '' print '*** creating sp_select_all_volunteer_reviews'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_volunteer_reviews]
+AS
+	BEGIN
+		SELECT 
+			[VolunteerReview].[VolunteerID],
+			AVG([Review].[Rating])
+		FROM [VolunteerReview] JOIN [Review] ON [Review].[ReviewID] = [VolunteerReview].[ReviewID]
+		GROUP BY [VolunteerID]
+	END	
+GO
+
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/03/10
+
+Description:
+Stored procedure to select all reviews for a volunteer by volunteerID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_volunteer_reviews_by_volunteerID'
+GO
+CREATE PROCEDURE [dbo].[sp_select_volunteer_reviews_by_volunteerID]
+(
+	@VolunteerID		[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[VolunteerReview].[ReviewID],
+			[Review].[Rating],
+			CONCAT([GivenName], " ", [FamilyName]) AS "FullName",
+			[Review].[ReviewType],		
+			[Review].[Review],
+			[Review].[DateCreated]
+		FROM [VolunteerReview] 
+		JOIN [Review] ON [Review].[ReviewID] = [VolunteerReview].[ReviewID]
+		JOIN [Users] ON [Users].[UserID] = [Review].[UserID]
+		WHERE [Review].[Active] = 1
+			   AND [VolunteerID] = @VolunteerID 
+	END	
+GO

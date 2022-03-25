@@ -24,22 +24,27 @@ Created: 2022/01/31
 Description:
 Activity table
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Vinayak Deshpande
+Updated: 2022/03/14
 
-Description: 
+Description: Changed sublocationID field to be nullable.
+**************************************************************
+Kris Howell
+Updated: 2022/03/24
+
+Description: Changed sublocationID field to be non-nullable.
 ****************************************************************/
 
 print '' print '*** creating Activity table'
 CREATE TABLE [dbo].[Activity] (
 	[ActivityID]			[int] IDENTITY(100000,1)	NOT NULL
-	,[ActivityName]			[nvarchar](50)				NULL
+	,[ActivityName]			[nvarchar](50)				NOT NULL
 	,[ActivityDescription]	[nvarchar](250)				NULL
 	,[PublicActivity]		[bit]						NOT NULL DEFAULT 1
 	,[StartTime]			[time](0)					NOT NULL
 	,[EndTime]				[time](0)					NOT NULL
 	,[ActivityImageName]	[nvarchar](25)				NULL
-	,[SublocationID]		[int]						NOT NULL
+	,[SublocationID]		[int]						NULL
 	,[EventDateID]			[date]						NOT NULL
 	,[EventID]				[int]						NOT NULL
 

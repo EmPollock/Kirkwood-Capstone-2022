@@ -77,6 +77,7 @@ GO
 
  Description: 
 ****************************************************************/
+/*
 print '' print '*** creating VolunteerReviews table'
 GO
 CREATE TABLE [dbo].[VolunteerReview] (
@@ -92,7 +93,7 @@ CREATE TABLE [dbo].[VolunteerReview] (
 		REFERENCES [Volunteer]([VolunteerID])
 )
 GO
-
+*/
 
 
 /***************************************************************
@@ -107,6 +108,7 @@ GO
 
  Description: 
 ****************************************************************/
+/*
 print '' print '*** test records for VolunteerReview table'
 GO
 INSERT INTO [dbo].[VolunteerReview] (
@@ -120,7 +122,7 @@ INSERT INTO [dbo].[VolunteerReview] (
 	(100001, 100000, 100000, 5, "Did great."),
 	(100002, 100001, 100000, 1, "Terrible.")
 GO
-
+*/
 
 /***************************************************************
  Austin Timmerman

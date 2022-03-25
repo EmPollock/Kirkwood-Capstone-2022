@@ -21,7 +21,7 @@
 
             <TextBlock x:Name="txtBlkVolunteerList" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}">Volunteers</TextBlock>
             <Grid Grid.Row="1" Grid.Column="1">
-                <DataGrid x:Name="datVolunteers" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsSynchronizedWithCurrentItem="True" HorizontalContentAlignment="Center" MinColumnWidth="100" SelectionMode="Single" Padding="0" OverridesDefaultStyle="True" Foreground="Black">
+                <DataGrid x:Name="datVolunteers" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsSynchronizedWithCurrentItem="True" HorizontalContentAlignment="Center" MinColumnWidth="100" SelectionMode="Single" Padding="0" OverridesDefaultStyle="True" Foreground="Black" MouseDoubleClick="datVolunteers_MouseDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="First Name" Binding="{Binding GivenName}"/>
                         <DataGridTextColumn Header="Last Name" Binding="{Binding FamilyName}"/>

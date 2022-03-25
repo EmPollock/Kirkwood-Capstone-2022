@@ -136,6 +136,10 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void datEventActivities_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if(datEventActivities.SelectedItem == null)
+            {
+                return;
+            }
             ActivityVM selectedActivity = (ActivityVM)datEventActivities.SelectedItem;
             pgViewActivityDetails activityDetailsPage = new pgViewActivityDetails(selectedActivity, _event, _managerProvider, _user);
             this.NavigationService.Navigate(activityDetailsPage);
@@ -396,6 +400,21 @@ namespace WPFPresentation.Event
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Click handler for button to add activity to current event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAddActivity_Click(object sender, RoutedEventArgs e)
+        {
+            pgCreateActivity CreateActivityPage = new pgCreateActivity(_user, _event, _managerProvider);
+            this.NavigationService.Navigate(CreateActivityPage);
         }
     }
 }

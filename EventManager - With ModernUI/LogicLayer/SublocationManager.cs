@@ -91,6 +91,29 @@ namespace LogicLayer
 
         /// <summary>
         /// Christopher Repko
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Deactivates a sublocation from sublocation table.
+        /// 
+        /// </summary>
+        /// <param name="sublocationID">ID of sublocation to be deactivated</param>
+        /// <returns></returns>
+        public int DeactivateSublocationBySublocationID(int sublocationID)
+        {
+            int result = 0;
+            try
+            {
+                result = _sublocationAccessor.DeactivateSublocationBySublocationID(sublocationID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to deactivate sublocation", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
         /// Created: 2022/03/03
         /// 
         /// Description:

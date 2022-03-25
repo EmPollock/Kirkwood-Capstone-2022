@@ -208,5 +208,66 @@ namespace DataAccessFakes
             _fakeUserRoles.Add(new User { UserID = 100004 }, new Role { RoleID = "Attendee" });
             _fakeUserRoles.Add(new User { UserID = 100000 }, new Role { RoleID = "Attendee" });
         }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/09
+        /// 
+        /// Description:
+        /// Updates a fake Parking lot by lotID
+        /// </summary>
+        /// <param name="lotID"></param>
+        /// <param name="oldParkingLot"></param>
+        /// <param name="newParkingLot"></param>
+        /// <returns></returns>
+        public int UpdateParkingLotByLotID(int lotID, ParkingLot oldParkingLot, ParkingLot newParkingLot)
+        {
+            int rowsAffected = 0;
+
+            foreach(var fakeLots in _fakeParkingLots)
+            {
+                if(fakeLots.LotID == newParkingLot.LotID && fakeLots.LocationID == oldParkingLot.LocationID
+                    && fakeLots.Name == oldParkingLot.Name && fakeLots.Description == oldParkingLot.Description
+                    && fakeLots.ImageName == oldParkingLot.ImageName)
+                {
+                    fakeLots.LocationID = newParkingLot.LocationID;
+                    fakeLots.Name = newParkingLot.Name;
+                    fakeLots.Description = newParkingLot.Description;
+                    fakeLots.ImageName = newParkingLot.ImageName;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/11
+        /// 
+        /// Description:
+        /// Method that selects a parking lot out of a list of fakes by lot ID
+        /// </summary>
+        /// <param name="lotID"></param>
+        /// <returns></returns>
+        public ParkingLotVM SelectParkingLotByLotID(int lotID)
+        {
+            ParkingLotVM parkingLot = null;
+
+            foreach(var fakeParkingLot in _fakeParkingLots)
+            {
+                if(fakeParkingLot.LotID == lotID)
+                {
+                    parkingLot = fakeParkingLot;
+                }
+            }
+
+            if(parkingLot == null)
+            {
+                throw new ApplicationException("Parking lot not found.");
+            }
+
+            return parkingLot;
+        }
     }
 }

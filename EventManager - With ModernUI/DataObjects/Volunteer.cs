@@ -32,4 +32,11 @@ namespace DataObjects
         public bool Active { get; set; }
         public DateTime DateCreated { get; set; }
     }
+
+    //public class VolunteerVM : Volunteer
+    //{
+    //    public List<VolunteerSkillSet> Skills { get; set; }
+    //    public List<Reviews> Reviews { get; set; }
+        
+    //}
 }
