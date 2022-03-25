@@ -113,9 +113,9 @@ namespace DataAccessFakes
 
             foreach(var fakeEntrance in _fakeEntrances)
             {
-                if(fakeEntrance.EntranceID == newEntrance.EntranceID 
-                    && fakeEntrance.EntranceName == oldEntrance.EntranceName
-                    && fakeEntrance.Description == oldEntrance.Description)
+                if(fakeEntrance.EntranceID == oldEntrance.EntranceID 
+                    && fakeEntrance.EntranceName.Equals(oldEntrance.EntranceName)
+                    && fakeEntrance.Description.Equals(oldEntrance.Description))
                 {
                     fakeEntrance.EntranceName = newEntrance.EntranceName;
                     fakeEntrance.Description = newEntrance.Description;
