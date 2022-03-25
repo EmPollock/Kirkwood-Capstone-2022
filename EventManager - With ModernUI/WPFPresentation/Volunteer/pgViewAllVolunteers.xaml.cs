@@ -24,10 +24,12 @@ namespace WPFPresentation
     /// Created: 2022/01/26
     /// 
     /// Interaction logic for pgViewAllVolunteers.xaml
+    /// 
     /// </summary>
     public partial class pgViewAllVolunteers : Page
     {
         IVolunteerManager _volunteerManager = null;
+        ManagerProvider _managerProvider = null;
 
         /// <summary>
         /// Austin Timmerman
@@ -35,14 +37,20 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// The default constructor for the ViewAllVolunteersPage
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
         /// </summary>
-        public pgViewAllVolunteers()
+        /// <param name="managerProvider"></param>
+        internal pgViewAllVolunteers(ManagerProvider managerProvider)
         {
-            // fake accessor
-            //_volunteerManager = new VolunteerManager(new VolunteerAccessorFake());
-
-            // default accessor
-            _volunteerManager = new VolunteerManager();
+            _managerProvider = managerProvider;
+            _volunteerManager = managerProvider.VolunteerManager;
 
             InitializeComponent();
         }
@@ -108,5 +116,13 @@ namespace WPFPresentation
             loadAllVolunteers();
         }
 
+        private void datVolunteers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(datVolunteers.SelectedItem != null)
+            {
+                pgViewVolunteerDetails page = new pgViewVolunteerDetails((Volunteer)datVolunteers.SelectedItem, _managerProvider);
+                NavigationService.Navigate(page);
+            }
+        }
     }
 }

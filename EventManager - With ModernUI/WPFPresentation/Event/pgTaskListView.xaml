@@ -5,14 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPFPresentation.Event"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="700" d:DesignWidth="800"
       Title="pgTaskListView">
 
     <Grid Loaded="Grid_Loaded">
         <Grid.RowDefinitions>
             <RowDefinition Height="130"/>
             <RowDefinition Height="250" />
-            <RowDefinition />
+            <RowDefinition MaxHeight="100"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -37,7 +38,7 @@
             <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
                     Background="#FF4388CC" Foreground="#FFFFFF99" >Tasks</Button>
             <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Itinerary</Button>
+                    Background="#FF4388CC" Foreground="White" Click="btnItinerary_Click">Itinerary</Button>
             <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
                     Background="#FF4388CC" Foreground="White">Budget</Button>
             <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
@@ -57,7 +58,7 @@
             <!-- Task List View -->
             <DataGrid x:Name="datViewAllTasksForEvent" SelectionMode="Single" IsReadOnly="True" 
                       GridLinesVisibility="Horizontal" MouseDoubleClick="datViewAllTasksForEvent_MouseDoubleClick"
-                      ItemsSource="{Binding}" MaxColumnWidth="400">
+                      ItemsSource="{Binding}" MaxColumnWidth="400" MouseLeftButtonUp="datViewAllTasksForEvent_MouseLeftButtonUp">
                 <DataGrid.Columns>
                     <!--<DataGridTextColumn Header="Task Name" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
@@ -84,10 +85,27 @@
             </DataGrid>
 
         </Grid>
+        
         <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" />
         <TextBlock x:Name="lblTaskListCreate" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                         Margin="30 0 0 65" Style="{StaticResource BodyTextBlockStyle}">Add Task:</TextBlock>
         <Button x:Name="btnTaskListCreate" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                 Margin="100 0 0 60"  Click="btnTaskListCreate_Click" Background="Black" Foreground="White">+</Button>
+        
+        <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition MinHeight="20" MaxHeight="30"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label x:Name="lblVolunteers" FontSize="20"  HorizontalAlignment="Center">Click on a task to view a list of its volunteers</Label>
+            <DataGrid x:Name="datTaskVolunteers" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Date Assigned" Binding="{Binding DateAssigned, StringFormat=\{0:MM/dd/yy\}}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Role" Binding="{Binding RoleID}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </Page>

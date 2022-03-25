@@ -22,6 +22,7 @@ namespace WPFPresentation
     public partial class pgViewSuppliers : Page
     {
         ISupplierManager _supplierManager = null;
+        ManagerProvider _managerProvider = null;
 
         /// <summary>
         /// Kris Howell
@@ -29,14 +30,18 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Initialize supplier manager and page
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
-        public pgViewSuppliers()
+        internal pgViewSuppliers(ManagerProvider managerProvider)
         {
-            // fake accessor
-            // _supplierManager = new SupplierManager(new SupplierAccessorFake());
-
-            // live data accessor
-            _supplierManager = new SupplierManager();
+            _managerProvider = managerProvider;
+            _supplierManager = managerProvider.SupplierManager;
 
             InitializeComponent();
         }
@@ -66,7 +71,7 @@ namespace WPFPresentation
             {
                 DataObjects.Supplier supplier = (DataObjects.Supplier)this.datSuppliersList.SelectedItem;
 
-                Page page = new Supplier.pgViewSupplierListing(supplier);
+                Page page = new Supplier.pgViewSupplierListing(supplier, _managerProvider);
                 this.NavigationService.Navigate(page);
             }
         }

@@ -21,27 +21,34 @@ Created: 2022/01/22
 Description:
 Stored procedure to insert an event into the events table
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Alaina Gilson
+Updated: 2022/02/22
 
 Description: 
+Added TotalBudget field. Also updated formatting
 ****************************************************************/
 print '' print '*** creating sp_insert_event'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_event]
 (
-	@EventName			nvarchar(50)
-	,@EventDescription	nvarchar(1000)
+	@EventName			nvarchar(50),
+	@EventDescription	nvarchar(1000),
+	@TotalBudget		money
 )
 AS
 	BEGIN
 		INSERT INTO [dbo].[Event]
 		(
-			[EventName]				
-			,[EventDescription]	
+			[EventName],			
+			[EventDescription],
+			[TotalBudget]
 		)
 		VALUES
-		(@EventName, @EventDescription)		
+		(
+			@EventName, 
+			@EventDescription,
+			@TotalBudget
+		)		
 	END	
 GO
 
@@ -57,6 +64,12 @@ Updated: 2022/02/15
 
 Description: 
 Adding LocationID to the selected values
+**************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: 
+Added TotalBudget field
 ****************************************************************/
 print '' print '*** creating sp_select_active_events'
 GO
@@ -68,6 +81,7 @@ AS
 			[EventName],
 			[EventDescription],
 			[DateCreated],
+			[TotalBudget],
 			[LocationID]
 		FROM [dbo].[Event]
 		WHERE [Active] = 1	
@@ -90,12 +104,19 @@ Updated: 2022/02/15
 
 Description: 
 Adding LocationID to the selected values
+**************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: 
+Added TotalBudget field. Also updated formatting
 ****************************************************************/
 print '' print '*** creating sp_select_event_by_event_name_and_description'
 GO
-CREATE PROCEDURE [dbo].[sp_select_event_by_event_name_and_description] (
-	@EventName 			nvarchar(50)
-	,@EventDescription	nvarchar(1000)
+CREATE PROCEDURE [dbo].[sp_select_event_by_event_name_and_description] 
+(
+	@EventName 			nvarchar(50),
+	@EventDescription	nvarchar(1000)
 )
 AS
 	BEGIN
@@ -104,8 +125,8 @@ AS
 			[EventName],
 			[EventDescription],
 			[DateCreated],
+			[TotalBudget],
 			[LocationID]
-			
 		FROM [dbo].[Event]
 		WHERE [EventName] = @EventName
 			AND [EventDescription] = @EventDescription
@@ -122,10 +143,11 @@ Description:
 Stored procedure to update an event from the Event table
 
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Alaina Gilson
+Updated: 2022/02/22
 
 Description: 
+Added TotalBudget fields
 ****************************************************************/
 
 print '' print '*** creating sp_update_event_by_eventID ***'
@@ -135,9 +157,11 @@ CREATE PROCEDURE [dbo].[sp_update_event_by_eventID]
 	@EventID 				[int],
 	@OldEventName			[nvarchar](50),
 	@OldEventDescription	[nvarchar](1000),
+	@OldTotalBudget			[money],
 	@OldActive				[bit],
 	@NewEventName			[nvarchar](50),
 	@NewEventDescription	[nvarchar](1000),
+	@NewTotalBudget			[money],
 	@NewActive				[bit]
 )
 AS
@@ -146,6 +170,7 @@ AS
 		SET		
 			[EventName] = @NewEventName,
 			[EventDescription] = @NewEventDescription,
+			[TotalBudget] = @NewTotalBudget,
 			[Active] = @NewActive
 		WHERE 	
 			[EventID] = @EventID
@@ -153,6 +178,8 @@ AS
 			@OldEventName = [EventName]
 		  AND
 			@OldEventDescription = [EventDescription]
+		  AND
+			@OldTotalBudget = [TotalBudget]
 		  AND
 			@OldActive = [Active]
 		RETURN @@ROWCOUNT
@@ -171,6 +198,12 @@ Updated: 2022/02/15
 
 Description: 
 Adding LocationID to the selected values
+**************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: 
+Added TotalBudget field
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_future_event_dates'
 GO
@@ -182,6 +215,7 @@ AS
 			[EventName],
 			[EventDescription],
 			[DateCreated],
+			[TotalBudget],
 			[LocationID],
 			[EventDate].[EventDateID]
 		FROM [dbo].[Event]
@@ -204,6 +238,12 @@ Updated: 2022/02/15
 
 Description: 
 Adding LocationID to the selected values
+**************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: 
+Added TotalBudget field
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates'
 GO
@@ -215,6 +255,7 @@ AS
 			[EventName],
 			[EventDescription],
 			[DateCreated],
+			[TotalBudget],
 			[LocationID],
 			[EventDate].[EventDateID]
 		FROM [dbo].[Event]
@@ -238,6 +279,12 @@ Updated: 2022/02/15
 
 Description: 
 Adding LocationID to the selected values
+**************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: 
+Added TotalBudget field
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates'
 GO
@@ -249,6 +296,7 @@ AS
 			[EventName],
 			[EventDescription],
 			[DateCreated],
+			[TotalBudget],
 			[LocationID],
 			[EventDate].[EventDateID]
 		FROM [dbo].[Event]
@@ -273,6 +321,12 @@ Updated: 2022/02/15
 
 Description: 
 Adding LocationID to the selected values
+**************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: 
+Added TotalBudget field
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates_for_user'
 GO
@@ -287,6 +341,7 @@ AS
 			[Event].[EventName],
 			[Event].[EventDescription],
 			[Event].[DateCreated],
+			[Event].[TotalBudget],
 			[Event].[LocationID],
 			[EventDate].[EventDateID]
 		FROM [dbo].[Event]
@@ -314,6 +369,12 @@ Updated: 2022/02/15
 
 Description: 
 Adding LocationID to the selected values
+**************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: 
+Added TotalBudget field
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates_for_user'
 GO
@@ -328,6 +389,7 @@ AS
 			[Event].[EventName],
 			[Event].[EventDescription],
 			[Event].[DateCreated],
+			[Event].[TotalBudget],
 			[Event].[LocationID],
 			[EventDate].[EventDateID]
 		FROM [dbo].[Event]
@@ -354,6 +416,12 @@ Updated: 2022/02/15
 
 Description: 
 Adding LocationID to the selected values
+**************************************************************
+Alaina Gilson
+Updated: 2022/02/22
+
+Description: 
+Added TotalBudget field
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_upcoming_dates_for_user'
 GO
@@ -368,6 +436,7 @@ AS
 			[Event].[EventName],
 			[Event].[EventDescription],
 			[Event].[DateCreated],
+			[Event].[TotalBudget],
 			[Event].[LocationID],
 			[EventDate].[EventDateID]			
 		FROM [dbo].[Event]
@@ -425,28 +494,137 @@ Created: 2022/02/17
 Description:
 Stored procedure to insert an event into the events table that returns the EventID
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Alaina Gilson
+Updated: 2022/02/22
 
 Description: 
+Added TotalBudget field. Also updated formatting
 ****************************************************************/
 print '' print '*** creating sp_insert_event_return_event_id'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_event_return_event_id]
 (
-	@EventName			nvarchar(50)
-	,@EventDescription	nvarchar(1000)
+	@EventName			nvarchar(50),
+	@EventDescription	nvarchar(1000),
+	@TotalBudget		money
 )
 AS
 	BEGIN
 		INSERT INTO [dbo].[Event]
 		(
-			[EventName]				
-			,[EventDescription]	
+			[EventName],				
+			[EventDescription],
+			[TotalBudget]
 		)
 		OUTPUT Inserted.EventID
 		VALUES
-		(@EventName, @EventDescription)		
+		(
+			@EventName, 
+			@EventDescription,
+			@TotalBudget
+		)		
 
 	END	
 GO
+
+
+-- sp_insert_event_with_user_ID_return_event_id
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/18
+
+Description:
+Stored procedure to insert an event into the events table that returns the EventID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_insert_event_with_user_ID_return_event_id'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_event_with_user_ID_return_event_id]
+(
+	@EventName			nvarchar(50)
+	,@EventDescription	nvarchar(1000)
+	,@TotalBudget		money
+	,@UserID			int
+)
+AS
+	BEGIN -- SP
+		BEGIN TRAN
+			BEGIN TRY
+			
+				DECLARE @EventID INT
+			
+				-- insert into event the record	
+				INSERT INTO [dbo].[Event]
+				(
+					[EventName],
+					[EventDescription],
+					[TotalBudget]
+				)
+				OUTPUT Inserted.EventID
+				VALUES
+				(
+					@EventName, 
+					@EventDescription,
+					@TotalBudget
+				)
+				
+				SET @EventID = SCOPE_IDENTITY()
+								
+				-- insert into UserEvent				
+				INSERT INTO [dbo].[UserEvent]
+				(
+					[UserID]
+					, [RoleID]
+					, [EventID]
+				)
+				VALUES
+				(@UserID, 'Event Planner', @EventID)
+				--, (@UserID, 'Event Manager', @EventID) -- Event Manager was dropped
+				
+				COMMIT TRANSACTION
+				
+			END TRY
+			BEGIN CATCH
+				ROLLBACK TRANSACTION
+			END CATCH
+	END	-- SP
+GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/22
+
+Description:
+Stored procedure to select the roles that a user has for an event
+**************************************************************
+
+Updated: 
+
+Description: 
+
+****************************************************************/
+print '' print '*** creating sp_select_user_roles_for_event'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_roles_for_event]
+(
+	@EventID	[int]
+	,@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[UserEvent].[RoleID]
+		FROM [dbo].[UserEvent]
+		WHERE [UserEvent].[EventID] = @EventID
+			AND [UserEvent].[UserID] = @UserID
+	END	
+GO	
+	
+	
+	

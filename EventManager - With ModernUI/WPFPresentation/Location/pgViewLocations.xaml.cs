@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using LogicLayer;
 using LogicLayerInterfaces;
 using DataAccessFakes;
+using DataObjects;
 
 namespace WPFPresentation.Location
 {
@@ -24,6 +25,10 @@ namespace WPFPresentation.Location
     public partial class pgViewLocations : Page
     {
         ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager;
+        ManagerProvider _managerProvider;
+
+        User _user = null;
 
         /// <summary>
         /// Kris Howell
@@ -31,14 +36,28 @@ namespace WPFPresentation.Location
         /// 
         /// Description:
         /// Initialize location manager and page
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to constructor
         /// </summary>
-        public pgViewLocations()
+        /// <param name="managerProvider"></param>
+        internal pgViewLocations(ManagerProvider managerProvider, User user)
         {
-            // fake accessor
-            //_locationManager = new LocationManager(new LocationAccessorFake());
-
-            // live data accessor
-            _locationManager = new LocationManager();
+            _managerProvider = managerProvider;
+            _locationManager = managerProvider.LocationManager;
+            _sublocationManager = managerProvider.SublocationManager;
+            _user = user;
 
             InitializeComponent();
         }
@@ -62,6 +81,18 @@ namespace WPFPresentation.Location
             }
         }
 
+        /// <summary>
+        /// Original author and creation date missing.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to page constructor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void datLocationsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if(datLocationsList.SelectedItem == null)
@@ -70,7 +101,7 @@ namespace WPFPresentation.Location
             }
             DataObjects.Location location = (DataObjects.Location)datLocationsList.SelectedItem;
 
-            pgViewLocationDetails page = new pgViewLocationDetails(location.LocationID, _locationManager);
+            pgViewLocationDetails page = new pgViewLocationDetails(location.LocationID, _managerProvider, _user);
             this.NavigationService.Navigate(page);
         }
     }

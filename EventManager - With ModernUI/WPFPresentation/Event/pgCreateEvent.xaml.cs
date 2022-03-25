@@ -17,7 +17,7 @@ using LogicLayerInterfaces;
 using DataObjects;
 using DataAccessFakes;
 using System.Text.RegularExpressions;
-
+using System.Globalization;
 
 namespace WPFPresentation
 {
@@ -27,6 +27,10 @@ namespace WPFPresentation
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
+        ITaskManager _taskManager = null;
+
+        ManagerProvider _managerProvider = null;
         DataObjects.Event newEvent = null;
 
         User _user = null;
@@ -50,20 +54,30 @@ namespace WPFPresentation
         /// Jace Pettinger
         /// 2022/02/17
         /// Added user parameter for constructor
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
-        /// <param name="sender"></param>
-        public pgCreateEvent(User user)
+        /// <param name="user"></param>
+        /// <param name="managerProvider"></param>
+        internal pgCreateEvent(User user, ManagerProvider managerProvider)
         {
-            // use fake accessor
-            //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
-            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            // _locationManager = new LocationManager(new LocationAccessorFake());
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
+            _eventDateManager = managerProvider.EventDateManager;
+            _locationManager = managerProvider.LocationManager;
+            _taskManager = managerProvider.TaskManager;
 
-            // use default accessor
-            _eventManager = new LogicLayer.EventManager();
-            _eventDateManager = new EventDateManager();
-            _locationManager = new LocationManager();
-
+            _sublocationManager = managerProvider.SublocationManager;
             _user = user;
 
             InitializeComponent();
@@ -72,7 +86,6 @@ namespace WPFPresentation
             // https://stackoverflow.com/questions/17401488/how-to-disable-past-days-in-calender-in-wpf/45780931
             datePickerEventDate.DisplayDateStart = DateTime.Today;
             sldrNumVolunteers.Value = 25;
-            
 
             //disable tabs that should not be viewed
             tabAddEventDate.IsEnabled = false;
@@ -111,8 +124,31 @@ namespace WPFPresentation
         /// 2022/02/17
         /// Description:
         /// Changed the manager method that creates the event to CreateEventReturnsEventID from CreateEvent
+        /// 
+        /// Update:
+        /// Alaina Gilson
+        /// 2022/02/23
+        /// Description:
+        /// Added the TotalBudget field and validation to check that the string input is a decimal
         private void btnEventNext_Click(object sender, RoutedEventArgs e)
         {
+            string value = txtBoxTotalBudget.Text;
+            NumberStyles style = NumberStyles.Number | NumberStyles.AllowCurrencySymbol;
+            CultureInfo provider = new CultureInfo("en-US");
+            decimal totalPlanned;
+
+            try
+            {
+                totalPlanned = Decimal.Parse(value, style, provider);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was a problem creating a new event.\n\nPlease enter a decimal budget.");
+                txtBoxTotalBudget.Text = "";
+                txtBoxTotalBudget.Focus();
+                return;
+            }
+
             try
             {
                 if (txtBoxEventName.Text == "" || txtBoxEventDescription.Text == "")
@@ -124,7 +160,7 @@ namespace WPFPresentation
                 {
                     newEvent = new DataObjects.Event()
                     {
-                        EventID = _eventManager.CreateEventReturnsEventID(txtBoxEventName.Text, txtBoxEventDescription.Text),
+                        EventID = _eventManager.CreateEventReturnsEventID(txtBoxEventName.Text, txtBoxEventDescription.Text, totalPlanned, _user.UserID),
                         EventName = txtBoxEventName.Text,
                         EventDescription = txtBoxEventDescription.Text
                     };
@@ -135,7 +171,7 @@ namespace WPFPresentation
             }
             catch (Exception ex)
             {
-                MessageBox.Show("There was a problem creating a new event.\n" + ex.Message);
+                MessageBox.Show("There was a problem creating a new event.\n\n" + ex.Message);
             }
         }
 
@@ -145,6 +181,11 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler for canceling creating an event
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// 
         /// </summary>
         /// <param name="sender"></param>
@@ -158,10 +199,10 @@ namespace WPFPresentation
 
             if (result == MessageBoxResult.Yes)
             {
-                Page page = new pgViewEvents(_user);
+                Page page = new pgViewEvents(_user, _managerProvider);
                 this.NavigationService.Navigate(page);
             }
-            
+
         }
 
         /// <summary>
@@ -184,7 +225,7 @@ namespace WPFPresentation
                 {
                     txtBoxEventStartTimeMinute.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
-                } 
+                }
             }
             else
             {
@@ -230,6 +271,12 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// 2022/03/12
+        /// Description:
+        /// Changes to update hour controls to combo boxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -242,7 +289,7 @@ namespace WPFPresentation
             {
                 if (textBox.Length == 2)
                 {
-                    txtBoxEventEndTimeMinute.Focus();
+                    //txtBoxEventEndTimeMinute.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
                 }
             }
@@ -260,6 +307,12 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// 2022/03/12
+        /// Description:
+        /// Changes to update hour controls to combo boxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -272,7 +325,7 @@ namespace WPFPresentation
             {
                 if (textBox.Length == 2)
                 {
-                    cmbEndTimeAMPM.Focus();
+                    //cmbEndTimeAMPM.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
                 }
             }
@@ -290,6 +343,12 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click handler for adding a date to an event
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// 2022/03/12
+        /// Description:
+        /// Changes to update hour controls to combo boxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -300,14 +359,6 @@ namespace WPFPresentation
                 txtBlockEventAddValidationMessage.Text = "Please enter a date.";
                 txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
             }
-            else if (txtBoxEventStartTimeHour.Text == "" || 
-                            txtBoxEventStartTimeMinute.Text == "" || 
-                            txtBoxEventEndTimeHour.Text == "" || 
-                            txtBoxEventEndTimeMinute.Text == "")
-            {
-                txtBlockEventAddValidationMessage.Text = "Please enter times for your event to start and end.";
-                txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-            }
             else
             {
                 DateTime dateTimeToAdd = new DateTime();
@@ -315,11 +366,11 @@ namespace WPFPresentation
                 int month = 0;
                 int day = 0;
                 int secconds = 0;
-                // am pm logic
-                int startHour = 0;
-                int startMin = 0;
-                int endHour = 0;
-                int endMin = 0;
+
+                int startHour = ucStartTime.Hour;
+                int startMin = ucStartTime.Minutes;
+                int endHour = ucEndTime.Hour;
+                int endMin = ucEndTime.Minutes;
 
                 try
                 {
@@ -327,78 +378,37 @@ namespace WPFPresentation
                     year = dateTimeToAdd.Year;
                     month = dateTimeToAdd.Month;
                     day = dateTimeToAdd.Day;
-                    secconds = 0;
-                    bool isAMHour;
 
-                    // add 12 if the start time is in the PM
-                    isAMHour = cmbStartTimeAMPM.Text == "AM";
-                    startHour = Int32.Parse(txtBoxEventStartTimeHour.Text).ConvertTo24HourTime(isAMHour);
-                    startMin = Int32.Parse(txtBoxEventStartTimeMinute.Text);
+                    // validate time
+                    IntegerValidationHelpers.ValidateStartTimeBeforeEndTime(startHour, startMin, endHour, endMin);
 
-                    // add 12 if the end time is in the PM
-                    isAMHour = cmbEndTimeAMPM.Text == "AM";
-                    endHour = Int32.Parse(txtBoxEventEndTimeHour.Text).ConvertTo24HourTime(isAMHour);
-                    endMin = Int32.Parse(txtBoxEventEndTimeMinute.Text);
+                    EventDate eventDate = new EventDate()
+                    {
+                        EventDateID = dateTimeToAdd,
+                        EventID = newEvent.EventID,
+                        StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
+                        EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
+                        Active = true
+                    };
+
+                    newEventVM.EventDates.Add(eventDate);
+
+                    // show event date summary table
+                    datCurrentEventDates.ItemsSource = null;
+                    datCurrentEventDates.ItemsSource = newEventVM.EventDates;
+                    datCurrentEventDates.Visibility = Visibility.Visible;
+                    txtBlkCurrentEventDates.Visibility = Visibility.Visible;
+
+                    // prepare form to add another date
+                    datePickerEventDate.SelectedDate = null;
+                    datePickerEventDate.BlackoutDates.Add(new CalendarDateRange(dateTimeToAdd));
+                    ucStartTime.Reset();
+                    ucEndTime.Reset();
+                    txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-
-                // check to see that one time comes after the other
-                if (startHour > endHour)
-                {
-                    txtBoxEventEndTimeHour.Focus();
-                    txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                }
-                else if (startHour == endHour && startMin >= endMin)
-                {   
-                    txtBoxEventEndTimeMinute.Focus();
-                    txtBlockEventAddValidationMessage.Text = "The end time is before the start time or at the same time. Please change.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                    
-                }
-                else
-                {
-                    try
-                    {
-                        EventDate eventDate = new EventDate()
-                        {
-                            EventDateID = dateTimeToAdd,
-                            EventID = newEvent.EventID,
-                            StartTime = new DateTime(year, month, day, startHour, startMin, secconds),
-                            EndTime = new DateTime(year, month, day, endHour, endMin, secconds),
-                            Active = true
-                        };
-
-                        //datCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(eventID);
-                        newEventVM.EventDates.Add(eventDate);
-
-                        datCurrentEventDates.ItemsSource = null;
-                        datCurrentEventDates.ItemsSource = newEventVM.EventDates;
-                        
-                        
-                        datCurrentEventDates.Visibility = Visibility.Visible;
-                        txtBlkCurrentEventDates.Visibility = Visibility.Visible;
-
-                        // prepare form to add another date
-                        datePickerEventDate.SelectedDate = null;
-                        datePickerEventDate.BlackoutDates.Add(new CalendarDateRange(dateTimeToAdd));
-                        txtBoxEventStartTimeHour.Text = "";
-                        txtBoxEventStartTimeMinute.Text = "";
-                        cmbStartTimeAMPM.SelectedItem = "AM";
-                        txtBoxEventEndTimeHour.Text = "";
-                        txtBoxEventEndTimeMinute.Text = "";
-                        cmbEndTimeAMPM.SelectedItem = "AM";
-
-                        txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
-
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
                 }
             }
         }
@@ -435,7 +445,8 @@ namespace WPFPresentation
                     tabsetAddEventLocation.Focus();
                 }
             }
-            else { 
+            else
+            {
 
                 // add dates
                 try
@@ -456,17 +467,23 @@ namespace WPFPresentation
                 catch (Exception ex)
                 {
                     MessageBox.Show("There was a problem adding the date to the event.\n" + ex.Message, "Problem Adding Date", MessageBoxButton.OK, MessageBoxImage.Error);
-                }               
+                }
             }
         }
 
+        /// <summary>
+        /// Vinyak Deshpande
+        /// Created: 2022/01/29
+        /// Description: Allows the user to create a generic event after selecting the I need volunteers checkbox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void chkBxNeedVolunteers_Checked(object sender, RoutedEventArgs e)
         {
             txtBlkNumVolunteers.Visibility = Visibility.Visible;
             dcPnlNumVolunteers.Visibility = Visibility.Visible;
-            sldrNumVolunteers.Value = 25;
-            txtBlkNumVolunteerDescription.Visibility = Visibility.Visible;
-            txtBxNumVolunteerDescription.Visibility = Visibility.Visible;
+            sldrNumVolunteers.Value = 0;
+            btnRequestVolunteers.Visibility = Visibility.Visible;
 
         }
 
@@ -476,13 +493,18 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler for navigating to next tab from volunteers tab
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnVolunteersNext_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Event details added");
-            pgViewEvents viewEventsPage = new pgViewEvents(_user);
+            pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
             this.NavigationService.Navigate(viewEventsPage);
         }
 
@@ -545,7 +567,7 @@ namespace WPFPresentation
                 txtBoxStreet.Focus();
             }
             else if (!ValidationHelpers.IsValidCityName(locationCity)) // added validation -jp
-            { 
+            {
                 txtBlockLocationValidationMessage.Text = "Please enter a valid city name";
                 txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
                 txtBoxCity.Focus();
@@ -561,7 +583,7 @@ namespace WPFPresentation
                 txtBlockLocationValidationMessage.Text = "Please enter a valid zip code";
                 txtBlockLocationValidationMessage.Visibility = Visibility.Visible;
                 txtBoxZip.Focus();
-            } 
+            }
             else
             {
                 txtBlockLocationValidationMessage.Visibility = Visibility.Hidden;
@@ -639,7 +661,7 @@ namespace WPFPresentation
 
                     MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    Page page = new pgViewEvents();
+                    Page page = new pgViewEvents(_user, _managerProvider);
                     this.NavigationService.Navigate(page);
 
                 }
@@ -659,7 +681,7 @@ namespace WPFPresentation
                     case MessageBoxResult.Yes:
 
                         newEventVM.EventDates = new List<EventDate>();
-                        Page page = new pgViewEvents();
+                        Page page = new pgViewEvents(_user, _managerProvider);
                         this.NavigationService.Navigate(page);
 
                         break;
@@ -670,6 +692,49 @@ namespace WPFPresentation
                 }
             }
         }
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Added 2022/03/04
+        /// Description: Adds a generic event with the number of volunteers
+        /// the organziers would like on hand to use as needed.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRequestVolunteers_Click(object sender, RoutedEventArgs e)
+        {
+            int numTotalVolunteers = (int)sldrNumVolunteers.Value;
+            DataObjects.Tasks genericTask = new Tasks()
+            {
+                EventID = newEvent.EventID,
+                Name = "General Help",
+                Description = "Help out with the event as needed on the day of.",
+                // cboAssign variable,
+                DueDate = _eventDateManager.RetrieveEventDatesByEventID(newEvent.EventID).ElementAt(0).EventDateID,
+                Priority = 3
+            };
+            try
+            {
+                if (_taskManager.AddTask(genericTask, numTotalVolunteers))
+                {
+                    MessageBox.Show("Volunteers have been requested.");
+                    btnRequestVolunteers.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    MessageBox.Show("Request has failed!");
+                }
+            }
+            catch (Exception ex)
+            {
 
+                MessageBox.Show(ex.Message);
+            }
+
+
+
+
+        }
     }
 }
+

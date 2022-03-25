@@ -23,21 +23,49 @@ namespace WPFPresentation
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// 
+    /// Update
+    /// Derrick Nagy
+    /// Updated: 02/24/2022
+    /// 
+    /// Description:
+    /// Changed the logged in user from internal to public static
+    /// 
+    /// Update:
+    /// Austin Timmerman
+    /// Updated: 2022/02/27
+    /// 
+    /// Description:
+    /// Added the ManagerProvider instance variable and modified page parameters
     /// </summary>
     public partial class MainWindow : Window
     {
+        //User _user = null;
+        //public static User User = null;
         IUserManager _userManager = null;
+        IActivityManager _activityManager = null;
+        IEventDateManager _eventDateManager = null;
+        ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
+        ISupplierManager _supplierManager = null;
+        ITaskManager _taskManager = null;
+        IVolunteerManager _volunteerManager = null;
+        IVolunteerRequestManager _volunteerRequestManager = null;
+
+        ManagerProvider _managerProvider = new ManagerProvider();
+
         User _user = null;
         
         public MainWindow()
         {
 
-            this._userManager = new UserManager();
-            //this._userManager = new UserManager(new UserAccessorFake());
-            // Keep this always safe! 
+            managerInitializer();
+
+            // Keep this always safe!
+            //_user = new User();
             _user = new User()
             {
-                UserID = 100001,
+                UserID = 100000,
                 GivenName = "Joanne",
                 FamilyName = "Smith",
                 EmailAddress = "joanne@company.com",
@@ -52,13 +80,36 @@ namespace WPFPresentation
             
         }
 
-        public MainWindow(User user, IUserManager userManager)
+        public MainWindow(User user, IUserManager userManager) : this()
         {
             InitializeComponent();
             this._user = user;
-            this._userManager = userManager;
-            this.btnBack.IsEnabled = false;
+            //MainWindow.User = user;
+            //this._user = user;
+            //this._userManager = userManager;
+            managerInitializer();
             this.mnuUser.Header = user.GivenName + " ▼";
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/27
+        /// 
+        /// Description:
+        /// Method to initialize the manager objects
+        /// 
+        /// </summary>
+        public void managerInitializer()
+        {
+            this._userManager = _managerProvider.UserManager;
+            this._activityManager = _managerProvider.ActivityManager;
+            this._eventDateManager = _managerProvider.EventDateManager;
+            this._locationManager = _managerProvider.LocationManager;
+            this._sublocationManager = _managerProvider.SublocationManager;
+            this._supplierManager = _managerProvider.SupplierManager;
+            this._taskManager = _managerProvider.TaskManager;
+            this._volunteerManager = _managerProvider.VolunteerManager;
+            this._volunteerRequestManager = _managerProvider.VolunteerRequestManager;
         }
 
         /// <summary>
@@ -68,10 +119,18 @@ namespace WPFPresentation
         /// Description:
         /// Method to handle UI transition from logged in to logged out states
         /// 
+        ///     /// Update
+        /// Derrick Nagy
+        /// Updated: 02/24/2022
+        /// 
+        /// Description:
+        /// Changed the logged in user from internal to public static
+        /// 
         /// </summary>
         private void updateUIForLogout()
         {
             this._user = null;
+            //MainWindow.User = null;
 
             SplashScreen splash = new SplashScreen();
             splash.Show();
@@ -103,8 +162,21 @@ namespace WPFPresentation
         /// 2022/02/17
         /// Added user parameter for create event constructor
         /// 
+        /// Update
+        /// Derrick Nagy
+        /// Updated: 02/24/2022
+        /// 
+        /// Description:
+        /// Changed the logged in user from internal to public static
+        ///
+        ///
+        /// Update
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// 
         /// </summary>
-
         private void btnCreateEvents_Click(object sender, RoutedEventArgs e)
         {
             if(_user == null)
@@ -113,7 +185,8 @@ namespace WPFPresentation
             }
             else
             {
-                Page page = new pgCreateEvent(_user);
+                //Page page = new pgCreateEvent(User);
+                Page page = new pgCreateEvent(_user, _managerProvider);
                 this.MainFrame.NavigationService.Navigate(page);
             }
         }
@@ -133,17 +206,31 @@ namespace WPFPresentation
         /// Description:
         /// Added option to send user information to the view events page
         /// 
+        /// Update
+        /// Derrick Nagy
+        /// Updated: 02/24/2022
+        /// 
+        /// Description:
+        /// Changed the logged in user from internal to public static
+        ///
+        /// Update
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// 
         /// </summary>
         private void btnViewEvents_Click(object sender, RoutedEventArgs e)
         {
             if (_user != null)
             {
-                pgViewEvents pgViewEvents = new pgViewEvents(_user);
+                //pgViewEvents pgViewEvents = new pgViewEvents(User);
+                pgViewEvents pgViewEvents = new pgViewEvents(_user, _managerProvider);
                 this.MainFrame.NavigationService.Navigate(pgViewEvents);
             }
             else
             {
-                Page page = new pgViewEvents();
+                Page page = new pgViewEvents(_managerProvider);
                 this.MainFrame.NavigationService.Navigate(page);
             }
 
@@ -151,7 +238,7 @@ namespace WPFPresentation
 
         private void btnViewVolunteers_Click(object sender, RoutedEventArgs e)
         {
-            Page page = new pgViewAllVolunteers();
+            Page page = new pgViewAllVolunteers(_managerProvider);
             this.MainFrame.NavigationService.Navigate(page);
         }
 
@@ -188,15 +275,27 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
+        /// Original author and creation date missing.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to page constructor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnViewLocations_Click(object sender, RoutedEventArgs e)
         {
-            var page = new pgViewLocations();
+            var page = new pgViewLocations(_managerProvider, _user);
             this.MainFrame.NavigationService.Navigate(page);
         }
 
         private void btnViewSuppliers_Click(object sender, RoutedEventArgs e)
         {
-            var page = new pgViewSuppliers();
+            var page = new pgViewSuppliers(_managerProvider);
             this.MainFrame.NavigationService.Navigate(page);
         }
     }

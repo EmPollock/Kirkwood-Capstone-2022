@@ -26,11 +26,11 @@
             </Grid.RowDefinitions>
 
             <Button x:Name="btnEventDetails" Grid.Row="0" HorizontalAlignment="Center" Padding="34 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Event Details</Button>
+                    Background="#FF4388CC" Foreground="White" Click="btnEventDetails_Click">Event Details</Button>
             <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="#FFFFFF99">Tasks</Button>
+                    Background="#FF4388CC" Foreground="#FFFFFF99" Click="btnTasks_Click">Tasks</Button>
             <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Itinerary</Button>
+                    Background="#FF4388CC" Foreground="White" Click="btnItinerary_Click">Itinerary</Button>
             <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
                     Background="#FF4388CC" Foreground="White">Budget</Button>
             <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
@@ -57,6 +57,7 @@
             
             <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
+                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -93,6 +94,12 @@
                 <TextBlock x:Name="txtBlkPriority" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"
                                    HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Task Priority:</TextBlock>
                 <ComboBox x:Name="cboPriority" Grid.Row="6" Grid.Column="1" Margin="10px" Padding="5 5 170 0" />
+                <TextBlock x:Name="txtBlkVolunteerNeed" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"
+                                    HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Volunteers:</TextBlock>
+                <DockPanel x:Name="dcPnlNumVolunteers" Grid.Row="7" Grid.Column="1" Margin="10,10,10,10">
+                    <TextBox Text="{Binding ElementName=sldrNumVolunteers, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="10"></TextBox>
+                    <Slider x:Name="sldrNumVolunteers" Maximum="10" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Value="0"></Slider>
+                </DockPanel>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>

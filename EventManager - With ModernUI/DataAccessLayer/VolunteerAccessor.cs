@@ -98,13 +98,14 @@ namespace DataAccessLayer
                     {
                         volunteers.Add(new Volunteer()
                         {
-                            VolunteerID = reader.GetInt32(0),
-                            GivenName = reader.GetString(1),
-                            FamilyName = reader.GetString(2),
-                            State = reader.IsDBNull(3) ? "" : reader.GetString(3),
-                            City = reader.IsDBNull(4) ? "" : reader.GetString(4),
-                            Zip = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
-                            VolunteerType = reader.GetString(6)
+                            UserID = reader.GetInt32(0),
+                            VolunteerID = reader.GetInt32(1),
+                            GivenName = reader.GetString(2),
+                            FamilyName = reader.GetString(3),
+                            State = reader.IsDBNull(4) ? "" : reader.GetString(4),
+                            City = reader.IsDBNull(5) ? "" : reader.GetString(5),
+                            Zip = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
+                            VolunteerType = reader.GetString(7)
                         });
                     }
                 }

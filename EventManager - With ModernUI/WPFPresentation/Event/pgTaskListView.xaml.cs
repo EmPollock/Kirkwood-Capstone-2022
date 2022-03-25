@@ -34,21 +34,37 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Setting up and Initializing default/fake accessors
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Update:
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/25
+        /// Description: removed fake
         /// </summary>
 
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
+        ManagerProvider _managerProvider = null;
+        ISublocationManager _sublocationManager = null;
         DataObjects.EventVM _event = null;
+        User _user = null;
 
-        public pgTaskListView(DataObjects.EventVM selectedEvent)
+        internal pgTaskListView(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
-            // fake accessor
-            //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
 
-            // default accessor
-            _taskManager = new TaskManager();
-            _eventManager = new LogicLayer.EventManager();
+            _managerProvider = managerProvider;
+            _taskManager = managerProvider.TaskManager;
+            _eventManager = managerProvider.EventManager;
             _event = selectedEvent;
+            _user = user;
+
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
         }
@@ -116,12 +132,17 @@ namespace WPFPresentation.Event
         /// Description:
         /// Add task button brings up pgTaskListCreate which will update the list upon 
         /// psTaskListCreate's closing
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnTaskListCreate_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListCreate createTaskPage = new pgTaskListCreate(_event);
+            pgTaskListCreate createTaskPage = new pgTaskListCreate(_event, _managerProvider, _user);
             this.NavigationService.Navigate(createTaskPage);
         }
 
@@ -131,22 +152,71 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// View details of task. To be changed to Edit Task
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void datViewAllTasksForEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TasksVM selectedTask = (TasksVM)datViewAllTasksForEvent.SelectedItem;
-            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask, _event);
+            pgTaskListEdit taskEditPage = new pgTaskListEdit(selectedTask, _event, _managerProvider, _user);
             this.NavigationService.Navigate(taskEditPage);
 
             updateTaskList();
         }
 
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// shows and populates list of volunteers for the selected task
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datViewAllTasksForEvent_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            TasksVM selectedTask = (TasksVM)datViewAllTasksForEvent.SelectedItem;
+            lblVolunteers.Content = "Volunteers assigned to " + selectedTask.Name + ":";
+            datTaskVolunteers.ItemsSource = _taskManager.RetrieveTaskAssignmentsByTaskID(selectedTask.TaskID);
+        }
+
+        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Click event handler to view event details.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEventDetails_Click(object sender, RoutedEventArgs e)
         {
-            pgEventEditDetail editEventPage = new pgEventEditDetail(_event);
+            pgEventEditDetail editEventPage = new pgEventEditDetail(_event, _managerProvider, _user);
             this.NavigationService.Navigate(editEventPage);
         }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler to take a user to the View Activities page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnItinerary_Click(object sender, RoutedEventArgs e)
+        {
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
+            this.NavigationService.Navigate(viewActivitiesPage);
+        }
+        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }

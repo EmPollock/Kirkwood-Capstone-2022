@@ -42,15 +42,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityManager.cs" />
+    <Compile Include="EntranceManager.cs" />
     <Compile Include="EventDateManager.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="LocationManager.cs" />
+    <Compile Include="ParkingLotManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceManager.cs" />
+    <Compile Include="SublocationManager.cs" />
     <Compile Include="SupplierManager.cs" />
     <Compile Include="TaskManager.cs" />
+    <Compile Include="UserImageManager.cs" />
     <Compile Include="UserManager.cs" />
     <Compile Include="VolunteerManager.cs" />
+    <Compile Include="VolunteerNeedManager.cs" />
     <Compile Include="VolunteerRequestManager.cs" />
+    <Compile Include="VolunteerReviewManager.cs" />
+    <Compile Include="VolunteerSkillSetManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">

@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WPFPresentation.Supplier"
+      xmlns:local="clr-namespace:WPFPresentation.Supplier" 
+      xmlns:data="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="800"
       Title="pgViewSupplierListing" Loaded="Page_Loaded">
@@ -15,15 +16,17 @@
         </Grid.ColumnDefinitions>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="40" />
+                <RowDefinition Height="70" />
+                <RowDefinition Height="70" />
+                <RowDefinition Height="70" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Button x:Name="btnSupplierSchedule" Content="Supplier Schedule" Margin="5 0 5 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Button x:Name="btnSupplierPricing" Content="Supplier Pricing" Margin="5 0 5 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"/>
+            <Button x:Name="btnSupplierDetails" Content="Supplier Details" Grid.Row="0" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnSupplierDetails_Click"/>
+            <Button x:Name="btnSupplierSchedule" Content="Supplier Schedule" Grid.Row="1" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnSupplierSchedule_Click"/>
+            <Button x:Name="btnSupplierPricing" Content="Supplier Pricing" Grid.Row="2" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnSupplierPricing_Click"/>
 
         </Grid>
-        <Grid Grid.Column="1">
+        <Grid         x:Name="grdSupplierListing" Grid.Column="1" Visibility="Visible">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50px"/>
                 <ColumnDefinition />
@@ -53,7 +56,7 @@
                 </Canvas>
             </Canvas>
             <Button x:Name="btnFavorite" Grid.Column="2" HorizontalAlignment="Right" Background="#00000000" Height="40px" Width="40px" Grid.RowSpan="2" Margin="0 1 5 0" VerticalAlignment="Top"/>
-            
+
             <Label Grid.Row="1" Grid.Column="1" Content="Type:" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" />
             <Label Grid.Row="2" Grid.Column="1" x:Name="lblType" Content="Vendor/supplier" VerticalAlignment="Top" Margin="5px"/>
             <Label Grid.Row="3" Grid.Column="1" x:Name="lblAbout" Content="About" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
@@ -106,6 +109,90 @@
             <Button x:Name="btnMoreReviews" Grid.Row="13" Grid.Column="1" Content="More reviews..." FontWeight="Medium" Margin="20 0" Background="{x:Null}"/>
             <Button x:Name="btnRequestReservation" Grid.Column="1" Grid.Row="14" Content="Request Reservation" />
             <Button x:Name="btnSendMessage" Grid.Column="1" Grid.Row="15" Content="Send Message" HorizontalAlignment="Right" />
+        </Grid>
+        <Grid x:Name="grdSupplierSchedule" Grid.Column="1" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock  x:Name="txtSupplierSchedule" Text="[Supplier]'s Schedule" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}"/>
+            <Calendar   x:Name="calSupplierCalendar" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="1000" SelectedDatesChanged="calSupplierCalendar_SelectedDatesChanged"/>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="450"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="lblSupplierDate" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}">
+                        Booked Events
+                </TextBlock>
+                <DataGrid x:Name="datSupplierActivities" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding}" IsReadOnly="True" 
+                              AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" 
+                              IsSynchronizedWithCurrentItem="True" HorizontalContentAlignment="Center" SelectionMode="Single" Padding="0" OverridesDefaultStyle="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Activity" Binding="{Binding ActivityName}" Width="*"/>
+                        <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime, StringFormat='hh:mm tt'}"/>
+                        <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat='hh:mm tt'}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}">
+                        Hours of Operation
+                </TextBlock>
+                <DataGrid x:Name="datSupplierAvailabilities" Grid.Row="2" Grid.Column="1" ItemsSource="{Binding}" IsReadOnly="True" Width="210"
+                              AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" SelectionMode="Single"
+                              IsSynchronizedWithCurrentItem="True" HorizontalContentAlignment="Center" Padding="0" OverridesDefaultStyle="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Start Time" Binding="{Binding TimeStart, StringFormat='hh:mm tt'}"/>
+                        <DataGridTextColumn Header="End Time" Binding="{Binding TimeEnd, StringFormat='hh:mm tt'}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="grdSupplierPricing" Grid.Column="1" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="txtSupplierServices" Text="Supplier Services" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}"/>
+            <!--<DataGrid  x:Name="datSupplierServices" Visibility="Collapsed" Grid.Row="1" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsSynchronizedWithCurrentItem="True" HorizontalContentAlignment="Center" MinColumnWidth="100" SelectionMode="Single" Padding="0" OverridesDefaultStyle="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="colServiceImage" Header="Image" Binding="{Binding ServiceImagePath}"/>
+                        <DataGridTextColumn x:Name="colServiceName" Header="Service Name" Binding="{Binding ServiceName}"/>
+                        <DataGridTextColumn x:Name="colServicePrice" Header="Service Price" Binding="{Binding Price}"/>
+                        <DataGridTextColumn x:Name="colServiceDescription" Header="Description" Binding="{Binding Description}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid x:Name="datTest" Grid.Row="1" Visibility="Collapsed">
+                    <BitmapImage x:Name="bitSupplierImage"/>
+                </DataGrid>-->
+
+            <data:DataGrid Name="imageDataGrid" DockPanel.Dock="Top"
+                        Grid.Row="1" Margin="12 0 12 0"
+                        VerticalAlignment="Top" MaxColumnWidth="400" MinRowHeight="200"
+                        ItemsSource="{Binding serviceVMs}"
+                        AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" HorizontalContentAlignment="Center" MinColumnWidth="100" SelectionMode="Single" Padding="0" OverridesDefaultStyle="True"
+                               >
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Image">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Margin="4" Source="{Binding ImageUri}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="colServiceName" Header="Service Name" Binding="{Binding ServiceName}"/>
+                    <DataGridTextColumn x:Name="colServicePrice" Header="Service Price" Binding="{Binding Price}"/>
+                    <DataGridTextColumn x:Name="colServiceDescription" Header="Description" Binding="{Binding Description}"/>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
         </Grid>
     </Grid>
 </Page>

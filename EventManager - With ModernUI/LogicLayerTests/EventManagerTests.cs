@@ -26,6 +26,12 @@ namespace LogicLayerTests
         /// 
         /// Description:
         /// Test that returns number of rows added(should be 1)
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         public void TestCreateEventReturnsOneIfCreated()
@@ -33,11 +39,12 @@ namespace LogicLayerTests
             // arrange
             const string eventName = "Test";
             const string eventDescription = "Test Description";
+            const decimal totalBudget = 1000.00m;
             const int expected = 1;
             int acutal = 0;
 
             // act
-            acutal = _eventManager.CreateEvent(eventName, eventDescription);
+            acutal = _eventManager.CreateEvent(eventName, eventDescription, totalBudget);
 
             // assert
 
@@ -50,6 +57,12 @@ namespace LogicLayerTests
         /// 
         /// Description:
         /// Test that throws an application exception if there is no name
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
@@ -58,9 +71,10 @@ namespace LogicLayerTests
             // arrange
             const string eventName = "";
             const string eventDescription = "Test Description";
+            const decimal totalBudget = 1000.00m;
 
             // act
-            _eventManager.CreateEvent(eventName, eventDescription);
+            _eventManager.CreateEvent(eventName, eventDescription, totalBudget);
 
             // assert
             // nothing to assert, exception testing
@@ -72,6 +86,12 @@ namespace LogicLayerTests
         /// 
         /// Description:
         /// Test that throws an application exception if name is too long
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
@@ -80,9 +100,10 @@ namespace LogicLayerTests
             // arrange
             const string eventName = "jDWAAHKGh6r3JQwRW7IPVHDJunFb8b5tfgYfGz8vauaNJ2tM1z";
             const string eventDescription = "Test Description";
+            const decimal totalBudget = 1000.00m;
 
             // act
-            _eventManager.CreateEvent(eventName, eventDescription);
+            _eventManager.CreateEvent(eventName, eventDescription, totalBudget);
 
             // assert
             // nothing to assert, exception testing
@@ -95,6 +116,12 @@ namespace LogicLayerTests
         /// 
         /// Description:
         /// Test that throws an application exception if the description is an empty string or null
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
@@ -103,9 +130,10 @@ namespace LogicLayerTests
             // arrange
             const string eventName = "Test Event";
             const string eventDescription = "";
+            const decimal totalBudget = 1000.00m;
 
             // act
-            _eventManager.CreateEvent(eventName, eventDescription);
+            _eventManager.CreateEvent(eventName, eventDescription, totalBudget);
 
             // assert
             // nothing to assert, exception testing
@@ -119,6 +147,12 @@ namespace LogicLayerTests
         /// 
         /// Description:
         /// Test that throws an application exception if the description is too long, over 1000 char
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
@@ -127,9 +161,33 @@ namespace LogicLayerTests
             // arrange
             const string eventName = "Test Event";
             const string eventDescription = "CG7RqtCb0qMq3CUwXSTQvuOKIVZgUdUS33qHKpKqXwHhdAJx1pVLwRWvWd2Y24v1RGQjMqwGMpbMhavquvuyitARU2Omrm4gIPSWaS0TCpbo4oI83WKvWSW2qOPk9SFUK77x48NVmp0QbCts1KrbDx01v4g1iSwumHHNmg33vo6GpUKhU3j2iYnaXyncIGiVrRoqDCVUhU7qwwioIMBuYASWnsWMMsKVNROFlwQkzdDWS5zRDpiEnKXMcXIcfbm9VIKbWYh2j1uozqNgRcxv6DbxDgC9CyVAToCuYuURoBrfK3k5ClHIGAmpeHM6S9aIwDJ3rtesuprRrjd4K2t5ZrtuRsLO8ZtnQz2SrZntqBRJqjf9d5GGjvM2tfq5Tq94AS075HGUXg7da1swsTgj8zRB31TcW4jZ98rXlyIiwsvJn06UJWybWveN2NM9LGqOyd6jL0IzkXYMBhm5wN8vqxvpUPYayChPgEDITBr0WVahkd8Ev0SVn89finbKKSCTcNLWMijRBZ5lo7pOiLz2j7RTwRDjIxPECGK5efJcicLU8E4hAwmaX5AJbtxXLEF5m1mkPbSinzsS4Nl5YvP7lDkhjdtGK9DwfGmXAsXMSPY42r2cTBpbSptU0w9XVgMNWUe9V4Use0aPu5ZahBLjwFy3gDCOW7L7vh75HawP1I4BctBgHc6csf8Kdhq70LKtTvkEPO7vdnmaQXTfSugSRgzQ2JZiTAmRrnT40nK4X5whoi63g7PKrXAuqVsgOrUkWlgtmWRjXfdTRWRPMewPoUCFwe6DuJ22okqUiQ0t1ZlvqlfzhZfyya4GPsZeZD7Fs5203eEZq3dvhJWZ6BpRgrJ168yZNBfHBDFKVdyBd0epClPSG4A0O38RVDkiuiFtuYwBtSs7o8VOfhGcxm01XzsTWIbcbXUc6HX4qfGCfXxBe4OfeC6pobrTpL2o8G6DGcOYExHjHHCSKyOs9Y4LT36lkiCOCet2Pp0ALA8r";
+            const decimal totalBudget = 1000.00m;
 
             // act
-            _eventManager.CreateEvent(eventName, eventDescription);
+            _eventManager.CreateEvent(eventName, eventDescription, totalBudget);
+
+            // assert
+            // nothing to assert, exception testing
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/02/05
+        /// 
+        /// Description:
+        /// Test that throws application exception if total budget is less than 0
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestCreateEventThrowsApplicationExceptionIfTotalBudgetLessThanZero()
+        {
+            // arrange
+            const string eventName = "Test";
+            const string eventDescription = "Test Description";
+            const decimal totalBudget = -10m;
+
+            // act
+            _eventManager.CreateEvent(eventName, eventDescription, totalBudget);
 
             // assert
             // nothing to assert, exception testing
@@ -198,6 +256,12 @@ namespace LogicLayerTests
         /// 
         /// Description:
         /// Test that throws an application exception if event name for update is too long
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
@@ -209,6 +273,7 @@ namespace LogicLayerTests
                 EventID = 1000000,
                 EventName = "Test Event 1",
                 EventDescription = "A description of test event 1",
+                TotalBudget = 1000.00m,
                 Active = true
             };
 
@@ -217,6 +282,7 @@ namespace LogicLayerTests
                 EventID = 1000000,
                 EventName = "jDWAAHKGh6r3JQwRW7IPVHDJunFb8b5tfgYfGz8vauaNJ2tM1z",
                 EventDescription = "A description of test event 1",
+                TotalBudget = 1000.00m,
                 Active = true
             };
 
@@ -235,6 +301,12 @@ namespace LogicLayerTests
         /// Description:
         /// Test that throws an application exception if the description for update 
         /// is an empty string or null
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
@@ -246,6 +318,7 @@ namespace LogicLayerTests
                 EventID = 1000000,
                 EventName = "Test Event 1",
                 EventDescription = "A description of test event 1",
+                TotalBudget = 1000.00m,
                 Active = true
             };
 
@@ -254,6 +327,7 @@ namespace LogicLayerTests
                 EventID = 1000000,
                 EventName = "Test Event 1",
                 EventDescription = "",
+                TotalBudget = 100.00m,
                 Active = true
             };
 
@@ -272,6 +346,12 @@ namespace LogicLayerTests
         /// Description:
         /// Test that throws an application exception if the description for update 
         /// is too long, over 1000 char
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ApplicationException))]
@@ -283,6 +363,7 @@ namespace LogicLayerTests
                 EventID = 1000000,
                 EventName = "Test Event 1",
                 EventDescription = "A description of test event 1",
+                TotalBudget = 1000.00m,
                 Active = true
             };
 
@@ -291,7 +372,47 @@ namespace LogicLayerTests
                 EventID = 1000000,
                 EventName = "Test Event 1",
                 EventDescription = "CG7RqtCb0qMq3CUwXSTQvuOKIVZgUdUS33qHKpKqXwHhdAJx1pVLwRWvWd2Y24v1RGQjMqwGMpbMhavquvuyitARU2Omrm4gIPSWaS0TCpbo4oI83WKvWSW2qOPk9SFUK77x48NVmp0QbCts1KrbDx01v4g1iSwumHHNmg33vo6GpUKhU3j2iYnaXyncIGiVrRoqDCVUhU7qwwioIMBuYASWnsWMMsKVNROFlwQkzdDWS5zRDpiEnKXMcXIcfbm9VIKbWYh2j1uozqNgRcxv6DbxDgC9CyVAToCuYuURoBrfK3k5ClHIGAmpeHM6S9aIwDJ3rtesuprRrjd4K2t5ZrtuRsLO8ZtnQz2SrZntqBRJqjf9d5GGjvM2tfq5Tq94AS075HGUXg7da1swsTgj8zRB31TcW4jZ98rXlyIiwsvJn06UJWybWveN2NM9LGqOyd6jL0IzkXYMBhm5wN8vqxvpUPYayChPgEDITBr0WVahkd8Ev0SVn89finbKKSCTcNLWMijRBZ5lo7pOiLz2j7RTwRDjIxPECGK5efJcicLU8E4hAwmaX5AJbtxXLEF5m1mkPbSinzsS4Nl5YvP7lDkhjdtGK9DwfGmXAsXMSPY42r2cTBpbSptU0w9XVgMNWUe9V4Use0aPu5ZahBLjwFy3gDCOW7L7vh75HawP1I4BctBgHc6csf8Kdhq70LKtTvkEPO7vdnmaQXTfSugSRgzQ2JZiTAmRrnT40nK4X5whoi63g7PKrXAuqVsgOrUkWlgtmWRjXfdTRWRPMewPoUCFwe6DuJ22okqUiQ0t1ZlvqlfzhZfyya4GPsZeZD7Fs5203eEZq3dvhJWZ6BpRgrJ168yZNBfHBDFKVdyBd0epClPSG4A0O38RVDkiuiFtuYwBtSs7o8VOfhGcxm01XzsTWIbcbXUc6HX4qfGCfXxBe4OfeC6pobrTpL2o8G6DGcOYExHjHHCSKyOs9Y4LT36lkiCOCet2Pp0ALA8r",
-            Active = true
+                TotalBudget = 1000.00m,
+                Active = true
+            };
+
+            // act
+            _eventManager.UpdateEvent(oldEvent, newEvent);
+
+            // assert
+            // nothing to assert, exception testing
+
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// Test that throws application exception if the budget for updating an event
+        /// is less than zero
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEventThrowsApplicationExceptionIfTotalBudgetIsLessThanZero()
+        {
+            // arrange
+            EventVM oldEvent = new EventVM()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                TotalBudget = 1000.00m,
+                Active = true
+            };
+
+            EventVM newEvent = new EventVM()
+            {
+                EventID = 1000000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                TotalBudget = -1000.00m,
+                Active = true
             };
 
             // act
@@ -308,6 +429,12 @@ namespace LogicLayerTests
         /// 
         /// Description:
         /// Test that returns true if update successful
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
         public void TestUpdateEventReturnsTrueIfUpdateSuccessful()
@@ -318,6 +445,7 @@ namespace LogicLayerTests
                 EventID = 1000000,
                 EventName = "Test Event 1",
                 EventDescription = "A description of test event 1",
+                TotalBudget = 1000.00m,
                 Active = true
             };
 
@@ -326,6 +454,7 @@ namespace LogicLayerTests
                 EventID = 1000000,
                 EventName = "Test Name",
                 EventDescription = "Description",
+                TotalBudget = 1000.00m,
                 Active = false
             };
 
@@ -668,28 +797,110 @@ namespace LogicLayerTests
 
             Assert.AreEqual(expected, actual);
         }
+
         /// <summary>
         /// Derrick Nagy
-        /// Created: 2022/02/17
+        /// Created: 2022/02/18
         /// 
         /// Description:
         /// Test that returns the event id
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// </summary>
         [TestMethod]
-        public void TestCreateEventReturnsEventIDIfCreated()
+        public void TestCreateEventWithUserReturnsEventIDIfCreated()
         {
             // arrange
             const string eventName = "Test";
             const string eventDescription = "Test Description";
+            const decimal totalBudget = 1000.00m;
             const int expectedEventID = 1000004;
+            const int userID = 100000;
             int actualEventID = 0;
 
-            // act
-            actualEventID = _eventManager.CreateEventReturnsEventID(eventName, eventDescription);
+            // act            
+            actualEventID = _eventManager.CreateEventReturnsEventID(eventName, eventDescription, totalBudget, userID );
 
             // assert
             Assert.AreEqual(expectedEventID, actualEventID);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/18
+        /// 
+        /// Description:
+        /// Test that throws an application exception if there is no name
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestCreateEventWithUserReturnsEventIDThrowsApplicationExceptionIfNoDescription()
+        {
+            // arrange
+            const string eventName = "Test";
+            const string eventDescription = null;
+            const decimal budget = 1;
+            const int userID = 100000;
+
+            // act
+            _eventManager.CreateEventReturnsEventID(eventName, eventDescription, budget, userID);
+
+
+            // assert
+            // nothing to assert, exception testing
+        }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Test that returns true if the user can edit the event
+        /// </summary>
+        [TestMethod]
+        public void TestEventEditPermissionsReturnsTrueIFUserCanEdit()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int userID = 100000;
+            const bool expected = true;
+            bool actual;
+
+            // act
+            actual = _eventManager.CheckUserEditPermissionForEvent(eventID, userID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
 
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Test that returns true if the user can edit the event
+        /// </summary>
+        [TestMethod]
+        public void TestEventEditPermissionsReturnsFalseIfUserCannotEdit()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int userID = 100002;
+            const bool expected = false;
+            bool actual;
+
+            // act
+            actual = _eventManager.CheckUserEditPermissionForEvent(eventID, userID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
     }
 }

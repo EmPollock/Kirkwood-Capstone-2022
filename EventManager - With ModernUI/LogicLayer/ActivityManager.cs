@@ -56,6 +56,50 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Retrieves a list of all public Activities in View Model 
+        /// </summary>
+        /// <returns>A list of ActivityVMs</returns>
+        public List<ActivityVM> RetreiveActivitiesPastAndUpcomingDates()
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+
+            try
+            {
+                result = _activityAccessor.SelectActivitiesPastAndUpcomingDates();
+            }
+            catch (Exception ex) 
+            { 
+                throw; 
+            }
+
+            return result;
+
+        }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Retrieves a list of all user Activities in View Model 
+        /// </summary>
+        /// <returns>A list of ActivityVMs</returns>
+        public List<ActivityVM> RetreiveUserActivitiesPastAndUpcomingDates(int userID)
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+            try
+            {
+                result = _activityAccessor.SelectUserActivitiesPastAndUpcomingDates(userID);
+            }
+            catch (Exception ex) { throw ex; }
+
+            return result;
+        }
+
+        /// <summary>
         /// Emma Pollock
         /// Created: 2022/02/03
         /// 
@@ -64,9 +108,17 @@ namespace LogicLayer
         /// </summary>
         /// <param name="eventID">The EventID</param>
         /// <returns>A list of ActivityVMs</returns>
-        public List<ActivityVM> RetrieveActivitiesByEventID(int eventID)
+        /// /// <summary>
+        /// Logan Baccam
+        /// Updated: 2022/02/25
+        /// Description:
+        /// Reverted changes
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns>A list of Activity objects</returns>
+        public List<Activity> RetrieveActivitiesByEventID(int eventID)
         {
-            List<ActivityVM> result = new List<ActivityVM>();
+            List<Activity> result = new List<Activity>();
             try{
                 List<Activity> activities =_activityAccessor.SelectActivitiesByEventID(eventID);
 
@@ -76,7 +128,15 @@ namespace LogicLayer
                     List<ActivityResult> activityResults = _activityResultAccessor.SelectActivityResultsByActivityID(activity.ActivityID);
 
                     //set ActivitySublocation
-                    Sublocation activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID(activity.SublocationID);
+                    Sublocation activitySublocation;
+                    if (activity.SublocationID.HasValue)
+                    {
+                        activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID((int)activity.SublocationID);
+                    }
+                    else
+                    {
+                        activitySublocation = null;
+                    }
 
                     //set EventDate
                     EventDate activityEventDate = _eventDateAccessor.SelectEventDateByEventDateIDAndEventID(activity.EventDateID, eventID);
@@ -131,7 +191,15 @@ namespace LogicLayer
                     List<ActivityResult> activityResults = _activityResultAccessor.SelectActivityResultsByActivityID(activity.ActivityID);
 
                     //set ActivitySublocation
-                    Sublocation activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID(activity.SublocationID);
+                    Sublocation activitySublocation;
+                    if (activity.SublocationID.HasValue)
+                    {
+                        activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID((int)activity.SublocationID);
+                    }
+                    else
+                    {
+                        activitySublocation = null;
+                    }
 
                     //set EventDate
                     EventDate activityEventDate = _eventDateAccessor.SelectEventDateByEventDateIDAndEventID(activity.EventDateID, eventID);
@@ -160,6 +228,199 @@ namespace LogicLayer
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/02/23
+        /// 
+        /// Description:
+        /// Retrieves a list of Activities that match the sublocationID parameter
+        /// </summary>
+        /// <param name="sublocationID">The EventID</param>
+        /// <returns>A list of Activities</returns>
+        public List<Activity> RetrieveActivitiesBySublocationID(int sublocationID)
+        {
+            List<Activity> activities = new List<Activity>();
+
+            try
+            {
+                activities = _activityAccessor.SelectActivitiesBySublocationID(sublocationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return activities;
+		}
+		
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/02/14
+        /// 
+        /// Description:
+        /// Retrieves a list of all Activities for an event in View Model 
+        /// </summary>
+        /// <returns>A list of ActivityVMs</returns>
+        public List<ActivityVM> RetrieveActivitiesByEventIDForVM(int eventID)
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+            try
+            {
+                result = _activityAccessor.SelectActivitiesByEventIDForVM(eventID);
+            }
+            catch (Exception ex) { throw ex; }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Retrieves a list of activity view model objects that are associated
+        /// with a specific supplier
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of ActivityVM objects</returns>
+        public List<ActivityVM> RetrieveActivitiesBySupplierIDAndDate(int supplierID, DateTime date)
+        {
+            List<ActivityVM> result = new List<ActivityVM>();
+            try
+            {
+                List<Activity> activities = _activityAccessor.SelectActivitiesBySupplierIDAndDate(supplierID, date);
+
+                foreach (Activity activity in activities)
+                {
+                    //set list of ActivityResults
+                    List<ActivityResult> activityResults = _activityResultAccessor.SelectActivityResultsByActivityID(activity.ActivityID);
+
+                    //set ActivitySublocation
+                    Sublocation activitySublocation;
+                    if (activity.SublocationID.HasValue)
+                    {
+                        activitySublocation = _sublocationAccessor.SelectSublocationBySublocationID((int)activity.SublocationID);
+                    }
+                    else
+                    {
+                        activitySublocation = null;
+                    }
+
+                    //set EventDate
+                    EventDate activityEventDate = _eventDateAccessor.SelectEventDateByEventDateIDAndEventID(activity.EventDateID, activity.EventID);
+
+                    result.Add(new ActivityVM()
+                    {
+                        ActivityID = activity.ActivityID,
+                        ActivityName = activity.ActivityName,
+                        ActivityDescription = activity.ActivityDescription,
+                        PublicActivity = activity.PublicActivity,
+                        StartTime = activity.StartTime,
+                        EndTime = activity.EndTime,
+                        ActivityImageName = activity.ActivityImageName,
+                        SublocationID = activity.SublocationID,
+                        EventDateID = activity.EventDateID,
+                        EventID = activity.EventID,
+                        ActivityResults = activityResults,
+                        ActivitySublocation = activitySublocation,
+                        EventDate = activityEventDate
+                    });
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/14
+        /// 
+        /// Description: Allows for changing of sublocation id to new or null
+        /// </summary>
+        /// <param name="activityID"></param>
+        /// <param name="oldSublocationID"></param>
+        /// <param name="newSublocationID"></param>
+        /// <returns></returns>
+        public bool UpdateActivitySublocationByActivityID(int activityID, int? oldSublocationID, int? newSublocationID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = 1 == _activityAccessor.UpdateActivitySublocationByActivityID(activityID, oldSublocationID, newSublocationID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to update activity sublocation", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Creates a new activity object and inserts it into the database
+        /// </summary>
+        /// <param name="activity">New activity object to be created</param>
+        /// <returns>int number of rows affected</returns>
+        public int CreateActivity(Activity activity)
+        {
+            int rowsAffected;
+
+            if (activity.ActivityName == null || activity.ActivityName == "")
+            {
+                throw new ApplicationException("Activity name cannot be empty");
+            }
+            if (activity.ActivityName.Length > 50)
+            {
+                throw new ApplicationException("Activity name cannot be longer than 50 characters");
+            }
+            if (activity.ActivityDescription.Length > 250)
+            {
+                throw new ApplicationException("Activity description cannot be longer than 250 characters");
+            }
+            if (activity.StartTime == new DateTime()) // defaults to 01/01/0001 if it had never been set
+            {
+                throw new ApplicationException("Activity must have a start time");
+            }
+            if (activity.EndTime == new DateTime())
+            {
+                throw new ApplicationException("Activity must have an end time");
+            }
+            if (activity.StartTime.CompareTo(activity.EndTime) >= 0)
+            {
+                throw new ApplicationException("Activity start time must be before its end time");
+            }
+            if (activity.SublocationID == null)
+            {
+                throw new ApplicationException("Activity must have a sublocation");
+            }
+            if (activity.EventDateID == new DateTime())
+            {
+                throw new ApplicationException("Activity must have a date");
+            }
+
+            try
+            {
+                rowsAffected = _activityAccessor.InsertActivity(activity);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rowsAffected;
         }
     }
 }

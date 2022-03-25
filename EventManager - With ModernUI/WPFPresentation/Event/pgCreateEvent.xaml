@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WPFPresentation"      
+      xmlns:local="clr-namespace:WPFPresentation" xmlns:uc="clr-namespace:WPFPresentation.CustomControls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="pgCreateEvent"
@@ -31,6 +31,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition/>
+                            <RowDefinition Height="60"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width=".3*"/>
@@ -41,7 +42,10 @@
                         <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="txtBoxEventName" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
 
                         <TextBlock x:Name="lblEventDescription" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Description</TextBlock>
-                        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="txtBoxEventDescription" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="txtBoxEventDescription" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+
+                        <TextBlock  x:Name="lblTotalBudget" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Budget</TextBlock>
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" x:Name="txtBoxTotalBudget" Margin="10px" Padding="5,5,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
                     </Grid>
 
                     <Grid Grid.Row="4" Grid.Column="1">
@@ -92,8 +96,9 @@
 
 
                         <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Start Time:</TextBlock>
-                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
-                            <TextBox x:Name="txtBoxEventStartTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" TextChanged="txtBoxEventStartTimeHour_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></TextBox>
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Visibility="Collapsed">
+                            <ComboBox x:Name="cmboxEventStartTimeHour"  VerticalAlignment="Center" Margin="10"/>
+                            <!--<TextBox x:Name="txtBoxEventStartTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" TextChanged="txtBoxEventStartTimeHour_TextChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></TextBox>-->
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" VerticalAlignment="Center" >:</TextBlock>
                             <TextBox x:Name="txtBoxEventStartTimeMinute" Margin="10px" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" Height="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventStartTimeMinute_TextChanged" ></TextBox>
                             <ComboBox x:Name="cmbStartTimeAMPM" VerticalAlignment="Center" Margin="10" >
@@ -102,16 +107,20 @@
                             </ComboBox>
                         </StackPanel>
 
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+                            <uc:TimeComboBoxes x:Name="ucStartTime"/>
+                        </StackPanel>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">End  Time:</TextBlock>
                         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-                            <TextBox x:Name="txtBoxEventEndTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeHour_TextChanged" ></TextBox>
+                            <!--<TextBox x:Name="txtBoxEventEndTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeHour_TextChanged" ></TextBox>
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" VerticalAlignment="Center" >:</TextBlock>
                             <TextBox x:Name="txtBoxEventEndTimeMinute" Margin="10px" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" Height="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeMinute_TextChanged" ></TextBox>
                             <ComboBox x:Name="cmbEndTimeAMPM" VerticalAlignment="Center" Margin="10" >
                                 <ComboBoxItem IsSelected="True">AM</ComboBoxItem>
                                 <ComboBoxItem>PM</ComboBoxItem>
-                            </ComboBox>
+                            </ComboBox>-->
+                            <uc:TimeComboBoxes x:Name="ucEndTime"/>
                         </StackPanel>
 
                         <Button  Grid.Row="4" Grid.Column="0" x:Name="btnEventDateAdd" Margin="10" Content="Add Date" IsTabStop="False" Click="btnEventDateAdd_Click" HorizontalAlignment="Right"/>
@@ -340,12 +349,10 @@
                         <TextBlock x:Name="txtBlkNumVolunteers" Grid.Row="0" Grid.Column="0" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" Visibility="Hidden" >Number:</TextBlock>
                         <DockPanel x:Name="dcPnlNumVolunteers" Grid.Row="0" Grid.Column="1" Margin="10,10,10,10" Visibility="Hidden">
                             <TextBox Text="{Binding ElementName=sldrNumVolunteers, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40"></TextBox>
-                            <Slider x:Name="sldrNumVolunteers" Maximum="50" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" ></Slider>
+                            <Slider x:Name="sldrNumVolunteers" Maximum="10" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" ></Slider>
                         </DockPanel>
 
-                        <TextBlock x:Name="txtBlkNumVolunteerDescription" Grid.Row="1" Grid.Column="0" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}" Visibility="Hidden">Description:</TextBlock>
-                        <TextBox x:Name="txtBxNumVolunteerDescription" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" MinHeight="200" MinWidth="300"/>
-
+                        <Button x:Name="btnRequestVolunteers" Grid.Column="3" Grid.Row="2" Click="btnRequestVolunteers_Click" Visibility="Hidden">Request Volunteers</Button>
                     </Grid>
 
                     <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
@@ -354,7 +361,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="btnVolunteersNext" Grid.Row="0" Grid.Column="0" Margin="40,5" Content="Next" IsTabStop="False" HorizontalAlignment="Right" Click="btnVolunteersNext_Click"/>
+                        <Button x:Name="btnVolunteersNext" Grid.Row="0" Grid.Column="0" Margin="40,5" Content="Finish" IsTabStop="False" HorizontalAlignment="Right" Click="btnVolunteersNext_Click"/>
                         <Button x:Name="btnVolunteersCancel" Grid.Row="0" Grid.Column="1" Margin="40,5" Content="Cancel" HorizontalAlignment="Left" Click="btnEventCancel_Click"/>
 
                     </Grid>

@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WPFPresentation.Event"
+      xmlns:local="clr-namespace:WPFPresentation.Event" xmlns:uc="clr-namespace:WPFPresentation.CustomControls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="pgEventEditDetail" Loaded="Page_Loaded">
@@ -29,7 +29,7 @@
             <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
                     Background="#FF4388CC" Foreground="White" Click="btnTasks_Click">Tasks</Button>
             <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Itinerary</Button>
+                    Background="#FF4388CC" Foreground="White" Click="btnItinerary_Click">Itinerary</Button>
             <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
                     Background="#FF4388CC" Foreground="White">Budget</Button>
             <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
@@ -73,7 +73,7 @@
 
                     <Button x:Name="btnDeleteEvent"  Grid.Row="4" Grid.Column="0" Margin="10" HorizontalAlignment="Center"  VerticalAlignment="Center" Content="Delete" Click="btnDeleteEvent_Click" />
                     <TextBlock Grid.Row="5" Grid.Column="1" x:Name="txtBlockValidationMessage" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="#FFFF4040" Visibility="Hidden"></TextBlock>
-                    <Button x:Name="btnEventEditSave" Grid.Row="6" Grid.Column="0" Content="Edit" IsTabStop="False"  HorizontalAlignment="Left" Margin="10" Click="btnEventEditSave_Click"/>
+                    <Button x:Name="btnEventEditSave" Grid.Row="6" Grid.Column="0" Content="Edit" IsTabStop="False"  HorizontalAlignment="Left" Margin="10" Click="btnEventEditSave_Click" Visibility="Hidden"/>
                     <Button x:Name="btnEventCloseCancel" Grid.Row="6" Grid.Column="0"  Content="Close" HorizontalAlignment="Right" Margin="10" Click="btnEventCloseCancel_Click" />
 
                 </Grid>
@@ -98,7 +98,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <DataGrid x:Name="datEditCurrentEventDates" Grid.Row="0" Grid.Column="0" Margin="10" SelectionMode="Single" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid x:Name="datEditCurrentEventDates" Grid.Row="0" Grid.Column="0" Margin="10" SelectionMode="Single" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True" Visibility="Collapsed">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>
@@ -108,6 +108,13 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
+                                <DataGridTextColumn Header="Date" Binding="{Binding EventDateID, StringFormat=\{0:MM/dd/yy \}}"/>
+                                <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime, StringFormat=\{0:hh:mm tt\}}"/>
+                                <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat=\{0:hh:mm tt\}}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid x:Name="datCurrentEventDatesNoEdit" Grid.Row="0" Grid.Column="0" Margin="10" SelectionMode="Single" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True">
+                            <DataGrid.Columns>
                                 <DataGridTextColumn Header="Date" Binding="{Binding EventDateID, StringFormat=\{0:MM/dd/yy \}}"/>
                                 <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime, StringFormat=\{0:hh:mm tt\}}"/>
                                 <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat=\{0:hh:mm tt\}}"/>
@@ -135,25 +142,30 @@
 
                         <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">Start Time:</TextBlock>
                         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
-                            <TextBox x:Name="txtBoxEventStartTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventStartTimeHour_TextChanged" ></TextBox>
+                            <!--<TextBox x:Name="txtBoxEventStartTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventStartTimeHour_TextChanged" ></TextBox>
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" VerticalAlignment="Center" >:</TextBlock>
                             <TextBox x:Name="txtBoxEventStartTimeMinute" Margin="10px" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" Height="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventStartTimeMinute_TextChanged" ></TextBox>
                             <ComboBox x:Name="cmbStartTimeAMPM" VerticalAlignment="Center" Margin="10" >
                                 <ComboBoxItem IsSelected="True">AM</ComboBoxItem>
                                 <ComboBoxItem>PM</ComboBoxItem>
-                            </ComboBox>
+                            </ComboBox>-->
+
+                            <uc:TimeComboBoxes x:Name="ucStartTime"/>
+
                         </StackPanel>
 
 
                         <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Style="{StaticResource BodyTextBlockStyle}">End  Time:</TextBlock>
                         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-                            <TextBox x:Name="txtBoxEventEndTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeHour_TextChanged" ></TextBox>
+                            <!--<TextBox x:Name="txtBoxEventEndTimeHour" Margin="10px" Height="10" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeHour_TextChanged" ></TextBox>
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" VerticalAlignment="Center" >:</TextBlock>
                             <TextBox x:Name="txtBoxEventEndTimeMinute" Margin="10px" Padding="5" TextWrapping="Wrap" HorizontalAlignment="Left" Width="10" Height="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="txtBoxEventEndTimeMinute_TextChanged"></TextBox>
                             <ComboBox x:Name="cmbEndTimeAMPM" VerticalAlignment="Center" Margin="10" >
                                 <ComboBoxItem IsSelected="True">AM</ComboBoxItem>
                                 <ComboBoxItem>PM</ComboBoxItem>
-                            </ComboBox>
+                            </ComboBox>-->
+                            <uc:TimeComboBoxes x:Name="ucEndTime"/>
+                        
                         </StackPanel>
 
 
@@ -167,8 +179,8 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button  Grid.Row="0" Grid.Column="0" x:Name="btnEditEventDateAddSave" Margin="0 0 40 0" Content="Add Dates" IsTabStop="False"  HorizontalAlignment="Right" Click="btnEditEventDateAddSave_Click"/>
-                        <Button x:Name="btnEditEventDateCloseCancel" Grid.Row="0" Grid.Column="1" Margin="40 0 0 0" Content="Close" HorizontalAlignment="Left" Click="btnEditEventDateCloseCancel_Click" />
+                        <Button  Grid.Row="0" Grid.Column="0" x:Name="btnEditEventDateAddSave" Margin="0 0 40 0" Content="Add Dates" IsTabStop="False"  HorizontalAlignment="Right" Click="btnEditEventDateAddSave_Click" Visibility="Hidden"/>
+                        <Button x:Name="btnEditEventDateCloseCancel" Grid.Row="0" Grid.Column="1" Margin="40 0 0 0" Content="Close" HorizontalAlignment="Left" Click="btnEditEventDateCloseCancel_Click" Visibility="Hidden" />
 
                     </Grid>
                 </Grid>

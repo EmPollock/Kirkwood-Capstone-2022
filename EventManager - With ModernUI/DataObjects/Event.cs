@@ -23,7 +23,13 @@ namespace DataObjects
         public string EventName { get; set; }
         public string EventDescription { get; set; }
         public DateTime EventCreatedDate { get; set; }
+        public decimal TotalBudget { get; set; }
         public bool Active { get; set; }
+
+        public Event()
+        {
+            Active = true;
+        }
     }
 
     /// <summary>

@@ -32,7 +32,10 @@ namespace WPFPresentation
         
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
+        ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
         DataObjects.EventVM _event = null;
+        User _user = null;
 
         // priority values to populate cboPriority
         List<Priority> _priorities = new List<Priority>();
@@ -43,16 +46,31 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Initializes component and sets up task manager with either fake or default accessors
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
-        public pgTaskListCreate(DataObjects.EventVM selectedEvent)
+        /// <param name="selectedEvent"></param>
+        /// <param name="managerProvider"></param>
+        /// <param name="user"></param>
+        internal pgTaskListCreate(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
-            // fake accessor
-            //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
-
-            // default accessor
-            _taskManager = new TaskManager();
-            _eventManager = new LogicLayer.EventManager();
+            _managerProvider = managerProvider;
+            _taskManager = managerProvider.TaskManager;
+            _eventManager = managerProvider.EventManager;
             _event = selectedEvent;
+            _user = user;
+
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
         }
@@ -83,7 +101,7 @@ namespace WPFPresentation
 
                 MessageBox.Show("Priority list was not retrieved." + "\n\n" + ex.Message);
             }
-        }   
+        }
 
         /// <summary>
         /// Mike Cahow
@@ -91,6 +109,16 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event handler to create a task
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/05
+        /// 
+        /// Description: Added logic to handle requesting volunteers during task creation
         /// </summary>
         private void btnSaveTask_Click(object sender, RoutedEventArgs e)
         {
@@ -140,11 +168,12 @@ namespace WPFPresentation
                 DueDate = taskDueDate,
                 Priority = priority
             };
+            int numTotalVolunteers = (int)sldrNumVolunteers.Value;
             try
             {
-                _taskManager.AddTask(task);
+                _taskManager.AddTask(task, numTotalVolunteers);
                 MessageBox.Show("Task has been added.");
-                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
             catch (Exception ex)
@@ -161,6 +190,11 @@ namespace WPFPresentation
         /// Event handler for the cancel button. If the yes is clicked in the dialog box
         /// it sends user back to pgTaskListView. If no is clicked then user remains on 
         /// current page
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -178,9 +212,115 @@ namespace WPFPresentation
             }
             else
             {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }
+
+        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler to take users back to the Event Edit Detail Page
+        /// Works like the cancel button and checks with the user before leaving page
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Task will not be saved if you stop now.";
+            string title = "Stop creating Task?";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            var result = MessageBox.Show(message, title, buttons, image);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+            else
+            {
+                pgEventEditDetail eventEditDetailPage = new pgEventEditDetail(_event, _managerProvider, _user);
+                this.NavigationService.Navigate(eventEditDetailPage);
+            }
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler to take users back to the Task List View Page
+        /// Works like the cancel button and checks with the user before leaving page
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/02/26
+        /// 
+        /// Description:
+        /// Added _user to be passed with page constructor
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTasks_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Task will not be saved if you stop now.";
+            string title = "Stop creating Task?";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            var result = MessageBox.Show(message, title, buttons, image);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+            else
+            {
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
+                this.NavigationService.Navigate(viewTasksPage);
+            }
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler to take users to the View Activities Page
+        /// Works like the cancel button and checks with the user before leaving page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnItinerary_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Task will not be saved if you stop now.";
+            string title = "Stop creating Task?";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            var result = MessageBox.Show(message, title, buttons, image);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+            else
+            {
+                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
+                this.NavigationService.Navigate(viewActivitiesPage);
+            }
+        }
+
+        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }

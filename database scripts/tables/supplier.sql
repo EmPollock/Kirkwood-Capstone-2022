@@ -119,3 +119,42 @@ INSERT INTO [dbo].[Supplier] (
 	,(100000, "Supplier King", "Supply it your way.", "888-888-8888", "supplierking@suppliers.com", "Vendor", "456 Supplier King Blvd", null, "Iowa City", "Iowa", "52240")
 GO
 
+/***************************************************************
+Kris Howell
+Created: 2022/02/24
+
+Description:
+SupplierAttendance table
+****************************************************************/
+
+print '' print '*** creating SupplierAttendance table ***'
+CREATE TABLE [dbo].[SupplierAttendance] (
+	[SupplierID]			[int]						NOT NULL
+	,[ActivityID]			[int]						NOT NULL
+
+	CONSTRAINT [pk_SupplierAttendance] PRIMARY KEY([SupplierID], [ActivityID])
+	,CONSTRAINT [fk_Activity] FOREIGN KEY([ActivityID])
+		REFERENCES [Activity]([ActivityID])
+)
+GO
+
+/***************************************************************
+Kris Howell
+Created: 2022/02/24
+ 
+Description:
+Test records for supplier attendance table
+****************************************************************/
+print '' print '*** test records for SupplierAttendance table ***'
+GO
+INSERT INTO [dbo].[SupplierAttendance] (
+	[SupplierID]
+	,[ActivityID]
+)VALUES 
+	(100000, 100000)
+	,(100000, 100001)
+	,(100000, 100002)
+	,(100000, 100003)
+	,(100000, 100004)
+	,(100000, 100005)
+GO

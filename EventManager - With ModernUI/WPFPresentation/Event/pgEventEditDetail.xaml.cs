@@ -14,8 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using LogicLayer;
-using LogicLayerInterfaces;
 using DataObjects;
 using DataAccessFakes;
 using System.Text.RegularExpressions;
@@ -30,6 +28,8 @@ namespace WPFPresentation.Event
         IEventManager _eventManager = null;
         IEventDateManager _eventDateManager = null;
         ILocationManager _locationManager = null;
+        ISublocationManager _sublocationManager = null;
+        ManagerProvider _managerProvider = null;
 
         DataObjects.Location _location = null;
         DataObjects.EventVM _event = null;
@@ -37,30 +37,80 @@ namespace WPFPresentation.Event
         EventDate _selectedEventDate = null;
         IVolunteerRequestManager _volunteerRequestManager = null;
 
+        bool _userCanEditEvent = false;
+
+        User _user = null;
+
+
         /// <summary>
         /// Jace Pettinger
         /// Created: 2022/02/01
         /// 
         /// Description:
         /// Initializes component and sets up event manager with fake and default accessors
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Update: 2022/02/23
+        /// Description:
+        /// Changed which data grid is used for viewing and editing.
+        /// Added checks for the user to edit only if they are an event planner or manager.
+        /// 
+        /// Update:
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
         /// <param name="selectedEvent">Must be pased an event object to view or edit</param>
-        public pgEventEditDetail(DataObjects.EventVM selectedEvent)
+        /// <param name="managerProvider"></param>
+        /// <param name="user"></param>
+        internal pgEventEditDetail(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
-            // use fake accessor
-            //_eventManager = new LogicLayer.EventManager(new EventAccessorFake());
-            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            //_locationManager = new LocationManager(new LocationAccessorFake());
-            //_volunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
-
-            // use default accessor
-            _eventManager = new LogicLayer.EventManager();
-            _eventDateManager = new EventDateManager();
-            _volunteerRequestManager = new VolunteerRequestManager();
-            _locationManager = new LocationManager();
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
+            _eventDateManager = managerProvider.EventDateManager;
+            _volunteerRequestManager = managerProvider.VolunteerRequestManager;
+            _locationManager = managerProvider.LocationManager;
             _event = selectedEvent;
+            _user = user;
+            _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
+
+            // if there is a user
+            if (_user != null)
+            {
+                try
+                {
+                    // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.   
+                    _userCanEditEvent = _eventManager.CheckUserEditPermissionForEvent(_event.EventID, _user.UserID);
+                    if (_userCanEditEvent)
+                    {
+                        btnEventEditSave.Visibility = Visibility.Visible;
+                        btnEventEditSave.Visibility = Visibility.Visible;
+                        datEditCurrentEventDates.Visibility = Visibility.Visible;
+                        datCurrentEventDatesNoEdit.Visibility = Visibility.Collapsed;
+                        tabEventVolunteerRequests.Visibility = Visibility.Visible;
+                        btnEditEventDateAddSave.Visibility = Visibility.Visible;
+                        btnEditEventDateCloseCancel.Visibility = Visibility.Visible;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Can not find permissions for the user. You will not be able to edit this event.\n" + ex.Message, "Permissions Not Found", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            // If the user is an Event Planner or Manager, they can edit the event. Otherwise default view.
+           
+
         }
 
         /// <summary>
@@ -90,7 +140,7 @@ namespace WPFPresentation.Event
             txtBoxEventName.Text = _event.EventName.ToString();
             txtBoxEventDateCreated.Text = _event.EventCreatedDate.ToShortDateString();
             txtBoxEventDescription.Text = _event.EventDescription.ToString();
-            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet
+            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet\
 
         }
 
@@ -326,10 +376,23 @@ namespace WPFPresentation.Event
                 }
             }
         }
-
+        /// <summary>
+        /// ???
+        /// Created: ????/??/??
+        /// 
+        /// Description:
+        /// Click method for tasks button. Sends the user to the task list view.
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnTasks_Click(object sender, RoutedEventArgs e)
         {
-            pgTaskListView taskViewPage = new pgTaskListView(_event);
+            pgTaskListView taskViewPage = new pgTaskListView(_event, _managerProvider, _user);
             this.NavigationService.Navigate(taskViewPage);
         }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
@@ -342,6 +405,10 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method for setting Event Dates tab to detail mode
+        /// 
+        /// Update
+        /// Derrick Nagy
+        /// Updated: 2020/02/24
         /// </summary>
         private void setEventDatesTabDetailMode()
         {
@@ -364,7 +431,17 @@ namespace WPFPresentation.Event
             }
             else
             {
-                datEditCurrentEventDates.ItemsSource = _eventDates;
+                // if the user can edit, use this table
+                if (_userCanEditEvent)
+                {
+                    datEditCurrentEventDates.ItemsSource = _eventDates;
+                }
+                else
+                {
+                    // use this table
+                    datCurrentEventDatesNoEdit.ItemsSource = _eventDates;
+                }
+                
             }
         }
 
@@ -374,19 +451,31 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method for setting Event Dates tab to edit mode
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes
         /// </summary>
         private void setEventDateTabEditMode()
         {
             // prepare add event grid
             grdAddEventDate.Visibility = Visibility.Visible;
             datePickerEventDate.SelectedDate = null;
-            txtBoxEventStartTimeHour.Text = "";
-            txtBoxEventStartTimeMinute.Text = "";
-            cmbStartTimeAMPM.SelectedItem = "AM";
-            txtBoxEventEndTimeHour.Text = "";
-            txtBoxEventEndTimeMinute.Text = "";
-            cmbEndTimeAMPM.SelectedItem = "AM";
+            //txtBoxEventStartTimeHour.Text = "";
+            //txtBoxEventStartTimeMinute.Text = "";
+            //cmbStartTimeAMPM.SelectedItem = "AM";
+            //txtBoxEventEndTimeHour.Text = "";
+            //txtBoxEventEndTimeMinute.Text = "";
+            //cmbEndTimeAMPM.SelectedItem = "AM";
+            ucStartTime.Reset();
+            ucEndTime.Reset();
+
+
             txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+            txtBlockEventAddValidationMessage.Text = "";
 
             btnEditEventDateAddSave.Content = "Add";
             // change buttons
@@ -404,6 +493,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so this event is no longer called
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -416,8 +513,9 @@ namespace WPFPresentation.Event
             {
                 if (textBox.Length == 2)
                 {
-                    txtBoxEventStartTimeMinute.Focus();
+                    //txtBoxEventStartTimeMinute.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+                    txtBlockEventAddValidationMessage.Text = "";
                 }
             }
             else
@@ -434,6 +532,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so this event is no longer called
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -446,8 +552,9 @@ namespace WPFPresentation.Event
             {
                 if (textBox.Length == 2)
                 {
-                    cmbStartTimeAMPM.Focus();
+                    //cmbStartTimeAMPM.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+                    txtBlockEventAddValidationMessage.Text = "";
                 }
             }
             else
@@ -464,6 +571,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so this event is no longer called
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -476,8 +591,9 @@ namespace WPFPresentation.Event
             {
                 if (textBox.Length == 2)
                 {
-                    txtBoxEventEndTimeMinute.Focus();
+                    //txtBoxEventEndTimeMinute.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+                    txtBlockEventAddValidationMessage.Text = "";
                 }
             }
             else
@@ -494,6 +610,14 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Text changed handler for validating time input
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so this event is no longer called
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -506,8 +630,9 @@ namespace WPFPresentation.Event
             {
                 if (textBox.Length == 2)
                 {
-                    cmbEndTimeAMPM.Focus();
+                    //cmbEndTimeAMPM.Focus();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
+                    txtBlockEventAddValidationMessage.Text = "";
                 }
             }
             else
@@ -525,11 +650,26 @@ namespace WPFPresentation.Event
         /// Description:
         /// Click handler for either starting edit mode, adding a date to an event, or updating an en event date
         /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Update: 2022/02/23
+        /// Description:
+        /// Changed which data grid is used for viewing and editing
+        /// 
+        /// Update:
         /// Jace Pettinger
         /// Updated: 2022/02/25
         /// 
         /// Description:
         /// Updated validation to fix 24 hour time errors
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -547,24 +687,24 @@ namespace WPFPresentation.Event
                     txtBlockEventAddValidationMessage.Text = "Please enter a date.";
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                 }
-                else if (txtBoxEventStartTimeHour.Text == "" ||
-                                txtBoxEventStartTimeMinute.Text == "" ||
-                                txtBoxEventEndTimeHour.Text == "" ||
-                                txtBoxEventEndTimeMinute.Text == "")
-                {
-                    txtBlockEventAddValidationMessage.Text = "Please enter times for your event to start and end.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                }
-                else if (Int32.Parse(txtBoxEventStartTimeHour.Text) > 12)
-                {
-                    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                }
-                else if (Int32.Parse(txtBoxEventEndTimeHour.Text) > 12)
-                {
-                    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
-                    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                }
+                //else if (txtBoxEventStartTimeHour.Text == "" ||
+                //                txtBoxEventStartTimeMinute.Text == "" ||
+                //                txtBoxEventEndTimeHour.Text == "" ||
+                //                txtBoxEventEndTimeMinute.Text == "")
+                //{
+                //    txtBlockEventAddValidationMessage.Text = "Please enter times for your event to start and end.";
+                //    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                //}
+                //else if (Int32.Parse(txtBoxEventStartTimeHour.Text) > 12)
+                //{
+                //    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
+                //    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                //}
+                //else if (Int32.Parse(txtBoxEventEndTimeHour.Text) > 12)
+                //{
+                //    txtBlockEventAddValidationMessage.Text = "Please enter hours between 1 and 12.";
+                //    txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
+                //}
 
                 else
                 {
@@ -573,11 +713,11 @@ namespace WPFPresentation.Event
                     int month = 0;
                     int day = 0;
                     int secconds = 0;
-                    // am pm logic
-                    int startHour = 0;
-                    int startMin = 0;
-                    int endHour = 0;
-                    int endMin = 0;
+
+                    int startHour = ucStartTime.Hour;
+                    int startMin = ucStartTime.Minutes;
+                    int endHour = ucEndTime.Hour;
+                    int endMin = ucEndTime.Minutes;
 
                     try
                     {
@@ -586,17 +726,21 @@ namespace WPFPresentation.Event
                         month = dateTimeToAdd.Month;
                         day = dateTimeToAdd.Day;
                         secconds = 0;
-                        bool isAMHour;
+                        //bool isAMHour;
 
                         // add 12 if the start time is in the PM
-                        isAMHour = cmbStartTimeAMPM.Text == "AM";
-                        startHour = Int32.Parse(txtBoxEventStartTimeHour.Text).ConvertTo24HourTime(isAMHour);
-                        startMin = Int32.Parse(txtBoxEventStartTimeMinute.Text);
+                        //isAMHour = cmbStartTimeAMPM.Text == "AM";
+                        //startHour = Int32.Parse(txtBoxEventStartTimeHour.Text).ConvertTo24HourTime(isAMHour);
+                        //startMin = Int32.Parse(txtBoxEventStartTimeMinute.Text);
 
                         // add 12 if the end time is in the PM
-                        isAMHour = cmbEndTimeAMPM.Text == "AM";
-                        endHour = Int32.Parse(txtBoxEventEndTimeHour.Text).ConvertTo24HourTime(isAMHour);
-                        endMin = Int32.Parse(txtBoxEventEndTimeMinute.Text);
+                        //isAMHour = cmbEndTimeAMPM.Text == "AM";
+                        //endHour = Int32.Parse(txtBoxEventEndTimeHour.Text).ConvertTo24HourTime(isAMHour);
+                        //endMin = Int32.Parse(txtBoxEventEndTimeMinute.Text);
+
+                        // validate time
+                        IntegerValidationHelpers.ValidateStartTimeBeforeEndTime(startHour, startMin, endHour, endMin);
+
 
                     }
                     catch (Exception ex)
@@ -607,8 +751,8 @@ namespace WPFPresentation.Event
                     // check to see that one time comes after the other
                     if (startHour > endHour)
                     {
-                        txtBoxEventEndTimeHour.Text = "";
-                        txtBoxEventEndTimeMinute.Text = "";
+                        //txtBoxEventEndTimeHour.Text = "";
+                        //txtBoxEventEndTimeMinute.Text = "";
                         txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                         txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                     }
@@ -616,7 +760,7 @@ namespace WPFPresentation.Event
                     {
                         if (startMin >= endMin)
                         {
-                            txtBoxEventEndTimeMinute.Text = "";
+                            //txtBoxEventEndTimeMinute.Text = "";
                             txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                             txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                         }
@@ -629,6 +773,8 @@ namespace WPFPresentation.Event
 
                         if (btnEditEventDateAddSave.Content.Equals("Add")) // add a new event date
                         {
+
+                            //datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
 
                             try
                             {
@@ -643,7 +789,16 @@ namespace WPFPresentation.Event
 
                                 _eventDateManager.CreateEventDate(newEventDate);
 
-                                datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                // if the user can edit, use this table
+                                if (_userCanEditEvent)
+                                {
+                                    datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                }
+                                else
+                                {
+                                    // use this table that can not be edited
+                                    datCurrentEventDatesNoEdit.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
+                                }
 
                                 // prepare form to add another date
                                 setEventDateTabEditMode();
@@ -722,6 +877,19 @@ namespace WPFPresentation.Event
             setEventDatesTabDetailMode();
         }
 
+        /// <summary>
+        /// Orginal method contained no comment
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/12
+        /// 
+        /// Description:
+        /// Changed time text boxes to combo boxes so validation of the text box is no longer relevant
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEditEventDatesDatGrid_Click(object sender, RoutedEventArgs e)
         {
             // make sure the add/edit dates grid is visable
@@ -736,35 +904,35 @@ namespace WPFPresentation.Event
             int startMin = startTime.Minute;
             int endHour = endTime.Hour;
             int endMin = endTime.Minute;
-            int startTimeAMPM = 0; // 0 is the index for AM 1 is PM
-            int endTimeAMPM = 0;
+            //int startTimeAMPM = 0; // 0 is the index for AM 1 is PM
+            //int endTimeAMPM = 0;
 
-            // subtract 12 if the start time is in the PM
-            if (startHour > 12)
-            {
-                startHour -= 12;
-                startTimeAMPM = 1;
-            }
-            // subtract 12 if the end time is in the PM
-            if (endHour > 12)
-            {
-                endHour -= 12;
-                endTimeAMPM = 1;
-            }
-            //12 am is 00:00 on 24hr clock
-            if (startHour == 0) 
-            {
-                startHour = 12;
-            }
+            //// subtract 12 if the start time is in the PM
+            //if (startHour > 12)
+            //{
+            //    startHour -= 12;
+            //    startTimeAMPM = 1;
+            //}
+            //// subtract 12 if the end time is in the PM
+            //if (endHour > 12)
+            //{
+            //    endHour -= 12;
+            //    endTimeAMPM = 1;
+            //}
+            ////12 am is 00:00 on 24hr clock
+            //if (startHour == 0) 
+            //{
+            //    startHour = 12;
+            //}
             
             // set the content with the data
             datePickerEventDate.SelectedDate = selectedDate;
-            txtBoxEventStartTimeHour.Text = startHour.ToString(); 
-            txtBoxEventStartTimeMinute.Text = startMin.ToString("D2"); // "D2" will give number formatting of 00
-            txtBoxEventEndTimeHour.Text = endHour.ToString();
-            txtBoxEventEndTimeMinute.Text = endMin.ToString("D2");
-            cmbStartTimeAMPM.SelectedIndex = startTimeAMPM;
-            cmbEndTimeAMPM.SelectedIndex = endTimeAMPM;
+            //txtBoxEventStartTimeHour.Text = startHour.ToString(); 
+            //txtBoxEventStartTimeMinute.Text = startMin.ToString("D2"); // "D2" will give number formatting of 00
+            //txtBoxEventEndTimeHour.Text = endHour.ToString();
+            //txtBoxEventEndTimeMinute.Text = endMin.ToString("D2");
+            //cmbStartTimeAMPM.SelectedIndex = startTimeAMPM;
+            //cmbEndTimeAMPM.SelectedIndex = endTimeAMPM;
 
             // do not show past dates in calendar picker
             datePickerEventDate.DisplayDateStart = DateTime.Today;
@@ -784,13 +952,25 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method for loading location tab in location details page
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/02/25
+        /// 
+        /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Updated: 2022/03/01
+        /// 
+        /// Description:
+        /// Added _user to constructor
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _locationManager);
+                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
                 locationFrame.Navigate(locationDetailsPage);
                 lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }
@@ -848,5 +1028,25 @@ namespace WPFPresentation.Event
             VolunteerRequest currRequest = (VolunteerRequest)dgRequestList.SelectedItem;
             // Logic required to reject DNE
         }
+
+        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/02/21
+        /// 
+        /// Description:
+        /// Click event handler to bring up the View Activities page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnItinerary_Click(object sender, RoutedEventArgs e)
+        {
+            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
+            this.NavigationService.Navigate(viewActivitiesPage);
+        }
+
+
+        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }

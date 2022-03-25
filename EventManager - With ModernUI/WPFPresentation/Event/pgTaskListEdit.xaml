@@ -24,11 +24,42 @@
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock x:Name="txtBlkEditTaskList" Grid.Column="0" Grid.Row="0" Margin="10"
+            <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Button x:Name="btnEventDetails" Grid.Row="0" HorizontalAlignment="Center" Padding="34 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White" Click="btnEventDetails_Click" >Event Details</Button>
+                <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="#FFFFFF99" Click="btnTasks_Click" >Tasks</Button>
+                <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White" Click="btnItinerary_Click" >Itinerary</Button>
+                <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Budget</Button>
+                <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Advertising</Button>
+                <Button x:Name="btnAfterEventReport" Grid.Row="5" HorizontalAlignment="Center" Padding="17 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">After Event Report</Button>
+                <Button x:Name="btnFiles" Grid.Row="6" HorizontalAlignment="Center" Padding="63 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Files</Button>
+                <Button x:Name="btnInvitations" Grid.Row="7" HorizontalAlignment="Center" Padding="43 20" FontSize="15"
+                    Background="#FF4388CC" Foreground="White">Invitations</Button>
+            </Grid>
+
+            <TextBlock x:Name="txtBlkEditTaskList" Grid.Column="1" Grid.Row="0" Margin="10"
                                HorizontalAlignment="Center" VerticalAlignment="Top"
                                Style="{StaticResource TitleTextBlockStyle}">Update Task</TextBlock>
             <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -65,6 +96,12 @@
                 <TextBlock x:Name="txtBlkPriority" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"
                                    HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Task Priority:</TextBlock>
                 <ComboBox x:Name="cboPriority" Grid.Row="6" Grid.Column="1" Margin="10px" Padding="5 5 170 0" />
+                <TextBlock x:Name="txtBlkVolunteerNeed" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"
+                                    HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Volunteers:</TextBlock>
+                <DockPanel x:Name="dcPnlNumVolunteers" Grid.Row="7" Grid.Column="1" Margin="10,10,10,10">
+                    <TextBox Text="{Binding ElementName=sldrNumVolunteers, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="10"></TextBox>
+                    <Slider x:Name="sldrNumVolunteers" Maximum="10" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Value="0"></Slider>
+                </DockPanel>
             </Grid>
             <Grid Grid.Row="2" Grid.Column="1">
                 <Grid.RowDefinitions>

@@ -16,31 +16,41 @@ using System.Windows.Shapes;
 using DataObjects;
 using LogicLayerInterfaces;
 using LogicLayer;
+using System.Collections.ObjectModel;
 
 namespace WPFPresentation.Supplier
 {
     /// <summary>
     /// Interaction logic for pgViewSupplierListing.xaml
+    /// 
+    /// Update:
+    /// Austin Timmerman
+    /// Updated: 2022/02/27
+    /// 
+    /// Description:
+    /// Added the ManagerProvider instance variable and modified page parameters
     /// </summary>
     public partial class pgViewSupplierListing : Page
     {
         private DataObjects.Supplier _supplier;
         private List<Reviews> _reviews;
         private List<string> _images;
+        private List<Service> _services = null;
+        private ManagerProvider _managerProvider;
         private ISupplierManager _supplierManager;
+        private IServiceManager _serviceManager = null;
+        private IActivityManager _activityManager;
 
-        public pgViewSupplierListing(DataObjects.Supplier supplier)
+        internal pgViewSupplierListing(DataObjects.Supplier supplier, ManagerProvider managerProvider)
         {
             InitializeComponent();
             _supplier = supplier;
-            _supplierManager = new SupplierManager();
-        }
-
-        public pgViewSupplierListing(DataObjects.Supplier supplier, ISupplierManager supplierManager)
-        {
-            InitializeComponent();
-            _supplier = supplier;
-            _supplierManager = supplierManager;
+            _managerProvider = managerProvider;
+            _supplierManager = managerProvider.SupplierManager;
+            _serviceManager = managerProvider.ServiceManager;
+            _activityManager = managerProvider.ActivityManager;
+            // CHANGE FOLDER NAME FROM LocationImages, TO SERVICE IMAGES ONCE CREATED
+            AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
         }
 
         /// <summary>
@@ -59,6 +69,9 @@ namespace WPFPresentation.Supplier
             this.txtAbout.Text = _supplier.Description;
             this.btnSupplierPricing.Content = _supplier.Name + "'s Pricing";
             this.btnSupplierSchedule.Content = _supplier.Name + "'s Schedule";
+            this.btnSupplierDetails.Background = new SolidColorBrush(Colors.Gray);
+            this.txtSupplierSchedule.Text = _supplier.Name + "'s Schedule";
+            this.calSupplierCalendar.SelectedDate = DateTime.Today;
 
             try
             {
@@ -213,6 +226,30 @@ namespace WPFPresentation.Supplier
                 return;
             }
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/02
+        /// 
+        /// Description:
+        /// Helper method to hide different grids and scroll viewers 
+        /// when moving between details
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/10
+        /// Added supplier schedule to collapse, and added button color changing
+        /// </summary>
+        private void hideDetails()
+        {
+            grdSupplierListing.Visibility = Visibility.Collapsed;
+            grdSupplierPricing.Visibility = Visibility.Collapsed;
+            grdSupplierSchedule.Visibility = Visibility.Collapsed;
+
+            btnSupplierDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSupplierSchedule.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            btnSupplierPricing.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+        }
+
         /// <summary>
         /// Christopher Repko
         /// Created: 2022/02/11
@@ -241,6 +278,103 @@ namespace WPFPresentation.Supplier
             }
             box.Text += "     " + review.FullName;
             box.Text += "\n" + review.Review + "\n";
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/02
+        /// 
+        /// Description:
+        /// Method that loads the supplier's services page up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSupplierPricing_Click(object sender, RoutedEventArgs e)
+        {
+            hideDetails();
+            grdSupplierPricing.Visibility = Visibility.Visible;
+            this.btnSupplierPricing.Background = new SolidColorBrush(Colors.Gray);
+
+            loadSupplierServices();
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/02
+        /// 
+        /// Description:
+        /// Helper method to populate the screen with the supplier's services
+        /// </summary>
+        private void loadSupplierServices()
+        {
+            _services = _serviceManager.RetrieveServicesBySupplierID(_supplier.SupplierID);
+            txtSupplierServices.Text = _supplier.Name + "'s Services";
+
+            List<ServiceVM> serviceVMs = new List<ServiceVM>();
+            foreach (Service service in _services)
+            {
+                if(service.ServiceImagePath == null)
+                {
+                    serviceVMs.Add(new ServiceVM()
+                    {
+                        ServiceID = service.ServiceID,
+                        SupplierID = service.SupplierID,
+                        ServiceName = service.ServiceName,
+                        Price = service.Price,
+                        Description = service.Description
+                    });
+                }
+                else
+                {
+                    try
+                    {
+                        Uri _src;                        
+                        _src = new Uri(AppData.DataPath + @"\" + service.ServiceImagePath, UriKind.Absolute);
+                        serviceVMs.Add(new ServiceVM()
+                        {
+                            ServiceID = service.ServiceID,
+                            SupplierID = service.SupplierID,
+                            ServiceName = service.ServiceName,
+                            Price = service.Price,
+                            Description = service.Description,
+                            ImageUri = _src
+                        });
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Error");
+                    }
+                }
+                }
+            imageDataGrid.ItemsSource = serviceVMs;
+        }
+
+        private void btnSupplierDetails_Click(object sender, RoutedEventArgs e)
+        {
+            hideDetails();
+            grdSupplierListing.Visibility = Visibility.Visible;
+            this.btnSupplierDetails.Background = new SolidColorBrush(Colors.Gray);
+
+        }
+
+        private void btnSupplierSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            hideDetails();
+            grdSupplierSchedule.Visibility = Visibility.Visible;
+            btnSupplierSchedule.Background = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void calSupplierCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<Availability> selectedDateAvailabilities = _supplierManager.RetrieveSupplierAvailabilityBySupplierIDAndDate(_supplier.SupplierID, (DateTime)calSupplierCalendar.SelectedDate);
+            List<ActivityVM> selectedDateActivities = _activityManager.RetrieveActivitiesBySupplierIDAndDate(_supplier.SupplierID, (DateTime)calSupplierCalendar.SelectedDate);
+
+            DateTime date = calSupplierCalendar.SelectedDate.Value.Date;
+            lblSupplierDate.Text = date.ToString("MMMM dd, yyyy");
+            datSupplierAvailabilities.ItemsSource = new ObservableCollection<Availability>(from a in selectedDateAvailabilities
+                                                                                           orderby a.TimeStart ascending
+                                                                                           select a);
+            datSupplierActivities.ItemsSource = selectedDateActivities;
         }
     }
 }

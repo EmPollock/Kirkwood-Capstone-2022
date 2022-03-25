@@ -24,6 +24,7 @@ namespace WPFPresentation.Event
     public partial class pgViewEventDateActivities : Page
     {
         IActivityManager _activityManager = null;
+        ManagerProvider _managerProvider = null;
         DataObjects.Event _event;
         EventDate _eventDate;
 
@@ -33,18 +34,23 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Initializes component and sets up activity manager with fake or default accessors
+        /// 
+        /// Update:
+        /// Austin Timmerman
+        /// Updated: 2022/02/27
+        /// 
+        /// Description:
+        /// Added the ManagerProvider instance variable and modified page parameters
         /// </summary>
         /// <param name="eventParam"></param>
         /// <param name="eventDate"></param>
-        public pgViewEventDateActivities(DataObjects.Event eventParam, EventDate eventDate)
+        /// <param name="managerProvider"></param>
+        internal pgViewEventDateActivities(DataObjects.Event eventParam, EventDate eventDate, ManagerProvider managerProvider)
         {
-            // fake accessor
-            //_activityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
-
+            _managerProvider = managerProvider;
             _event = eventParam;
             _eventDate = eventDate;
-            // real accessor
-            _activityManager = new ActivityManager();
+            _activityManager = managerProvider.ActivityManager;
             InitializeComponent();
         }
 

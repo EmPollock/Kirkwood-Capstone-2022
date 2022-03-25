@@ -19,11 +19,18 @@ namespace DataAccessLayer
         /// Description:
         /// Insert event into tadpole_db
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated include TotalBudget field
+        /// 
         /// </summary>
         /// <param name="eventName">Name of the event</param>
         /// <param name="eventDescription">Description fo the event</param>
+        /// <param name="totalBudget">Total budget planned for event</param>
         /// <returns>Number of rows inserted</returns>
-        public int InsertEvent(string eventName, string eventDescription)
+        public int InsertEvent(string eventName, string eventDescription, decimal totalBudget)
         {
             int rowsAffected = 0;
 
@@ -37,9 +44,11 @@ namespace DataAccessLayer
 
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
+            cmd.Parameters.Add("@TotalBudget", SqlDbType.Money);
             
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
+            cmd.Parameters["@TotalBudget"].Value = totalBudget;
             
 
             try
@@ -71,6 +80,12 @@ namespace DataAccessLayer
         /// Description:
         /// Adding locationID to the returned event object
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
         /// <returns>List of active events</returns>
         public List<EventVM> SelectActiveEvents()
@@ -98,7 +113,8 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             Active = true
                         }); 
                     }
@@ -118,6 +134,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Updates a record in the Event table
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// 
         /// </summary>
         /// <returns>int rows affected</returns>
@@ -140,6 +162,9 @@ namespace DataAccessLayer
             cmd.Parameters.Add("@OldEventDescription", SqlDbType.NVarChar, 1000);
             cmd.Parameters["@OldEventDescription"].Value = oldEvent.EventDescription;
 
+            cmd.Parameters.Add("@OldTotalBudget", SqlDbType.Money);
+            cmd.Parameters["@OldTotalBudget"].Value = oldEvent.TotalBudget;
+
             cmd.Parameters.Add("@OldActive", SqlDbType.Bit);
             cmd.Parameters["@OldActive"].Value = oldEvent.Active;
 
@@ -148,6 +173,9 @@ namespace DataAccessLayer
 
             cmd.Parameters.Add("@NewEventDescription", SqlDbType.NVarChar, 1000);
             cmd.Parameters["@NewEventDescription"].Value = newEvent.EventDescription;
+
+            cmd.Parameters.Add("@NewTotalBudget", SqlDbType.Money);
+            cmd.Parameters["@NewTotalBudget"].Value = newEvent.TotalBudget;
 
             cmd.Parameters.Add("@NewActive", SqlDbType.Bit);
             cmd.Parameters["@NewActive"].Value = newEvent.Active;
@@ -181,6 +209,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Adding locationID to the returned event object
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// 
         /// </summary>
         /// <param name="eventName">The name of the event</param>
@@ -219,7 +253,8 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             Active = true
                         };
                     }
@@ -249,6 +284,12 @@ namespace DataAccessLayer
         /// Description:
         /// Adding locationID to the returned event objects
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectEventsUpcomingDates()
@@ -275,12 +316,13 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             EventDates = new List<EventDate>()
                                     {
                                         new EventDate()
                                         {
-                                            EventDateID = reader.GetDateTime(5),
+                                            EventDateID = reader.GetDateTime(6),
                                             EventID = reader.GetInt32(0),
                                             Active = true
                                         }
@@ -313,6 +355,12 @@ namespace DataAccessLayer
         /// Description:
         /// Adding locationID to the returned event objects
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectEventsUpcomingAndPastDates()
@@ -339,12 +387,13 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             EventDates = new List<EventDate>()
                                     {
                                         new EventDate()
                                         {
-                                            EventDateID = reader.GetDateTime(5),
+                                            EventDateID = reader.GetDateTime(6),
                                             EventID = reader.GetInt32(0),
                                             Active = true
                                         }
@@ -376,6 +425,12 @@ namespace DataAccessLayer
         /// Description:
         /// Adding locationID to the returned event objects
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectEventsPastDates()
@@ -402,12 +457,13 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             EventDates = new List<EventDate>()
                                     {
                                         new EventDate()
                                         {
-                                            EventDateID = reader.GetDateTime(5),
+                                            EventDateID = reader.GetDateTime(6),
                                             EventID = reader.GetInt32(0),
                                             Active = true
                                         }
@@ -439,6 +495,12 @@ namespace DataAccessLayer
         /// Description:
         /// Adding locationID to the returned event objects
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>Event view models</returns>
@@ -469,16 +531,17 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
                                         {
-                                            new EventDate()
-                                            {
-                                                EventDateID = reader.GetDateTime(5),
-                                                EventID = reader.GetInt32(0),
-                                                Active = true
-                                            }
-                                        },
+                                            EventDateID = reader.GetDateTime(6),
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+                                        }
+                                    },
                             Active = true
                         });
                     }
@@ -506,6 +569,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Adding locationID to the returned event objects
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// 
         /// </summary>
         /// <param name="userID"></param>
@@ -537,16 +606,17 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
                                         {
-                                            new EventDate()
-                                            {
-                                                EventDateID = reader.GetDateTime(5),
-                                                EventID = reader.GetInt32(0),
-                                                Active = true
-                                            }
-                                        },
+                                            EventDateID = reader.GetDateTime(6),
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+                                        }
+                                    },
                             Active = true
                         });
                     }
@@ -572,6 +642,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Adding locationID to the returned event objects
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
         /// 
         /// </summary>
         /// <param name="userID"></param>
@@ -603,16 +679,17 @@ namespace DataAccessLayer
                             EventName = reader.GetString(1),
                             EventDescription = reader.GetString(2),
                             EventCreatedDate = reader.GetDateTime(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
                                         {
-                                            new EventDate()
-                                            {
-                                                EventDateID = reader.GetDateTime(5),
-                                                EventID = reader.GetInt32(0),
-                                                Active = true
-                                            }
-                                        },
+                                            EventDateID = reader.GetDateTime(6),
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+                                        }
+                                    },
                             Active = true
                         });
                     }
@@ -698,10 +775,15 @@ namespace DataAccessLayer
         /// Description:
         /// Adding locationID variable to the event list
         /// 
+        /// Alaina Gilson
+        /// Updated: 2022/02/22
+        /// 
+        /// Description:
+        /// Updated to include TotalBudget field
+        /// 
         /// </summary>
         /// <param name="eventListRef">Takes an eventvm list</param>
         /// <returns>A list of Events with no duplicate EventIDs and all the EventDates in a list in the Event object</returns>
-
         private List<EventVM> eventDateVMHelper(List<EventVM> eventListRef)
         {
             List<EventVM> eventList = new List<EventVM>();
@@ -718,6 +800,7 @@ namespace DataAccessLayer
                         EventName = item.EventName,
                         EventDescription = item.EventDescription,
                         EventCreatedDate = item.EventCreatedDate,
+                        TotalBudget = item.TotalBudget,
                         LocationID = item.LocationID,
                         EventDates = new List<EventDate>()
                     });
@@ -744,82 +827,39 @@ namespace DataAccessLayer
             return noDuplicates;
         }
 
-        //private List<EventVM> eventDateVMHelper(List<EventVM> eventListRef)
-        //{
-        //    List<EventVM> eventList = new List<EventVM>();
-        //    List<EventDate> allDates = new List<EventDate>();
-        //    if (eventListRef.Count > 0)
-        //    {
-        //        foreach (EventVM item in eventListRef)
-        //        {
-        //            allDates.Add(item.EventDates[0]);
-
-        //            eventList.Add(new EventVM()
-        //            {
-        //                EventID = item.EventID,
-        //                EventName = item.EventName,
-        //                EventDescription = item.EventDescription,
-        //                EventCreatedDate = item.EventCreatedDate,
-        //                EventDates = new List<EventDate>()
-        //            });
-        //        }
-        //    }
-
-        //    //remove duplicates
-        //    List<EventVM> noDuplicates = eventList.GroupBy(e => e.EventID).Select(e => e.First()).ToList();
-
-        //    foreach (EventVM item in eventList)
-        //    {
-        //        for (int i = 0; i < allDates.Count; i++)
-        //        {
-        //            if (item.EventID == allDates[i].EventID)
-        //            {
-        //                item.EventDates.Add(allDates[i]);
-        //            }
-        //        }
-        //    }
-
-        //    // sort by earliest date
-        //    noDuplicates.Sort((ev1, ev2) => ev1.EventDates[0].EventDateID.CompareTo(ev2.EventDates[0].EventDateID));
-
-        //    return noDuplicates;
-        //}
-
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-
-        //    return rowsAffected;
-        //}
         /// <summary>
         /// Derrick Nagy
-        /// Created: 2022/02/17
+        /// Created: 2022/02/18
         /// 
         /// Description:
         /// Inserts an event into the database and returns the auto-increment value created for the event id
         /// </summary>
-        /// <param name="eventName">The name of the event</param>
+        /// <param name="eventName">The name of the evnet</param>
         /// <param name="eventDescription">The description of the event</param>
+        /// <param name="totalBudget">The budget for the event</param>
+        /// <param name="userID">The userID of the user who created the event</param>
         /// <returns>Event ID as an int</returns>
-        public int InsertEventReturnsEventID(string eventName, string eventDescription)
+        public int InsertEventReturnsEventID(string eventName, string eventDescription, decimal totalBudget, int userID)
         {
-
             int eventID = 0;
 
             // connection
             var conn = DBConnection.GetConnection();
 
-            string cmdTxt = "sp_insert_event_return_event_id";
+            string cmdTxt = "sp_insert_event_with_user_ID_return_event_id";
             var cmd = new SqlCommand(cmdTxt, conn);
 
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
+            cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);            
+            cmd.Parameters.Add("@TotalBudget", SqlDbType.Money);
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
 
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
+            cmd.Parameters["@TotalBudget"].Value = totalBudget;
+            cmd.Parameters["@UserID"].Value = userID;
 
             try
             {
@@ -836,6 +876,73 @@ namespace DataAccessLayer
                 conn.Close();
             }
             return eventID;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/22
+        /// 
+        /// Description:
+        /// Checks to see if the user has permission to edit the event
+        /// 
+        /// </summary>
+        /// <param name="eventID">The event id</param>
+        /// <param name="userID">The user id</param>
+        /// <returns>True if the user can edit, false if not</returns>
+        public bool CheckUserEditPermissionForEvent(int eventID, int userID)
+        {
+
+            bool result = false;
+            List<Role> roles = new List<Role>();
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_user_roles_for_event";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+
+            cmd.Parameters["@EventId"].Value = eventID;
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(new Role()
+                        {
+                            RoleID = reader.GetString(0)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            foreach (Role role in roles)
+            {
+                if (role.RoleID == "Event Manager" || role.RoleID == "Event Planner")
+                {
+                    result = true;
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -219,5 +219,111 @@ namespace LogicLayerTests
             // assert
             Assert.IsFalse(reviewList.Any());
         }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierAvailabilityBySupplierIDAndDate correctly prioritizes an exception
+        /// availability over a regular availability on the same date
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierAvailabilityBySupplierIDAndDatePrioritizesExceptions()
+        {
+            // arrange
+            const int supplierID = 100001;
+            DateTime date = new DateTime(2022, 01, 01);
+            List<Availability> actualList;
+            List<Availability> expectedList = new List<Availability>()
+            {
+                new Availability()
+                {
+                    ForeignID = 100001,
+                    AvailabilityID = 100004,
+                    TimeStart = new DateTime(2022, 01, 01, 2, 45, 00),
+                    TimeEnd = new DateTime(2022, 01, 01, 4, 45, 00)
+                }
+            };
+
+            // act
+            actualList = _supplierManager.RetrieveSupplierAvailabilityBySupplierIDAndDate(supplierID, date);
+
+            // assert
+            // collection assert does not seem to be able to compare reference variables properly
+            // this properly proves that the correct list is being chosen
+            Assert.AreEqual(expectedList.First<Availability>().TimeStart, actualList.First().TimeStart);
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierAvailabilityBySupplierIDAndDate correctly returns the right
+        /// regular availabilities when there are no exception availabilities on that date for that supplier.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierAvailabilityBySupplierIDAndDateCorrectList()
+        {
+            // arrange
+            const int supplierID = 100000;
+            DateTime date = new DateTime(2022, 01, 01);
+            int actualCount;
+            int expectedCount = 2;
+
+            // act
+            actualCount = _supplierManager.RetrieveSupplierAvailabilityBySupplierIDAndDate(supplierID, date).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierAvailabilityBySupplierIDAndDate correctly returns an empty
+        /// list when no availability is found
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierAvailabilityBySupplierIDAndDateReturnsNullWithNoneFound()
+        {
+            // arrange
+            const int supplierID = 100000;
+            DateTime badDate = new DateTime(1999, 01, 01);
+            List<Availability> actualList;
+
+            // act
+            actualList = _supplierManager.RetrieveSupplierAvailabilityBySupplierIDAndDate(supplierID, badDate);
+
+            // assert
+            Assert.IsFalse(actualList.Any());
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierAvailabilityBySupplierIDAndDate correctly returns an Availability
+        /// object with null TimeStart/TimeEnd properties when there is an exception for a day with no availability
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierAvailabilityBySupplierIDAndDateReturnsEmptyAvailabilityForEmptyException()
+        {
+            // arrange
+            const int supplierID = 100000;
+            DateTime date = new DateTime(2022, 01, 03);
+            DateTime? expected = null;
+            DateTime? actual;
+
+            // act
+            actual = _supplierManager.RetrieveSupplierAvailabilityBySupplierIDAndDate(supplierID, date).First().TimeStart;
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
