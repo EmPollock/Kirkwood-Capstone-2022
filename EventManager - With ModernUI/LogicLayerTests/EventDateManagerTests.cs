@@ -292,9 +292,6 @@ namespace LogicLayerTests
         //// test cannot run because StartTime cannot be null. Throwing build errorr
         ///
         /// Description:
-        /// Test that trys to update and throws exception if End Time is null
-        /// </summary>
-        /// Description:
         /// Test that trys to update and throws exception if Start Time is null
         /// </summary>
         //[TestMethod]

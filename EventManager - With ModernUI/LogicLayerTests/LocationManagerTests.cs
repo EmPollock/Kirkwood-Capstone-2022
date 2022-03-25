@@ -272,5 +272,437 @@ namespace LogicLayerTests
 
             Assert.AreEqual(expectedCount, actualCount);
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Test that returns the count of rows affected after deactivating a location
+        /// </summary>
+        [TestMethod]
+        public void TestDeactivateLocationReturnsCorrectAmount()
+        {
+            // arrange
+            int locationID = 100000;
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.DeactivateLocationByLocationID(locationID);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Test that returns the count of rows affected after updating a location description
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateLocationDescriptionReturnsCorrectAmount()
+        {
+            // arrange
+            Location oldLocation = new Location() 
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+            
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that returns the count of rows affected after updating a location phone number
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateLocationPhoneReturnsCorrectAmount()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1112",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that returns the count of rows affected after updating a location email
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateLocationEmailReturnsCorrectAmount()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "xtestLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that returns the count of rows affected after updating a location address 1
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateLocationAddress1ReturnsCorrectAmount()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "xTest Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that returns the count of rows affected after updating a location address 2
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateLocationAddress2ReturnsCorrectAmount()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                Address2 = "apt 1",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that returns the count of rows affected after updating a location pricing
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateLocationPricingReturnsCorrectAmount()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1."
+            };
+
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that throws an exception if the desceiption is too long
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateDescriptionThrowsExceptionTooLong()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            // nothing to do, exception expected
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that throws an exception for an invalid phone number format
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateLocationPhoneThrowsExceptionInvalidFormat()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "dogs",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1."
+            };
+
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            // nothing to do
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that throws an exception for an invalid email format
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateLocationEmailThrowsExceptionInvalidFormat()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "dogs",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1."
+            };
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            // nothing to do
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/18
+        /// 
+        /// Description:
+        /// Test that throws an exception for too long pricing info
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateLocationPricingThrowsExceptionTooLong()
+        {
+            // arrange
+            Location oldLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here."
+            };
+
+            Location newLocation = new Location()
+            {
+                LocationID = 100000,
+                Description = "Description of Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                PricingInfo = "Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1.Pricing information for renting Test Location 1."
+            };
+
+            int actualCount;
+
+            // act
+            actualCount = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+
+            // assert
+            // nothing to do
+        }
     }
 }

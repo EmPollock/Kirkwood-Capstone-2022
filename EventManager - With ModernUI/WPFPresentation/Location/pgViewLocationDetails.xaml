@@ -34,7 +34,7 @@
             <Button x:Name="btnSiteSupplies" Content="Site Supplies" Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
         </Grid>
 
-        <ScrollViewer x:Name="scrLocationDetails" Grid.Column="1" Visibility="Collapsed">
+        <ScrollViewer x:Name="scrLocationDetails" Grid.Column="1" Visibility="Visible">
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -47,6 +47,7 @@
                     <RowDefinition/>
                     <!--<RowDefinition Height="150"/>-->
                     <RowDefinition Height="25"/>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition Height="40"/>
@@ -94,9 +95,9 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Phone Number:" FontWeight="Bold" Margin="20 0 0 0 "/>
-                    <TextBlock x:Name="txtPhoneNumber" Grid.Column="1" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="txtPhoneNumber" Grid.Column="1" HorizontalAlignment="Left" IsEnabled="False" Margin="0 0 0 1"/>
                     <TextBlock Grid.Column="2" Text="Email Address:" FontWeight="Bold" Margin="20 0 0 0 "/>
-                    <TextBlock x:Name="txtEmail" Grid.Column="3" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="txtEmail" Grid.Column="3" HorizontalAlignment="Left" IsEnabled="False" Margin="0 0 0 1"/>
                 </Grid>
 
                 <Grid Grid.Row="4">
@@ -108,14 +109,14 @@
                         <ColumnDefinition/>
 
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Address Line 1:" FontWeight="Bold" Margin="20 0 0 0 "/>
-                    <TextBlock x:Name="txtAddressOne" Grid.Column="1" HorizontalAlignment="Left"/>
-                    <TextBlock Grid.Column="2" Text="Address Line 2:" FontWeight="Bold" Margin="20 0 0 0 "/>
-                    <TextBlock x:Name="txtAddressTwo" Grid.Column="3" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="0" Text="Address Line 1:" FontWeight="Bold" Margin="20 10 0 0 "/>
+                    <TextBox x:Name="txtAddressOne" Grid.Column="1" HorizontalAlignment="Left" IsEnabled="False" Margin="0 1 0 0"/>
+                    <TextBlock Grid.Column="2" Text="Address Line 2:" FontWeight="Bold" Margin="20 10 0 0 "/>
+                    <TextBox x:Name="txtAddressTwo" Grid.Column="3" HorizontalAlignment="Left" IsEnabled="False" Margin="0 1 0 0"/>
                 </Grid>
 
 
-                <TextBlock x:Name="txtPricing" FontWeight="Bold" Grid.Row="5" Text="Pricing" Style="{StaticResource BodyTextBlockStyle}" Margin="10 0"/>
+                <TextBlock x:Name="txtPricing" FontWeight="Bold" Grid.Row="5" Text="Pricing" Style="{StaticResource BodyTextBlockStyle}" Margin="10 5 0 0"/>
                 <TextBox   x:Name="txtBoxPricing" Grid.Row="6" Margin="20 10" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
 
                 <!--<Canvas x:Name="canStarRating" Grid.Row="6"  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
@@ -156,10 +157,15 @@
                 <TextBox   x:Name="txtBoxReviews" Grid.Row="9" Margin="20 10" IsReadOnly="True"/>
                 <TextBox   x:Name="txtBoxReviewsSecond" Grid.Row="10" Margin="20 10" IsReadOnly="True"/>
                 <Button    x:Name="btnMoreReviews" Grid.Row="11" Content="More reviews..." FontWeight="Medium" Margin="20 0" Background="{x:Null}"/>
+               
+                <Button x:Name="btnDeleteLocation" Grid.Row="12" Content="Delete" HorizontalAlignment="Right" FontWeight="Medium" Margin="0 0 50 0" Click="btnDeleteLocation_Click" Visibility="Hidden"/>
+                <Button x:Name="btnEditSaveLocation" Grid.Row="12" Content="Edit" HorizontalAlignment="Center" Click="btnEditSave_Click"/>
+                <Button x:Name="btnCancelLocationEdit" Grid.Row="12" Content="Cancel" HorizontalAlignment="Center" Margin="200 0 0 0" Visibility="Hidden" Click="btnCancelLocationEdit_Click"/>
             </Grid>
+            
         </ScrollViewer>
 
-        <ScrollViewer x:Name="scrLocationSchedule" Grid.Column="1">
+        <ScrollViewer x:Name="scrLocationSchedule" Grid.Column="1" Visibility="Collapsed">
             <Grid Grid.Column="1" Visibility="Visible">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>

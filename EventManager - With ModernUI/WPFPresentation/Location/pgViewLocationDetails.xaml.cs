@@ -16,6 +16,7 @@ using LogicLayer;
 using LogicLayerInterfaces;
 using DataObjects;
 using DataAccessFakes;
+using WPFPresentation.Location;
 
 namespace WPFPresentation
 {
@@ -61,7 +62,6 @@ namespace WPFPresentation
             _locationManager = locationManager;
 
             _locationID = locationID;
-            _location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
             _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
 
@@ -79,9 +79,22 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationDetails()
         {
+            _location = _locationManager.RetrieveLocationByLocationID(_locationID);
+
             hideDetails();
             btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
             scrLocationDetails.Visibility = Visibility.Visible;
+
+            btnDeleteLocation.Visibility = Visibility.Hidden;
+            btnCancelLocationEdit.Visibility = Visibility.Hidden;
+            btnEditSaveLocation.Content = "Edit";
+
+            txtBoxAboutLocation.IsReadOnly = true;
+            txtPhoneNumber.IsEnabled = false;
+            txtEmail.IsEnabled = false;
+            txtAddressOne.IsEnabled = false;
+            txtAddressTwo.IsEnabled = false;
+            txtBoxPricing.IsReadOnly = true;
 
             //scrLocationDetails.Visibility = Visibility.Visible;
             txtLocationName.Text = _location.Name;
@@ -513,6 +526,163 @@ namespace WPFPresentation
             DateTime date = (DateTime)calLocationCalendar.SelectedDate;
 
             lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// Click event handler for deactivating a location
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnDeleteLocation_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to delete this location?",
+                               "Delete",
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    int rowsAffected = _locationManager.DeactivateLocationByLocationID(_locationID);
+                    if (rowsAffected == 1) 
+                    {
+                        pgViewLocations viewLocations = new pgViewLocations();
+                        this.NavigationService.Navigate(viewLocations);
+                    }
+                } catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error deleting this location." + ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler for selecting edit or save location biography
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnEditSave_Click(object sender, RoutedEventArgs e)
+        {
+            if(btnEditSaveLocation.Content.Equals("Edit")) // edit 
+            {
+                btnDeleteLocation.Visibility = Visibility.Visible;
+                btnCancelLocationEdit.Visibility = Visibility.Visible;
+
+
+                txtBoxAboutLocation.IsReadOnly = false;
+                txtPhoneNumber.IsEnabled = true;
+                txtEmail.IsEnabled = true;
+                txtAddressOne.IsEnabled = true;
+                txtAddressTwo.IsEnabled = true;
+                txtBoxPricing.IsReadOnly = false;
+                txtBoxPricing.IsEnabled = true;
+
+                btnEditSaveLocation.Content = "Save";
+                txtBoxAboutLocation.Focus();
+            } 
+            else // save
+            { // validation checks
+                string locationDescription = txtBoxAboutLocation.Text;
+                string locationPhone = txtPhoneNumber.Text;
+                string locationEmail = txtEmail.Text;
+                string locationAddressOne = txtAddressOne.Text;
+                string locationAddressTwo = txtAddressTwo.Text;
+                string locationPricing = txtBoxPricing.Text;
+
+                if (locationDescription != null && locationDescription.Length > 3000) // desription too long (description can be null)
+                {
+                    MessageBox.Show("Location description cannot excede 3,000 characters");
+                }
+                else if (locationPhone != null && locationPhone != "" 
+                    && !ValidationHelpers.IsValidPhone(locationPhone)) // phone number format validation (phone can be null)
+                {
+                        MessageBox.Show("Invalid phone number");
+                }
+                else if (locationEmail != null && locationEmail != ""
+                    && !ValidationHelpers.IsValidEmailAddress(locationEmail)) // email format validation (email can be null)
+                {
+                        MessageBox.Show("Invalid email address");
+                }
+                else if (locationAddressOne == "" || locationAddressOne == null) // no address one
+                {
+                    MessageBox.Show("Please enter an address");
+                }
+                else if (locationAddressOne.Length > 100) // address one too long 
+                {
+                    MessageBox.Show("Address one cannot be longer than 100 characters");
+                }
+                else if (locationAddressTwo != null && locationAddressTwo != ""
+                   && locationAddressTwo.Length > 100) // address two too long (address two can be null)
+                {
+                    MessageBox.Show("Address two cannot be longer than 100 characters"); //3000
+                }
+                else if (locationPricing.Length > 3000) // pricing too long (pricing can be null)
+                {
+                    MessageBox.Show("Pricing cannot be longer than 3000 characters");
+                }
+                else // end of validation checks
+                {
+                    DataObjects.Location oldLocation = _location;
+                    try
+                    {
+                        DataObjects.Location newLocation = new DataObjects.Location()
+                        {
+                            Description = locationDescription,
+                            Phone = locationPhone,
+                            Email = locationEmail,
+                            Address1 = locationAddressOne,
+                            Address2 = locationAddressTwo,
+                            PricingInfo = locationPricing
+                        };
+                        int rowsAffected = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+                        if (rowsAffected == 1)
+                        {
+                            loadLocationDetails();
+                        }
+                        else
+                        {
+                            MessageBox.Show("There was an error updating the location\n");
+                            loadLocationDetails();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was an error updating the location\n" + ex.Message);
+                        loadLocationDetails();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Click event handler for canceling editing location biography
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnCancelLocationEdit_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Discard unsaved changes?",
+                              "Cancel",
+                              MessageBoxButton.YesNo,
+                              MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                loadLocationDetails();
+            }
         }
     }
 }

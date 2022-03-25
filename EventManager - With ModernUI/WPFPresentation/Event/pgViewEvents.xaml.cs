@@ -156,6 +156,10 @@ namespace WPFPresentation
         /// </summary>
         private void datActiveEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (datActiveEvents.SelectedItem == null)
+            {
+                return;
+            }
             DataObjects.EventVM selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
             pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent);
             this.NavigationService.Navigate(viewEditPage);

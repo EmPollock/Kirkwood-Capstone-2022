@@ -7,13 +7,6 @@ using DataObjects;
 
 namespace LogicLayerInterfaces
 {
-    /// <summary>
-    /// Kris Howell
-    /// Created: 2022/02/03
-    /// 
-    /// Description:
-    /// Interface for handling Location manager class methods
-    /// </summary>
     public interface ILocationManager
     {
         int CreateLocation(string locationName, string address, string locationCity, string locationState, string locationZipCode);
@@ -23,6 +16,7 @@ namespace LogicLayerInterfaces
         List<Reviews> RetrieveLocationReviews(int locationID);
         List<LocationImage> RetrieveLocationImagesByLocationID(int locationID);
         List<LocationAvailability> RetrieveLocationAvailability(int locationID);
-
+        int DeactivateLocationByLocationID(int locationID);
+        int UpdateLocationBioByLocationID(Location oldLocation, Location newLocation);
     }
 }

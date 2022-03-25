@@ -413,5 +413,66 @@ namespace DataAccessFakes
 
             return locationAvailabilities;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/02/24
+        /// 
+        /// Description:
+        /// The method that deactivates a location by its LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>int number of rows affected</returns>
+        public int DeactivateLocationByLocationID(int locationID)
+        {
+            int rowsAffected = 0;
+
+            foreach (Location fakeLocation in _fakeLocations)
+            {
+                if (fakeLocation.LocationID == locationID)
+                {
+                    fakeLocation.Active = false;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Updates a fake location bio information (description, phone, email, address, pricing)
+        /// in the fake location list
+        /// 
+        /// </summary>
+        public int UpdateLocationBioByLocationID(Location oldLocation, Location newLocation)
+        {
+            int rowsAffected = 0;
+
+            foreach (Location fakeLocation in _fakeLocations)
+            {
+                if (fakeLocation.LocationID == oldLocation.LocationID 
+                    && (fakeLocation.Description == oldLocation.Description)
+                    && fakeLocation.Phone == oldLocation.Phone
+                    && fakeLocation.Email == oldLocation.Email
+                    && fakeLocation.Address1 == oldLocation.Address1
+                    && fakeLocation.Address2 == oldLocation.Address2
+                    && fakeLocation.PricingInfo == oldLocation.PricingInfo)
+                {
+                    fakeLocation.Description = newLocation.Description;
+                    fakeLocation.Phone = newLocation.Phone;
+                    fakeLocation.Email = newLocation.Email;
+                    fakeLocation.Address1 = newLocation.Address1;
+                    fakeLocation.Address2 = newLocation.Address2;
+                    fakeLocation.PricingInfo = newLocation.PricingInfo;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
     }
 }
