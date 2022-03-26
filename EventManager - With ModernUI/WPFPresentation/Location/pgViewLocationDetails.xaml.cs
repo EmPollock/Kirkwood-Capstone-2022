@@ -18,7 +18,6 @@ using DataObjects;
 using WPFPresentation.Location;
 using DataAccessFakes;
 using System.Collections.ObjectModel;
-using WPFPresentation.Location;
 
 namespace WPFPresentation
 {
