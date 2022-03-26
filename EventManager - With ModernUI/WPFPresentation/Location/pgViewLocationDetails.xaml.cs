@@ -17,6 +17,7 @@ using LogicLayerInterfaces;
 using DataObjects;
 using WPFPresentation.Location;
 using DataAccessFakes;
+using System.Collections.ObjectModel;
 
 namespace WPFPresentation
 {
@@ -45,6 +46,7 @@ namespace WPFPresentation
         List<EventDateVM> _eventDatesForLocation;
         List<Sublocation> _sublocations;
         List<Activity> _activitiesForSublocation;
+        List<Availability> _selectedDateAvailabilities = new List<Availability>();
 
         Uri _src;
         int _imageNumber = 0;
@@ -85,19 +87,6 @@ namespace WPFPresentation
         /// <param name="user">The current User</param>        
         internal pgViewLocationDetails(int locationID, ManagerProvider managerProvider, User user, int where = 0)
         {
-            // use fake accessor
-            //_locationManager = new LocationManager(new LocationAccessorFake());
-            //_eventDateManager = new EventDateManager(new EventDateAccessorFake());
-            //_sublocationManager = new SublocationManager(new SublocationAccessorFake());
-            //_activityManager = new ActivityManager(new ActivityAccessorFake());
-
-            // use default accessor
-            _locationManager = new LocationManager();
-            _eventDateManager = new EventDateManager();
-            _sublocationManager = new SublocationManager();
-            _activityManager = new ActivityManager();
-            _entranceManager = new EntranceManager();
-
             _managerProvider = managerProvider;
             _locationManager = managerProvider.LocationManager;
             _eventDateManager = managerProvider.EventDateManager;
@@ -118,6 +107,7 @@ namespace WPFPresentation
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
 
             _where = 0;
+            calLocationCalendar.SelectedDate = null;
         }
 
         /// <summary>
@@ -435,6 +425,7 @@ namespace WPFPresentation
             scrLocationSchedule.Visibility = Visibility.Visible;
 
             txtLocationNamesSchedule.Text = _location.Name + "'s Schedule";
+            lblBookings.Text = "Booked Events";
             _eventDatesForLocation = _eventDateManager.RetrieveEventDatesByLocationID(_locationID);
         }
 
@@ -448,6 +439,7 @@ namespace WPFPresentation
         private void loadSublocationSchedule()
         {
             txtLocationNamesSchedule.Text = cboSchedulePicker.SelectedItem + "'s Schedule";
+            lblBookings.Text = "Booked Activities";
             _activitiesForSublocation = _activityManager.RetrieveActivitiesBySublocationID(_sublocationID);
         }
 
@@ -460,11 +452,6 @@ namespace WPFPresentation
         /// </summary>
         private void loadCalendarData()
         {
-            if (!calLocationCalendar.SelectedDate.HasValue)
-            {
-                calLocationCalendar.SelectedDate = DateTime.Today;
-            }
-
             if (cboSchedulePicker.SelectedItem.Equals(_location.Name))
             {
                 List<EventDateVM> eventDatesForDataGrid = new List<EventDateVM>();
@@ -478,7 +465,7 @@ namespace WPFPresentation
                 }
 
                 datLocationSchedule.ItemsSource = eventDatesForDataGrid;
-                DateTime date = (DateTime)calLocationCalendar.SelectedDate;
+                DateTime date = calLocationCalendar.SelectedDate.Value.Date;
 
                 lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
             }
@@ -498,6 +485,13 @@ namespace WPFPresentation
 
                 lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
             }
+
+            _selectedDateAvailabilities = _locationManager.RetrieveLocationAvailabilityByLocationIDAndDate(_location.LocationID, (DateTime)calLocationCalendar.SelectedDate);
+
+
+            datLocationAvailabilities.ItemsSource = new ObservableCollection<Availability>(from a in _selectedDateAvailabilities
+                                                                                           orderby a.TimeStart ascending
+                                                                                           select a);
 
         }
 
@@ -530,6 +524,7 @@ namespace WPFPresentation
             scrParkingLot.Visibility = Visibility.Collapsed;
             scrSublocations.Visibility = Visibility.Collapsed;
             scrViewEntrance.Visibility = Visibility.Collapsed;
+            scrLocationSchedule.Visibility = Visibility.Collapsed;
 
             btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
@@ -538,10 +533,94 @@ namespace WPFPresentation
             btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteParking.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteSupplies.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// The helper method that blacks out any dates that are not available for the current location
+        /// for the visible month and half of the following month and half of the previous month (so the user 
+        /// is not able to select a date that otherwise would not be able to be selected)
+        /// 
+        /// </summary>
+        private void blackOutCalendarDates()
+        {
+            int month = calLocationCalendar.DisplayDate.Month;
+            int year = calLocationCalendar.DisplayDate.Year;
+            CalendarBlackoutDatesCollection calendarDateRanges = calLocationCalendar.BlackoutDates;
+            calendarDateRanges.Clear();
+            this.Cursor = Cursors.Wait;
+
+            //BLACK OUT CURRENT MONTH THAT IS BEING VIEWED
+            for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+            {
+                DateTime date = new DateTime(year, month, i);
+                List<Availability> availability = _locationManager.RetrieveLocationAvailabilityByLocationIDAndDate(_location.LocationID, date);
+
+                if (availability.Count == 0 || availability[0].TimeStart == null)
+                {
+                    calLocationCalendar.BlackoutDates.Add(new CalendarDateRange(date));
+                }
+            }
+
+            if (month + 1 > 12)
+            {
+                year++;
+                month = 1;
+            }
+            else
+            {
+                month++;
+            }
+            // BLACK OUT NEXT MONTH ON CALENDAR
+            // SHORTEN THE DAYS TO ONLY BE THE FIRST 15 (only the first few days are visible)
+            for (int i = 1; i <= DateTime.DaysInMonth(year, month) - 15; i++)
+            {
+                DateTime date = new DateTime(year, month, i);
+                List<Availability> availability = _locationManager.RetrieveLocationAvailabilityByLocationIDAndDate(_location.LocationID, date);
+
+                if (availability.Count == 0 || availability[0].TimeStart == null)
+                {
+                    calLocationCalendar.BlackoutDates.Add(new CalendarDateRange(date));
+                }
+
+            }
 
 
 
-            //frmViewLocationDetails.Visibility = Visibility.Collapsed;
+            // LOGIC TO GO BACK A MONTH / TWO MONTHS (most likely can be changed to 
+            // month = calendar.DisplayDate.Month - 1)
+            if (month - 1 < 1)
+            {
+                year--;
+                month = 11;
+            }
+            else if (month - 2 < 1)
+            {
+                year--;
+                month = 12;
+            }
+            else
+            {
+                month -= 2;
+            }
+            // BLACK OUT PREVIOUS MONTH ON CALENDAR
+            // SHORTEN THE DAYS TO ONLY BE THE LAST 15 (only the last few days are visible)
+            for (int i = 15; i <= DateTime.DaysInMonth(year, month); i++)
+            {
+                DateTime date = new DateTime(year, month, i);
+                List<Availability> availability = _locationManager.RetrieveLocationAvailabilityByLocationIDAndDate(_location.LocationID, date);
+
+                if (availability.Count == 0 || availability[0].TimeStart == null)
+                {
+                    calLocationCalendar.BlackoutDates.Add(new CalendarDateRange(date));
+                }
+
+            }
+
+            this.Cursor = Cursors.Arrow;
         }
 
         /// <summary>
@@ -689,6 +768,7 @@ namespace WPFPresentation
             hideEntrances();
             hideSublocations();
             btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
+            //scrLocationSchedule.Visibility = Visibility.Visible;
             scrLocationSchedule.Visibility = Visibility.Visible;
 
             if (cboSchedulePicker.Items.Count == 0)
@@ -700,12 +780,8 @@ namespace WPFPresentation
                     cboSchedulePicker.Items.Add(sublocation.SublocationName);
                 }
             }
-
-            // PUT CODE HERE TO CALL WHEN SELECTION CHANGES.
-            if (!calLocationCalendar.SelectedDate.HasValue)
-            {
-                calLocationCalendar.SelectedDate = DateTime.Today;
-            }
+            blackOutCalendarDates();
+            
         }
 
         /// <summary>
@@ -757,8 +833,10 @@ namespace WPFPresentation
             {
                 MessageBox.Show("Error");
             }
-            //MessageBox.Show(cboSchedulePicker.SelectedItem.ToString());
-            loadCalendarData();
+            if(calLocationCalendar.SelectedDate != null)
+            {
+                loadCalendarData();
+            }
         }
 
         /// <summary>
@@ -1474,6 +1552,20 @@ namespace WPFPresentation
 
 
 
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// Event handler that will black out the months when the display dates (going to a different 
+        /// month or year) 
+        /// 
+        /// </summary>
+        private void calLocationCalendar_DisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
+        {
+            blackOutCalendarDates();
         }
     }
 }

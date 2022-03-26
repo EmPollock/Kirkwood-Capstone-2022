@@ -967,12 +967,17 @@ namespace WPFPresentation.Event
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
+            
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
-                locationFrame.Navigate(locationDetailsPage);
-                lblLocationErrorMesage.Visibility = Visibility.Hidden;
+                if(_location.LocationID == 0)
+                {
+                    return;
+                }
+                    pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
+                    locationFrame.Navigate(locationDetailsPage);
+                    lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }
             catch (Exception)
             {

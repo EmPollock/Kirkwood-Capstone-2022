@@ -112,7 +112,7 @@ namespace DataAccessLayer
                         location = new Location()
                         {
                             LocationID = locationID,
-                            UserID = reader.GetInt32(0),
+                            UserID = reader.IsDBNull(0) ? null : (int?)reader.GetInt32(0),
                             Name = reader.GetString(1),
                             Description = reader.IsDBNull(2) ? null : reader.GetString(2),
                             PricingInfo = reader.IsDBNull(3) ? null : reader.GetString(3),

@@ -76,7 +76,7 @@ AS
 			[LocationImagePath],		
 			[LocationActive]		
 		FROM [Location] 
-		WHERE [LocationID] = @LocationID
+		WHERE [LocationID] = @LocationID AND [LocationActive] = 1
 	END	
 GO
 
