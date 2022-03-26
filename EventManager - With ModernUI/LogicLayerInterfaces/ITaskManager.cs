@@ -14,5 +14,7 @@ namespace LogicLayerInterfaces
         bool EditTask(Tasks oldTask, Tasks newTasks);
         List<Priority> RetrieveAllPriorities();
         List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID = 100000);
+
+        List<TaskAssignmentVM> RetrieveTaskAssignmentsByTaskID(int taskID);
     }
 }

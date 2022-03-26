@@ -11,5 +11,6 @@ namespace LogicLayerInterfaces
     {
         int CreateEntrance(int locationID, string entranceName, string description);
         List<Entrance> RetrieveEntranceByLocationID(int locationID);
+        bool UpdateEntrance(Entrance oldEntrance, Entrance newEntrance);
     }
 }

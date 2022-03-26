@@ -110,7 +110,6 @@ namespace DataAccessFakes
         /// The accessor fake to select all volunteers
         /// </summary>
         /// <returns>A list of volunteer data objects</returns>
-
         public List<Volunteer> SelectAllVolunteers()
         {
             List<Volunteer> volunteers = new List<Volunteer>();

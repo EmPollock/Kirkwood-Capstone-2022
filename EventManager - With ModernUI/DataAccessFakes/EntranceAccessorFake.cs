@@ -106,5 +106,24 @@ namespace DataAccessFakes
 
             return entrances;
         }
+
+        public int UpdateEntrance(Entrance oldEntrance, Entrance newEntrance)
+        {
+            int rowsAffected = 0;
+
+            foreach(var fakeEntrance in _fakeEntrances)
+            {
+                if(fakeEntrance.EntranceID == oldEntrance.EntranceID 
+                    && fakeEntrance.EntranceName.Equals(oldEntrance.EntranceName)
+                    && fakeEntrance.Description.Equals(oldEntrance.Description))
+                {
+                    fakeEntrance.EntranceName = newEntrance.EntranceName;
+                    fakeEntrance.Description = newEntrance.Description;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
     }
 }

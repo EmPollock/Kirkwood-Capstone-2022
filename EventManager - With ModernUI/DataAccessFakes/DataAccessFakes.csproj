@@ -54,9 +54,12 @@
     <Compile Include="SupplierAccessorFake.cs" />
     <Compile Include="TaskAccessorFakes.cs" />
     <Compile Include="UserAccessorFake.cs" />
+    <Compile Include="UserImageAccessorFake.cs" />
     <Compile Include="VolunteerAccessorFake.cs" />
     <Compile Include="VolunteerNeedAccessorFake.cs" />
     <Compile Include="VolunteerRequestAccessorFake.cs" />
+    <Compile Include="VolunteerReviewAccessorFake.cs" />
+    <Compile Include="VolunteerSkillSetAccessorFake.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessInterfaces\DataAccessInterfaces.csproj">

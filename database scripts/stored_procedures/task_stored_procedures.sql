@@ -9,10 +9,11 @@ GO
 / 				by TaskID
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Emma Pollock
+/ Updated: 2022/03/09
 /
 / Description: 
+/	Removed TaskAssignmentID
 ****************************************************************/
 
 print '' print '*** creating sp_select_task_by_taskID...'
@@ -26,7 +27,7 @@ AS
 	
 		SELECT	[TaskID], [Name], [Task].[Description], [DueDate],
 				[Priority].[Description], [CompletionDate], [Task].[Active],
-				[ProofID], [IsDone], [TaskAssignmentID], [Event].[EventID]
+				[ProofID], [IsDone], [Event].[EventID]
 		FROM	[dbo].[Task] JOIN [dbo].[Priority]
 					ON [Task].[Priority] = [Priority].[PriorityID]
 				JOIN [dbo].[Event]
@@ -44,10 +45,12 @@ GO
 / 				assigned user by the TaskAssignmentID
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Emma Pollock
+/ Updated: 2022/03/09
 /
 / Description: 
+/	Changed Join between TaskAssignment and Task to use TaskID
+/		instead of TaskAssignmentID
 ****************************************************************/
 
 print '' print '*** creating sp_select_assigned_user_by_task_assignmentID...'
@@ -63,7 +66,7 @@ AS
 		
 		SELECT	[TaskAssignment].[UserID]
 		FROM	[dbo].[TaskAssignment] JOIN [dbo].[Task]
-					ON [Task].[TaskAssignmentID] = [TaskAssignment].[TaskAssignmentID]
+					ON [Task].[TaskID] = [TaskAssignment].[TaskID]
 				JOIN [dbo].[Event]
 					ON [Task].[EventID] = [Event].[EventID]
 		WHERE	[Task].[EventID] = @EventID
@@ -118,10 +121,11 @@ GO
 /				their due dates
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Emma Pollock
+/ Updated: 2022/03/09
 /
 / Description: 
+/	Removed TaskAssignmentID
 ****************************************************************/
 
 print '' print '*** creating sp_select_tasks_by_due_date...'
@@ -135,7 +139,7 @@ AS
 	
 		SELECT	[TaskID], [Name], [Task].[Description], [DueDate],
 				[Priority].[Description], [CompletionDate], [Task].[Active],
-				[ProofID], [IsDone], [TaskAssignmentID], [Event].[EventID]
+				[ProofID], [IsDone], [Event].[EventID]
 		FROM	[dbo].[Task] JOIN [dbo].[Priority]
 					ON [Task].[Priority] = [Priority].[PriorityID]
 				JOIN [dbo].[Event]
@@ -154,10 +158,11 @@ GO
 /				their level of priority
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Emma Pollock
+/ Updated: 2022/03/09
 /
 / Description: 
+/	Removed TaskAssignmentID
 ****************************************************************/
 
 print '' print '*** creating sp_select_active_tasks_by_priority...'
@@ -171,7 +176,7 @@ AS
 	
 		SELECT	[TaskID], [Name], [Task].[Description], [DueDate],
 				[Priority].[Description], [CompletionDate], [Task].[Active],
-				[ProofID], [IsDone], [TaskAssignmentID], [Event].[EventName]
+				[ProofID], [IsDone], [Event].[EventName]
 		FROM	[dbo].[Task] JOIN [dbo].[Priority]
 					ON [Task].[Priority] = [Priority].[PriorityID]
 				JOIN [dbo].[Event]
@@ -357,5 +362,35 @@ AS
 		WHERE	[TaskID] = @TaskID
 		 AND	[CompletionDate] = @CompletionDate
 		 
+	END
+GO
+
+/***************************************************************
+/ Emma Pollock
+/ Created: 2022/03/10
+/ 
+/ Description: Creating Stored Procedure to select taskAssignment
+/	records for a task.
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print '*** creating sp_select_task_assignments_by_task_id...'
+GO
+CREATE PROCEDURE [dbo].[sp_select_task_assignments_by_task_id]
+(
+	@TaskID 	[int]
+)
+AS
+	BEGIN
+	
+		SELECT	[TaskAssignmentID],[DateAssigned],[TaskAssignment].[UserID],[RoleID],[Users].[GivenName], [Users].[FamilyName]	
+		FROM	[dbo].[taskAssignment] JOIN [Users]
+					ON [taskAssignment].[UserID] = [Users].[UserID]
+		WHERE 	[TaskID] = @TaskID
 	END
 GO

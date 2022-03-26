@@ -158,5 +158,173 @@ namespace LogicLayerTests
             Assert.AreEqual(expectedResult, actualResult);
 
         }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Test method that returns true if it is updated successfully
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateEntranceReturnsTrueIfSuccessful()
+        {
+            // arrange
+            Entrance oldEntrance = new Entrance()
+            {
+                EntranceID = 100000,
+                EntranceName = "Test Entrance 1",
+                Description = "A description of test entrance 1"
+            };
+
+            Entrance newEntrance = new Entrance()
+            {
+                EntranceID = 100000,
+                EntranceName = "Test Entrance",
+                Description = "Description"
+            };
+
+            bool expected = true;
+            bool actual;
+
+            // act
+            actual = _entranceManager.UpdateEntrance(oldEntrance, newEntrance);
+
+            // assert
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Test method that throws exception if update has no name
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEntranceThrowsApplicationExceptionIfNoName()
+        {
+            // arrange
+            Entrance oldEntrance = new Entrance()
+            {
+                EntranceID = 1000000,
+                EntranceName = "Test Entrance 1",
+                Description = "A description of test entrance 1"
+            };
+
+            Entrance newEntrance = new Entrance()
+            {
+                EntranceID = 1000000,
+                EntranceName = "",
+                Description = "Description"
+            };
+
+            // act
+            _entranceManager.UpdateEntrance(oldEntrance, newEntrance);
+
+            // assert
+            // nothing to assert, exception testing
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Test method that throws exception if update has a name over 100 characters
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEntranceThrowsApplicationExceptionIfNameOver100Characters()
+        {
+            // arrange
+            Entrance oldEntrance = new Entrance()
+            {
+                EntranceID = 1000000,
+                EntranceName = "Test Entrance 1",
+                Description = "A description of test entrance 1"
+            };
+
+            Entrance newEntrance = new Entrance()
+            {
+                EntranceID = 1000000,
+                EntranceName = "hfasjldfhjdslahfuidsahfjkdshafjilhdsuialfheuisahfjdsklahfldshaflhduslahfsjkdafhjskdlahfuidshaukjfeblafkndhsajkl",
+                Description = "Description"
+            };
+
+            // act
+            _entranceManager.UpdateEntrance(oldEntrance, newEntrance);
+
+            // assert
+            // nothing to assert, exception testing
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Test method that throws exception if update has no description
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEntranceThrowsApplicationExceptionIfNoDescription()
+        {
+            // arrange
+            Entrance oldEntrance = new Entrance()
+            {
+                EntranceID = 1000000,
+                EntranceName = "Test Entrance 1",
+                Description = "A description of test entrance 1"
+            };
+
+            Entrance newEntrance = new Entrance()
+            {
+                EntranceID = 1000000,
+                EntranceName = "Test Entrance",
+                Description = ""
+            };
+
+            // act
+            _entranceManager.UpdateEntrance(oldEntrance, newEntrance);
+
+            // assert
+            // nothing to assert, exception testing
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022/03/08
+        /// 
+        /// Description:
+        /// Test method that throws exception if update description is over 255 characters
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateEntranceThrowsApplicationExceptionIfDescriptionOver255Characters()
+        {
+            // arrange
+            Entrance oldEntrance = new Entrance()
+            {
+                EntranceID = 1000000,
+                EntranceName = "Test Entrance 1",
+                Description = "A description of test entrance 1"
+            };
+
+            Entrance newEntrance = new Entrance()
+            {
+                EntranceID = 1000000,
+                EntranceName = "Test Entrance 1",
+                Description = "fdshajklfhdsuailhfuidsahlfjkdshjskdlhfdskalhfjkdslahfudslahfjkdslafhjksdlahfjkdslahfjkdsafhljkdhueilashfjkdlshafjkdlhsaufihldasjlkhfjdkslahfjkdslahfudsilahfejklafhjkdashlfjkdhsafjklhdsajkflhdsjkalfhsmanfdmsafhjldhabfjiehaulfhjdskafhjdhsuaifnejkalfdhsljfjdsahfuieoawhjfdsjalkfhdsialhfuegabjklfgsulaifhjsaldhfjdslahfuilshafjelshajfhsldafheiwahfdsjkalhfuieslahfjelsahdueilwhafesjalkhfues"
+            };
+
+            // act
+            _entranceManager.UpdateEntrance(oldEntrance, newEntrance);
+
+            // assert
+            // nothing to assert, exception testing
+        }
     }
 }

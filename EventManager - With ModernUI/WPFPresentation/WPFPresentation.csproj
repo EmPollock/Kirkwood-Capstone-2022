@@ -62,6 +62,9 @@
     <Compile Include="CustomControls\TimeComboBoxes.xaml.cs">
       <DependentUpon>TimeComboBoxes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Event\pgCreateActivity.xaml.cs">
+      <DependentUpon>pgCreateActivity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Event\pgCreateEvent.xaml.cs">
       <DependentUpon>pgCreateEvent.xaml</DependentUpon>
     </Compile>
@@ -122,7 +125,14 @@
     <Compile Include="Volunteer\pgViewAllVolunteers.xaml.cs">
       <DependentUpon>pgViewAllVolunteers.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Volunteer\pgViewVolunteerDetails.xaml.cs">
+      <DependentUpon>pgViewVolunteerDetails.xaml</DependentUpon>
+    </Compile>
     <Page Include="CustomControls\TimeComboBoxes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Event\pgCreateActivity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -211,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Volunteer\pgViewAllVolunteers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Volunteer\pgViewVolunteerDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

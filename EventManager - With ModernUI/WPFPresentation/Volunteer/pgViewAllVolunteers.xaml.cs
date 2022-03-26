@@ -116,5 +116,13 @@ namespace WPFPresentation
             loadAllVolunteers();
         }
 
+        private void datVolunteers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(datVolunteers.SelectedItem != null)
+            {
+                pgViewVolunteerDetails page = new pgViewVolunteerDetails((Volunteer)datVolunteers.SelectedItem, _managerProvider);
+                NavigationService.Navigate(page);
+            }
+        }
     }
 }

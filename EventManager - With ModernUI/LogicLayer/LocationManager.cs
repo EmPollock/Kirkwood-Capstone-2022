@@ -308,5 +308,62 @@ namespace LogicLayer
 
             return locationAvailabilities;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Method to update a location description by its locationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>int number of rows affected</returns>
+        public int UpdateLocationBioByLocationID(Location oldLocation, Location newLocation)
+        {
+            int rowsAffected = 0;
+            if (newLocation.Description != null && newLocation.Description.Length > 3000) // desription too long (description can be null)
+            {
+                throw new ApplicationException("Description too long");
+            }
+            if (newLocation.Phone != null && newLocation.Phone != "") // phone number format validation (phone can be null)
+            {
+                if (!WPFPresentation.ValidationHelpers.IsValidPhone(newLocation.Phone))
+                    throw new ApplicationException("Invalid phone number");
+            }
+            if (newLocation.Email != null && newLocation.Email != "") // email format validation (email can be null)
+            {
+                if (!WPFPresentation.ValidationHelpers.IsValidEmailAddress(newLocation.Email))
+                    throw new ApplicationException("Invalid email address");
+            }
+            if (newLocation.Address1 == "" || newLocation.Address1 == null) // no address one
+            {
+                throw new ApplicationException("Please enter an address");
+            }
+            if (newLocation.Address1.Length > 100) // address one too long 
+            {
+                throw new ApplicationException("Address one cannot be longer than 100 characters");
+            }
+            if (newLocation.Address2 != null && newLocation.Address2 != "" 
+                && newLocation.Address2.Length > 100) // address two too long (address two can be null)
+            {
+                throw new ApplicationException("Address two cannot be longer than 100 characters"); //3000
+            }
+            if (newLocation.PricingInfo != null && newLocation.PricingInfo != "" &&
+                newLocation.PricingInfo.Length > 3000) // pricing too long (pricing can be null)
+            {
+                throw new ApplicationException("Pricing cannot be longer than 3000 characters");
+            }
+            try
+            {
+                rowsAffected = _locationAccessor.UpdateLocationBioByLocationID(oldLocation, newLocation);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return rowsAffected;
+        }
     }
 }

@@ -18,6 +18,7 @@ using DataObjects;
 using WPFPresentation.Location;
 using DataAccessFakes;
 using System.Collections.ObjectModel;
+using WPFPresentation.Location;
 
 namespace WPFPresentation
 {
@@ -47,12 +48,14 @@ namespace WPFPresentation
         List<Sublocation> _sublocations;
         List<Activity> _activitiesForSublocation;
         List<Availability> _selectedDateAvailabilities = new List<Availability>();
+        List<Entrance> _entrances;
 
         Uri _src;
         int _imageNumber = 0;
 
         User _user;
         int _where = 0;
+        Entrance _entrance;
 
         /// <summary>
         /// Austin Timmerman
@@ -96,7 +99,6 @@ namespace WPFPresentation
             _eventManager = managerProvider.EventManager;
 
             _locationID = locationID;
-            _location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
             _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
             _sublocations = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
@@ -149,6 +151,8 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationDetails()
         {
+            _location = _locationManager.RetrieveLocationByLocationID(_locationID);
+
             if (ValidationHelpers.EditOngoing)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -166,6 +170,17 @@ namespace WPFPresentation
             hideSublocations();
             btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
             scrLocationDetails.Visibility = Visibility.Visible;
+
+            btnDeleteLocation.Visibility = Visibility.Hidden;
+            btnCancelLocationEdit.Visibility = Visibility.Hidden;
+            btnEditSaveLocation.Content = "Edit";
+
+            txtBoxAboutLocation.IsReadOnly = true;
+            txtPhoneNumber.IsEnabled = false;
+            txtEmail.IsEnabled = false;
+            txtAddressOne.IsEnabled = false;
+            txtAddressTwo.IsEnabled = false;
+            txtBoxPricing.IsReadOnly = true;
 
             //scrLocationDetails.Visibility = Visibility.Visible;
             txtLocationName.Text = _location.Name;
@@ -368,14 +383,6 @@ namespace WPFPresentation
                 }
             }
 
-
-            //if (_locationImages.Count == 0)
-            //{
-            //    imgLocationImage.Visibility = Visibility.Collapsed;
-            //    btnNext.Visibility = Visibility.Collapsed;
-            //    btnBack.Visibility = Visibility.Collapsed;
-            //    return;
-            //}
             try
             {
                 _src = new Uri(AppData.DataPath + @"\" + _locationImages[_imageNumber].ImageName, UriKind.Absolute);
@@ -1213,7 +1220,6 @@ namespace WPFPresentation
             btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
         }
 
-
         /// <summary>
         /// Mike Cahow
         /// Created: 2022/03/04
@@ -1250,17 +1256,52 @@ namespace WPFPresentation
             try
             {
                 this.lblLocationName.Text = _location.Name + " Entrances";
-                List<Entrance> entrances = _entranceManager.RetrieveEntranceByLocationID(_locationID);
-                if (entrances.Count == 0)
+                _entrances = _entranceManager.RetrieveEntranceByLocationID(_locationID);
+                if (_entrances.Count == 0)
                 {
-                    lblNoEntrances.Content = "No entrances for this location yet. Use the Add button to add entrances.";
+                    lblNoEntrances.Content = "No entrances for this location yet. Use the Create button to create an entrance.";
                 }
-                datViewEntrances.ItemsSource = entrances;
+                datViewEntrances.ItemsSource = _entrances;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created 2022/03/04
+        /// 
+        /// Description:
+        /// Click event handler for going to the add edit entrance page
+        /// in create mode
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCreateEntrance_Click(object sender, RoutedEventArgs e)
+        {
+            Page page = new pgAddEditEntrance(_entrance, _locationID, _managerProvider, _user, 1);
+            this.NavigationService.Navigate(page);
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created 2022/03/08
+        /// 
+        /// Description:
+        /// Click event handler for going to the add edit entrance page
+        /// in update mode
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datViewEntrances_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _entrance = (Entrance)datViewEntrances.SelectedItem;
+            Page page = new pgAddEditEntrance(_entrance, _locationID, _managerProvider, _user, 2);
+            this.NavigationService.Navigate(page);
         }
 
         /// <summary>
@@ -1342,6 +1383,7 @@ namespace WPFPresentation
             scrSublocations.Visibility = Visibility.Collapsed;
             grdAddsublocation.Visibility = Visibility.Visible;
         }
+
         /// <summary>
         /// Logan Baccam
         /// Created 2022/02/28
@@ -1425,22 +1467,6 @@ namespace WPFPresentation
         }
 
         /// <summary>
-        /// Alaina Gilson
-        /// Created 2022/03/04
-        /// 
-        /// Description:
-        /// Click event handler for creating an add edit entrance page
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnCreateEntrance_Click(object sender, RoutedEventArgs e)
-        {
-            Page page = new pgAddEditEntrance(_locationID, _managerProvider, _user);
-            this.NavigationService.Navigate(page);
-        }
-
-        /// <summary>
         /// Christopher Repko
         /// Created: 2022/03/10
         /// 
@@ -1499,17 +1525,25 @@ namespace WPFPresentation
         /// Created 2022/03/01
         /// 
         /// Description: Button to delete the schedule item in the same line
+        /// 
+        /// Updated:
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/25
+        /// Description: Added functionality to remove activites from sub locations
+        /// if associated event is removed from location.
         /// </summary>
         private void btnDeleteScheduleItem_Click(object sender, RoutedEventArgs e)
         {
             EventDateVM selectedEventDateVM = new EventDateVM();
             Activity selectedActivity = new Activity();
+            List<Activity> eventActivities = new List<Activity>();
             int selectedEventID = 0;
             bool isEvent = true;
             if (datLocationSchedule.SelectedItem.GetType().Equals(selectedEventDateVM.GetType()))
             {
                 selectedEventDateVM = (EventDateVM)datLocationSchedule.SelectedItem;
                 selectedEventID = selectedEventDateVM.EventID;
+                eventActivities = _activityManager.RetrieveActivitiesByEventID(selectedEventID);
                 isEvent = true;
             }
             else if (datLocationSchedule.SelectedItem.GetType().Equals(selectedActivity.GetType()))
@@ -1530,6 +1564,11 @@ namespace WPFPresentation
                     if (isEvent)
                     {
                         _eventManager.UpdateEventLocationByEventID(selectedEventID, _locationID, null);
+                        foreach(var activ in eventActivities)
+                        {
+                            _activityManager.UpdateActivitySublocationByActivityID(activ.ActivityID, activ.SublocationID, null);
+                            _activitiesForSublocation.Remove(activ);
+                        }
                         _eventDatesForLocation.Remove(selectedEventDateVM);
                     }
                     else
@@ -1566,6 +1605,129 @@ namespace WPFPresentation
         private void calLocationCalendar_DisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
         {
             blackOutCalendarDates();
+		}
+		
+        /// Jace Pettinger
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler for selecting edit or save location biography
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnEditSave_Click(object sender, RoutedEventArgs e)
+        {
+            if(btnEditSaveLocation.Content.Equals("Edit")) // edit 
+            {
+                btnDeleteLocation.Visibility = Visibility.Visible;
+                btnCancelLocationEdit.Visibility = Visibility.Visible;
+
+
+                txtBoxAboutLocation.IsReadOnly = false;
+                txtPhoneNumber.IsEnabled = true;
+                txtEmail.IsEnabled = true;
+                txtAddressOne.IsEnabled = true;
+                txtAddressTwo.IsEnabled = true;
+                txtBoxPricing.IsReadOnly = false;
+                txtBoxPricing.IsEnabled = true;
+
+                btnEditSaveLocation.Content = "Save";
+                txtBoxAboutLocation.Focus();
+            } 
+            else // save
+            { // validation checks
+                string locationDescription = txtBoxAboutLocation.Text;
+                string locationPhone = txtPhoneNumber.Text;
+                string locationEmail = txtEmail.Text;
+                string locationAddressOne = txtAddressOne.Text;
+                string locationAddressTwo = txtAddressTwo.Text;
+                string locationPricing = txtBoxPricing.Text;
+
+                if (locationDescription != null && locationDescription.Length > 3000) // desription too long (description can be null)
+                {
+                    MessageBox.Show("Location description cannot excede 3,000 characters");
+                }
+                else if (locationPhone != null && locationPhone != "" 
+                    && !ValidationHelpers.IsValidPhone(locationPhone)) // phone number format validation (phone can be null)
+                {
+                        MessageBox.Show("Invalid phone number");
+                }
+                else if (locationEmail != null && locationEmail != ""
+                    && !ValidationHelpers.IsValidEmailAddress(locationEmail)) // email format validation (email can be null)
+                {
+                        MessageBox.Show("Invalid email address");
+                }
+                else if (locationAddressOne == "" || locationAddressOne == null) // no address one
+                {
+                    MessageBox.Show("Please enter an address");
+                }
+                else if (locationAddressOne.Length > 100) // address one too long 
+                {
+                    MessageBox.Show("Address one cannot be longer than 100 characters");
+                }
+                else if (locationAddressTwo != null && locationAddressTwo != ""
+                   && locationAddressTwo.Length > 100) // address two too long (address two can be null)
+                {
+                    MessageBox.Show("Address two cannot be longer than 100 characters"); //3000
+                }
+                else if (locationPricing.Length > 3000) // pricing too long (pricing can be null)
+                {
+                    MessageBox.Show("Pricing cannot be longer than 3000 characters");
+                }
+                else // end of validation checks
+                {
+                    DataObjects.Location oldLocation = _location;
+                    try
+                    {
+                        DataObjects.Location newLocation = new DataObjects.Location()
+                        {
+                            Description = locationDescription,
+                            Phone = locationPhone,
+                            Email = locationEmail,
+                            Address1 = locationAddressOne,
+                            Address2 = locationAddressTwo,
+                            PricingInfo = locationPricing
+                        };
+                        int rowsAffected = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+                        if (rowsAffected == 1)
+                        {
+                            loadLocationDetails();
+                        }
+                        else
+                        {
+                            MessageBox.Show("There was an error updating the location\n");
+                            loadLocationDetails();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was an error updating the location\n" + ex.Message);
+                        loadLocationDetails();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Click event handler for canceling editing location biography
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnCancelLocationEdit_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Discard unsaved changes?",
+                              "Cancel",
+                              MessageBoxButton.YesNo,
+                              MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                loadLocationDetails();
+            }
         }
     }
 }

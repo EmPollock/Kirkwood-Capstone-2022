@@ -16,7 +16,7 @@ namespace LogicLayerInterfaces
         List<Reviews> RetrieveLocationReviews(int locationID);
         List<LocationImage> RetrieveLocationImagesByLocationID(int locationID);
         int DeactivateLocationByLocationID(int locationID);
+        int UpdateLocationBioByLocationID(Location oldLocation, Location newLocation);
         List<Availability> RetrieveLocationAvailabilityByLocationIDAndDate(int locationID, DateTime date);
-
     }
 }

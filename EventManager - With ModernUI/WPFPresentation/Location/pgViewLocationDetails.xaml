@@ -34,7 +34,7 @@
             <Button x:Name="btnSiteSupplies" Content="Site Supplies" Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"/>
         </Grid>
 
-        <ScrollViewer x:Name="scrLocationDetails" Grid.Column="1" Visibility="Collapsed">
+        <ScrollViewer x:Name="scrLocationDetails" Grid.Column="1" Visibility="Visible">
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -47,6 +47,7 @@
                     <RowDefinition/>
                     <!--<RowDefinition Height="150"/>-->
                     <RowDefinition Height="25"/>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition Height="40"/>
@@ -94,9 +95,9 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Phone Number:" FontWeight="Bold" Margin="20 0 0 0 "/>
-                    <TextBlock x:Name="txtPhoneNumber" Grid.Column="1" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="txtPhoneNumber" Grid.Column="1" HorizontalAlignment="Left" IsEnabled="False" Margin="0 0 0 1"/>
                     <TextBlock Grid.Column="2" Text="Email Address:" FontWeight="Bold" Margin="20 0 0 0 "/>
-                    <TextBlock x:Name="txtEmail" Grid.Column="3" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="txtEmail" Grid.Column="3" HorizontalAlignment="Left" IsEnabled="False" Margin="0 0 0 1"/>
                 </Grid>
 
                 <Grid Grid.Row="4">
@@ -108,36 +109,15 @@
                         <ColumnDefinition/>
 
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Address Line 1:" FontWeight="Bold" Margin="20 0 0 0 "/>
-                    <TextBlock x:Name="txtAddressOne" Grid.Column="1" HorizontalAlignment="Left"/>
-                    <TextBlock Grid.Column="2" Text="Address Line 2:" FontWeight="Bold" Margin="20 0 0 0 "/>
-                    <TextBlock x:Name="txtAddressTwo" Grid.Column="3" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="0" Text="Address Line 1:" FontWeight="Bold" Margin="20 10 0 0 "/>
+                    <TextBox x:Name="txtAddressOne" Grid.Column="1" HorizontalAlignment="Left" IsEnabled="False" Margin="0 1 0 0"/>
+                    <TextBlock Grid.Column="2" Text="Address Line 2:" FontWeight="Bold" Margin="20 10 0 0 "/>
+                    <TextBox x:Name="txtAddressTwo" Grid.Column="3" HorizontalAlignment="Left" IsEnabled="False" Margin="0 1 0 0"/>
                 </Grid>
 
 
-                <TextBlock x:Name="txtPricing" FontWeight="Bold" Grid.Row="5" Text="Pricing" Style="{StaticResource BodyTextBlockStyle}" Margin="10 0"/>
+                <TextBlock x:Name="txtPricing" FontWeight="Bold" Grid.Row="5" Text="Pricing" Style="{StaticResource BodyTextBlockStyle}" Margin="10 5 0 0"/>
                 <TextBox   x:Name="txtBoxPricing" Grid.Row="6" Margin="20 10" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
-
-                <!--<Canvas x:Name="canStarRating" Grid.Row="6"  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-                    <Canvas Canvas.Left="20" Canvas.Top="0" Height="8" Width="26">
-
-                        <Canvas Canvas.Left="5" Canvas.Top="20">
-                            <Path x:Name="pathStarOne" Stroke="#000080" Fill="#FFFF00" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M 0,0 l 10,0 l 5,-10 l 5,10 l 10,0 l -7,10 l 2,10 l -10,-5 l -10,5 l 2,-10 Z" />
-                        </Canvas>
-                        <Canvas Canvas.Left="45" Canvas.Top="20">
-                            <Path x:Name="pathStarTwo" Stroke="#000080" Fill="#FFFF00" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M 0,0 l 10,0 l 5,-10 l 5,10 l 10,0 l -7,10 l 2,10 l -10,-5 l -10,5 l 2,-10 Z" />
-                        </Canvas>
-                        <Canvas Canvas.Left="85" Canvas.Top="20">
-                            <Path x:Name="pathStarThree" Stroke="#000080" Fill="#FFFF00" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M 0,0 l 10,0 l 5,-10 l 5,10 l 10,0 l -7,10 l 2,10 l -10,-5 l -10,5 l 2,-10 Z" />
-                        </Canvas>
-                        <Canvas Canvas.Left="125" Canvas.Top="20">
-                            <Path x:Name="pathStarFour" Stroke="#808080" Fill="#C0C0C0" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M 0,0 l 10,0 l 5,-10 l 5,10 l 10,0 l -7,10 l 2,10 l -10,-5 l -10,5 l 2,-10 Z" />
-                        </Canvas>
-                        <Canvas Canvas.Left="165" Canvas.Top="20">
-                            <Path x:Name="pathStarFive" Stroke="#808080" Fill="#C0C0C0" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M 0,0 l 10,0 l 5,-10 l 5,10 l 10,0 l -7,10 l 2,10 l -10,-5 l -10,5 l 2,-10 Z" />
-                        </Canvas>
-                    </Canvas>
-                </Canvas>-->
 
                 <Grid Grid.Row="7" Visibility="Visible">
                     <Grid.ColumnDefinitions>
@@ -156,7 +136,9 @@
                 <TextBox   x:Name="txtBoxReviews" Grid.Row="9" Margin="20 10" IsReadOnly="True"/>
                 <TextBox   x:Name="txtBoxReviewsSecond" Grid.Row="10" Margin="20 10" IsReadOnly="True"/>
                 <Button    x:Name="btnMoreReviews" Grid.Row="11" Content="More reviews..." FontWeight="Medium" Margin="20 0" Background="{x:Null}"/>
-                <Button x:Name="btnDeleteLocation" Grid.Row="11" Content="Delete" HorizontalAlignment="Center" FontWeight="Medium" Margin="0 0 0 0" Click="btnDeleteLocation_Click"/>
+                <Button x:Name="btnDeleteLocation" Grid.Row="12" Content="Delete" HorizontalAlignment="Right" FontWeight="Medium" Margin="0 0 50 0" Click="btnDeleteLocation_Click" Visibility="Hidden"/>
+                <Button x:Name="btnEditSaveLocation" Grid.Row="12" Content="Edit" HorizontalAlignment="Center" Click="btnEditSave_Click"/>
+                <Button x:Name="btnCancelLocationEdit" Grid.Row="12" Content="Cancel" HorizontalAlignment="Center" Margin="200 0 0 0" Visibility="Hidden" Click="btnCancelLocationEdit_Click"/>
             </Grid>
 
         </ScrollViewer>
@@ -185,6 +167,7 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+<!-- ------------------------------------------------------------------------------- -->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="450"/>
@@ -196,6 +179,22 @@
                 <DataGrid x:Name="datLocationSchedule" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding}" IsReadOnly="True" 
                               AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" 
                               IsSynchronizedWithCurrentItem="True" HorizontalContentAlignment="Center" SelectionMode="Single" Padding="0" OverridesDefaultStyle="True">
+<!-- ------------------------------------------------------------------------------- -->
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition MaxWidth="150"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock  x:Name="txtLocationNamesSchedule" Text="Location Name's Schedule" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <ComboBox   x:Name="cboSchedulePicker"  Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150" SelectedIndex="0" SelectionChanged="cboSchedulePicker_SelectionChanged"/>
+                </Grid>
+
+                <Calendar   x:Name="calLocationCalendar" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="1000" SelectedDatesChanged="calLocationCalendar_SelectedDatesChanged"/>
+
+                <TextBlock x:Name="lblLocationDate" Grid.Row="2" HorizontalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}"/>
+                <DataGrid   x:Name="datLocationSchedule" Grid.Row="3" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsSynchronizedWithCurrentItem="True" HorizontalContentAlignment="Center" MinColumnWidth="100" SelectionMode="Single" Padding="0" OverridesDefaultStyle="True">
+<!-- ------------------------------------------------------------------------------- -->
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="colEventName" Header="Event Name" Binding="{Binding EventName}"/>
                         <DataGridTextColumn x:Name="colActivityName" Visibility="Collapsed" Header="Activity Name" Binding="{Binding ActivityName}"/>
@@ -268,7 +267,7 @@
                 <Button x:Name="btnCancel" Content="Cancel" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="72 0 0 0" Click="btnCancel_Click"  />
             </Grid>
 
-                <Button x:Name="btnSaveAreas" Content="Save" Grid.Row="2" HorizontalAlignment="Right" Margin="5px" Click="btnSaveAreas_Click" Width="60"/>
+            <Button x:Name="btnSaveAreas" Content="Save" Grid.Row="2" HorizontalAlignment="Right" Margin="5px" Click="btnSaveAreas_Click" Width="60"/>
             <Button x:Name="btnCancelEditAreas" Content="Cancel" Grid.Row="2" Grid.Column="1" Margin="5px" Width="60" Click="btnCancelEditAreas_Click"/>
         </Grid>
         <ScrollViewer x:Name="scrViewEntrance" Grid.Column="1" Visibility="Collapsed">
@@ -281,7 +280,7 @@
 
                 <TextBlock x:Name="lblLocationName" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Style="{StaticResource TitleTextBlockStyle}">Filler</TextBlock>
                 <Label x:Name="lblNoEntrances" Grid.Row="1" HorizontalAlignment="Center"></Label>
-                <DataGrid x:Name="datViewEntrances" Grid.Row="1" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="True" CanUserAddRows="False" SelectionMode="Single" GridLinesVisibility="Horizontal" >
+                <DataGrid x:Name="datViewEntrances" Grid.Row="1" AutoGenerateColumns="False" RowHeaderWidth="0" IsReadOnly="True" CanUserAddRows="False" SelectionMode="Single" GridLinesVisibility="Horizontal" MouseDoubleClick="datViewEntrances_MouseDoubleClick" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Entrance Name" Binding="{Binding EntranceName}" />
                         <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
@@ -304,11 +303,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Frame Grid.Row="0" x:Name="frmViewLocationDetails"/>                
+                <Frame Grid.Row="0" x:Name="frmViewLocationDetails"/>
             </Grid>
-
         </ScrollViewer>
-        
-        
     </Grid>
 </Page>

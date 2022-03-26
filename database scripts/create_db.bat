@@ -24,6 +24,8 @@ sqlcmd -S localhost -E -i tables/tags.sql
 sqlcmd -S localhost -E -i tables/supplier_image.sql
 sqlcmd -S localhost -E -i tables/service.sql
 sqlcmd -S localhost -E -i tables/entrance.sql
+sqlcmd -S localhost -E -i tables/user_image.sql
+sqlcmd -S localhost -E -i tables/skill_set.sql
 :: added 2022-03-02
 sqlcmd -S localhost -E -i tables/volunteer_need.sql
 sqlcmd -S localhost -E -i tables/parking_lot.sql
@@ -43,12 +45,14 @@ sqlcmd -S localhost -E -i stored_procedures/review_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/availability_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/service_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/entrance_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/skill_set_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/user_image_stored_procedures.sql
 :: added 2022-03-02
 sqlcmd -S localhost -E -i stored_procedures/parking_lot_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/volunteer_need_stored_procedures.sql
 
 rem list depenecies after this line:
-rem task.sql requires event.sql
+rem task.sql requires event.sql, user.sql, and role.sql
 rem activity.sql requires event.sql, event_date.sql, and sublocation.sql 
 rem activity_result.sql requires activity.sql
 rem supplier.sql requires user.sql
@@ -81,12 +85,15 @@ REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 ::  user_role.sql
 ::  user_event.sql
 ::  user_activity.sql
+:: 	task.sql
+::  user_image.sql
 :: ************************
 :: FILES WHICH REQUIRE:  role.sql
 ::  user_role.sql
 ::  user_event.sql
 ::  volunteers.sql
 ::  user_activity.sql
+:: 	task.sql
 :: ************************
 :: FILES WHICH REQUIRE:  location.sql
 ::  availability.sql
@@ -95,6 +102,9 @@ REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 :: ************************
 :: FILES WHICH REQUIRE:  supplier.sql
 ::  service.sql
+:: ************************
+:: FILES WHICH REQUIRE:  volunteer.sql
+::  skill_set.sql
 :: ************************
 :: FILES WHICH REQUIRE:  activity.sql
 ::  supplier.sql

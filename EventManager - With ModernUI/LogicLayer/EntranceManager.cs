@@ -112,5 +112,41 @@ namespace LogicLayer
 
             return entrances;
         }
+
+        public bool UpdateEntrance(Entrance oldEntrance, Entrance newEntrance)
+        {
+            bool result = false;
+
+            if (newEntrance.EntranceName == "" || newEntrance.EntranceName == null)
+            {
+                throw new ApplicationException("Name can not be empty.");
+            }
+            if (newEntrance.EntranceName.Length > 100)
+            {
+                throw new ApplicationException("Name can not be over 100 characters.");
+            }
+
+            if (newEntrance.Description == "" || newEntrance.Description == null)
+            {
+                throw new ApplicationException("Description can not empty.");
+            }
+
+            if (newEntrance.Description.Length > 255)
+            {
+                throw new ApplicationException("Description can not over 255 characters.");
+            }
+
+            try
+            {
+                result = 1 == _entranceAccessor.UpdateEntrance(oldEntrance, newEntrance);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
     }
 }

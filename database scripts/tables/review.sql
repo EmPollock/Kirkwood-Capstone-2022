@@ -58,15 +58,12 @@ GO
 ***************************************************************
  Christopher Repko
  Updated: 2022/02/11
-<<<<<<< HEAD
 
  Description: 
  Additional test records for SupplierReview join.
 ***************************************************************
  <Updater Name>
  Updated: yyyy/mm/dd
-=======
->>>>>>> origin/main
 
  Description: 
  Additional test records for SupplierReview join.
@@ -76,6 +73,12 @@ Kris Howell
 
  Description: 
  Removed insert active field, let new default to 1 handle it.
+****************************************************************
+ Austin Timmerman
+ Updated: 2022/03/09
+ 
+ Description:
+ Additional test records for VolunteerReview join.
 ****************************************************************/
 print '' print '*** test records for Review table'
 GO
@@ -87,7 +90,8 @@ INSERT INTO [dbo].[Review] (
 )VALUES 
 	(100000, "Location Review", 3, "Enjoyable place to visit"),
 	(100000, "Supplier Review", 5, "Amazing place!"),
-	(100000, "Supplier Review", 1, "Didn't like it.")
+	(100000, "Supplier Review", 1, "Didn't like it."),
+	(100000, "Volunteer Review", 4, "Did a splendid job.")
 GO
 
 
@@ -182,4 +186,52 @@ INSERT INTO [dbo].[SupplierReview] (
 )VALUES 
 	(100001, 100000),
 	(100002, 100000)
+GO
+
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/03/09
+
+Description:
+VolunteerReview table
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating VolunteerReview table'
+CREATE TABLE [dbo].[VolunteerReview] (
+	[ReviewID]			[int]                     	NOT NULL,
+	[VolunteerID]		[int] 						NOT NULL,
+
+	CONSTRAINT [fk_VolunteerReview_ReviewID] FOREIGN KEY([ReviewID])
+        REFERENCES [Review]([ReviewID]),
+	CONSTRAINT [fk_VolunteerReview_VolunteerID] FOREIGN KEY([VolunteerID])
+		REFERENCES [Volunteer]([VolunteerID])
+)
+GO
+
+/***************************************************************
+ Austin Timmerman
+ Created: 2022/03/09
+ 
+ Description:
+ Test records for VolunteerReview table
+***************************************************************
+ <Updater Name>
+ Updated: yyyy/mm/dd
+
+ Description: 
+****************************************************************/
+
+print '' print '*** test records for VolunteerReview table'
+GO
+INSERT INTO [dbo].[VolunteerReview] (					
+    [ReviewID],
+    [VolunteerID]
+)VALUES 
+	(100003, 100000)
 GO

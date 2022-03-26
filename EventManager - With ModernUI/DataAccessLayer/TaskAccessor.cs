@@ -251,5 +251,62 @@ namespace DataAccessLayer
             return tasks;
         }
 
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Select method that gets a list of taskAssginments for a task
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>List Tasks</returns>
+        public List<TaskAssignmentVM> SelectTaskAssignmentsByTaskID(int taskID)
+        {
+            List<TaskAssignmentVM> taskAssignments = new List<TaskAssignmentVM>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_task_assignments_by_task_id";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@TaskID", SqlDbType.Int);
+            cmd.Parameters["@TaskID"].Value = taskID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        taskAssignments.Add(new TaskAssignmentVM()
+                        {
+                            /*
+                              [TaskAssignmentID]	
+                              [DateAssigned]		 				 		 
+                              [UserID]			 
+                              [RoleID]	
+                              [GivenName]
+                              [FamilyName]
+                            */
+                            TaskAssignmentID = reader.GetInt32(0),
+                            DateAssigned = DateTime.Parse(reader[1].ToString()),
+                            TaskID = taskID,
+                            UserID = reader.GetInt32(2),
+                            RoleID = reader.GetString(3),
+                            Name = reader.GetString(4) + " " + reader.GetString(5)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return taskAssignments;
+        }
     }
 }
