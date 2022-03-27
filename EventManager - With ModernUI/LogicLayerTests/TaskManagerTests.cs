@@ -289,7 +289,7 @@ namespace LogicLayerTests
                 TaskEventName = "Test Event 1",
                 Name = "Mop",
                 Description = "Mop up spilled drink",
-                DueDate = DateTime.Now,
+                DueDate = DateTime.Today,
                 Priority = 3,
                 TaskPriority = "High",
                 Active = true
@@ -302,7 +302,7 @@ namespace LogicLayerTests
                 TaskEventName = "Test Event 27",
                 Name = "Mop",
                 Description = "Test",
-                DueDate = DateTime.Now,
+                DueDate = DateTime.Today,
                 Priority = 1,
                 TaskPriority = "Low",
                 Active = false
@@ -658,6 +658,95 @@ namespace LogicLayerTests
 
             // assert
             Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Descripiton:
+        /// Test that returns true when the user has the correct role
+        /// </summary>
+        [TestMethod]
+        public void TestUserCanAddEditOrDeleteTaskReturnsTrue()
+        {
+            // arrange
+            const int userID = 100000;
+            const bool expectedResult = true;
+            bool actualResult;
+
+            // act
+            actualResult = _taskManager.UserCanEditDeleteTask(userID);
+
+            // assert
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Test that returns false because the user does not have correct role
+        /// </summary>
+        [TestMethod]
+        public void TestUserCanAddEditOrDeleteTaskReturnsFalse()
+        {
+            // arrange
+            const int userID = 100001;
+            const bool expectedResult = false;
+            bool actualResult;
+
+            // act
+            actualResult = _taskManager.UserCanEditDeleteTask(userID);
+
+            // assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Test the returns true with valid TaskID
+        /// </summary>
+        [TestMethod]
+        public void TestDeleteTaskByTaskIDReturnsTrue()
+        {
+            // arrange
+            const int taskID = 999999;
+            const bool expected = true;
+            bool actual;
+
+            // act
+            actual = _taskManager.RemoveTaskByTaskID(taskID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Test that returns with invalid TaskID
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestDeleteTaskByTaskIDReturnsFalse()
+        {
+            // arrange
+            const int taskID = 1000000;
+
+            // act
+            _taskManager.RemoveTaskByTaskID(taskID);
+
+            // assert
+            // Exception checking
+
         }
     }
 }

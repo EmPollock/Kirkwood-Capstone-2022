@@ -60,13 +60,13 @@
             <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="53" />
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="55" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150" />
@@ -109,12 +109,10 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button x:Name="btnSaveTask" Grid.Row="0" Grid.Column="0" Margin="25 10 15 10" Padding="20 5" Click="btnSaveTask_Click">Save</Button>
-                <Button x:Name="btnCancelTask" Grid.Row="0" Grid.Column="1" Margin="20 10" Padding="15 5" Click="btnCancelTask_Click">Cancel</Button>
-                <Button x:Name="btnDeleteTask" Grid.Row="0" Grid.Column="2" Margin="20 10" Padding="15 5" Click="btnDeleteTask_Click">Delete</Button>
+                <Button x:Name="btnSaveTask" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="25 10 15 10" Padding="20 5" Click="btnSaveTask_Click">Save</Button>
+                <Button x:Name="btnCancelTask" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="20 10" Padding="15 5" Click="btnCancelTask_Click">Cancel</Button>
+                <Button x:Name="btnDeleteTask" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Margin="20 10" Padding="15 5" Click="btnDeleteTask_Click">Delete</Button>
             </Grid>
         </Grid>
 

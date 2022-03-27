@@ -49,6 +49,7 @@ namespace WPFPresentation.Event
         ISublocationManager _sublocationManager = null;
         DataObjects.EventVM _event = null;
         User _user = null;
+        bool _canAddEditDelete = false;
 
         internal pgTaskListView(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
@@ -62,6 +63,17 @@ namespace WPFPresentation.Event
             _event = selectedEvent;
             _user = user;
 
+            try
+            {
+                _canAddEditDelete = _managerProvider.TaskManager.UserCanEditDeleteTask(_user.UserID);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("There was a problem checking to see if you are allowed to edit or delete a task." + ex.Message,
+                                    "Edit/Delete Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
             _sublocationManager = managerProvider.SublocationManager;
 
             InitializeComponent();
@@ -74,12 +86,24 @@ namespace WPFPresentation.Event
         /// Description:
         /// Load event to populate the DataGrid. Loops through the columns to find the column
         /// with the header of "Name" and collapse all the other columns
+        /// 
+        /// Mike Cahow
+        /// Updated: 2022/03/25
+        /// 
+        /// Descripiton:
+        /// Added a check to see if the user is able to Add tasks or not
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             lblEventName.Text = _event.EventName;
+
+            if (!_canAddEditDelete)
+            {
+                lblTaskListCreate.Visibility = Visibility.Hidden;
+                btnTaskListCreate.Visibility = Visibility.Hidden;
+            }
 
 
             updateTaskList();
@@ -120,6 +144,11 @@ namespace WPFPresentation.Event
                 {
                     column.Visibility = Visibility.Hidden;
                 }
+            }
+
+            if(datViewAllTasksForEvent.Items.Count == 0)
+            {
+                lblEmptyTaskList.Visibility = Visibility.Visible;
             }
         }
 
