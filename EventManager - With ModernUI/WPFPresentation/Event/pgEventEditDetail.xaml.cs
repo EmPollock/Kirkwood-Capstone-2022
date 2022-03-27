@@ -140,7 +140,7 @@ namespace WPFPresentation.Event
             txtBoxEventName.Text = _event.EventName.ToString();
             txtBoxEventDateCreated.Text = _event.EventCreatedDate.ToShortDateString();
             txtBoxEventDescription.Text = _event.EventDescription.ToString();
-            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet
+            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet\
 
         }
 
@@ -775,7 +775,7 @@ namespace WPFPresentation.Event
                         {
 
                             //datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
-                            
+
                             try
                             {
                                 EventDate newEventDate = new EventDate()
@@ -967,12 +967,17 @@ namespace WPFPresentation.Event
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
+            
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
-                locationFrame.Navigate(locationDetailsPage);
-                lblLocationErrorMesage.Visibility = Visibility.Hidden;
+                if(_location.LocationID == 0)
+                {
+                    return;
+                }
+                    pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
+                    locationFrame.Navigate(locationDetailsPage);
+                    lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }
             catch (Exception)
             {

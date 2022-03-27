@@ -41,6 +41,11 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Update:
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/25
+        /// Description: removed fake
         /// </summary>
 
         ITaskManager _taskManager = null;
@@ -53,10 +58,7 @@ namespace WPFPresentation.Event
 
         internal pgTaskListView(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
         {
-            // fake accessor
-            //_taskManager = new TaskManager(new DataAccessFakes.TaskAccessorFakes());
 
-            // default accessor
             _managerProvider = managerProvider;
             _taskManager = managerProvider.TaskManager;
             _eventManager = managerProvider.EventManager;

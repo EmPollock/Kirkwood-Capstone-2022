@@ -112,7 +112,7 @@ namespace DataAccessLayer
                         location = new Location()
                         {
                             LocationID = locationID,
-                            UserID = reader.GetInt32(0),
+                            UserID = reader.IsDBNull(0) ? null : (int?)reader.GetInt32(0),
                             Name = reader.GetString(1),
                             Description = reader.IsDBNull(2) ? null : reader.GetString(2),
                             PricingInfo = reader.IsDBNull(3) ? null : reader.GetString(3),
@@ -505,6 +505,112 @@ namespace DataAccessLayer
             }
 
             return locationAvailabilities;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// update a location bio information (description, phone, email, address, pricing)
+        /// for a location in the location table
+        /// 
+        /// </summary>
+        /// <returns>List of all active locations</returns>
+        public int UpdateLocationBioByLocationID(Location oldLocation, Location newLocation)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_update_location_bio_by_locationID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters["@LocationID"].Value = oldLocation.LocationID;
+           
+            if(oldLocation.Description != null && oldLocation.Description != "")
+            {
+                cmd.Parameters.Add("@OldDescription", SqlDbType.NVarChar, 3000);
+                cmd.Parameters["@OldDescription"].Value = oldLocation.Description;
+            } 
+
+            if(oldLocation.Phone != null || oldLocation.Phone != "")
+            {
+                cmd.Parameters.Add("@OldPhone", SqlDbType.NVarChar, 15);
+                cmd.Parameters["@OldPhone"].Value = oldLocation.Phone;
+            } 
+
+            if(oldLocation.Email != null && oldLocation.Email != "")
+            {
+                cmd.Parameters.Add("@OldEmail", SqlDbType.NVarChar, 250);
+                cmd.Parameters["@OldEmail"].Value = oldLocation.Email;
+            }
+
+            cmd.Parameters.Add("@OldAddress1", SqlDbType.NVarChar, 100);
+            cmd.Parameters["@OldAddress1"].Value = oldLocation.Address1;
+            
+            if(oldLocation.Address2 != null && oldLocation.Address2 != "")
+            {
+                cmd.Parameters.Add("@OldAddress2", SqlDbType.NVarChar, 100);
+                cmd.Parameters["@OldAddress2"].Value = oldLocation.Address2;
+            } 
+
+            if (oldLocation.PricingInfo != null && oldLocation.PricingInfo != "")
+            {
+                cmd.Parameters.Add("@OldPricing", SqlDbType.NVarChar, 3000);
+                cmd.Parameters["@OldPricing"].Value = oldLocation.PricingInfo;
+            }
+            
+            if (newLocation.Description != null && newLocation.Description != "")
+            {
+                cmd.Parameters.Add("@NewDescription", SqlDbType.NVarChar, 3000);
+                cmd.Parameters["@NewDescription"].Value = newLocation.Description;
+            }
+           
+            if (newLocation.Phone != null && newLocation.Phone != "")
+            {
+                cmd.Parameters.Add("@NewPhone", SqlDbType.NVarChar, 15);
+                cmd.Parameters["@NewPhone"].Value = newLocation.Phone;
+            }
+           
+            if (newLocation.Email != null && newLocation.Email != "")
+            {
+                cmd.Parameters.Add("@NewEmail", SqlDbType.NVarChar, 250);
+                cmd.Parameters["@NewEmail"].Value = newLocation.Email;
+            }
+
+            cmd.Parameters.Add("@NewAddress1", SqlDbType.NVarChar, 100);
+            cmd.Parameters["@NewAddress1"].Value = newLocation.Address1;
+
+            if (newLocation.Address2 != null && newLocation.Address2 != "")
+            {
+                cmd.Parameters.Add("@NewAddress2", SqlDbType.NVarChar, 100);
+                cmd.Parameters["@NewAddress2"].Value = newLocation.Address2;
+            }
+            
+            if (newLocation.PricingInfo != null && newLocation.PricingInfo != "")
+            {
+                cmd.Parameters.Add("@NewPricing", SqlDbType.NVarChar, 3000);
+                cmd.Parameters["@NewPricing"].Value = newLocation.PricingInfo;
+            }
+            
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
         }
     }
 }
