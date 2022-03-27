@@ -97,6 +97,21 @@
     <Compile Include="Location\pgAddEditEntrance.xaml.cs">
       <DependentUpon>pgAddEditEntrance.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Location\pgLocationDetails.xaml.cs">
+      <DependentUpon>pgLocationDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgLocationEntrance.xaml.cs">
+      <DependentUpon>pgLocationEntrance.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgLocationFrame.xaml.cs">
+      <DependentUpon>pgLocationFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgLocationSchedule.xaml.cs">
+      <DependentUpon>pgLocationSchedule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgLocationSublocations.xaml.cs">
+      <DependentUpon>pgLocationSublocations.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Location\pgParkingLot.xaml.cs">
       <DependentUpon>pgParkingLot.xaml</DependentUpon>
     </Compile>
@@ -161,6 +176,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Location\pgAddEditEntrance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgLocationDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgLocationEntrance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgLocationFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgLocationSchedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgLocationSublocations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

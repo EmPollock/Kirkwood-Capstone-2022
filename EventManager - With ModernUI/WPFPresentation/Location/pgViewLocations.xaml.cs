@@ -90,6 +90,13 @@ namespace WPFPresentation.Location
         /// 
         /// Description:
         /// Added _user to page constructor
+        /// 
+        /// Update:
+        /// Kris Howell
+        /// Updated: 2022/03/27
+        /// 
+        /// Description:
+        /// Redirect to new pgLocationFrame page
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -101,7 +108,7 @@ namespace WPFPresentation.Location
             }
             DataObjects.Location location = (DataObjects.Location)datLocationsList.SelectedItem;
 
-            pgViewLocationDetails page = new pgViewLocationDetails(location.LocationID, _managerProvider, _user);
+            pgLocationFrame page = new pgLocationFrame(_managerProvider, location, _user);
             this.NavigationService.Navigate(page);
         }
     }

@@ -1281,7 +1281,7 @@ namespace WPFPresentation
         /// <param name="e"></param>
         private void btnCreateEntrance_Click(object sender, RoutedEventArgs e)
         {
-            Page page = new pgAddEditEntrance(_entrance, _locationID, _managerProvider, _user, 1);
+            Page page = new pgAddEditEntrance(_entrance, _location, _managerProvider, _user, 1);
             this.NavigationService.Navigate(page);
         }
 
@@ -1299,7 +1299,7 @@ namespace WPFPresentation
         private void datViewEntrances_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             _entrance = (Entrance)datViewEntrances.SelectedItem;
-            Page page = new pgAddEditEntrance(_entrance, _locationID, _managerProvider, _user, 2);
+            Page page = new pgAddEditEntrance(_entrance, _location, _managerProvider, _user, 2);
             this.NavigationService.Navigate(page);
         }
 

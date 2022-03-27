@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using DataObjects;
 using DataAccessFakes;
 using System.Text.RegularExpressions;
+using WPFPresentation.Location;
 
 namespace WPFPresentation.Event
 {
@@ -964,6 +965,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Added _user to constructor
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/27
+        /// 
+        /// Description:
+        /// Load new pgLocationFrame rather than old location page
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
@@ -975,9 +982,9 @@ namespace WPFPresentation.Event
                 {
                     return;
                 }
-                    pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
-                    locationFrame.Navigate(locationDetailsPage);
-                    lblLocationErrorMesage.Visibility = Visibility.Hidden;
+                pgLocationFrame locationDetailsPage = new pgLocationFrame(_managerProvider, _location, _user);
+                locationFrame.Navigate(locationDetailsPage);
+                lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }
             catch (Exception)
             {
