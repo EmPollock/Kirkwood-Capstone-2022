@@ -115,9 +115,6 @@
     <Compile Include="Location\pgParkingLot.xaml.cs">
       <DependentUpon>pgParkingLot.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Location\pgViewLocationDetails.xaml.cs">
-      <DependentUpon>pgViewLocationDetails.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Location\pgViewLocations.xaml.cs">
       <DependentUpon>pgViewLocations.xaml</DependentUpon>
     </Compile>
@@ -200,10 +197,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Location\pgParkingLot.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Location\pgViewLocationDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
