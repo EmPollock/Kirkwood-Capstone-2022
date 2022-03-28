@@ -106,6 +106,13 @@ namespace WPFPresentation.Event
         /// Description:
         /// Void method to populate the edit page with the selected Tasks
         /// values. To be called when needed.
+        /// 
+        /// Derrick Nagy
+        /// Upadate: 2022/03/27
+        /// 
+        /// Description:
+        /// Set default date picker time to DateTime.Now if the date was not previously choosen
+        /// 
         /// </summary>
         private void populateControls()
         {
@@ -115,7 +122,18 @@ namespace WPFPresentation.Event
             txtTaskName.IsEnabled = false;
             txtTaskDescription.Text = _task.Description.ToString();
             cboAssign.SelectedItem = "Unavailable"; // pass up volunteer when available
-            dtpTaskDueDate.SelectedDate = _task.DueDate;
+
+            if (_task.DueDate == DateTime.MinValue)
+            {
+                dtpTaskDueDate.SelectedDate = DateTime.Now;
+            }
+            else
+            {
+                dtpTaskDueDate.SelectedDate = _task.DueDate;
+            }
+            
+
+
             cboPriority.SelectedItem = _task.TaskPriority;
             sldrNumVolunteers.Value = _need.NumTotalVolunteers;
         }
@@ -169,6 +187,13 @@ namespace WPFPresentation.Event
         /// Updated: 2022/03/05
         /// 
         /// Description: Added logic to handle requesting a certain number of volunteers
+        /// 
+        /// Derrick Nagy
+        /// Upadate: 2022/03/27
+        /// 
+        /// Description:
+        /// Handled errors that occur for an unsuccessful update
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -201,6 +226,10 @@ namespace WPFPresentation.Event
                 if (_taskManager.EditTask(_task, task) && _needManager.UpdateVolunteerNeed(_need, numTotalVolunteers))
                 {
                     MessageBox.Show("Task updated");
+                }
+                else
+                {
+                    MessageBox.Show("There was a problem updating the task.");
                 }
             }
             catch (Exception ex)

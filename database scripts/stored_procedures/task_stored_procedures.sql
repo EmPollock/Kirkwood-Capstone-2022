@@ -290,10 +290,11 @@ GO
 / Description: Creating Stored Procedure for updating tasks
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Derrick Nagy
+/ Updated: 2022/03/27
 /
 / Description: 
+/ Commented out [DueDate] = @OldDueDate so that it could handle inserting at null values
 ****************************************************************/
 
 print '' print'*** creating sp_update_task'
@@ -326,7 +327,7 @@ AS
 		 AND	[TaskID]		= @TaskID
 		 AND	[Name] 			= @OldName
 		 AND	[Description]	= @OldDescription
-		 AND	[DueDate]		= @OldDueDate
+		 --AND	[DueDate]		= @OldDueDate
 		 AND	[Priority]		= @OldPriority
 		 AND	[Active]		= @OldActive
 		 

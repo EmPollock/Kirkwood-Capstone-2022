@@ -698,11 +698,31 @@ namespace WPFPresentation
         /// Description: Adds a generic event with the number of volunteers
         /// the organziers would like on hand to use as needed.
         /// 
+        /// Derrick Nagy
+        /// Upadate: 2022/03/27
+        /// 
+        /// Description:
+        /// Handled errors that occur for events with no dates
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnRequestVolunteers_Click(object sender, RoutedEventArgs e)
         {
+            DateTime dueDate = new DateTime();
+            
+            try
+            {
+                dueDate = _eventDateManager.RetrieveEventDatesByEventID(newEvent.EventID).ElementAt(0).EventDateID;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not retrieve event dates.");
+            }
+            
+            
+
+
             int numTotalVolunteers = (int)sldrNumVolunteers.Value;
             DataObjects.Tasks genericTask = new Tasks()
             {
@@ -710,7 +730,10 @@ namespace WPFPresentation
                 Name = "General Help",
                 Description = "Help out with the event as needed on the day of.",
                 // cboAssign variable,
-                DueDate = _eventDateManager.RetrieveEventDatesByEventID(newEvent.EventID).ElementAt(0).EventDateID,
+
+                
+                DueDate = dueDate,
+
                 Priority = 3
             };
             try
