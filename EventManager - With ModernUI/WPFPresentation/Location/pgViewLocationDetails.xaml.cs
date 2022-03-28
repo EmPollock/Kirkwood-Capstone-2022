@@ -17,6 +17,7 @@ using LogicLayerInterfaces;
 using DataObjects;
 using WPFPresentation.Location;
 using DataAccessFakes;
+using System.Collections.ObjectModel;
 
 namespace WPFPresentation
 {
@@ -45,6 +46,7 @@ namespace WPFPresentation
         List<EventDateVM> _eventDatesForLocation;
         List<Sublocation> _sublocations;
         List<Activity> _activitiesForSublocation;
+        List<Availability> _selectedDateAvailabilities = new List<Availability>();
         List<Entrance> _entrances;
 
         Uri _src;
@@ -96,7 +98,6 @@ namespace WPFPresentation
             _eventManager = managerProvider.EventManager;
 
             _locationID = locationID;
-            _location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationReviews = _locationManager.RetrieveLocationReviews(locationID);
             _locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
             _sublocations = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
@@ -107,6 +108,7 @@ namespace WPFPresentation
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
 
             _where = 0;
+            calLocationCalendar.SelectedDate = null;
         }
 
         /// <summary>
@@ -148,6 +150,8 @@ namespace WPFPresentation
         /// </summary>
         private void loadLocationDetails()
         {
+            _location = _locationManager.RetrieveLocationByLocationID(_locationID);
+
             if (ValidationHelpers.EditOngoing)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -165,6 +169,17 @@ namespace WPFPresentation
             hideSublocations();
             btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
             scrLocationDetails.Visibility = Visibility.Visible;
+
+            btnDeleteLocation.Visibility = Visibility.Hidden;
+            btnCancelLocationEdit.Visibility = Visibility.Hidden;
+            btnEditSaveLocation.Content = "Edit";
+
+            txtBoxAboutLocation.IsReadOnly = true;
+            txtPhoneNumber.IsEnabled = false;
+            txtEmail.IsEnabled = false;
+            txtAddressOne.IsEnabled = false;
+            txtAddressTwo.IsEnabled = false;
+            txtBoxPricing.IsReadOnly = true;
 
             //scrLocationDetails.Visibility = Visibility.Visible;
             txtLocationName.Text = _location.Name;
@@ -367,14 +382,6 @@ namespace WPFPresentation
                 }
             }
 
-
-            //if (_locationImages.Count == 0)
-            //{
-            //    imgLocationImage.Visibility = Visibility.Collapsed;
-            //    btnNext.Visibility = Visibility.Collapsed;
-            //    btnBack.Visibility = Visibility.Collapsed;
-            //    return;
-            //}
             try
             {
                 _src = new Uri(AppData.DataPath + @"\" + _locationImages[_imageNumber].ImageName, UriKind.Absolute);
@@ -424,6 +431,7 @@ namespace WPFPresentation
             scrLocationSchedule.Visibility = Visibility.Visible;
 
             txtLocationNamesSchedule.Text = _location.Name + "'s Schedule";
+            lblBookings.Text = "Booked Events";
             _eventDatesForLocation = _eventDateManager.RetrieveEventDatesByLocationID(_locationID);
         }
 
@@ -437,6 +445,7 @@ namespace WPFPresentation
         private void loadSublocationSchedule()
         {
             txtLocationNamesSchedule.Text = cboSchedulePicker.SelectedItem + "'s Schedule";
+            lblBookings.Text = "Booked Activities";
             _activitiesForSublocation = _activityManager.RetrieveActivitiesBySublocationID(_sublocationID);
         }
 
@@ -449,11 +458,6 @@ namespace WPFPresentation
         /// </summary>
         private void loadCalendarData()
         {
-            if (!calLocationCalendar.SelectedDate.HasValue)
-            {
-                calLocationCalendar.SelectedDate = DateTime.Today;
-            }
-
             if (cboSchedulePicker.SelectedItem.Equals(_location.Name))
             {
                 List<EventDateVM> eventDatesForDataGrid = new List<EventDateVM>();
@@ -467,7 +471,7 @@ namespace WPFPresentation
                 }
 
                 datLocationSchedule.ItemsSource = eventDatesForDataGrid;
-                DateTime date = (DateTime)calLocationCalendar.SelectedDate;
+                DateTime date = calLocationCalendar.SelectedDate.Value.Date;
 
                 lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
             }
@@ -487,6 +491,13 @@ namespace WPFPresentation
 
                 lblLocationDate.Text = date.ToString("MMMM dd, yyyy");
             }
+
+            _selectedDateAvailabilities = _locationManager.RetrieveLocationAvailabilityByLocationIDAndDate(_location.LocationID, (DateTime)calLocationCalendar.SelectedDate);
+
+
+            datLocationAvailabilities.ItemsSource = new ObservableCollection<Availability>(from a in _selectedDateAvailabilities
+                                                                                           orderby a.TimeStart ascending
+                                                                                           select a);
 
         }
 
@@ -519,6 +530,7 @@ namespace WPFPresentation
             scrParkingLot.Visibility = Visibility.Collapsed;
             scrSublocations.Visibility = Visibility.Collapsed;
             scrViewEntrance.Visibility = Visibility.Collapsed;
+            scrLocationSchedule.Visibility = Visibility.Collapsed;
 
             btnSiteDetails.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteAreas.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
@@ -527,10 +539,94 @@ namespace WPFPresentation
             btnSiteEntrances.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteParking.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
             btnSiteSupplies.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// The helper method that blacks out any dates that are not available for the current location
+        /// for the visible month and half of the following month and half of the previous month (so the user 
+        /// is not able to select a date that otherwise would not be able to be selected)
+        /// 
+        /// </summary>
+        private void blackOutCalendarDates()
+        {
+            int month = calLocationCalendar.DisplayDate.Month;
+            int year = calLocationCalendar.DisplayDate.Year;
+            CalendarBlackoutDatesCollection calendarDateRanges = calLocationCalendar.BlackoutDates;
+            calendarDateRanges.Clear();
+            this.Cursor = Cursors.Wait;
+
+            //BLACK OUT CURRENT MONTH THAT IS BEING VIEWED
+            for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+            {
+                DateTime date = new DateTime(year, month, i);
+                List<Availability> availability = _locationManager.RetrieveLocationAvailabilityByLocationIDAndDate(_location.LocationID, date);
+
+                if (availability.Count == 0 || availability[0].TimeStart == null)
+                {
+                    calLocationCalendar.BlackoutDates.Add(new CalendarDateRange(date));
+                }
+            }
+
+            if (month + 1 > 12)
+            {
+                year++;
+                month = 1;
+            }
+            else
+            {
+                month++;
+            }
+            // BLACK OUT NEXT MONTH ON CALENDAR
+            // SHORTEN THE DAYS TO ONLY BE THE FIRST 15 (only the first few days are visible)
+            for (int i = 1; i <= DateTime.DaysInMonth(year, month) - 15; i++)
+            {
+                DateTime date = new DateTime(year, month, i);
+                List<Availability> availability = _locationManager.RetrieveLocationAvailabilityByLocationIDAndDate(_location.LocationID, date);
+
+                if (availability.Count == 0 || availability[0].TimeStart == null)
+                {
+                    calLocationCalendar.BlackoutDates.Add(new CalendarDateRange(date));
+                }
+
+            }
 
 
 
-            //frmViewLocationDetails.Visibility = Visibility.Collapsed;
+            // LOGIC TO GO BACK A MONTH / TWO MONTHS (most likely can be changed to 
+            // month = calendar.DisplayDate.Month - 1)
+            if (month - 1 < 1)
+            {
+                year--;
+                month = 11;
+            }
+            else if (month - 2 < 1)
+            {
+                year--;
+                month = 12;
+            }
+            else
+            {
+                month -= 2;
+            }
+            // BLACK OUT PREVIOUS MONTH ON CALENDAR
+            // SHORTEN THE DAYS TO ONLY BE THE LAST 15 (only the last few days are visible)
+            for (int i = 15; i <= DateTime.DaysInMonth(year, month); i++)
+            {
+                DateTime date = new DateTime(year, month, i);
+                List<Availability> availability = _locationManager.RetrieveLocationAvailabilityByLocationIDAndDate(_location.LocationID, date);
+
+                if (availability.Count == 0 || availability[0].TimeStart == null)
+                {
+                    calLocationCalendar.BlackoutDates.Add(new CalendarDateRange(date));
+                }
+
+            }
+
+            this.Cursor = Cursors.Arrow;
         }
 
         /// <summary>
@@ -678,6 +774,7 @@ namespace WPFPresentation
             hideEntrances();
             hideSublocations();
             btnSiteSchedule.Background = new SolidColorBrush(Colors.Gray);
+            //scrLocationSchedule.Visibility = Visibility.Visible;
             scrLocationSchedule.Visibility = Visibility.Visible;
 
             if (cboSchedulePicker.Items.Count == 0)
@@ -689,12 +786,8 @@ namespace WPFPresentation
                     cboSchedulePicker.Items.Add(sublocation.SublocationName);
                 }
             }
-
-            // PUT CODE HERE TO CALL WHEN SELECTION CHANGES.
-            if (!calLocationCalendar.SelectedDate.HasValue)
-            {
-                calLocationCalendar.SelectedDate = DateTime.Today;
-            }
+            blackOutCalendarDates();
+            
         }
 
         /// <summary>
@@ -746,8 +839,10 @@ namespace WPFPresentation
             {
                 MessageBox.Show("Error");
             }
-            //MessageBox.Show(cboSchedulePicker.SelectedItem.ToString());
-            loadCalendarData();
+            if(calLocationCalendar.SelectedDate != null)
+            {
+                loadCalendarData();
+            }
         }
 
         /// <summary>
@@ -1495,6 +1590,143 @@ namespace WPFPresentation
 
 
 
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// Event handler that will black out the months when the display dates (going to a different 
+        /// month or year) 
+        /// 
+        /// </summary>
+        private void calLocationCalendar_DisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
+        {
+            blackOutCalendarDates();
+		}
+		
+        /// Jace Pettinger
+        /// Created: 2022/02/25
+        /// 
+        /// Description:
+        /// Click event handler for selecting edit or save location biography
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnEditSave_Click(object sender, RoutedEventArgs e)
+        {
+            if(btnEditSaveLocation.Content.Equals("Edit")) // edit 
+            {
+                btnDeleteLocation.Visibility = Visibility.Visible;
+                btnCancelLocationEdit.Visibility = Visibility.Visible;
+
+
+                txtBoxAboutLocation.IsReadOnly = false;
+                txtPhoneNumber.IsEnabled = true;
+                txtEmail.IsEnabled = true;
+                txtAddressOne.IsEnabled = true;
+                txtAddressTwo.IsEnabled = true;
+                txtBoxPricing.IsReadOnly = false;
+                txtBoxPricing.IsEnabled = true;
+
+                btnEditSaveLocation.Content = "Save";
+                txtBoxAboutLocation.Focus();
+            } 
+            else // save
+            { // validation checks
+                string locationDescription = txtBoxAboutLocation.Text;
+                string locationPhone = txtPhoneNumber.Text;
+                string locationEmail = txtEmail.Text;
+                string locationAddressOne = txtAddressOne.Text;
+                string locationAddressTwo = txtAddressTwo.Text;
+                string locationPricing = txtBoxPricing.Text;
+
+                if (locationDescription != null && locationDescription.Length > 3000) // desription too long (description can be null)
+                {
+                    MessageBox.Show("Location description cannot excede 3,000 characters");
+                }
+                else if (locationPhone != null && locationPhone != "" 
+                    && !ValidationHelpers.IsValidPhone(locationPhone)) // phone number format validation (phone can be null)
+                {
+                        MessageBox.Show("Invalid phone number");
+                }
+                else if (locationEmail != null && locationEmail != ""
+                    && !ValidationHelpers.IsValidEmailAddress(locationEmail)) // email format validation (email can be null)
+                {
+                        MessageBox.Show("Invalid email address");
+                }
+                else if (locationAddressOne == "" || locationAddressOne == null) // no address one
+                {
+                    MessageBox.Show("Please enter an address");
+                }
+                else if (locationAddressOne.Length > 100) // address one too long 
+                {
+                    MessageBox.Show("Address one cannot be longer than 100 characters");
+                }
+                else if (locationAddressTwo != null && locationAddressTwo != ""
+                   && locationAddressTwo.Length > 100) // address two too long (address two can be null)
+                {
+                    MessageBox.Show("Address two cannot be longer than 100 characters"); //3000
+                }
+                else if (locationPricing.Length > 3000) // pricing too long (pricing can be null)
+                {
+                    MessageBox.Show("Pricing cannot be longer than 3000 characters");
+                }
+                else // end of validation checks
+                {
+                    DataObjects.Location oldLocation = _location;
+                    try
+                    {
+                        DataObjects.Location newLocation = new DataObjects.Location()
+                        {
+                            Description = locationDescription,
+                            Phone = locationPhone,
+                            Email = locationEmail,
+                            Address1 = locationAddressOne,
+                            Address2 = locationAddressTwo,
+                            PricingInfo = locationPricing
+                        };
+                        int rowsAffected = _locationManager.UpdateLocationBioByLocationID(oldLocation, newLocation);
+                        if (rowsAffected == 1)
+                        {
+                            loadLocationDetails();
+                        }
+                        else
+                        {
+                            MessageBox.Show("There was an error updating the location\n");
+                            loadLocationDetails();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was an error updating the location\n" + ex.Message);
+                        loadLocationDetails();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/03
+        /// 
+        /// Description:
+        /// Click event handler for canceling editing location biography
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
+        private void btnCancelLocationEdit_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Discard unsaved changes?",
+                              "Cancel",
+                              MessageBoxButton.YesNo,
+                              MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                loadLocationDetails();
+            }
         }
     }
 }

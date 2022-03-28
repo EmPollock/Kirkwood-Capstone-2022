@@ -370,5 +370,106 @@ namespace DataAccessLayer
 
             return taskAssignments;
         }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Descripiton:
+        /// A method that returns true if the User ID given is allowed to edit/delete tasks
+        /// (Should only be the Event Manager and Event Planner)
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>Boolean value</returns>
+        public bool UserCanEditDeleteTask(int userID)
+        {
+            bool result = false;
+            List<Role> roles = new List<Role>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdTxt = "sp_select_user_roles_from_event_users_table";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(new Role()
+                        {
+                            RoleID = reader.GetString(0)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            foreach (Role role in roles)
+            {
+                if (role.RoleID == "Event Planner" || role.RoleID == "Event Manager")
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Deletes a Task from the Tasks table with corresponding TaskID
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>True if task is removed</returns>
+        public bool DeleteTaskByTaskID(int taskID)
+        {
+            bool deleted = false;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_delete_task_by_taskID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@TaskID", SqlDbType.Int);
+            cmd.Parameters["@TaskID"].Value = taskID;
+
+            try
+            {
+                conn.Open();
+                deleted = (1 == cmd.ExecuteNonQuery());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return deleted;
+        }
     }
 }

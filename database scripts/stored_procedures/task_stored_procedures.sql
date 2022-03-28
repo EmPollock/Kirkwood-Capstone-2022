@@ -395,3 +395,33 @@ AS
 		WHERE 	[TaskID] = @TaskID
 	END
 GO
+
+/***************************************************************
+/ Mike Cahow
+/ Created: 2022/03/25
+/ 
+/ Description: Creating Stored Procedure for deleting task by taskID
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print '*** creating sp_delete_task_by_taskID...'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_task_by_taskID]
+(
+	@TaskID		[int]
+)
+AS
+	BEGIN
+	
+		DELETE FROM	[dbo].[Task]
+		WHERE		@TaskID = [Task].[TaskID]
+		
+		RETURN 		@@ROWCOUNT
+	
+	END
+GO

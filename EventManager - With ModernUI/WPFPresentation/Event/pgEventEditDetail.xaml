@@ -201,7 +201,7 @@
                     <Frame x:Name="locationFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Margin="5px" />
                 </Grid>
             </TabItem>
-            <TabItem x:Name="tabEventVolunteerRequests" Header="Requests" Loaded="tabEventVolunteerRequests_Loaded" Visibility="Collapsed">
+            <TabItem x:Name="tabEventVolunteerRequests" Header="Requests" Loaded="tabEventVolunteerRequests_Loaded">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"></RowDefinition>

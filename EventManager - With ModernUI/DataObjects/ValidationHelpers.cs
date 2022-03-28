@@ -144,5 +144,25 @@ namespace WPFPresentation
             }
             return isValid;
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/3/18
+        /// 
+        /// Description:
+        /// String validation method, checks for valid phone number format.
+        /// Regex found at https://stackoverflow.com/questions/16699007/regular-expression-to-match-standard-10-digit-phone-number
+        /// 
+        /// </summary>
+        public static bool IsValidPhone(this string phone)
+        {
+            bool isValid = false;
+            Regex rx = new Regex(@"^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$");
+            if (rx.IsMatch(phone))
+            {
+                isValid = true;
+            }
+            return isValid;
+        }
     }
 }

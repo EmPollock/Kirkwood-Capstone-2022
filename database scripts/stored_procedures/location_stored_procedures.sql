@@ -76,7 +76,7 @@ AS
 			[LocationImagePath],		
 			[LocationActive]		
 		FROM [Location] 
-		WHERE [LocationID] = @LocationID
+		WHERE [LocationID] = @LocationID AND [LocationActive] = 1
 	END	
 GO
 
@@ -181,6 +181,52 @@ AS
 		UPDATE	[Location]
 		SET	
 			[LocationActive] = 0
+		WHERE
+			[LocationID] = @LocationID
+		RETURN @@ROWCOUNT
+	END
+GO
+
+/***************************************************************
+Jace Pettinger
+Created: 2022/03/04
+
+Description:
+Stored procedure to deactivate a location in the Location table
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_update_location_bio_by_locationID***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_location_bio_by_locationID]
+(
+	@LocationID 				[int],
+	@OldDescription				[nvarchar](3000)	= NULL,
+	@OldPhone					[nvarchar](15)		= NULL,
+	@OldEmail					[nvarchar](250)		= NULL,
+	@OldAddress1				[nvarchar](100),
+	@OldAddress2				[nvarchar](100)		= NULL,
+	@OldPricing					[nvarchar](3000)	= NULL,
+	@NewDescription				[nvarchar](3000)	= NULL,
+	@NewPhone					[nvarchar](15)		= NULL,
+	@NewEmail					[nvarchar](250)		= NULL,
+	@NewAddress1				[nvarchar](100),
+	@NewAddress2				[nvarchar](100)		= NULL,
+	@NewPricing					[nvarchar](3000)	= NULL
+)
+AS
+	BEGIN
+		UPDATE	[dbo].[Location]
+		SET	
+			[LocationDescription] = @NewDescription,
+			[LocationPhone] = @NewPhone,
+			[LocationEmail] = @NewEmail,
+			[LocationAddress1] = @NewAddress1,
+			[LocationAddress2] = @NewAddress2,
+			[LocationPricingText] = @NewPricing
 		WHERE
 			[LocationID] = @LocationID
 		RETURN @@ROWCOUNT

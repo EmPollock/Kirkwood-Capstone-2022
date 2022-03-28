@@ -97,6 +97,7 @@
                 
                 
             </DataGrid>
+            <Label x:Name="lblEmptyTaskList" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" >Event has no tasks</Label>
 
         </Grid>
         

@@ -118,7 +118,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock  x:Name="txtSupplierSchedule" Text="[Supplier]'s Schedule" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Style="{StaticResource TitleTextBlockStyle}"/>
-            <Calendar   x:Name="calSupplierCalendar" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="1000" SelectedDatesChanged="calSupplierCalendar_SelectedDatesChanged"/>
+            <Calendar   x:Name="calSupplierCalendar" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="1000" SelectedDatesChanged="calSupplierCalendar_SelectedDatesChanged" DisplayDateChanged="calSupplierCalendar_DisplayDateChanged"/>
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>

@@ -34,6 +34,7 @@ namespace WPFPresentation.Event
         ManagerProvider _managerProvider = null;
 
         User _user = null;
+        bool _canEditDelete = false;
 
         // create a priority list to populate in a bit
         List<Priority> _priorities = new List<Priority>();
@@ -57,6 +58,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Mike Cahow
+        /// Updated: 2022/03/25
+        /// 
+        /// Description:
+        /// Added a check to see if a user can edit/delete a task
         /// </summary>
         /// <param name="selectedTask"></param>
         /// <param name="selectedEvent"></param>
@@ -77,7 +84,16 @@ namespace WPFPresentation.Event
             _task.EventID = _event.EventID;
             _user = user;
             _need = _needManager.RetrieveVolunteerNeedByTaskID(_task.TaskID);
+            try
+            {
+                _canEditDelete = _managerProvider.TaskManager.UserCanEditDeleteTask(_user.UserID);
+            }
+            catch (Exception ex)
+            {
 
+                MessageBox.Show("There was a problem checking to see if you are allowed to edit or delete a task." + ex.Message,
+                                    "Edit/Delete Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             InitializeComponent();
         }
@@ -105,6 +121,13 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Void method to populate the edit page with the selected Tasks
+        /// 
+        /// Mike Cahow
+        /// Updated: 2022/03/25
+        /// 
+        /// Description:
+        /// Checks if the user can edit or delete a task and populates values
+        /// accordingly to be read only or editable.
         /// values. To be called when needed.
         /// 
         /// Derrick Nagy
@@ -123,19 +146,68 @@ namespace WPFPresentation.Event
             txtTaskDescription.Text = _task.Description.ToString();
             cboAssign.SelectedItem = "Unavailable"; // pass up volunteer when available
 
-            if (_task.DueDate == DateTime.MinValue)
-            {
-                dtpTaskDueDate.SelectedDate = DateTime.Now;
-            }
-            else
-            {
-                dtpTaskDueDate.SelectedDate = _task.DueDate;
-            }
             
 
 
             cboPriority.SelectedItem = _task.TaskPriority;
             sldrNumVolunteers.Value = _need.NumTotalVolunteers;
+            if(_canEditDelete == true)
+            {
+                // Edit/Delete mode
+
+                txtBlkEventName.Text = _task.TaskEventName; // pass up event name from view
+                txtTaskName.Text = _task.Name.ToString();
+                txtTaskName.IsReadOnly = true;
+                txtTaskName.IsEnabled = false;
+                txtTaskDescription.Text = _task.Description.ToString();
+                cboAssign.SelectedItem = "Unavailable"; // pass up volunteer when available
+                
+                if (_task.DueDate == DateTime.MinValue)
+                {
+                    dtpTaskDueDate.SelectedDate = DateTime.Now;
+                }
+                else
+                {
+                    dtpTaskDueDate.SelectedDate = _task.DueDate;
+                }
+                cboPriority.SelectedItem = _task.TaskPriority;
+                sldrNumVolunteers.Value = _need.NumTotalVolunteers;
+            }
+            else
+            {
+                // Set values to read only so they cannot be edited for users that cannot edit.
+
+                txtBlkEventName.Text = _task.TaskEventName; // pass up event name from view
+                txtTaskName.Text = _task.Name.ToString();
+                txtTaskName.IsReadOnly = true;
+                txtTaskDescription.Text = _task.Description.ToString();
+                txtTaskDescription.IsReadOnly = true;
+                cboAssign.SelectedItem = "Unavailable";
+                cboAssign.IsReadOnly = true;
+                cboAssign.IsEnabled = false;
+                
+                if (_task.DueDate == DateTime.MinValue)
+                {
+                    dtpTaskDueDate.SelectedDate = DateTime.Now;
+                }
+                else
+                {
+                    dtpTaskDueDate.SelectedDate = _task.DueDate;
+                }
+                dtpTaskDueDate.IsEnabled = false;
+                cboPriority.SelectedItem = _task.TaskPriority;
+                cboPriority.IsReadOnly = true;
+                cboPriority.IsEnabled = false;
+                sldrNumVolunteers.Value = _need.NumTotalVolunteers;
+                sldrNumVolunteers.IsEnabled = false;
+
+                btnDeleteTask.Visibility = Visibility.Hidden;
+                btnSaveTask.Visibility = Visibility.Hidden;
+                btnCancelTask.Content = "Back";
+                btnCancelTask.HorizontalAlignment = HorizontalAlignment.Left;
+
+            }
+            
         }
 
         /// <summary>
@@ -149,25 +221,40 @@ namespace WPFPresentation.Event
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Mike Cahow
+        /// Updated: 2022/03/25
+        /// 
+        /// Description:
+        /// Added a check to see if a user can edit or delete to change the
+        /// Cancel button to a back button.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnCancelTask_Click(object sender, RoutedEventArgs e)
         {
-            string message = "Task will not be saved if you stop now.";
-            string title = "Stop creating Task?";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Warning;
-            var result = MessageBox.Show(message, title, buttons, image);
-
-            if (result == MessageBoxResult.No)
-            {
-                return;
-            }
-            else
+            if(_canEditDelete == false)
             {
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
+            }
+            else
+            {
+                string message = "Task will not be saved if you stop now.";
+                string title = "Stop creating Task?";
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+                MessageBoxImage image = MessageBoxImage.Warning;
+                var result = MessageBox.Show(message, title, buttons, image);
+
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
+                    this.NavigationService.Navigate(viewTasksPage);
+                }
             }
         }
 
@@ -255,7 +342,44 @@ namespace WPFPresentation.Event
         /// <param name="e"></param>
         private void btnDeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("This feature has not been implemented yet.");
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this task from the Task list?\nThis cannot be undone", "Delete Task", MessageBoxButton.YesNoCancel, MessageBoxImage.Exclamation);
+
+            bool taskRemoved = false;
+            
+
+            switch (result)
+            {
+                case MessageBoxResult.None:
+                    break;
+                case MessageBoxResult.OK:
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+                case MessageBoxResult.No:
+                    break;
+                case MessageBoxResult.Yes:
+                    try
+                    {
+                        _managerProvider.NeedManager.DeleteVolunteerNeed(_need);
+                        taskRemoved = _managerProvider.TaskManager.RemoveTaskByTaskID(_task.TaskID);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        MessageBox.Show("There was a problem deleting this task\n" + ex.Message, "Problem Deleting", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if (taskRemoved)
+            {
+                MessageBox.Show("The task has been deleted successfully", "Deletion Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
+                this.NavigationService.Navigate(viewTasksPage);
+            }
+
         }
 
         // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
