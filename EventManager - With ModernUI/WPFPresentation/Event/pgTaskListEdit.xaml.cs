@@ -129,9 +129,28 @@ namespace WPFPresentation.Event
         /// Checks if the user can edit or delete a task and populates values
         /// accordingly to be read only or editable.
         /// values. To be called when needed.
+        /// 
+        /// Derrick Nagy
+        /// Upadate: 2022/03/27
+        /// 
+        /// Description:
+        /// Set default date picker time to DateTime.Now if the date was not previously choosen
+        /// 
         /// </summary>
         private void populateControls()
         {
+            txtBlkEventName.Text = _task.TaskEventName; // pass up event name from view
+            txtTaskName.Text = _task.Name.ToString();
+            txtTaskName.IsReadOnly = true;
+            txtTaskName.IsEnabled = false;
+            txtTaskDescription.Text = _task.Description.ToString();
+            cboAssign.SelectedItem = "Unavailable"; // pass up volunteer when available
+
+            
+
+
+            cboPriority.SelectedItem = _task.TaskPriority;
+            sldrNumVolunteers.Value = _need.NumTotalVolunteers;
             if(_canEditDelete == true)
             {
                 // Edit/Delete mode
@@ -142,7 +161,15 @@ namespace WPFPresentation.Event
                 txtTaskName.IsEnabled = false;
                 txtTaskDescription.Text = _task.Description.ToString();
                 cboAssign.SelectedItem = "Unavailable"; // pass up volunteer when available
-                dtpTaskDueDate.SelectedDate = _task.DueDate;
+                
+                if (_task.DueDate == DateTime.MinValue)
+                {
+                    dtpTaskDueDate.SelectedDate = DateTime.Now;
+                }
+                else
+                {
+                    dtpTaskDueDate.SelectedDate = _task.DueDate;
+                }
                 cboPriority.SelectedItem = _task.TaskPriority;
                 sldrNumVolunteers.Value = _need.NumTotalVolunteers;
             }
@@ -158,7 +185,15 @@ namespace WPFPresentation.Event
                 cboAssign.SelectedItem = "Unavailable";
                 cboAssign.IsReadOnly = true;
                 cboAssign.IsEnabled = false;
-                dtpTaskDueDate.SelectedDate = _task.DueDate;
+                
+                if (_task.DueDate == DateTime.MinValue)
+                {
+                    dtpTaskDueDate.SelectedDate = DateTime.Now;
+                }
+                else
+                {
+                    dtpTaskDueDate.SelectedDate = _task.DueDate;
+                }
                 dtpTaskDueDate.IsEnabled = false;
                 cboPriority.SelectedItem = _task.TaskPriority;
                 cboPriority.IsReadOnly = true;
@@ -239,6 +274,13 @@ namespace WPFPresentation.Event
         /// Updated: 2022/03/05
         /// 
         /// Description: Added logic to handle requesting a certain number of volunteers
+        /// 
+        /// Derrick Nagy
+        /// Upadate: 2022/03/27
+        /// 
+        /// Description:
+        /// Handled errors that occur for an unsuccessful update
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -271,6 +313,10 @@ namespace WPFPresentation.Event
                 if (_taskManager.EditTask(_task, task) && _needManager.UpdateVolunteerNeed(_need, numTotalVolunteers))
                 {
                     MessageBox.Show("Task updated");
+                }
+                else
+                {
+                    MessageBox.Show("There was a problem updating the task.");
                 }
             }
             catch (Exception ex)

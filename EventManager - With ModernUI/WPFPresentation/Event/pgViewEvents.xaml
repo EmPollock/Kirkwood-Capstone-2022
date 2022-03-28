@@ -25,8 +25,8 @@
             Events
         </TextBlock>
 
-        
-        
+
+
         <!--An example of an alternate way that would use an itemtemplate-->
         <!--https://stackoverflow.com/questions/859227/looking-for-a-wpf-combobox-with-checkboxes-->
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -52,7 +52,7 @@
             <Label x:Name="lblEventSearch" Grid.Column="0" Margin="10,10,0,10" HorizontalAlignment="Right" VerticalAlignment="Center">Search:</Label>
             <TextBox x:Name="txtBoxEventSearch" Grid.Row="0" Grid.Column="1" Margin="10" VerticalAlignment="Center" Width="150" TextChanged="txtBoxEventSearch_TextChanged" />
         </StackPanel>
-        
+
         <!--Data grid for event object-->
         <!--<DataGrid x:Name="datActiveEvents" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" IsReadOnly="True" 
                   ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="datActiveEvents_MouseDoubleClick" >
@@ -63,13 +63,29 @@
                                     Binding="{Binding EventCreatedDate, StringFormat=\{0:MM/dd/yy\}}"/>
             </DataGrid.Columns>
         </DataGrid>-->
-        
-        <DataGrid x:Name="datActiveEvents" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" SelectionMode="Single" IsReadOnly="True" 
-                  ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="datActiveEvents_MouseDoubleClick" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Event Name" Binding="{Binding EventName}"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding EventDescription}"/>
-                <DataGridTemplateColumn Header="Dates">
+
+        <DataGrid x:Name="datActiveEvents" Grid.Row="1" Grid.Column="1" SelectionMode="Single" IsReadOnly="True" 
+                  ItemsSource="{Binding}" AutoGenerateColumns="False"   MouseDoubleClick="datActiveEvents_MouseDoubleClick" VerticalContentAlignment="Center">
+            
+            <DataGrid.Columns>                
+                <DataGridTextColumn  Header="Event Name" Binding="{Binding EventName}"/>
+                <DataGridTextColumn Width="*" Header="Description" Binding="{Binding EventDescription}"/>
+                <DataGridTextColumn  Header="Event Dates" Binding="{Binding FormatedDate}" >
+                    <DataGridTextColumn.ElementStyle>                        
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Style.Triggers >
+                                <Trigger Property="Text" Value="No dates selected yet.">
+                                    <Setter Property="Background" Value="#FFCCCB"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+
+                                </Trigger>
+                                
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <!--<DataGridTemplateColumn Header="Dates" Binding="{Binding FormatedDate}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding EventDates}">
@@ -79,6 +95,7 @@
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
+
                                     <DataTemplate>
                                         <TextBlock Text="{Binding EventDateID, StringFormat=\{0:MM/dd/yy\}}" VerticalAlignment="Center" Margin="0,0,10,0" />
                                     </DataTemplate>
@@ -86,7 +103,7 @@
                             </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
             </DataGrid.Columns>
         </DataGrid>
 

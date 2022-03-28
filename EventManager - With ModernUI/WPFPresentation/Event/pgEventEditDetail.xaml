@@ -120,7 +120,11 @@
                                 <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat=\{0:hh:mm tt\}}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <TextBlock Grid.Row="0" Grid.Column="0" x:Name="txtBlockEventDateValidationMessage" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Visibility="Hidden" Foreground="#FFFF4040" ></TextBlock>
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   x:Name="txtBlockEventDateValidationMessage" 
+                                   Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                   Style="{StaticResource BodyTextBlockStyle}" Visibility="Hidden" Foreground="#FFFF4040" ></TextBlock>
                     </Grid>
                     <Grid x:Name="grdAddEventDate" Grid.Row="1" Grid.Column="1">
                         <Grid.RowDefinitions>

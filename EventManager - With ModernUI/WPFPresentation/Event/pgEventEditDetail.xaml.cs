@@ -409,7 +409,10 @@ namespace WPFPresentation.Event
         /// 
         /// Update
         /// Derrick Nagy
-        /// Updated: 2020/02/24
+        /// Updated: 2020/03/26
+        /// 
+        /// Description:
+        /// Hid validation message for no event dates if there are event dates
         /// </summary>
         private void setEventDatesTabDetailMode()
         {
@@ -432,6 +435,7 @@ namespace WPFPresentation.Event
             }
             else
             {
+                txtBlockEventDateValidationMessage.Visibility = Visibility.Hidden;
                 // if the user can edit, use this table
                 if (_userCanEditEvent)
                 {
@@ -484,7 +488,8 @@ namespace WPFPresentation.Event
             btnEditEventDateCloseCancel.Content = "Cancel";
 
             // do not display past dates in calendar select
-            datePickerEventDate.DisplayDateStart = DateTime.Today; 
+            datePickerEventDate.DisplayDateStart = DateTime.Today;
+
 
         }
 
@@ -671,6 +676,14 @@ namespace WPFPresentation.Event
         /// Description:
         /// Changed time text boxes to combo boxes
         /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/26
+        /// 
+        /// Description:
+        /// Fixed logic error for time validation.
+        /// Cleared validation message for no event dates if a date was added succecssfully
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -757,21 +770,17 @@ namespace WPFPresentation.Event
                         txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                         txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                     }
-                    else if (startHour == endHour)
+                    else if (startHour == endHour && startMin >= endMin)
                     {
-                        if (startMin >= endMin)
-                        {
+                        
                             //txtBoxEventEndTimeMinute.Text = "";
                             txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                             txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                        }
+                        
                     }
                     // end of initial validation checks 
                     else
                     {
-
-
-
                         if (btnEditEventDateAddSave.Content.Equals("Add")) // add a new event date
                         {
 
@@ -804,6 +813,8 @@ namespace WPFPresentation.Event
                                 // prepare form to add another date
                                 setEventDateTabEditMode();
 
+                                txtBlockEventDateValidationMessage.Visibility = Visibility.Hidden;
+
 
                             }
                             catch (Exception ex)
@@ -827,6 +838,7 @@ namespace WPFPresentation.Event
 
                                 _eventDateManager.UpdateEventDate(_selectedEventDate, newEventDate);
                                 setEventDatesTabDetailMode();
+                                txtBlockEventDateValidationMessage.Visibility = Visibility.Hidden;
                             }
                             catch (Exception ex)
                             {
@@ -834,6 +846,7 @@ namespace WPFPresentation.Event
                                 MessageBox.Show("There was a problem updating the date.\n" + ex.Message, "Problem Updating Date", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
+
                     }
                 }
             }

@@ -58,14 +58,7 @@
             <!-- Task List View -->
             <DataGrid x:Name="datViewAllTasksForEvent" SelectionMode="Single" IsReadOnly="True" 
                       GridLinesVisibility="Horizontal" MouseDoubleClick="datViewAllTasksForEvent_MouseDoubleClick"
-                      ItemsSource="{Binding}" MaxColumnWidth="400" MouseLeftButtonUp="datViewAllTasksForEvent_MouseLeftButtonUp">
-                <DataGrid.Columns>
-                    <!--<DataGridTextColumn Header="Task Name" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                    <DataGridTextColumn Header="Due By" Binding="{Binding DueDate}"/>-->
-
-                    <DataGridTextColumn Width="auto" Header="TaskPriority" Binding="{Binding TaskPriority}" />
-                </DataGrid.Columns>
+                       MouseLeftButtonUp="datViewAllTasksForEvent_MouseLeftButtonUp" AutoGenerateColumns="False">
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
                         <Style.Triggers>
@@ -81,6 +74,27 @@
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Task Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Width="*" Header="Description" Binding="{Binding Description}"/>
+                    <DataGridTextColumn Header="Due By" Binding="{Binding FormatedDueDate}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Style.Triggers >
+                                    <Trigger Property="Text" Value="No due date selected">
+                                        <Setter Property="Background" Value="#FFCCCB"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+
+                                    </Trigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="auto" Header="TaskPriority" Binding="{Binding TaskPriority}" />
+                </DataGrid.Columns>
+                
                 
             </DataGrid>
             <Label x:Name="lblEmptyTaskList" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" >Event has no tasks</Label>

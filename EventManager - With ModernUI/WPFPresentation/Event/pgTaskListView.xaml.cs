@@ -54,6 +54,8 @@ namespace WPFPresentation.Event
         ISublocationManager _sublocationManager = null;
         DataObjects.EventVM _event = null;
         User _user = null;
+        List<TasksVM> _tasksVMs = null;
+        List<TaskModelView> _taskModelViews = new List<TaskModelView>();
         bool _canAddEditDelete = false;
 
         internal pgTaskListView(DataObjects.EventVM selectedEvent, ManagerProvider managerProvider, User user)
@@ -112,46 +114,59 @@ namespace WPFPresentation.Event
 
         }
 
+        /// <summary>
+        /// Created?
+        /// 
+        /// 
+        /// Derrick Nagy
+        /// Upadate: 2022/03/27
+        /// 
+        /// Description:
+        /// Switch datagrid itemsoure to use a task model view object
+        /// 
+        /// </summary>
         private void updateTaskList()
         {
             try
             {
-                datViewAllTasksForEvent.ItemsSource = _taskManager.RetrieveAllActiveTasksByEventID(_event.EventID);
+                //datViewAllTasksForEvent.ItemsSource = _taskManager.RetrieveAllActiveTasksByEventID(_event.EventID);
+                _tasksVMs = _taskManager.RetrieveAllActiveTasksByEventID(_event.EventID);
+                _taskModelViews = new List<TaskModelView>();
+                foreach (var item in _tasksVMs)
+                {
+                    _taskModelViews.Add(new TaskModelView(item));
+                }
+                datViewAllTasksForEvent.ItemsSource = _taskModelViews;
             }
             catch (Exception ex)
             {
 
                 MessageBox.Show(ex.Message);
             }
-            datViewAllTasksForEvent.RowHeaderWidth = 0;
+            //datViewAllTasksForEvent.RowHeaderWidth = 0;
 
 
-            foreach (DataGridColumn column in datViewAllTasksForEvent.Columns)
-            {
-                if (column.Header.ToString() == "Name")
-                {
-                    column.Header = "Task Name";
-                    column.Visibility = Visibility.Visible;
-                }
-                else if (column.Header.ToString() == "Description")
-                {
-                    column.Visibility = Visibility.Visible;
-                }
-                else if (column.Header.ToString() == "DueDate")
-                {
-                    column.Header = "Due By";
-                    column.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    column.Visibility = Visibility.Hidden;
-                }
-            }
-
-            if(datViewAllTasksForEvent.Items.Count == 0)
-            {
-                lblEmptyTaskList.Visibility = Visibility.Visible;
-            }
+            //foreach (DataGridColumn column in datViewAllTasksForEvent.Columns)
+            //{
+            //    if (column.Header.ToString() == "Name")
+            //    {
+            //        column.Header = "Task Name";
+            //        column.Visibility = Visibility.Visible;
+            //    }
+            //    else if (column.Header.ToString() == "Description")
+            //    {
+            //        column.Visibility = Visibility.Visible;
+            //    }
+            //    else if (column.Header.ToString() == "DueDate")
+            //    {
+            //        column.Header = "Due By";
+            //        column.Visibility = Visibility.Visible;
+            //    }
+            //    else
+            //    {
+            //        column.Visibility = Visibility.Hidden;
+            //    }
+            //}
         }
 
         /// <summary>
@@ -247,5 +262,47 @@ namespace WPFPresentation.Event
             this.NavigationService.Navigate(viewActivitiesPage);
         }
         // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
+    }
+
+    /// <summary>
+    /// Derrick Nagy
+    /// Created: 2022/03/27
+    /// 
+    /// Description:
+    /// Model view class for task
+    /// 
+    /// </summary>
+    internal class TaskModelView : TasksVM
+    {
+        public bool HasNoDate { get; set; }
+        public string FormatedDueDate { get; set; }
+
+        public TaskModelView(TasksVM tasksVM)
+        {
+            TaskID = tasksVM.TaskID;
+            Name = tasksVM.Name;
+            Description = tasksVM.Description;
+            DueDate = tasksVM.DueDate;
+            Priority = tasksVM.Priority;
+            CompletionDate = tasksVM.CompletionDate;
+            ProofID = tasksVM.ProofID;
+            isDone = tasksVM.isDone;
+            EventID = tasksVM.EventID;
+            Active = tasksVM.Active;
+            TaskPriority = tasksVM.TaskPriority;
+            TaskEventName = tasksVM.TaskEventName;
+
+            HasNoDate = (tasksVM.DueDate == DateTime.MinValue) ? true : false;
+
+            if (HasNoDate)
+            {
+                FormatedDueDate = "No due date selected";
+            }
+            else
+            {
+                FormatedDueDate = DueDate.ToString("MM/dd/yyyy");                
+            }
+
+        }
     }
 }
