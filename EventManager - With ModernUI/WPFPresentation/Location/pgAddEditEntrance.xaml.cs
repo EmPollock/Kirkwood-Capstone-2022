@@ -79,6 +79,12 @@ namespace WPFPresentation.Location
         /// Description:
         /// Initialized Name and Description fields with old values in edit mode,
         /// so they can edit starting with what was already there.
+        /// 
+        /// Logan Baccam
+        /// Updated: 2022/03/29
+        /// 
+        /// Description:
+        /// Hide the delete button when in create entrance mode
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -87,6 +93,7 @@ namespace WPFPresentation.Location
             // create entrance mode
             if(_mode == 1)
             {
+                btnDeleteEntrance.Visibility = Visibility.Collapsed;
                 txtBlkAddEditEntrance.Text = "Create New Entrance";
                 btnEntranceAddEdit.Content = "Add";
             }
@@ -223,6 +230,33 @@ namespace WPFPresentation.Location
             }
         }
 
-        
+        private void btnDeleteEntrance_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you would like to delete this entrance?", "Are you sure you would like to cancel?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (_mode == 2) 
+            {
+                switch (result) 
+                {
+                    case MessageBoxResult.No:
+                        break;
+                    case MessageBoxResult.Yes:
+                        try
+                        {
+                            _entranceManager.RemoveEntranceByEntranceID(_entrance.EntranceID);
+                            MessageBox.Show(_entrance.EntranceName + " entrance deleted.");
+                            pgLocationEntrance page = new pgLocationEntrance(_managerProvider, _location, _user);
+                            this.NavigationService.Navigate(page);
+                        }
+                        catch (Exception ex) 
+                        {
+                            MessageBox.Show("Something went wrong when trying to delete this entrance.");
+                            btnDeleteEntrance.Focus();
+                        }
+                            break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }

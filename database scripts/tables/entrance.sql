@@ -14,7 +14,8 @@ CREATE TABLE [dbo].[Entrance] (
 	[EntranceID]		[int]IDENTITY(100000,1)			NOT NULL,
 	[LocationID]		[int]							NOT NULL,
 	[EntranceName]		[nvarchar](100)					NOT NULL,
-	[Description]		[nvarchar](255)					NULL
+	[Description]		[nvarchar](255)					NULL,
+	[Active]			[bit] DEFAULT 1					NOT NULL
 	CONSTRAINT [fk_LocationID_Entrance] FOREIGN KEY([LocationID])
 		REFERENCES [Location]([LocationID])
 )
