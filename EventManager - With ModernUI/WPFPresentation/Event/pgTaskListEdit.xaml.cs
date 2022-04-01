@@ -98,6 +98,21 @@ namespace WPFPresentation.Event
             InitializeComponent();
         }
 
+        /// <summary>
+        /// ??????
+        /// Created: ????/??/??
+        /// 
+        /// Description:
+        /// Populate controls on page loaded.
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Raised EditOngoing flag when page is loaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             populateControls();
@@ -107,6 +122,7 @@ namespace WPFPresentation.Event
                 cboPriority.ItemsSource = from p in _priorities
                                           orderby p.PriorityID
                                           select p.Description;
+                ValidationHelpers.EditOngoing = true;
             }
             catch (Exception ex)
             {
@@ -228,6 +244,13 @@ namespace WPFPresentation.Event
         /// Description:
         /// Added a check to see if a user can edit or delete to change the
         /// Cancel button to a back button.
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lowered EditOngoing flag before navigating away from page via back button
+        /// or successful cancel edit
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -235,6 +258,7 @@ namespace WPFPresentation.Event
         {
             if(_canEditDelete == false)
             {
+                ValidationHelpers.EditOngoing = false;
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
@@ -252,6 +276,7 @@ namespace WPFPresentation.Event
                 }
                 else
                 {
+                    ValidationHelpers.EditOngoing = false;
                     pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                     this.NavigationService.Navigate(viewTasksPage);
                 }
@@ -276,11 +301,16 @@ namespace WPFPresentation.Event
         /// Description: Added logic to handle requesting a certain number of volunteers
         /// 
         /// Derrick Nagy
-        /// Upadate: 2022/03/27
+        /// Update: 2022/03/27
         /// 
         /// Description:
         /// Handled errors that occur for an unsuccessful update
         /// 
+        /// Kris Howell
+        /// Update: 2022/03/31
+        /// 
+        /// Description:
+        /// Lowered EditOngoing flag before navigating away in finally block
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -325,6 +355,7 @@ namespace WPFPresentation.Event
             }
             finally
             {
+                ValidationHelpers.EditOngoing = false;
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
@@ -337,6 +368,12 @@ namespace WPFPresentation.Event
         /// Description:
         /// Click event handler for delete button
         /// feature not implemented yet
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lowered EditOngoing flag on successful delete
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -376,120 +413,11 @@ namespace WPFPresentation.Event
             if (taskRemoved)
             {
                 MessageBox.Show("The task has been deleted successfully", "Deletion Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                ValidationHelpers.EditOngoing = false;
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
 
         }
-
-        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/25
-        /// 
-        /// Description:
-        /// Click event handler to take users back to event details page
-        /// Works like cancel button for editing
-        /// 
-        /// Update:
-        /// Derrick Nagy
-        /// Updated: 2022/02/26
-        /// 
-        /// Description:
-        /// Added _user to be passed with page constructor
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
-        {
-            string message = "Task will not be saved if you stop now.";
-            string title = "Stop creating Task?";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Warning;
-            var result = MessageBox.Show(message, title, buttons, image);
-
-            if (result == MessageBoxResult.No)
-            {
-                return;
-            }
-            else
-            {
-                pgEventEditDetail eventEditDetailPage = new pgEventEditDetail(_event, _managerProvider, _user);
-                this.NavigationService.Navigate(eventEditDetailPage);
-            }
-            
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/25
-        /// 
-        /// Description:
-        /// Click event handler to take users back to View Task List page
-        /// Works like cancel button for editing
-        /// 
-        /// Update:
-        /// Derrick Nagy
-        /// Updated: 2022/02/26
-        /// 
-        /// Description:
-        /// Added _user to be passed with page constructor
-        /// 
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnTasks_Click(object sender, RoutedEventArgs e)
-        {
-
-            string message = "Task will not be saved if you stop now.";
-            string title = "Stop creating Task?";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Warning;
-            var result = MessageBox.Show(message, title, buttons, image);
-
-            if (result == MessageBoxResult.No)
-            {
-                return;
-            }
-            else
-            {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
-                this.NavigationService.Navigate(viewTasksPage);
-            }
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/25
-        /// 
-        /// Description:
-        /// Click event handler to take users to View Activities page
-        /// Works like cancel button for editing
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnItinerary_Click(object sender, RoutedEventArgs e)
-        {
-            string message = "Task will not be saved if you stop now.";
-            string title = "Stop creating Task?";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Warning;
-            var result = MessageBox.Show(message, title, buttons, image);
-
-            if (result == MessageBoxResult.No)
-            {
-                return;
-            }
-            else
-            {
-                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
-                this.NavigationService.Navigate(viewActivitiesPage);
-            }
-        }
-
-        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }

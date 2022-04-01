@@ -44,11 +44,26 @@ namespace WPFPresentation.Location
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Populate empty frame with details page by default on load
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Accented button color properly on load
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // populate empty frame with details page by default
             pgLocationDetails details = new pgLocationDetails(_managerProvider, _location, _user);
             this.LocationFrame.NavigationService.Navigate(details);
+            btnSiteDetails.Background = new SolidColorBrush(Colors.Gray);
         }
 
         /// <summary>

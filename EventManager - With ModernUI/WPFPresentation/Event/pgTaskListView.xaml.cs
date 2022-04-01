@@ -229,39 +229,6 @@ namespace WPFPresentation.Event
             lblVolunteers.Content = "Volunteers assigned to " + selectedTask.Name + ":";
             datTaskVolunteers.ItemsSource = _taskManager.RetrieveTaskAssignmentsByTaskID(selectedTask.TaskID);
         }
-
-        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/18
-        /// 
-        /// Description:
-        /// Click event handler to view event details.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
-        {
-            pgEventEditDetail editEventPage = new pgEventEditDetail(_event, _managerProvider, _user);
-            this.NavigationService.Navigate(editEventPage);
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/25
-        /// 
-        /// Description:
-        /// Click event handler to take a user to the View Activities page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnItinerary_Click(object sender, RoutedEventArgs e)
-        {
-            pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
-            this.NavigationService.Navigate(viewActivitiesPage);
-        }
-        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 
     /// <summary>

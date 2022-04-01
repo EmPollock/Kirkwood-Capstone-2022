@@ -108,6 +108,5 @@
         </DataGrid>
 
         <Button x:Name="btnCreateEvent" Content="Create Event" Grid.Row="2" Grid.Column="1" Click="btnCreateEvent_Click" />
-        <Button x:Name="btnActivity" Content="Activities" Grid.Row="2" Grid.Column="1" Margin="120 0 0 0" Click="btnActivity_Click"/>
     </Grid>
 </Page>
