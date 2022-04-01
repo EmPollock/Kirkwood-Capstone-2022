@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
@@ -124,12 +130,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -181,12 +181,34 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyManager.cs" />
+    <Compile Include="Migrations\202203250127205_InitialCreate.cs" />
+    <Compile Include="Migrations\202203250127205_InitialCreate.Designer.cs">
+      <DependentUpon>202203250127205_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203250129478_Added first and last name fields to user.cs" />
+    <Compile Include="Migrations\202203250129478_Added first and last name fields to user.Designer.cs">
+      <DependentUpon>202203250129478_Added first and last name fields to user.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203250157474_Added UserID field to match users between web and desktop..cs" />
+    <Compile Include="Migrations\202203250157474_Added UserID field to match users between web and desktop..Designer.cs">
+      <DependentUpon>202203250157474_Added UserID field to match users between web and desktop..cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203251624190_Added city, state, and zip code.cs" />
+    <Compile Include="Migrations\202203251624190_Added city, state, and zip code.Designer.cs">
+      <DependentUpon>202203251624190_Added city, state, and zip code.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203251633000_Odds and ends.cs" />
+    <Compile Include="Migrations\202203251633000_Odds and ends.Designer.cs">
+      <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -288,6 +310,8 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Admin\Details.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -296,6 +320,45 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202203250127205_InitialCreate.resx">
+      <DependentUpon>202203250127205_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203250129478_Added first and last name fields to user.resx">
+      <DependentUpon>202203250129478_Added first and last name fields to user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203250157474_Added UserID field to match users between web and desktop..resx">
+      <DependentUpon>202203250157474_Added UserID field to match users between web and desktop..cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203251624190_Added city, state, and zip code.resx">
+      <DependentUpon>202203251624190_Added city, state, and zip code.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203251633000_Odds and ends.resx">
+      <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">
+      <Project>{1a057f98-1aaf-4a39-82b3-ba1c36cffdaf}</Project>
+      <Name>DataAccessFakes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessInterfaces\DataAccessInterfaces.csproj">
+      <Project>{c1ec5e7d-a97b-464e-b261-3fbc396fe912}</Project>
+      <Name>DataAccessInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects\DataObjects.csproj">
+      <Project>{b6f29fed-5ce3-4342-943f-032421c38fa4}</Project>
+      <Name>DataObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogicLayerInterfaces\LogicLayerInterfaces.csproj">
+      <Project>{693568dd-60bf-4d9e-a819-e5077e5539f8}</Project>
+      <Name>LogicLayerInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogicLayer\LogicLayer.csproj">
+      <Project>{65263851-45fb-4eb0-82ae-ea8d42d87fc5}</Project>
+      <Name>LogicLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

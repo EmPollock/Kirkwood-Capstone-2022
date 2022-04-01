@@ -57,7 +57,7 @@ namespace LogicLayerTests
         {
             // Arrange
             const string email = "tess@company.com";
-            const string passwordHash = "9C9064C59F1FFA2E174EE754D2979BE80DD30DB552EC03E7E327E9B1A4BD594E";
+            string passwordHash = "b03ddf3ca2e714a6548e7495e2a03f5e824eaac9837cd7f159c67b90fb4b7342".ToUpper();
             const bool ExpectedResult = true;
             bool actualResult;
 
@@ -188,56 +188,6 @@ namespace LogicLayerTests
             // Nothing to do, checking for exception.
         }
 
-        // Christopher Repko
-        // User role tests. We aren't using them right now, but this can be used for later templates.
-        //[TestMethod]
-        //public void TestGetRolesForUserReturnsCorrectRoles()
-        //{
-        //    // Arrange
-        //    List<string> actualResult = null;
-        //    List<string> expectedResult = new List<string>();
-        //    expectedResult.Add("Rental");
-        //    expectedResult.Add("Prep");
-        //    const int employeeID = 999999;
-
-        //    //Act
-        //    actualResult = userManager.GetRolesForUser(employeeID);
-
-        //    // Assert
-        //    CollectionAssert.AreEquivalent(expectedResult, actualResult);
-        //}
-
-        //[TestMethod]
-        //public void TestGetRolesForUserFailsWithIncorrectList()
-        //{
-        //    // Arrange
-        //    List<string> actualResult = null;
-        //    List<string> expectedResult = new List<string>();
-        //    expectedResult.Add("xRental");
-        //    expectedResult.Add("Prep");
-        //    const int employeeID = 999999;
-
-        //    //Act
-        //    actualResult = userManager.GetRolesForUser(employeeID);
-
-        //    // Assert
-        //    CollectionAssert.AreNotEquivalent(expectedResult, actualResult);
-        //}
-
-        //[TestMethod]
-        //[ExpectedException(typeof(ApplicationException))]
-        //public void TestGetRolesForUserThrowsApplicationExceptionForBadUserID()
-        //{
-        //    // Arrange
-        //    const int badUserID = 999;
-
-        //    //Act
-        //    userManager.GetRolesForUser(badUserID);
-
-        //    // Assert
-        //    // Nothing to do here.
-        //}
-
         /// <summary>
         /// Christopher Repko (Based on Jim Glasgow's in-class examples)
         /// Created: 2022/1/21
@@ -250,8 +200,8 @@ namespace LogicLayerTests
         public void TestResetPasswordWorksWithValidPasswords()
         {
             // Arrange
-            const string oldPassword = "newuser";
-            const string newPassword = "P@ssw0rd";
+            const string oldPassword = "P@ssw0rd";
+            const string newPassword = "newuser";
             const string email = "tess@company.com";
             const bool expectedResult = true;
             bool actualResult;
@@ -342,5 +292,204 @@ namespace LogicLayerTests
             // Nothing to do here
             Assert.AreEqual(expected, result);
         }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Tests logic to get all roles
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllRolesRetrievesAllRoles()
+        {
+            // Arrange
+            List<string> expected = new List<string>();
+            expected.Add("Administrator");
+            expected.Add("Event Planner");
+
+            List<string> result;
+            // Act
+            result = userManager.RetrieveAllRoles();
+
+            // Assert
+            // Nothing to do here
+            CollectionAssert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Tests logic to check if database has a user
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveHasUserByEmailReturnsTrue()
+        {
+            // Arrange
+            const bool expected = true;
+            string email = "tess@company.com";
+            bool result;
+
+            // Act
+            result = userManager.RetrieveHasUserByEmail(email);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Tests logic to check if database has a user
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveHasUserByEmailReturnsFalse()
+        {
+            // Arrange
+            const bool expected = false;
+            string email = "tesas@company.com";
+            bool result;
+
+            // Act
+            result = userManager.RetrieveHasUserByEmail(email);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Tests Create user with password returns true
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestCreateUserWithPasswordReturnsTrue()
+        {
+            // Arrange
+            const bool expected = true;
+            bool result;
+            User user = new User()
+            {
+                UserID = 0,
+                GivenName = "Testy",
+                FamilyName = "McTest",
+            };
+            string password = "Password!";
+            // Act
+            result = userManager.CreateUserWithPassword(user, password);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Tests AddRole returns true for good user ID
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestAddUserRoleReturnsTrue()
+        {
+            // Arrange
+            const bool expected = true;
+            const int UserID = 999999;
+            bool result;
+            string role = "Tester";
+            // Act
+            result = userManager.AddUserRole(UserID, role);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Tests AddRole returns false for bad user ID
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestAddUserRoleReturnsFalseForBadUserID()
+        {
+            // Arrange
+            const bool expected = false;
+            const int UserID = 2342140;
+            bool result;
+            string role = "Tester";
+            // Act
+            result = userManager.AddUserRole(UserID, role);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Tests RemoveRole returns true for good user ID
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestRemoveUserRoleReturnsTrue()
+        {
+            // Arrange
+            const bool expected = true;
+            const int UserID = 999999;
+            bool result;
+            string role = "Tester";
+            // Act
+            result = userManager.RemoveUserRole(UserID, role);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Tests RemoveRole returns false for bad user ID
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestRemoveUserRoleReturnsFalseForBadUserID()
+        {
+            // Arrange
+            const bool expected = false;
+            const int UserID = 2342140;
+            bool result;
+            string role = "Tester";
+            // Act
+            result = userManager.RemoveUserRole(UserID, role);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
     }
+    
 }
