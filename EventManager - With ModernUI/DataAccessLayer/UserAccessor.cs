@@ -70,6 +70,44 @@ namespace DataAccessLayer
 
             return result;
         }
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/3/25
+        /// 
+        /// Description:
+        /// Method to delete a user role
+        /// 
+        /// </summary>
+        /// <param name="userID">ID to delete for</param>
+        /// <param name="role">Role to delete</param>
+        /// <returns>number of affected roles</returns>
+        public int DeleteUserRole(int userID, string role)
+        {
+            int rows = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_delete_user_role";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            cmd.Parameters.Add("@RoleID", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@RoleID"].Value = role;
+
+
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return rows;
+        }
 
 
         /// <summary>
@@ -121,13 +159,108 @@ namespace DataAccessLayer
 
         /// <summary>
         /// Christopher Repko
+        /// Created: 2022/3/25
+        /// 
+        /// Description:
+        /// Method to insert a user role
+        /// 
+        /// </summary>
+        /// <param name="userID">ID to insert for</param>
+        /// <param name="role">Role to insert</param>
+        /// <returns>number of affected roles</returns>
+        public int InsertUserRole(int userID, string role)
+        {
+            int rows = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_insert_user_role";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            cmd.Parameters.Add("@RoleID", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@RoleID"].Value = role;
+
+
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return rows;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Selects all roles
+        /// </summary>
+        /// <returns>A list of strings representing roles</returns>
+        public List<string> SelectAllRoles()
+        {
+            List<string> roles = new List<string>();
+
+            var conn = DBConnection.GetConnection();
+
+            // next, we need command text.
+            var cmdText = "sp_select_all_roles";
+
+            // we create a command object;
+            var cmd = new SqlCommand(cmdText, conn);
+
+            // load arguments to the command.
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // Now that we have the command set up, we can execute the command.
+            // Always use a try block because the connection is unsafe.
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // execute appropriately and capture the results.
+                var reader = cmd.ExecuteReader();
+
+                // Process results
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(reader.GetString(0));
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+
+            return roles;
+        }
+
+        /// <summary>
+        /// Christopher Repko
         /// Created: 2022/01/21
         /// 
         /// Description:
-        /// Selects roles of a user. Not currently fully implemented. Legacy code left as a starting point for whoever implements it.
+        /// Selects roles of a user using a user's ID
         /// </summary>
-        /// <param name="userID"></param>
-        /// <returns></returns>
+        /// <param name="userID">int ID to identify user</param>
+        /// <returns>A list of strings representing roles</returns>
         public List<string> SelectRolesByUserID(int userID)
         {
             List<string> roles = new List<string>();
@@ -135,7 +268,7 @@ namespace DataAccessLayer
             var conn = DBConnection.GetConnection();
 
             // next, we need command text.
-            var cmdText = "sp_select_user_roles_by_userID";
+            var cmdText = "sp_select_user_roles_from_event_users_table";
 
             // we create a command object;
             var cmd = new SqlCommand(cmdText, conn);
@@ -188,6 +321,8 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Method to retrieve user data using an email address.
+        /// 
+        /// Updated: 2022/03/30
         /// </summary>
         /// <param name="email">Email of user to be retrieved</param>
         /// <exception cref="ApplicationException">No user found for email</exception>
@@ -233,6 +368,7 @@ namespace DataAccessLayer
                         currUser.GivenName = reader.GetString(1);
                         currUser.FamilyName = reader.GetString(2);
                         currUser.EmailAddress = reader.GetString(3);
+                        currUser.State = reader.GetString(4);
                         currUser.City = reader.GetString(5);
                         currUser.Zip = reader.GetInt32(6);
                         currUser.Active = reader.GetBoolean(7);

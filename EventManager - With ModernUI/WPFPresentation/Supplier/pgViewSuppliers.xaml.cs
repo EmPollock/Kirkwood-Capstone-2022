@@ -71,7 +71,8 @@ namespace WPFPresentation
             {
                 DataObjects.Supplier supplier = (DataObjects.Supplier)this.datSuppliersList.SelectedItem;
 
-                Page page = new Supplier.pgViewSupplierListing(supplier, _managerProvider);
+                // Page page = new Supplier.pgViewSupplierListing(supplier, _managerProvider);
+                Page page = new Supplier.pgSupplierFrame(_managerProvider, supplier);
                 this.NavigationService.Navigate(page);
             }
         }

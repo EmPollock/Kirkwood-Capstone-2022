@@ -12,5 +12,6 @@ namespace DataObjects
         public int LocationID { get; set; }
         public string EntranceName { get; set; }
         public string Description { get; set; }
+        public bool Active { get; set; }
     }
 }

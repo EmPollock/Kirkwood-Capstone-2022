@@ -53,6 +53,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Some validation and load combo box choices on page load
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Raise EditOngoing flag on load
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -78,8 +84,8 @@ namespace WPFPresentation.Event
             {
                 MessageBox.Show("This event does not have a registered location.\n" +
                                 "Please register a location before adding an activity to this event.");
-                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
-                this.NavigationService.Navigate(viewActivitiesPage);
+                // pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
+                // this.NavigationService.Navigate(viewActivitiesPage);
             }
 
             txtEvent.Text = _event.EventName;
@@ -89,63 +95,7 @@ namespace WPFPresentation.Event
             }
             cboDate.ItemsSource = _dates;
 
-        }
-
-        /// <summary>
-        /// Kris Howell
-        /// Created: 2022/03/10
-        /// 
-        /// Description:
-        /// Discard changes and go to current event's detail page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("This will discard any unsaved changes.  Are you sure?",
-                                "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                pgEventEditDetail pgEventEditDetail = new pgEventEditDetail(_event, _managerProvider, _user);
-                this.NavigationService.Navigate(pgEventEditDetail);
-            }
-        }
-
-        /// <summary>
-        /// Kris Howell
-        /// Created: 2022/03/10
-        /// 
-        /// Description:
-        /// Discard changes and go to current event's tasks page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnTasks_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("This will discard any unsaved changes.  Are you sure?",
-                                "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                pgTaskListView ViewTaskListPage = new pgTaskListView(_event, _managerProvider, _user);
-                this.NavigationService.Navigate(ViewTaskListPage);
-            }
-        }
-
-        /// <summary>
-        /// Kris Howell
-        /// Created: 2022/03/10
-        /// 
-        /// Description:
-        /// Discard changes and return to activity itinerary page for current event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnItinerary_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("This will discard any unsaved changes.  Are you sure?",
-                                "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
-                this.NavigationService.Navigate(viewActivitiesPage);
-            }
+            ValidationHelpers.EditOngoing = true;
         }
 
         /// <summary>
@@ -155,6 +105,12 @@ namespace WPFPresentation.Event
         /// Description:
         /// Validate form fields and attempt to create activity object and insert it
         /// into the database
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag on successful save
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -249,6 +205,7 @@ namespace WPFPresentation.Event
             }
 
             MessageBox.Show("Activity added successfully");
+            ValidationHelpers.EditOngoing = false;
 
             // return to activities page with new activity
             pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
@@ -261,6 +218,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Discard changes and return to the current event's activity itinerary page
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag on successful cancel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -269,6 +232,7 @@ namespace WPFPresentation.Event
             if (MessageBox.Show("This will discard any unsaved changes.  Are you sure?",
                                 "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
+                ValidationHelpers.EditOngoing = false;
                 pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
                 this.NavigationService.Navigate(viewActivitiesPage);
             }

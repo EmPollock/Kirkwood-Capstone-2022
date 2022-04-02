@@ -34,8 +34,13 @@ namespace DataAccessLayer
         /// Update: 2022/02/28
         /// Description: Adding functionality to return taskID instead of rows affected.
         /// and then create volunteer need
-
-
+        /// 
+        /// Derrick Nagy
+        /// Update: 2022/03/27
+        /// 
+        /// Description:
+        /// Added check for DateTime.MinValue so that it would pass a sql null if true
+        /// 
         public int InsertTasks(Tasks newTask, int numTotalVolunteers)
         {
             int rowsAffected = 0;
@@ -52,8 +57,19 @@ namespace DataAccessLayer
             cmd.Parameters["@Name"].Value = newTask.Name;
             cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 255);
             cmd.Parameters["@Description"].Value = newTask.Description;
-            cmd.Parameters.Add("@DueDate", SqlDbType.DateTime);
-            cmd.Parameters["@DueDate"].Value = newTask.DueDate;
+
+            // check to see if due date is min value (unknown date)
+            if (newTask.DueDate == DateTime.MinValue)
+            {
+                cmd.Parameters.Add("@DueDate", SqlDbType.DateTime);
+                cmd.Parameters["@DueDate"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@DueDate", SqlDbType.DateTime);
+                cmd.Parameters["@DueDate"].Value = newTask.DueDate;
+            }
+
             cmd.Parameters.Add("@Priority", SqlDbType.Int);
             cmd.Parameters["@Priority"].Value = newTask.Priority;
 
@@ -105,6 +121,13 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// A method for updating a task object in the database
+        /// 
+        /// Derrick Nagy
+        /// Update: 2022/03/27
+        /// 
+        /// Description:
+        /// Added check for DateTime.MinValue so that it would pass a sql null if true
+        /// 
         /// </summary>
         /// <param name="oldTask"></param>
         /// <param name="newTask"></param>
@@ -124,15 +147,47 @@ namespace DataAccessLayer
             cmd.Parameters["@TaskID"].Value = oldTask.TaskID;
             cmd.Parameters.AddWithValue("@OldName", oldTask.Name);
             cmd.Parameters.AddWithValue("OldDescription", oldTask.Description);
-            cmd.Parameters.AddWithValue("OldDueDate", oldTask.DueDate);
+
+
+            // check to see if due date is min value (unknown date)
+            if (oldTask.DueDate == DateTime.MinValue)
+            {
+                cmd.Parameters.Add("@OldDueDate", SqlDbType.DateTime);
+                cmd.Parameters["@OldDueDate"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("OldDueDate", oldTask.DueDate);
+                //cmd.Parameters.Add("@OldDueDate", SqlDbType.DateTime);
+                //cmd.Parameters["@OldDueDate"].Value = newTask.DueDate;
+            }
+
+
+
             cmd.Parameters.AddWithValue("@OldPriority", oldTask.Priority);
             cmd.Parameters.AddWithValue("OldActive", oldTask.Active);
             cmd.Parameters.Add("@NewName", SqlDbType.NVarChar, 50);
             cmd.Parameters["@NewName"].Value = newTask.Name;
             cmd.Parameters.Add("@NewDescription", SqlDbType.NVarChar, 255);
             cmd.Parameters["@NewDescription"].Value = newTask.Description;
-            cmd.Parameters.Add("@NewDueDate", SqlDbType.DateTime);
-            cmd.Parameters["@NewDueDate"].Value = newTask.DueDate;
+
+            // check to see if due date is min value (unknown date)
+            if (newTask.DueDate == DateTime.MinValue)
+            {
+                cmd.Parameters.Add("@NewDueDate", SqlDbType.DateTime);
+                cmd.Parameters["@NewDueDate"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@NewDueDate", SqlDbType.DateTime);
+                cmd.Parameters["@NewDueDate"].Value = newTask.DueDate;
+            }
+
+            //cmd.Parameters.Add("@NewDueDate", SqlDbType.DateTime);
+            //cmd.Parameters["@NewDueDate"].Value = newTask.DueDate;
+
+
+
             cmd.Parameters.Add("@NewPriority", SqlDbType.Int);
             cmd.Parameters["@NewPriority"].Value = newTask.Priority;
             cmd.Parameters.Add("@NewActive", SqlDbType.Bit);
@@ -205,6 +260,13 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select method that grabs a list of all tasks for an event
+        /// 
+        /// Derrick Nagy
+        /// Update: 2022/03/27
+        /// 
+        /// Description:
+        /// Added check for DateTime.MinValue so that it would pass a sql null if true
+        /// 
         /// </summary>
         /// <returns>List Tasks</returns>
         public List<TasksVM> SelectAllActiveTasksByEventID(int eventID)
@@ -233,7 +295,7 @@ namespace DataAccessLayer
                             TaskID = reader.GetInt32(0),
                             Name = reader.GetString(1),
                             Description = reader.GetString(2),
-                            DueDate = reader.GetDateTime(3),
+                            DueDate = (reader.IsDBNull(3)) ? new DateTime() : reader.GetDateTime(3),
                             Priority = reader.GetInt32(4),
                             TaskPriority = reader.GetString(5),
                             TaskEventName = reader.GetString(6),
@@ -307,6 +369,107 @@ namespace DataAccessLayer
             }
 
             return taskAssignments;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Descripiton:
+        /// A method that returns true if the User ID given is allowed to edit/delete tasks
+        /// (Should only be the Event Manager and Event Planner)
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>Boolean value</returns>
+        public bool UserCanEditDeleteTask(int userID)
+        {
+            bool result = false;
+            List<Role> roles = new List<Role>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdTxt = "sp_select_user_roles_from_event_users_table";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        roles.Add(new Role()
+                        {
+                            RoleID = reader.GetString(0)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            foreach (Role role in roles)
+            {
+                if (role.RoleID == "Event Planner" || role.RoleID == "Event Manager")
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Deletes a Task from the Tasks table with corresponding TaskID
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>True if task is removed</returns>
+        public bool DeleteTaskByTaskID(int taskID)
+        {
+            bool deleted = false;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_delete_task_by_taskID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@TaskID", SqlDbType.Int);
+            cmd.Parameters["@TaskID"].Value = taskID;
+
+            try
+            {
+                conn.Open();
+                deleted = (1 == cmd.ExecuteNonQuery());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return deleted;
         }
     }
 }

@@ -27,7 +27,8 @@ namespace WPFPresentation
         private ISublocationManager _sublocationManager = null;
         private ManagerProvider _managerProvider = null;
         private List<DataObjects.EventVM> _eventList = null;
-        private List<DataObjects.Event> _searchResults = null;
+        private List<EventModelView> _eventModelView = null;
+        private List<EventModelView> _searchResults = null;
         private DataObjects.EventVM selectedEvent = null;
         
         private User _user = null;
@@ -121,6 +122,13 @@ namespace WPFPresentation
         /// Description:
         ///  Had the _eventManager.RetreieveActiveEvents() add a list of events into the field _eventList
         ///  Changed what the data grid "datActiveEvents" had for an items source to the view model
+        ///  
+        /// Derrick Nagy
+        /// Upadate: 2022/03/27
+        /// 
+        /// Description:
+        /// Changed datagrid to use EventModelView
+        /// 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -133,16 +141,24 @@ namespace WPFPresentation
                 if (_user != null)
                 {
                     eventFilter = EventFilter.UserUpcomingEvents;
-                    _eventList = _eventManager.RetrieveEventListForPastAndUpcomingDatesForUser(_user.UserID);
+                    _eventList = _eventManager.RetrieveEventListForUpcomingDatesForUser(_user.UserID);
+                    _eventModelView = new List<EventModelView>();
+
+                    foreach (var item in _eventList)
+                    {                        
+                        _eventModelView.Add(new EventModelView(item));
+                    }
+                    datActiveEvents.ItemsSource = _eventModelView;
+
                 }
                 else
-                {                    
+                {
+                    eventFilter = EventFilter.AllUpcomingEvents;
                     _eventList = _eventManager.RetrieveEventListForUpcomingDates();
-                    
-                }
-                
+                    datActiveEvents.ItemsSource = _eventList;
+                }                
 
-                datActiveEvents.ItemsSource = _eventList;
+                
                 
             }
             catch (Exception ex)
@@ -186,6 +202,12 @@ namespace WPFPresentation
         /// 
         /// solution for how to pass an event object to a new page found at 
         /// https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1ea74ce-fd91-46c6-83bd-90cba1528b04/how-to-get-values-from-one-wpf-page-to-another-wpf-page?forum=wpf
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Updated to direct to pgEventFrame, which will load pgEventEditDetail within it
         /// </summary>
         private void datActiveEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -194,7 +216,8 @@ namespace WPFPresentation
                 return;
             }
             DataObjects.EventVM selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
-            pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _managerProvider, _user);
+            // pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _managerProvider, _user);
+            Page viewEditPage = new pgEventFrame(selectedEvent, _managerProvider, _user);
             this.NavigationService.Navigate(viewEditPage);
         }
 
@@ -220,6 +243,12 @@ namespace WPFPresentation
         /// Description:
         /// Text changed event for searching the current list of events for key words
         /// 
+        /// Derrick Nagy
+        /// Updated: 2022/03/26
+        /// 
+        /// Description:
+        /// Changed search results to an Event Model View object and updated search by date
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -227,20 +256,23 @@ namespace WPFPresentation
         {
             if (txtBoxEventSearch.Text == "")
             {
-                datActiveEvents.ItemsSource = _eventList;
+                datActiveEvents.ItemsSource = _eventModelView;
             }
             else
             {
-                _searchResults = new List<DataObjects.Event>();
+                _searchResults = new List<EventModelView>();
 
-                foreach (DataObjects.Event myEvent in _eventList)
+                foreach (var myEvent in _eventModelView)
                 {
                     if (myEvent.EventName.ToLower().Contains(txtBoxEventSearch.Text.ToLower()) 
-                        || myEvent.EventDescription.ToLower().Contains(txtBoxEventSearch.Text.ToLower()))
+                        || myEvent.EventDescription.ToLower().Contains(txtBoxEventSearch.Text.ToLower())
+                        || myEvent.FormatedDate.ToLower().Contains(txtBoxEventSearch.Text.ToLower())
+                        )
                     {
                         _searchResults.Add(myEvent);
                     }
                 }
+
                 datActiveEvents.ItemsSource = _searchResults;
             }
         }
@@ -251,6 +283,12 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Click event for filtering the current list of events
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/03/26
+        /// 
+        /// Description:
+        /// Changed search results to an Event Model View object and updated search by date
         /// 
         /// </summary>
         /// <param name="sender"></param>
@@ -265,32 +303,62 @@ namespace WPFPresentation
                 {
                     case EventFilter.AllUpcomingEvents:
                         _eventList = _eventManager.RetrieveEventListForUpcomingDates();
-                        datActiveEvents.ItemsSource = _eventList;
+                        _eventModelView = new List<EventModelView>();
+                        foreach (var item in _eventList)
+                        {
+                            _eventModelView.Add(new EventModelView(item));
+                        }
+                        datActiveEvents.ItemsSource = _eventModelView;
                         break;
 
                     case EventFilter.AllPastEvents:
                         _eventList = _eventManager.RetrieveEventListForPastDates();
-                        datActiveEvents.ItemsSource = _eventList;
+                        _eventModelView = new List<EventModelView>();
+                        foreach (var item in _eventList)
+                        {
+                            _eventModelView.Add(new EventModelView(item));
+                        }
+                        datActiveEvents.ItemsSource = _eventModelView;
                         break;
 
                     case EventFilter.AllUpcomingAndPastEvents:
                         _eventList = _eventManager.RetrieveEventListForUpcomingAndPastDates();
-                        datActiveEvents.ItemsSource = _eventList;
+                        _eventModelView = new List<EventModelView>();
+                        foreach (var item in _eventList)
+                        {
+                            _eventModelView.Add(new EventModelView(item));
+                        }
+                        datActiveEvents.ItemsSource = _eventModelView;
                         break;
 
                     case EventFilter.UserUpcomingEvents:
                         _eventList = _eventManager.RetrieveEventListForUpcomingDatesForUser(_user.UserID);
-                        datActiveEvents.ItemsSource = _eventList;
+                        _eventModelView = new List<EventModelView>();
+                        foreach (var item in _eventList)
+                        {
+                            _eventModelView.Add(new EventModelView(item));
+                        }
+                        datActiveEvents.ItemsSource = _eventModelView;
                         break;
 
                     case EventFilter.UserPastEvents:
                         _eventList = _eventManager.RetrieveEventListForPastDatesForUser(_user.UserID);
-                        datActiveEvents.ItemsSource = _eventList;
+                        _eventModelView = new List<EventModelView>();
+                        foreach (var item in _eventList)
+                        {
+                            _eventModelView.Add(new EventModelView(item));
+                        }
+                        datActiveEvents.ItemsSource = _eventModelView;
                         break;
 
                     case EventFilter.UserUpcomingandPastEvents:
                         _eventList = _eventManager.RetrieveEventListForPastAndUpcomingDatesForUser(_user.UserID);
-                        datActiveEvents.ItemsSource = _eventList;
+                        _eventModelView = new List<EventModelView>();
+                        foreach (var item in _eventList)
+                        {
+                            _eventModelView.Add(new EventModelView(item));
+                        }
+                        datActiveEvents.ItemsSource = _eventModelView;
                         break;
 
                     default:
@@ -348,47 +416,6 @@ namespace WPFPresentation
                 eventFilter = EventFilter.AllUpcomingEvents;
             }
         }
-        /// <summary>
-        /// Logan Baccam
-        /// Created: 2022/02/18
-        /// 
-        /// Description:
-        /// handler for navigating to the view activities page
-        /// 
-        /// </summary>
-        private void btnActivity_Click(object sender, RoutedEventArgs e)
-        {
-            selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
-            Event.pgViewActivities page;
-            Uri pageURI = new Uri("Event/pgViewActivities.xaml", UriKind.Relative);
-
-            if (_user != null)
-            {
-                if (selectedEvent is null)
-                {
-                    page = new Event.pgViewActivities(_user, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-                else
-                {
-                    page = new Event.pgViewActivities(selectedEvent, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-            }
-            else
-            {
-                if (selectedEvent is null)
-                {
-                    page = new Event.pgViewActivities(_managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-                else 
-                {
-                    page = new Event.pgViewActivities(selectedEvent, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -407,5 +434,52 @@ namespace WPFPresentation
         UserUpcomingEvents,
         UserPastEvents,
         UserUpcomingandPastEvents
+    }
+
+    /// <summary>
+    /// Derrick Nagy
+    /// Created: 2022/03/26
+    /// 
+    /// Description:
+    /// The Model View for the event view
+    /// 
+    /// </summary>
+    internal class EventModelView : DataObjects.EventVM 
+    {        
+        public bool HasNoDate { get; set; }
+        public string FormatedDate { get; set; }
+
+        public EventModelView(DataObjects.EventVM eventVM)
+        {
+            EventID = eventVM.EventID;
+            LocationID = eventVM.LocationID;
+            EventName = eventVM.EventName;
+            EventDescription = eventVM.EventDescription;
+            EventCreatedDate = eventVM.EventCreatedDate;
+            TotalBudget = eventVM.TotalBudget;
+            Active = eventVM.Active;
+            EventDates = eventVM.EventDates;
+
+            HasNoDate = (eventVM.EventDates.Count == 0) ? true : false;
+
+            if (HasNoDate)
+            {
+                FormatedDate = "No dates selected yet.";                
+            }
+            else
+            {
+                for (int i = 0; i < EventDates.Count; i++)
+                {
+                    if (i == EventDates.Count-1)
+                    {
+                        FormatedDate += EventDates[i].EventDateID.ToString("MM/dd/yyyy");
+                    }
+                    else
+                    {
+                        FormatedDate += EventDates[i].EventDateID.ToString("MM/dd/yyyy") + "\n";
+                    }
+                }
+            }
+        }
     }
 }

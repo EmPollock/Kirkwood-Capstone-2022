@@ -290,10 +290,11 @@ GO
 / Description: Creating Stored Procedure for updating tasks
 /
 ***************************************************************
-/ <Updater Name>
-/ Updated: yyyy/mm/dd
+/ Derrick Nagy
+/ Updated: 2022/03/27
 /
 / Description: 
+/ Commented out [DueDate] = @OldDueDate so that it could handle inserting at null values
 ****************************************************************/
 
 print '' print'*** creating sp_update_task'
@@ -326,7 +327,7 @@ AS
 		 AND	[TaskID]		= @TaskID
 		 AND	[Name] 			= @OldName
 		 AND	[Description]	= @OldDescription
-		 AND	[DueDate]		= @OldDueDate
+		 --AND	[DueDate]		= @OldDueDate
 		 AND	[Priority]		= @OldPriority
 		 AND	[Active]		= @OldActive
 		 
@@ -392,5 +393,35 @@ AS
 		FROM	[dbo].[taskAssignment] JOIN [Users]
 					ON [taskAssignment].[UserID] = [Users].[UserID]
 		WHERE 	[TaskID] = @TaskID
+	END
+GO
+
+/***************************************************************
+/ Mike Cahow
+/ Created: 2022/03/25
+/ 
+/ Description: Creating Stored Procedure for deleting task by taskID
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print '*** creating sp_delete_task_by_taskID...'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_task_by_taskID]
+(
+	@TaskID		[int]
+)
+AS
+	BEGIN
+	
+		DELETE FROM	[dbo].[Task]
+		WHERE		@TaskID = [Task].[TaskID]
+		
+		RETURN 		@@ROWCOUNT
+	
 	END
 GO

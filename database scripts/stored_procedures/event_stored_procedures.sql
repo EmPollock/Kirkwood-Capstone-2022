@@ -314,7 +314,7 @@ Derrick Nagy
 Created: 2022/02/08
 
 Description:
-Stored procedure to select active upcoming event from the events table for a user
+Stored procedure to select active upcoming events from the events table for a user
 **************************************************************
 <Jace Pettinger>
 Updated: 2022/02/15
@@ -327,6 +327,7 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates_for_user'
 GO
@@ -348,8 +349,10 @@ AS
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
 		WHERE [Event].[Active] = 1
-			AND [EventDateID] >= GETDATE()
 			AND [UserEvent].[EventID] = [Event].[EventID]
+			AND [EventDateID] >= GETDATE()
+			
+			
 		ORDER BY [UserEvent].[EventID] ASC
 		
 	END	
@@ -626,5 +629,43 @@ AS
 	END	
 GO	
 	
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/03/26
+
+Description:
+Selects all the events for a user that do no have dates
+****************************************************************/
+print '' print '*** creating sp_select_active_events_with_no_dates_for_user'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_with_no_dates_for_user]
+(
+	@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT
+			[Event].[EventID],
+			[Event].[EventName],
+			[Event].[EventDescription],
+			[Event].[DateCreated],
+			[Event].[TotalBudget],
+			[Event].[LocationID]
+		
+		FROM [Event]
+			JOIN [UserEvent] ON [UserEvent].EventID = [Event].EventID
+		WHERE [UserEvent].UserID = @UserID
+		AND [Event].[Active] = 1
+		AND [Event].[EventID] 
+			NOT IN (
+				SELECT EventID 
+				FROM [EventDate]
+				WHERE [EventID] = [Event].[EventID]
+			)
 	
-	
+		ORDER BY [Event].[EventID] ASC
+		
+	END	
+GO
+
