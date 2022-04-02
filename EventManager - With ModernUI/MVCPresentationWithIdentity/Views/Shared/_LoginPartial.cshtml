@@ -1,6 +1,9 @@
 ﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.Owin;
 @if (Request.IsAuthenticated)
 {
+    ApplicationUserManager userManager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+    var user = userManager.FindById(User.Identity.GetUserId());
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "d-flex" }))
     {
         @Html.AntiForgeryToken()
@@ -8,16 +11,16 @@
 
             <li class="nav-item">
 
-                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null,
-                            htmlAttributes: new
-                                 {
-                                title = "Manage",
-                                @class = "nav-link"
-                            })
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-            </li>
+        @Html.ActionLink("Hello " + user.GivenName + " " + user.FamilyName + "!", "Index", "Manage", routeValues: null,
+                htmlAttributes: new
+                        {
+                    title = "Manage",
+                    @class = "nav-link"
+                })
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+        </li>
 
     }
 }

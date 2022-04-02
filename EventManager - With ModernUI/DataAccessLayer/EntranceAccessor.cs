@@ -13,6 +13,39 @@ namespace DataAccessLayer
     public class EntranceAccessor : IEntranceAccessor
     {
         /// <summary>
+        /// Logan Baccam
+        /// Created 2022/03/06
+        /// 
+        /// Description:
+        /// method that deactivates an entrance from the Entrance table.
+        /// <param name="entranceID"/>
+        /// </summary>
+        public int DeactivateEntranceByEntranceID(int entranceID)
+        {
+            int rows = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_deactivate_entrance_by_entranceID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EntranceID", SqlDbType.Int);
+            cmd.Parameters["@EntranceID"].Value = entranceID;
+
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rows;
+        }
+
+        /// <summary>
         /// Alaina Gilson
         /// Created: 2022/02/22
         /// 

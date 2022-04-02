@@ -16,5 +16,8 @@ namespace DataAccessInterfaces
 
         int UpdatePasswordHash(string email, string oldPasswordHash, string newPasswordHash);
         int InsertUser(User newUser);
+        List<String> SelectAllRoles();
+        int InsertUserRole(int userID, string role);
+        int DeleteUserRole(int userID, string role);
     }
 }

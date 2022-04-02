@@ -23,6 +23,11 @@
                     </li>
 
                     <li class="nav-item">
+                        @*<a class="nav-link" href="">Nav-Bar 2</a>*@
+                        @Html.ActionLink("Volunteers", "ViewVolunteers", "Volunteer", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>
+
+                    <li class="nav-item">
                         @*<a class="nav-link" href="">Nav-bar 3</a>*@
                         @Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                     </li>
@@ -30,7 +35,10 @@
                     <li class="nav-item">
                         @Html.ActionLink("Contact", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                     </li>
-
+                    @if(User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("Administration", "Index", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+                    }
                 </ul>
 
                 <ul class="navbar-nav ms-auto">

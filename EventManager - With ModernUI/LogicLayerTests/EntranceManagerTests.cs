@@ -326,5 +326,41 @@ namespace LogicLayerTests
             // assert
             // nothing to assert, exception testing
         }
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/03/06
+        /// 
+        /// Description:
+        /// Test method that removes the correct entrance 
+        /// </summary>
+        [TestMethod]
+        public void TestRemoveEntranceByEntranceIDRemovesCorrectEntrance()
+        {
+            // arrange
+            const int entranceID = 100000;
+            const int expected = 1;
+            // act
+            int actual = _entranceManager.RemoveEntranceByEntranceID(entranceID);
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created 2022/03/06
+        /// 
+        /// Description:
+        /// Test method that fails if invalid entranceID if attempted to be removed
+        /// </summary>
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
+        public void TestRemoveEntranceByEntranceIDRemovesFailsWithInvalidEntranceID()
+        {
+            // arrange
+            const int entranceID = 10;
+            // act
+            int actual = _entranceManager.RemoveEntranceByEntranceID(entranceID);
+            // assert
+        }
     }
 }

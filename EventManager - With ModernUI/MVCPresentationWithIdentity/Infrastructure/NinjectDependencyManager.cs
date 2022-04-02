@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Ninject;
+using DataObjects;
+using LogicLayer;
+using LogicLayerInterfaces;
 
 namespace MVCPresentationWithIdentity.Infrastructure
 {
@@ -17,7 +20,7 @@ namespace MVCPresentationWithIdentity.Infrastructure
 
         private void AddBindings()
         {
-            
+            kernel.Bind<IVolunteerManager>().To<VolunteerManager>();
         }
 
         public object GetService(Type serviceType)

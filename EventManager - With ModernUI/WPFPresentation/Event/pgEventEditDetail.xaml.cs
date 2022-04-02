@@ -151,9 +151,16 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method to handle changing the page to edit mode
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Raise EditOngoing flag when entering edit mode
         /// </summary>
         private void setGeneralTabEditMode()
         {
+            ValidationHelpers.EditOngoing = true;
             populateControls();
 
             // Enable editing 
@@ -177,9 +184,16 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method to handle changing the page to detail mode
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag when returning to detail mode
         /// </summary>
         private void setGeneralTabDetailMode()
         {
+            ValidationHelpers.EditOngoing = false;
             populateControls();
 
             // make read only
@@ -203,6 +217,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Button click event handler for eduting or saving the event
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag before navigating away on save
         /// </summary>
         private void btnEventEditSave_Click(object sender, RoutedEventArgs e)
         {
@@ -245,6 +265,7 @@ namespace WPFPresentation.Event
                     }
                     finally // return to view events page
                     {
+                        ValidationHelpers.EditOngoing = false;
                         this.NavigationService.GoBack();
                     }
                 }
@@ -257,11 +278,18 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Button click event handler for navigating back to previous page or canceling edit
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag before navigating away
         /// </summary>
         private void btnEventCloseCancel_Click(object sender, RoutedEventArgs e)
         {
             if (btnEventCloseCancel.Content.ToString() == "Close") // return to view events page
             {
+                ValidationHelpers.EditOngoing = false;
                 this.NavigationService.GoBack();
             }
             else // Make sure want to close, then return to details view
@@ -342,6 +370,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Button click handler for deleting an event
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lowered EditOngoing flag before navigating away in finally block
         /// </summary>
         private void btnDeleteEvent_Click(object sender, RoutedEventArgs e)
         {
@@ -373,28 +407,10 @@ namespace WPFPresentation.Event
                 }
                 finally // return to view events page
                 {
+                    ValidationHelpers.EditOngoing = false;
                     this.NavigationService.GoBack();
                 }
             }
-        }
-        /// <summary>
-        /// ???
-        /// Created: ????/??/??
-        /// 
-        /// Description:
-        /// Click method for tasks button. Sends the user to the task list view.
-        /// 
-        /// Christopher Repko
-        /// Updated: 2022/02/25
-        /// 
-        /// Description: Added sublocation manager to navigated page.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnTasks_Click(object sender, RoutedEventArgs e)
-        {
-            pgTaskListView taskViewPage = new pgTaskListView(_event, _managerProvider, _user);
-            this.NavigationService.Navigate(taskViewPage);
         }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
 
@@ -413,9 +429,16 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Hid validation message for no event dates if there are event dates
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/04/01
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag when entering detail mode
         /// </summary>
         private void setEventDatesTabDetailMode()
         {
+            ValidationHelpers.EditOngoing = false;
             grdAddEventDate.Visibility = Visibility.Hidden; // hide edit dates area
             btnEditEventDateAddSave.Content = "Add Dates";
             btnEditEventDateCloseCancel.Content = "Close";
@@ -463,9 +486,16 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Changed time text boxes to combo boxes
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/04/01
+        /// 
+        /// Description:
+        /// Raise EditOngoing flag when entering edit mode
         /// </summary>
         private void setEventDateTabEditMode()
         {
+            ValidationHelpers.EditOngoing = true;
             // prepare add event grid
             grdAddEventDate.Visibility = Visibility.Visible;
             datePickerEventDate.SelectedDate = null;
