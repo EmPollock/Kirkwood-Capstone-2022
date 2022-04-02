@@ -183,13 +183,17 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\VolunteerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyManager.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Models\VolunteerListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -288,6 +292,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Volunteer\ViewVolunteers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -296,6 +301,28 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">
+      <Project>{1a057f98-1aaf-4a39-82b3-ba1c36cffdaf}</Project>
+      <Name>DataAccessFakes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessInterfaces\DataAccessInterfaces.csproj">
+      <Project>{c1ec5e7d-a97b-464e-b261-3fbc396fe912}</Project>
+      <Name>DataAccessInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataObjects\DataObjects.csproj">
+      <Project>{b6f29fed-5ce3-4342-943f-032421c38fa4}</Project>
+      <Name>DataObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogicLayerInterfaces\LogicLayerInterfaces.csproj">
+      <Project>{693568dd-60bf-4d9e-a819-e5077e5539f8}</Project>
+      <Name>LogicLayerInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogicLayer\LogicLayer.csproj">
+      <Project>{65263851-45fb-4eb0-82ae-ea8d42d87fc5}</Project>
+      <Name>LogicLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
