@@ -93,5 +93,46 @@ namespace LogicLayer
 
             return volunteers;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/30
+        /// 
+        /// Description:
+        /// Retrieve volunteer availability on a given date by VolunteerID 
+        /// First tries to get any availability exceptions for the given date.
+        /// If it fails to find any, then it retrieves the regular weekly availability.
+        /// </summary>
+        /// <param name="volunteerID"></param>
+        /// <param name="date"></param>
+        /// <returns>A list of Availability objects</returns>
+        public List<Availability> RetrieveAvailabilityByVolunteerIDAndDate(int volunteerID, DateTime date)
+        {
+            List<Availability> volunteerAvailabilities = new List<Availability>();
+
+            try
+            {
+                volunteerAvailabilities = _volunteerAccessor.SelectAvailabilityExceptionByVolunteerIDAndDate(volunteerID, date);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve volunteer availability exceptions", ex);
+            }
+
+            // if failed to find any exceptions, get regular weekly availability
+            if (volunteerAvailabilities.Count == 0)
+            {
+                try
+                {
+                    volunteerAvailabilities = _volunteerAccessor.SelectAvailabilityByVolunteerIDAndDate(volunteerID, date);
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("Failed to retrieve volunteer availability", ex);
+                }
+            }
+
+            return volunteerAvailabilities;
+        }
     }
 }

@@ -427,5 +427,51 @@ namespace LogicLayerTests
             // assert
             Assert.AreEqual(expectedCount, actualCount);
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Test that retrieves event dates by userID and date and tests the count retrieved
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventDatesByUserIDAndDateReturnsCorrectAmount()
+        {
+            // arrange
+            const int userID = 999999;
+            DateTime eventDate = new DateTime(2022, 01, 02);
+            const int expectedCount = 2;
+            int actualCount;
+
+            // act
+            actualCount = _eventDateManager.RetrieveEventDatesByUserIDAndDate(userID, eventDate).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Test that retrieves event dates by userID and date and tests the count retrieved
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventDatesByUserIDAndDateWithBadDateReturnsCorrectAmount()
+        {
+            // arrange
+            const int userID = 999999;
+            DateTime eventDate = new DateTime(1999, 01, 02);
+            const int expectedCount = 0;
+            int actualCount;
+
+            // act
+            actualCount = _eventDateManager.RetrieveEventDatesByUserIDAndDate(userID, eventDate).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
     }
 }
