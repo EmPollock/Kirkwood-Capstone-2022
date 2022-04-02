@@ -183,7 +183,7 @@
                         <ColumnDefinition Width="160" />
                         <ColumnDefinition Width="160" />
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="dgRequestList" Grid.Row="1" CanUserAddRows="False" Grid.ColumnSpan="6" AutoGenerateColumns="false" IsReadOnly="False">
+                    <DataGrid x:Name="dgRequestList" Grid.Row="1" CanUserAddRows="False" Grid.ColumnSpan="6" AutoGenerateColumns="false" IsReadOnly="True">
                         <DataGrid.Columns>
                             <!--<DataGridTextColumn Header="Request ID" Binding="{Binding RequestID}" Width="*"/>-->
                             <DataGridTextColumn Header="Volunteer" Binding="{Binding VolunteerName}" Width="*"/>
