@@ -407,5 +407,31 @@ namespace WPFPresentation
             // no edit ongoing
             this.MainFrame.NavigationService.Navigate(page);
         }
+
+       /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/3/20
+        /// 
+        /// Description:
+        /// Click event for the home button. Navigates to my events.
+        /// 
+        /// </summary>
+        /// <param name="sender">The back button</param>
+        /// <param name="e">Arguments passed as part of the event</param>
+        private void btnHome_Click(object sender, RoutedEventArgs e)
+        {
+            Page myEventsPage;
+
+            if (_user == null)
+            {
+               myEventsPage = new pgViewEvents(_managerProvider);
+            }
+            else
+            {
+                myEventsPage = new pgViewEvents(_user, _managerProvider);
+            }
+
+            this.MainFrame.NavigationService.Navigate(myEventsPage);
+        }
     }
 }

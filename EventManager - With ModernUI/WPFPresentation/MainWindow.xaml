@@ -90,7 +90,7 @@
                     </Rectangle.Fill>
                 </Rectangle>
             </Viewbox>
-            <Button x:Name="btnHome" Margin="10px" Height="60px" Width="60px" Background="#00000000">
+            <Button x:Name="btnHome" Margin="10px" Height="60px" Width="60px" Background="#00000000" Click="btnHome_Click">
 
             </Button>
           
