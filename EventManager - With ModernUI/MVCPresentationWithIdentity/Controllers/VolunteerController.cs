@@ -13,19 +13,39 @@ using MVCPresentationWithIdentity.Models;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
+    /// <summary>
+    /// Austin Timmerman
+    /// Created: 2022/04/04
+    /// 
+    /// Interaction logic for VolunteerController
+    /// </summary>
     public class VolunteerController : Controller
     {
         IVolunteerManager _volunteerManager;
         public int _pageSize = 10;
 
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Constructor that sets the _volunteerManager
+        /// </summary>
+        /// <param name="locationManager"></param>
         public VolunteerController(IVolunteerManager volunteerManager)
         {
             _volunteerManager = volunteerManager;
         }
 
-
-
-        // GET: Volunteer
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// For the View Volunteers page
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns>ActionResult</returns>
         public ActionResult ViewVolunteers(int page = 1)
         {
             List<Volunteer> volunteers = new List<Volunteer>();

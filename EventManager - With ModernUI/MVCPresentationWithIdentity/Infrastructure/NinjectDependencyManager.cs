@@ -21,6 +21,7 @@ namespace MVCPresentationWithIdentity.Infrastructure
         private void AddBindings()
         {
             kernel.Bind<IVolunteerManager>().To<VolunteerManager>();
+            kernel.Bind<ILocationManager>().To<LocationManager>();
         }
 
         public object GetService(Type serviceType)
