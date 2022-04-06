@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace DataObjects
 {
@@ -15,6 +17,11 @@ namespace DataObjects
     /// Description:
     /// Data object for an event
     /// 
+    /// Derrick Nagy
+    /// Update: 2022/03/24
+    /// 
+    /// Description:
+    /// Added display format
     /// </summary>
     public class Event
     {
@@ -22,7 +29,10 @@ namespace DataObjects
         public int? LocationID { get; set; }
         public string EventName { get; set; }
         public string EventDescription { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime EventCreatedDate { get; set; }
+
         public decimal TotalBudget { get; set; }
         public bool Active { get; set; }
 
@@ -39,14 +49,24 @@ namespace DataObjects
     /// Description:
     /// Create the view model for event
     /// 
+    /// Derrick Nagy
+    /// Update: 2022/03/24
+    /// 
+    /// Description:
+    /// Added display format and location and users to event vm
     /// </summary>
     public class EventVM : Event
     {
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public List<EventDate> EventDates { get; set; }
+        public Location Location { get; set; }
+        public List<User> EventManagers { get; set; }
 
         public EventVM()
         {
             EventDates = new List<EventDate>();
+            Location = new Location();
+            EventManagers = new List<User>();
         }
     }
 

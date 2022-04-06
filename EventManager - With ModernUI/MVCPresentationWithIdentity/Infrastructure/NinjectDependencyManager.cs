@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Ninject;
+using LogicLayer;
+using LogicLayerInterfaces;
+using DataAccessFakes;
+using Ninject.Web.Common;
 
 namespace MVCPresentationWithIdentity.Infrastructure
 {
@@ -17,7 +21,11 @@ namespace MVCPresentationWithIdentity.Infrastructure
 
         private void AddBindings()
         {
+            kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().InRequestScope();
+            kernel.Bind<IUserManager>().To<LogicLayer.UserManager>().InRequestScope();            
             
+            //kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().WithConstructorArgument("fake", new EventAccessorFake());
+
         }
 
         public object GetService(Type serviceType)

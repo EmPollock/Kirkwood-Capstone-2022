@@ -902,5 +902,106 @@ namespace LogicLayerTests
             Assert.AreEqual(expected, actual);
         }
 
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// Test that an event has a location when calling RetrieveEventListForUpcomingDates()
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMUpcomingEventsHasLocation()
+        {
+            // arrange
+
+            Location expectedLocation = new Location()
+            {
+                LocationID = 100004,
+                UserID = 100000,
+                Name = "Test Location 5 Inactive",
+                Description = "Description of Inactive Test Location 5 goes here.",
+                PricingInfo = "Pricing information for renting inactive Test Location 5 goes here.",
+                Phone = "555-555-5555",
+                Email = "testLocation5@locations.com",
+                Address1 = "Test Location 5 Street",
+                Address2 = "Apt 55",
+                City = "Detroit",
+                State = "Michigan",
+                ZipCode = "48202",
+                ImagePath = "http://imagehost.com/testlocation5.png",
+                Active = false
+            };
+
+
+            List<EventVM> eventList = null;
+            
+
+            // act
+            eventList = _eventManager.RetrieveEventListForUpcomingDates();
+            Location actualLocation = eventList.Find(e => e.EventID == 100000).Location;
+
+            // assert
+            Assert.AreEqual(expectedLocation.LocationID, actualLocation.LocationID);
+            Assert.AreEqual(expectedLocation.UserID, actualLocation.UserID);
+            Assert.AreEqual(expectedLocation.Name, actualLocation.Name);
+            Assert.AreEqual(expectedLocation.Description, actualLocation.Description);
+            Assert.AreEqual(expectedLocation.PricingInfo, actualLocation.PricingInfo);
+            Assert.AreEqual(expectedLocation.Phone, actualLocation.Phone);
+            Assert.AreEqual(expectedLocation.Email, actualLocation.Email);
+            Assert.AreEqual(expectedLocation.Address1, actualLocation.Address1);
+            Assert.AreEqual(expectedLocation.Address2, actualLocation.Address2);
+            Assert.AreEqual(expectedLocation.City, actualLocation.City);
+            Assert.AreEqual(expectedLocation.State, actualLocation.State);
+            Assert.AreEqual(expectedLocation.ZipCode, actualLocation.ZipCode);
+            Assert.AreEqual(expectedLocation.ImagePath, actualLocation.ImagePath);
+            Assert.AreEqual(expectedLocation.Active, actualLocation.Active);
+
+            
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// Tests to make sure that the event managers for an event is returned
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventManagers()
+        {
+            // Arrange
+            const int eventID = 100000;
+            const int expectedCount = 1;
+            int actualCount = 0;
+
+            // Act
+            List<User> actualUserList = _eventManager.RetrieveEventPlannersForEvent(eventID);
+            actualCount = actualUserList.Count;
+
+            // Assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// Tests to make sure that the event managers for an event is returned
+        /// 
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestRetrieveEventManagersThrowsExceptionWhenNoUserIsFound()
+        {
+            // Arrange
+            const int eventID = 1000000;
+            // Act
+            _eventManager.RetrieveEventPlannersForEvent(eventID);            
+
+            // Assert
+            
+        }
     }
 }

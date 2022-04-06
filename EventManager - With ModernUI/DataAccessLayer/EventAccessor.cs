@@ -290,10 +290,16 @@ namespace DataAccessLayer
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of upcoming dates with location and event planners
+        /// 
         /// </summary>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectEventsUpcomingDates()
-        {            
+        {
             List<EventVM> eventListRef = new List<EventVM>();
 
             var conn = DBConnection.GetConnection();
@@ -327,7 +333,24 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(10),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
 
                     }
@@ -337,9 +360,33 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
 
+            return eventListRef ;
+
+        }
+
+        private List<EventVM> getManagersForEvents(List<EventVM> eventListRef)
+        {
+            foreach (var item in eventListRef)
+            {
+                try
+                {
+                    item.EventManagers = SelectEventPlannersForEvent(item.EventID);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            return eventListRef;
         }
 
         /// <summary>
@@ -360,6 +407,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Updated to include TotalBudget field
+
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of upcoming and past dates with location and event managers
         /// 
         /// </summary>
         /// <returns>Event view models</returns>
@@ -398,7 +451,24 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(10),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
 
                     }
@@ -408,8 +478,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
         }
 
         /// <summary>
@@ -430,6 +507,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Updated to include TotalBudget field
+
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of past dates with location and event managers
         /// 
         /// </summary>
         /// <returns>Event view models</returns>
@@ -468,7 +551,24 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(10),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
 
                     }
@@ -478,8 +578,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
         }
 
         /// <summary>
@@ -500,6 +607,11 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Updated to include TotalBudget field
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of upcoming dates for a user with location and event managers
         /// 
         /// </summary>
         /// <param name="userID"></param>
@@ -542,8 +654,26 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(10),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
+
                     }
                 }
             }
@@ -551,8 +681,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
 
 
         }
@@ -576,8 +713,14 @@ namespace DataAccessLayer
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of past dates for a user with location and event managers
+        /// 
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="userID">User ID</param>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectUserEventsForPastDates(int userID)
         {
@@ -617,8 +760,26 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(10),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
+
                     }
                 }
             }
@@ -626,8 +787,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
         }
 
         /// <summary>
@@ -649,8 +817,14 @@ namespace DataAccessLayer
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of past and upcoming dates for a user with location and event managers
+        /// 
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="userID">User ID</param>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectUserEventsForPastAndUpcomingDates(int userID)
         {
@@ -690,8 +864,26 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(10),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
+
                     }
                 }
             }
@@ -699,8 +891,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
 
         }
 
@@ -781,6 +980,12 @@ namespace DataAccessLayer
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Updated to include location information
+        /// 
         /// </summary>
         /// <param name="eventListRef">Takes an eventvm list</param>
         /// <returns>A list of Events with no duplicate EventIDs and all the EventDates in a list in the Event object</returns>
@@ -802,7 +1007,24 @@ namespace DataAccessLayer
                         EventCreatedDate = item.EventCreatedDate,
                         TotalBudget = item.TotalBudget,
                         LocationID = item.LocationID,
-                        EventDates = new List<EventDate>()
+                        EventDates = new List<EventDate>(),
+                        Location = new Location()
+                        {
+                            LocationID = (int)item.LocationID,
+                            UserID = item.Location.UserID,
+                            Name = item.Location.Name,
+                            Description = item.Location.Description,
+                            PricingInfo = item.Location.PricingInfo,
+                            Phone = item.Location.Phone,
+                            Email = item.Location.Email,
+                            Address1 = item.Location.Address1,
+                            Address2 = item.Location.Address2,
+                            City = item.Location.City,
+                            State = item.Location.State,
+                            ZipCode = item.Location.ZipCode,
+                            ImagePath = item.Location.ImagePath,
+                            Active = item.Location.Active
+                        }
                     });
                 }
             }
@@ -943,6 +1165,66 @@ namespace DataAccessLayer
             }
 
             return result;
+        }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/03/24
+        /// 
+        /// Description:
+        /// Returns Users with the event Manager role for an event
+        /// 
+        /// </summary>
+        /// <param name="eventID">The Event ID</param>
+        /// <returns>List of event managers</returns>
+        public List<User> SelectEventPlannersForEvent(int eventID)
+        {
+            List<User> users = new List<User>();
+
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_event_planners_for_event";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+            cmd.Parameters["@EventId"].Value = eventID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        users.Add(new User()
+                        {
+                            UserID = reader.GetInt32(0),
+                            GivenName = reader.GetString(1),
+                            FamilyName = reader.GetString(2),
+                            EmailAddress = reader.GetString(3),
+                            State = reader.GetString(4),
+                            City = reader.GetString(5),
+                            Zip = reader.GetInt32(6),
+                            Active = reader.GetBoolean(7)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return users;
         }
     }
 }

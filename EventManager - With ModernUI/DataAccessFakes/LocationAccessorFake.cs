@@ -22,6 +22,13 @@ namespace DataAccessFakes
         /// Description:
         /// Constructor to populate _fakeLocations with dummy values for testing purposes
         /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// Copy and pasted the fake location data into the Event Accessor Fake
+        /// 
         /// </summary>
         public LocationAccessorFake()
         {
@@ -246,6 +253,9 @@ namespace DataAccessFakes
                 IsException = true
             });
         }
+
+
+
         private class LocationAvailabilityTableFake
         {
             public DateTime Date { get; set; }

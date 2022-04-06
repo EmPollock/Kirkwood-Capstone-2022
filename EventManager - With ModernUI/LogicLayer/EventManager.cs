@@ -146,7 +146,6 @@ namespace LogicLayer
         /// <param name="oldEvent">The record previously stored</param>
         /// <param name="newEvent">The new record containing the updates to the old</param>
         /// <returns>True or false if one record was updated</returns>
-
         public bool UpdateEvent(Event oldEvent, Event newEvent)
         {
             bool result = false;
@@ -506,7 +505,6 @@ namespace LogicLayer
             return eventID;
         }
 
-
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/02/18
@@ -533,6 +531,37 @@ namespace LogicLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Returns a list of event planners given an event ID
+        /// 
+        /// </summary>
+        /// <param name="eventID">Event ID</param>
+        /// <returns>List of event planners</returns>
+        public List<User> RetrieveEventPlannersForEvent(int eventID)
+        {
+            List<User> users = new List<User>();
+
+            try
+            {
+                users = _eventAccessor.SelectEventPlannersForEvent(eventID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (users.Count == 0)
+            {
+                throw new ApplicationException("No users were found for this event.");
+            }
+
+            return users;
         }
     }
 }

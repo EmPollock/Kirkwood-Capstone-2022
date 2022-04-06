@@ -87,6 +87,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Location" Binding="{Binding Location.Name}"/>
             </DataGrid.Columns>
         </DataGrid>
 

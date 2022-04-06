@@ -204,6 +204,12 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_future_event_dates'
 GO
@@ -216,10 +222,24 @@ AS
 			[EventDescription],
 			[DateCreated],
 			[TotalBudget],
-			[LocationID],
-			[EventDate].[EventDateID]
+			[Location].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [Location].[LocationCity],			
+            [Location].[LocationState],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
 		WHERE [Event].[Active] = 1
 		ORDER BY [Event].[EventID] ASC
 		
@@ -244,22 +264,43 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
 ****************************************************************/
-print '' print '*** creating sp_select_active_events_for_upcoming_dates'
+print '' print '*** creating sp_select_active_events_for_upcoming_dates**
+'
 GO
 CREATE PROCEDURE [dbo].[sp_select_active_events_for_upcoming_dates]
 AS
 	BEGIN
-		SELECT 
+		SELECT DISTINCT
 			[Event].[EventID],
 			[EventName],
 			[EventDescription],
 			[DateCreated],
 			[TotalBudget],
-			[LocationID],
-			[EventDate].[EventDateID]
+			[Event].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [Location].[LocationCity],			
+            [Location].[LocationState],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] >= GETDATE()
 		ORDER BY [Event].[EventID] ASC
@@ -285,6 +326,12 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates'
 GO
@@ -297,10 +344,24 @@ AS
 			[EventDescription],
 			[DateCreated],
 			[TotalBudget],
-			[LocationID],
-			[EventDate].[EventDateID]
+			[Location].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [Location].[LocationCity],			
+            [Location].[LocationState],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] < GETDATE()
 		ORDER BY [Event].[EventID] ASC
@@ -327,6 +388,12 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates_for_user'
 GO
@@ -343,10 +410,24 @@ AS
 			[Event].[DateCreated],
 			[Event].[TotalBudget],
 			[Event].[LocationID],
-			[EventDate].[EventDateID]
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [Location].[LocationCity],			
+            [Location].[LocationState],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] >= GETDATE()
 			AND [UserEvent].[EventID] = [Event].[EventID]
@@ -375,6 +456,12 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates_for_user'
 GO
@@ -391,10 +478,24 @@ AS
 			[Event].[DateCreated],
 			[Event].[TotalBudget],
 			[Event].[LocationID],
-			[EventDate].[EventDateID]
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [Location].[LocationCity],			
+            [Location].[LocationState],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] < GETDATE()
 			AND [UserEvent].[EventID] = [Event].[EventID]
@@ -422,6 +523,12 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_upcoming_dates_for_user'
 GO
@@ -438,10 +545,24 @@ AS
 			[Event].[DateCreated],
 			[Event].[TotalBudget],
 			[Event].[LocationID],
-			[EventDate].[EventDateID]			
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [Location].[LocationCity],			
+            [Location].[LocationState],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]			
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
 		WHERE [Event].[Active] = 1			
 			AND [UserEvent].[EventID] = [Event].[EventID]
 		ORDER BY [UserEvent].[EventID] ASC
@@ -626,5 +747,43 @@ AS
 	END	
 GO	
 	
-	
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/02/22
+
+Description:
+Stored procedure to select the roles that a user has for an event
+**************************************************************
+
+Updated: 
+
+Description: 
+
+****************************************************************/
+	print '' print '*** creating sp_select_event_planners_for_event**'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_planners_for_event]
+(
+	@EventID	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[Users].[UserID],
+			[GivenName],
+			[FamilyName],
+			[Email], 
+			[UserState],
+			[City],
+			[Zip],
+			[Active]
+		FROM Users
+		Join 
+		UserEvent
+		ON [UserEvent].[RoleID] = 'Event Planner' 
+			AND  [UserEvent].[EventID] = @EventID
+			AND [Users].[UserID] = [UserEvent].[UserID]
+	END	
+GO	
 	

@@ -58,6 +58,18 @@ GO
 	(100000, 'Event Planner', 100003)
 	(100000, 'Event Manager', 100003)
 
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added test records:
+	,(100000, 'Event Planner', 100003)
+	,(100000, 'Event Manager', 100003)
+	,(100002, 'Event Planner', 100004)
+	,(100002, 'Event Planner', 100005)
+	,(100002, 'Event Planner', 100006)
+	,(100002, 'Event Planner', 100007)
 ****************************************************************/
 print '' print '*** test records for UserEvent table'
 GO
@@ -81,5 +93,9 @@ INSERT INTO [dbo].[UserEvent] (
 	,(100000, 'Event Planner', 100008)-- Past Event
 	,(100000, 'Event Planner', 100003)
 	,(100000, 'Event Manager', 100003)
+	,(100002, 'Event Planner', 100004)
+	,(100002, 'Event Planner', 100005)
+	,(100002, 'Event Planner', 100006)
+	,(100002, 'Event Planner', 100007)
 
 GO
