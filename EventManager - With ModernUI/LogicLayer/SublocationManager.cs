@@ -64,9 +64,9 @@ namespace LogicLayer
             int rows = 0;
             if (locationID >= 100000 && locationID <= 999999)
             {
-                if (sublocationDesc.Length >= 1001 && sublocationDesc.Length <= 0)
+                if (sublocationDesc.Length >= 1001)
                 {
-                    throw new ArgumentException("Description must be between 1-1000 characters.");
+                    throw new ArgumentException("Description cannot exceed 1000 characters.");
                 }
                 if (sublocationName.Length >= 161 && sublocationName.Length <= 0)
                 {

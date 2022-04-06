@@ -82,6 +82,12 @@ namespace WPFPresentation
         /// Description:
         /// Using a load event to populate the priority drop down with it's string values of Description
         /// rather than the int values that are used in the Tasks data object
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Raise EditOngoing flag when page is loaded
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -101,6 +107,8 @@ namespace WPFPresentation
 
                 MessageBox.Show("Priority list was not retrieved." + "\n\n" + ex.Message);
             }
+
+            ValidationHelpers.EditOngoing = true;
         }
 
         /// <summary>
@@ -119,6 +127,12 @@ namespace WPFPresentation
         /// Updated: 2022/03/05
         /// 
         /// Description: Added logic to handle requesting volunteers during task creation
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lowered EditOngoing flag when task is saved successfully
         /// </summary>
         private void btnSaveTask_Click(object sender, RoutedEventArgs e)
         {
@@ -173,6 +187,7 @@ namespace WPFPresentation
             {
                 _taskManager.AddTask(task, numTotalVolunteers);
                 MessageBox.Show("Task has been added.");
+                ValidationHelpers.EditOngoing = false;
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
@@ -195,6 +210,12 @@ namespace WPFPresentation
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lowered EditOngoing flag on successful cancel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -212,115 +233,10 @@ namespace WPFPresentation
             }
             else
             {
+                ValidationHelpers.EditOngoing = false;
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
             }
         }
-
-        // --------------------------------------------------- Vertical Buttons Click Events --------------------------------------------------------//
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/25
-        /// 
-        /// Description:
-        /// Click event handler to take users back to the Event Edit Detail Page
-        /// Works like the cancel button and checks with the user before leaving page
-        /// 
-        /// Derrick Nagy
-        /// Updated: 2022/02/26
-        /// 
-        /// Description:
-        /// Added _user to be passed with page constructor
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
-        {
-            string message = "Task will not be saved if you stop now.";
-            string title = "Stop creating Task?";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Warning;
-            var result = MessageBox.Show(message, title, buttons, image);
-
-            if (result == MessageBoxResult.No)
-            {
-                return;
-            }
-            else
-            {
-                pgEventEditDetail eventEditDetailPage = new pgEventEditDetail(_event, _managerProvider, _user);
-                this.NavigationService.Navigate(eventEditDetailPage);
-            }
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/25
-        /// 
-        /// Description:
-        /// Click event handler to take users back to the Task List View Page
-        /// Works like the cancel button and checks with the user before leaving page
-        /// 
-        /// Update:
-        /// Derrick Nagy
-        /// Updated: 2022/02/26
-        /// 
-        /// Description:
-        /// Added _user to be passed with page constructor
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnTasks_Click(object sender, RoutedEventArgs e)
-        {
-            string message = "Task will not be saved if you stop now.";
-            string title = "Stop creating Task?";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Warning;
-            var result = MessageBox.Show(message, title, buttons, image);
-
-            if (result == MessageBoxResult.No)
-            {
-                return;
-            }
-            else
-            {
-                pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
-                this.NavigationService.Navigate(viewTasksPage);
-            }
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/25
-        /// 
-        /// Description:
-        /// Click event handler to take users to the View Activities Page
-        /// Works like the cancel button and checks with the user before leaving page
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnItinerary_Click(object sender, RoutedEventArgs e)
-        {
-            string message = "Task will not be saved if you stop now.";
-            string title = "Stop creating Task?";
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Warning;
-            var result = MessageBox.Show(message, title, buttons, image);
-
-            if (result == MessageBoxResult.No)
-            {
-                return;
-            }
-            else
-            {
-                pgViewActivities viewActivitiesPage = new pgViewActivities(_event, _managerProvider);
-                this.NavigationService.Navigate(viewActivitiesPage);
-            }
-        }
-
-        // ---------------------------------------------------- End Vertical Buttons Handlers --------------------------------------------------------//
     }
 }

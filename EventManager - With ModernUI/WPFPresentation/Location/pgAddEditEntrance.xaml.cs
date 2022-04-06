@@ -26,8 +26,11 @@ namespace WPFPresentation.Location
     {
         IEntranceManager _entranceManager;
         ManagerProvider _managerProvider;
-        int _locationID;
+
+        Entrance _entrance;
+        DataObjects.Location _location;
         User _user;
+        int _mode;
 
         /// <summary>
         /// Alaina Gilson
@@ -35,57 +38,82 @@ namespace WPFPresentation.Location
         /// 
         /// Description:
         /// Initializes component and sets up entrance manager with fake and default accessors
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/25
+        /// Description: added manager provider and removed fake
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/26
+        /// Description:
+        /// Changed constructor to take location object rather than locationID, because we have it
+        /// where this is being called, and it is needed to redirect to pgLocationEntrance from here
         /// </summary>
-        /// <param name="locationID"></param>
+        /// <param name="entrance"></param>
+        /// <param name="location"></param>
         /// <param name="managerProvider"></param>
         /// <param name="user"></param>
-        internal pgAddEditEntrance(int locationID, ManagerProvider managerProvider, User user)
+        /// <param name="mode">1 == add, 2 == edit</param>
+        internal pgAddEditEntrance(Entrance entrance, DataObjects.Location location, ManagerProvider managerProvider, User user, int mode)
         {
-            //for fakes
-            //_entranceManager = new EntranceManager(new EntranceAccessorFake());
-
-            _entranceManager = new EntranceManager();
-            _locationID = locationID;
+            _entrance = entrance;
+            _location = location;
             _managerProvider = managerProvider;
+            _entranceManager = _managerProvider.EntranceManager;
             _user = user;
+            _mode = mode;
             InitializeComponent();
         }
 
         /// <summary>
         /// Alaina Gilson
-        /// Created 2022/03/03
+        /// Created: 2022/03/08
         /// 
         /// Description:
-        /// Adds a new entrance to database
+        /// Checks which mode the page should be in and
+        /// updates labels accordingly
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/27
+        /// 
+        /// Description:
+        /// Initialized Name and Description fields with old values in edit mode,
+        /// so they can edit starting with what was already there.
+        /// 
+        /// Logan Baccam
+        /// Updated: 2022/03/29
+        /// 
+        /// Description:
+        /// Hide the delete button when in create entrance mode
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/04/01
+        /// 
+        /// Description:
+        /// Raise EditOngoing flag on page load
         /// </summary>
-        private void btnEntranceAdd_Click(object sender, RoutedEventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            string name = txtBoxEntranceName.Text;
-            string description = txtBoxEntranceDescription.Text;
+            ValidationHelpers.EditOngoing = true;
 
-            try
+            // create entrance mode
+            if(_mode == 1)
             {
-                if (name == "" || description == "")
-                {
-                    MessageBox.Show("Please enter all fields for the entrance.");
-                    txtBoxEntranceName.Focus();
-                }
-                else
-                {
-                    _entranceManager.CreateEntrance(_locationID, name, description);
-                    //MessageBox.Show("Entrance has been added successfully.");
-                }
+                btnDeleteEntrance.Visibility = Visibility.Collapsed;
+                txtBlkAddEditEntrance.Text = "Create New Entrance";
+                btnEntranceAddEdit.Content = "Add";
             }
-            catch (Exception ex)
+
+            if (_mode == 2)
             {
-                MessageBox.Show("There was a problem creating a new entrance.\n\n" + ex.Message);
+                txtBlkAddEditEntrance.Text = "Update Entrance";
+                btnEntranceAddEdit.Content = "Save";
+                txtBoxEntranceName.Text = _entrance.EntranceName;
+                txtBoxEntranceDescription.Text = _entrance.Description;
             }
-            finally
-            {
-                pgViewLocationDetails page = new pgViewLocationDetails(_locationID, _managerProvider, _user, 1);
-                this.NavigationService.Navigate(page);            }
         }
-
 
         /// <summary>
         /// Alaina Gilson
@@ -93,6 +121,18 @@ namespace WPFPresentation.Location
         /// 
         /// Description:
         /// Button cancel to take user back to view entrances page
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/26
+        /// 
+        /// Description:
+        /// Redirect to new pgLocationEntrance rather than old pgViewLocationDetails
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/26
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag on successful cancel
         /// </summary>
         private void btnEntranceCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -103,8 +143,143 @@ namespace WPFPresentation.Location
 
             if (result == MessageBoxResult.Yes)
             {
-                pgViewLocationDetails page = new pgViewLocationDetails(_locationID, _managerProvider, _user, 1);
+                ValidationHelpers.EditOngoing = false;
+                pgLocationEntrance page = new pgLocationEntrance(_managerProvider, _location, _user);
                 this.NavigationService.Navigate(page);
+            }
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created 2022/03/03
+        /// 
+        /// Description:
+        /// Adds a new entrance to database
+        /// 
+        /// Alaina Gilson
+        /// Updated: 2022/03/08
+        /// 
+        /// Description:
+        /// Added edit mode
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/26
+        /// 
+        /// Description:
+        /// Redirect to new pgLocationEntrance rather than old pgViewLocationDetails
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/04/01
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag on successful create or update
+        /// </summary>
+        private void btnEntranceAddEdit_Click(object sender, RoutedEventArgs e)
+        {
+            string name = txtBoxEntranceName.Text;
+            string description = txtBoxEntranceDescription.Text;
+
+            // create entrance mode
+            if(_mode == 1)
+            {
+                if (name == "")
+                {
+                    MessageBox.Show("Please enter an entrance name.");
+                    txtBoxEntranceName.Focus();
+                }
+                else if (description == "")
+                {
+                    MessageBox.Show("Please enter an entrance description.");
+                    txtBoxEntranceDescription.Focus();
+                }
+                else
+                {
+                    try
+                    {
+                        _entranceManager.CreateEntrance(_location.LocationID, name, description);
+                        //MessageBox.Show("Entrance has been added successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was a problem creating a new entrance.\n\n" + ex.Message);
+                    }
+                    finally
+                    {
+                        ValidationHelpers.EditOngoing = false;
+                        pgLocationEntrance page = new pgLocationEntrance(_managerProvider, _location, _user);
+                        this.NavigationService.Navigate(page);
+                    }
+                }
+            }
+
+            // update entrance mode
+            if (_mode == 2)
+            {
+                if (name == "")
+                {
+                    MessageBox.Show("Please enter an entrance name.");
+                    txtBoxEntranceName.Focus();
+                }
+                else if (description == "")
+                {
+                    MessageBox.Show("Please enter an entrance description.");
+                    txtBoxEntranceDescription.Focus();
+                }
+                else
+                {
+                    try
+                    {
+                        Entrance newEntrance = new Entrance()
+                        {
+                            EntranceID = _entrance.EntranceID,
+                            EntranceName = name,
+                            Description = description
+                        };
+
+                        _entranceManager.UpdateEntrance(_entrance, newEntrance);
+                        MessageBox.Show("Entrance has been saved successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was a problem saving the entrance.\n\n" + ex.Message);
+                    }
+                    finally
+                    {
+                        ValidationHelpers.EditOngoing = false;
+                        pgLocationEntrance page = new pgLocationEntrance(_managerProvider, _location, _user);
+                        this.NavigationService.Navigate(page);
+                    }
+                }
+            }
+        }
+
+        private void btnDeleteEntrance_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you would like to delete this entrance?", "Are you sure you would like to cancel?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (_mode == 2) 
+            {
+                switch (result) 
+                {
+                    case MessageBoxResult.No:
+                        break;
+                    case MessageBoxResult.Yes:
+                        try
+                        {
+                            _entranceManager.RemoveEntranceByEntranceID(_entrance.EntranceID);
+                            MessageBox.Show(_entrance.EntranceName + " entrance deleted.");
+                            ValidationHelpers.EditOngoing = false;
+                            pgLocationEntrance page = new pgLocationEntrance(_managerProvider, _location, _user);
+                            this.NavigationService.Navigate(page);
+                        }
+                        catch (Exception ex) 
+                        {
+                            MessageBox.Show("Something went wrong when trying to delete this entrance.");
+                            btnDeleteEntrance.Focus();
+                        }
+                            break;
+                    default:
+                        break;
+                }
             }
         }
     }

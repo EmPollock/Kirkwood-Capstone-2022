@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using DataObjects;
 using DataAccessFakes;
 using System.Text.RegularExpressions;
+using WPFPresentation.Location;
 
 namespace WPFPresentation.Event
 {
@@ -140,7 +141,7 @@ namespace WPFPresentation.Event
             txtBoxEventName.Text = _event.EventName.ToString();
             txtBoxEventDateCreated.Text = _event.EventCreatedDate.ToShortDateString();
             txtBoxEventDescription.Text = _event.EventDescription.ToString();
-            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet
+            txtBoxEventLocation.Text = "Not Available";    // do not have location data available to use yet\
 
         }
 
@@ -150,9 +151,16 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method to handle changing the page to edit mode
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Raise EditOngoing flag when entering edit mode
         /// </summary>
         private void setGeneralTabEditMode()
         {
+            ValidationHelpers.EditOngoing = true;
             populateControls();
 
             // Enable editing 
@@ -176,9 +184,16 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Helper method to handle changing the page to detail mode
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag when returning to detail mode
         /// </summary>
         private void setGeneralTabDetailMode()
         {
+            ValidationHelpers.EditOngoing = false;
             populateControls();
 
             // make read only
@@ -202,6 +217,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Button click event handler for eduting or saving the event
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag before navigating away on save
         /// </summary>
         private void btnEventEditSave_Click(object sender, RoutedEventArgs e)
         {
@@ -244,6 +265,7 @@ namespace WPFPresentation.Event
                     }
                     finally // return to view events page
                     {
+                        ValidationHelpers.EditOngoing = false;
                         this.NavigationService.GoBack();
                     }
                 }
@@ -256,11 +278,18 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Button click event handler for navigating back to previous page or canceling edit
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag before navigating away
         /// </summary>
         private void btnEventCloseCancel_Click(object sender, RoutedEventArgs e)
         {
             if (btnEventCloseCancel.Content.ToString() == "Close") // return to view events page
             {
+                ValidationHelpers.EditOngoing = false;
                 this.NavigationService.GoBack();
             }
             else // Make sure want to close, then return to details view
@@ -341,6 +370,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Button click handler for deleting an event
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Lowered EditOngoing flag before navigating away in finally block
         /// </summary>
         private void btnDeleteEvent_Click(object sender, RoutedEventArgs e)
         {
@@ -372,28 +407,10 @@ namespace WPFPresentation.Event
                 }
                 finally // return to view events page
                 {
+                    ValidationHelpers.EditOngoing = false;
                     this.NavigationService.GoBack();
                 }
             }
-        }
-        /// <summary>
-        /// ???
-        /// Created: ????/??/??
-        /// 
-        /// Description:
-        /// Click method for tasks button. Sends the user to the task list view.
-        /// 
-        /// Christopher Repko
-        /// Updated: 2022/02/25
-        /// 
-        /// Description: Added sublocation manager to navigated page.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnTasks_Click(object sender, RoutedEventArgs e)
-        {
-            pgTaskListView taskViewPage = new pgTaskListView(_event, _managerProvider, _user);
-            this.NavigationService.Navigate(taskViewPage);
         }
         // --------------------------------------------------------- End of General Tab -----------------------------------------------------------
 
@@ -408,10 +425,20 @@ namespace WPFPresentation.Event
         /// 
         /// Update
         /// Derrick Nagy
-        /// Updated: 2020/02/24
+        /// Updated: 2020/03/26
+        /// 
+        /// Description:
+        /// Hid validation message for no event dates if there are event dates
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/04/01
+        /// 
+        /// Description:
+        /// Lower EditOngoing flag when entering detail mode
         /// </summary>
         private void setEventDatesTabDetailMode()
         {
+            ValidationHelpers.EditOngoing = false;
             grdAddEventDate.Visibility = Visibility.Hidden; // hide edit dates area
             btnEditEventDateAddSave.Content = "Add Dates";
             btnEditEventDateCloseCancel.Content = "Close";
@@ -431,6 +458,7 @@ namespace WPFPresentation.Event
             }
             else
             {
+                txtBlockEventDateValidationMessage.Visibility = Visibility.Hidden;
                 // if the user can edit, use this table
                 if (_userCanEditEvent)
                 {
@@ -458,9 +486,16 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Changed time text boxes to combo boxes
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/04/01
+        /// 
+        /// Description:
+        /// Raise EditOngoing flag when entering edit mode
         /// </summary>
         private void setEventDateTabEditMode()
         {
+            ValidationHelpers.EditOngoing = true;
             // prepare add event grid
             grdAddEventDate.Visibility = Visibility.Visible;
             datePickerEventDate.SelectedDate = null;
@@ -483,7 +518,8 @@ namespace WPFPresentation.Event
             btnEditEventDateCloseCancel.Content = "Cancel";
 
             // do not display past dates in calendar select
-            datePickerEventDate.DisplayDateStart = DateTime.Today; 
+            datePickerEventDate.DisplayDateStart = DateTime.Today;
+
 
         }
 
@@ -670,6 +706,14 @@ namespace WPFPresentation.Event
         /// Description:
         /// Changed time text boxes to combo boxes
         /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/26
+        /// 
+        /// Description:
+        /// Fixed logic error for time validation.
+        /// Cleared validation message for no event dates if a date was added succecssfully
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -756,26 +800,22 @@ namespace WPFPresentation.Event
                         txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                         txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
                     }
-                    else if (startHour == endHour)
+                    else if (startHour == endHour && startMin >= endMin)
                     {
-                        if (startMin >= endMin)
-                        {
+                        
                             //txtBoxEventEndTimeMinute.Text = "";
                             txtBlockEventAddValidationMessage.Text = "The end time is before the start time. Please change.";
                             txtBlockEventAddValidationMessage.Visibility = Visibility.Visible;
-                        }
+                        
                     }
                     // end of initial validation checks 
                     else
                     {
-
-
-
                         if (btnEditEventDateAddSave.Content.Equals("Add")) // add a new event date
                         {
 
                             //datEditCurrentEventDates.ItemsSource = _eventDateManager.RetrieveEventDatesByEventID(_event.EventID);
-                            
+
                             try
                             {
                                 EventDate newEventDate = new EventDate()
@@ -803,6 +843,8 @@ namespace WPFPresentation.Event
                                 // prepare form to add another date
                                 setEventDateTabEditMode();
 
+                                txtBlockEventDateValidationMessage.Visibility = Visibility.Hidden;
+
 
                             }
                             catch (Exception ex)
@@ -826,6 +868,7 @@ namespace WPFPresentation.Event
 
                                 _eventDateManager.UpdateEventDate(_selectedEventDate, newEventDate);
                                 setEventDatesTabDetailMode();
+                                txtBlockEventDateValidationMessage.Visibility = Visibility.Hidden;
                             }
                             catch (Exception ex)
                             {
@@ -833,6 +876,7 @@ namespace WPFPresentation.Event
                                 MessageBox.Show("There was a problem updating the date.\n" + ex.Message, "Problem Updating Date", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
+
                     }
                 }
             }
@@ -964,13 +1008,24 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Added _user to constructor
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/27
+        /// 
+        /// Description:
+        /// Load new pgLocationFrame rather than old location page
         /// </summary>
         private void tabEventLocation_Loaded(object sender, RoutedEventArgs e)
         {
+            
             try
             {
                 _location = _locationManager.RetrieveLocationByLocationID((int)_event.LocationID);
-                pgViewLocationDetails locationDetailsPage = new pgViewLocationDetails(_location.LocationID, _managerProvider, _user);
+                if(_location.LocationID == 0)
+                {
+                    return;
+                }
+                pgLocationFrame locationDetailsPage = new pgLocationFrame(_managerProvider, _location, _user);
                 locationFrame.Navigate(locationDetailsPage);
                 lblLocationErrorMesage.Visibility = Visibility.Hidden;
             }

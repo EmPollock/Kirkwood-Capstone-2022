@@ -47,6 +47,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
@@ -126,12 +132,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -184,15 +184,45 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Event\EventListController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SupplierController.cs" />
+    <Compile Include="Controllers\VolunteerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyManager.cs" />
+    <Compile Include="Migrations\202203250127205_InitialCreate.cs" />
+    <Compile Include="Migrations\202203250127205_InitialCreate.Designer.cs">
+      <DependentUpon>202203250127205_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203250129478_Added first and last name fields to user.cs" />
+    <Compile Include="Migrations\202203250129478_Added first and last name fields to user.Designer.cs">
+      <DependentUpon>202203250129478_Added first and last name fields to user.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203250157474_Added UserID field to match users between web and desktop..cs" />
+    <Compile Include="Migrations\202203250157474_Added UserID field to match users between web and desktop..Designer.cs">
+      <DependentUpon>202203250157474_Added UserID field to match users between web and desktop..cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203251624190_Added city, state, and zip code.cs" />
+    <Compile Include="Migrations\202203251624190_Added city, state, and zip code.Designer.cs">
+      <DependentUpon>202203251624190_Added city, state, and zip code.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203251633000_Odds and ends.cs" />
+    <Compile Include="Migrations\202203251633000_Odds and ends.Designer.cs">
+      <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LocationListViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Models\SupplierListViewModel.cs" />
+    <Compile Include="Models\VolunteerListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -258,6 +288,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\sortEventTable.js" />
+    <Content Include="Scripts\sortTable.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -293,6 +324,11 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Event\EventList.cshtml" />
+    <Content Include="Views\Volunteer\ViewVolunteers.cshtml" />
+    <Content Include="Views\Admin\Details.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Location\ViewLocations.cshtml" />
+    <Content Include="Views\Supplier\ViewSuppliers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -301,6 +337,23 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202203250127205_InitialCreate.resx">
+      <DependentUpon>202203250127205_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203250129478_Added first and last name fields to user.resx">
+      <DependentUpon>202203250129478_Added first and last name fields to user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203250157474_Added UserID field to match users between web and desktop..resx">
+      <DependentUpon>202203250157474_Added UserID field to match users between web and desktop..cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203251624190_Added city, state, and zip code.resx">
+      <DependentUpon>202203251624190_Added city, state, and zip code.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203251633000_Odds and ends.resx">
+      <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">

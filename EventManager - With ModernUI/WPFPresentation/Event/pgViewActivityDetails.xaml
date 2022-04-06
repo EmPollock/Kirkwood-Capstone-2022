@@ -8,95 +8,52 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="pgViewActivityDetails">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-        </Grid.RowDefinitions>
+    <Grid Grid.Row="0" Loaded="Grid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition />
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <Button x:Name="btnEventDetails" Grid.Row="0" HorizontalAlignment="Center" Padding="34 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White" Click="btnEventDetails_Click">Event Details</Button>
-            <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White" Click="btnTasks_Click" >Tasks</Button>
-            <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="#FFFFFF99" Click="btnItinerary_Click">Itinerary</Button>
-            <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Budget</Button>
-            <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Advertising</Button>
-            <Button x:Name="btnAfterEventReport" Grid.Row="5" HorizontalAlignment="Center" Padding="17 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">After Event Report</Button>
-            <Button x:Name="btnFiles" Grid.Row="6" HorizontalAlignment="Center" Padding="63 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Files</Button>
-            <Button x:Name="btnInvitations" Grid.Row="7" HorizontalAlignment="Center" Padding="43 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Invitations</Button>
-        </Grid>
-        <Grid Grid.Row="0" Grid.Column="1" Loaded="Grid_Loaded">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock x:Name="lblActivityName" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
+        <TextBlock x:Name="lblActivityName" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Filler</TextBlock>
 
-            <TextBlock x:Name="lblActivityDescription" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right"
-                       VerticalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}" Margin="10 0">Activity Description:</TextBlock>
-            <TextBox x:Name="txtActivityDescripiton" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="10 5" VerticalScrollBarVisibility="Auto" />
+        <TextBlock x:Name="lblActivityDescription" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right"
+                       VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Margin="10 0">Activity Description:</TextBlock>
+        <TextBox x:Name="txtActivityDescripiton" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="10 5 140 5" VerticalScrollBarVisibility="Auto" />
 
-            <TextBlock x:Name="lblPublicActivity" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Style="{StaticResource TitleTextBlockStyle}" Margin="10 0">Public Activity:</TextBlock>
-            <RadioButton x:Name="radYesPublicActivity" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
-                         Margin="10 0" FontSize="20">Yes</RadioButton>
-            <RadioButton x:Name="radNoPublicActivity" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                         FontSize="20">No</RadioButton>
+        <TextBlock x:Name="lblPublicActivity" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Style="{StaticResource BodyTextBlockStyle}" Margin="10 0">Public Activity:</TextBlock>
+        <RadioButton x:Name="radYesPublicActivity" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
+                         Margin="10 5 150 5" FontSize="20">Yes</RadioButton>
+        <RadioButton x:Name="radNoPublicActivity" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
+                         FontSize="20" Margin="150 5 10 5">No</RadioButton>
 
-            <TextBlock x:Name="lblStartTime" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Style="{StaticResource TitleTextBlockStyle}" Margin="10 0">Activity Time:</TextBlock>
-            <TextBox x:Name="txtStartTime" Grid.Row="4" Grid.Column="1" Margin="10 5 150 5" Padding="15 0" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="txtEndTime" Grid.Row="4" Grid.Column="1" Margin="150 5 10 5" Padding="15 0" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+        <TextBlock x:Name="lblStartTime" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Style="{StaticResource BodyTextBlockStyle}" Margin="10 0">Activity Time:</TextBlock>
+        <TextBox x:Name="txtStartTime" Grid.Row="4" Grid.Column="1" Margin="10 5 150 5" Padding="15 0" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtEndTime" Grid.Row="4" Grid.Column="1" Margin="150 5 10 5" Padding="15 0" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
 
-            <TextBlock x:Name="lblSublocation" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Style="{StaticResource TitleTextBlockStyle}" Margin="10 0">Event Sublocation</TextBlock>
-            <TextBox x:Name="txtEventSublocation" Grid.Row="5" Grid.Column="1" Margin="10 5"/>
+        <TextBlock x:Name="lblSublocation" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Style="{StaticResource BodyTextBlockStyle}" Margin="10 0">Event Sublocation:</TextBlock>
+        <TextBox x:Name="txtEventSublocation" Grid.Row="5" Grid.Column="1" Margin="10 5 140 5"/>
 
-            <TextBlock x:Name="lblEventDate" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Style="{StaticResource TitleTextBlockStyle}" Margin="10 0">Date of Event:</TextBlock>
-            <TextBox x:Name="txtEventDate" Grid.Row="6" Grid.Column="1" Margin="10 5" />
+        <TextBlock x:Name="lblEventDate" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Style="{StaticResource BodyTextBlockStyle}" Margin="10 0">Date of Event:</TextBlock>
+        <TextBox x:Name="txtEventDate" Grid.Row="6" Grid.Column="1" Margin="10 5 140 5" />
 
-            <TextBlock x:Name="lblEventName" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Style="{StaticResource TitleTextBlockStyle}" Margin="10 0">Event Name:</TextBlock>
-            <TextBox x:Name="txtEventName" Grid.Row="7" Grid.Column="1" Margin="10 5"/>
-
-
-
-
-        </Grid>
-        
+        <TextBlock x:Name="lblEventName" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Style="{StaticResource BodyTextBlockStyle}" Margin="10 0">Event Name:</TextBlock>
+        <TextBox x:Name="txtEventName" Grid.Row="7" Grid.Column="1" Margin="10 5 140 5"/>
     </Grid>
 </Page>

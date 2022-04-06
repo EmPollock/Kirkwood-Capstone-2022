@@ -16,6 +16,40 @@ USE [tadpole_db]
 GO
 
 /***************************************************************
+Logan Baccam
+Created: 2022/03/29
+
+Description:
+Stored procedure to insert a new Sublocation by locationID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_insert_sublocation_by_locationID'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_sublocation_by_locationID](
+	@LocationID				[int],
+	@SublocationName		[nvarchar](160),
+	@SublocationDescription	[nvarchar](1000)
+)
+AS
+	BEGIN
+		INSERT INTO [dbo].[Sublocation](
+			[LocationID],
+			[SublocationName],
+			[SublocationDescription]
+		)VALUES(
+			@LocationID,
+			@SublocationName,
+			@SublocationDescription
+		)
+	END	
+GO
+
+/***************************************************************
 Emma Pollock
 Created: 2022/02/02
 

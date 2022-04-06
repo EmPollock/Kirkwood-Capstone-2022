@@ -166,3 +166,84 @@ AS
 		WHERE [UserEvent].[UserID] = @UserID
 	END	
 GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/03/24
+
+Description:
+Stored procedure to select all roles in the roles table
+**************************************************************
+
+Updated: 
+
+Description: 
+
+****************************************************************/
+print '' print '*** creating sp_select_all_roles'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_roles]
+AS
+	BEGIN
+		SELECT 
+			[Role].[RoleID]
+		FROM [dbo].[Role]
+	END	
+GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/03/24
+
+Description: 
+Stored procedure to insert a user role
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_insert_user_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_user_role]
+(
+	@UserID				[int],
+	@RoleID				[nvarchar](50)
+)
+AS
+	BEGIN
+		INSERT INTO [dbo].[UserRole]
+			([UserID], [RoleID])
+		VALUES
+			(@UserID, @RoleID)
+	END
+GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/03/24
+
+Description: 
+Stored procedure to delete a user role
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** creating sp_delete_user_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_user_role]
+(
+	@UserID				[int],
+	@RoleID				[nvarchar](50)
+)
+AS
+	BEGIN
+		DELETE FROM 
+			[dbo].[UserRole]
+		WHERE
+			@UserID = [UserID] AND
+			@RoleID = [RoleID]
+	END
+GO

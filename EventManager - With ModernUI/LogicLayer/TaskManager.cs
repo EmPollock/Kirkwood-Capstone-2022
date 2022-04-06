@@ -216,5 +216,86 @@ namespace LogicLayer
             return tasks;
         }
 
+        /// <summary>
+        /// Emma Pollock
+        /// 2022/03/10
+        /// 
+        /// Description:
+        /// Method that retrieves all task assignments for a task
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>list TaskAssignements</returns>
+        public List<TaskAssignmentVM> RetrieveTaskAssignmentsByTaskID(int taskID)
+        {
+            List<TaskAssignmentVM> taskAssignments = new List<TaskAssignmentVM>();
+
+            try
+            {
+                taskAssignments = _taskAccessor.SelectTaskAssignmentsByTaskID(taskID);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            return taskAssignments;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// A check to see if the user can edit/delete a task
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>Boolean value</returns>
+        public bool UserCanEditDeleteTask(int userID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = _taskAccessor.UserCanEditDeleteTask(userID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Deletes a task
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>Boolean value depending on whether a row was affected or not</returns>
+        public bool RemoveTaskByTaskID(int taskID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = _taskAccessor.DeleteTaskByTaskID(taskID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            if (!result)
+            {
+                throw new ApplicationException("Task was not deleted");
+            }
+
+            return result;
+        }
     }
 }

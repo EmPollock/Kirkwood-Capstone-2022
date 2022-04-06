@@ -88,6 +88,32 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Logan Baccam
+        /// Created 2022/03/06
+        /// 
+        /// Description:
+        /// method that deactivates an entrance from the Entrance table.
+        /// <param name="entranceID"/>
+        /// </summary>
+        public int RemoveEntranceByEntranceID(int entranceID)
+        {
+            int rows = 0;
+            if (entranceID <= 99999)
+            {
+                throw new ArgumentException("Invalid entrance");
+            }
+            try
+            {
+                rows = _entranceAccessor.DeactivateEntranceByEntranceID(entranceID);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException("Something went wrong when removing this entrance.");
+            }
+            return rows;
+        }
+
+        /// <summary>
         /// Mike Cahow
         /// Created: 2022/03/04
         /// 
@@ -111,6 +137,42 @@ namespace LogicLayer
             }
 
             return entrances;
+        }
+
+        public bool UpdateEntrance(Entrance oldEntrance, Entrance newEntrance)
+        {
+            bool result = false;
+
+            if (newEntrance.EntranceName == "" || newEntrance.EntranceName == null)
+            {
+                throw new ApplicationException("Name can not be empty.");
+            }
+            if (newEntrance.EntranceName.Length > 100)
+            {
+                throw new ApplicationException("Name can not be over 100 characters.");
+            }
+
+            if (newEntrance.Description == "" || newEntrance.Description == null)
+            {
+                throw new ApplicationException("Description can not empty.");
+            }
+
+            if (newEntrance.Description.Length > 255)
+            {
+                throw new ApplicationException("Description can not over 255 characters.");
+            }
+
+            try
+            {
+                result = 1 == _entranceAccessor.UpdateEntrance(oldEntrance, newEntrance);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
         }
     }
 }

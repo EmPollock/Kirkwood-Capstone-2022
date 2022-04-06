@@ -24,18 +24,23 @@ namespace MVCPresentationWithIdentity
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            //Add java script files here
-            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
-                        "~/Scripts/sortEventTable.js"
+            ////Add java script files here
+            //bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+            //            "~/Scripts/sortEventTable.js"
                         
 
-                        ));
+            //            ));
 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       //"~/Content/bootstrap.css",
                       "~/Content/bootstrap-theme-lumen.css",                                            
                       "~/Content/site.css"));
+            //Add java script files here
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                        "~/Scripts/sortEventTable.js",
+                        "~/Scripts/sortTable.js"
+                        ));
         }
     }
 }

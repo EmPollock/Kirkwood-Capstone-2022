@@ -16,13 +16,22 @@ namespace DataAccessFakes
     /// Description:
     /// Class of fakes used to test the methods related to Tasks
     /// </summary>
+    /// /// <remarks>
+	/// Emma Pollock
+	/// Updated: 2022/03/10
+    /// added taskAssignements
+	/// </remarks>
     public class TaskAccessorFakes : ITaskAccessor
     {
         private List<TasksVM> _fakeTasks = new List<TasksVM>();
         private List<Priority> _priorities = new List<Priority>();
+        private List<TaskAssignmentVM> _taskAssignments = new List<TaskAssignmentVM>();
+        private Dictionary<User, Role> _fakeUserRoles = new Dictionary<User, Role>();
 
         public TaskAccessorFakes()
         {
+            addFakeUserRoles();
+
             _fakeTasks.Add(new TasksVM()
             {
                 EventID = 1000000,
@@ -30,7 +39,7 @@ namespace DataAccessFakes
                 TaskEventName = "Test Event 1",
                 Name = "Mop",
                 Description = "Mop up spilled drink",
-                DueDate = DateTime.Now,
+                DueDate = DateTime.Today,
                 Priority = 3,
                 TaskPriority = "High",
                 Active = true
@@ -43,7 +52,7 @@ namespace DataAccessFakes
                 TaskEventName = "Test Event 1",
                 Name = "Wash Towels",
                 Description = "Wash Towels after Events",
-                DueDate = DateTime.Now,
+                DueDate = DateTime.Today,
                 Priority = 1,
                 TaskPriority = "Low",
                 Active = true
@@ -74,6 +83,8 @@ namespace DataAccessFakes
                 Active = false
             });
 
+            
+
             /// <summary>
             /// Mike Cahow
             /// Created: 2022/01/24
@@ -96,6 +107,42 @@ namespace DataAccessFakes
                 PriorityID = 3,
                 Description = "High"
             });
+
+            /// <summary>
+            /// Emma Pollock
+            /// Created: 2022/03/10
+            /// 
+            /// Description:
+            /// Creating a "fake" list of taskAssignments to use for testing purposes
+            /// </summary>
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 1,
+                DateAssigned = new DateTime(2022, 1, 20),
+                TaskID = 999999,
+                RoleID = "Event Planner",
+                UserID = 999999,
+                Name = "Tess Data"
+            });
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 2,
+                DateAssigned = new DateTime(2022, 2, 3),
+                TaskID = 999999,
+                RoleID = "Volunteer",
+                UserID = 999998,
+                Name = "Tess Data"
+            });
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 1,
+                DateAssigned = new DateTime(2022, 3, 7),
+                TaskID = 999998,
+                RoleID = "Event Planner",
+                UserID = 999999,
+                Name = "Tess Data"
+            });
+
         }
 
         /// <summary>
@@ -146,17 +193,17 @@ namespace DataAccessFakes
         {
             int rowsAffected = 0;
 
-            for(int i = 0; i < _fakeTasks.Count; i++)
+            foreach(var fakeTasks in _fakeTasks)
             {
-                if(_fakeTasks[i].TaskID == oldTask.TaskID && _fakeTasks[i].Name == oldTask.Name
-                    && _fakeTasks[i].Description == oldTask.Description && _fakeTasks[i].DueDate == oldTask.DueDate
-                    && _fakeTasks[i].Priority == oldTask.Priority && _fakeTasks[i].Active == oldTask.Active)
+                if(fakeTasks.TaskID == oldTask.TaskID && fakeTasks.Name == oldTask.Name
+                    && fakeTasks.Description == oldTask.Description && fakeTasks.DueDate.Equals(oldTask.DueDate)
+                    && fakeTasks.Priority == oldTask.Priority && fakeTasks.Active == oldTask.Active)
                 {
-                    _fakeTasks[i].Name = newTask.Name;
-                    _fakeTasks[i].Description = newTask.Description;
-                    _fakeTasks[i].DueDate = newTask.DueDate;
-                    _fakeTasks[i].Priority = newTask.Priority;
-                    _fakeTasks[i].Active = newTask.Active;
+                    fakeTasks.Name = newTask.Name;
+                    fakeTasks.Description = newTask.Description;
+                    fakeTasks.DueDate = newTask.DueDate;
+                    fakeTasks.Priority = newTask.Priority;
+                    fakeTasks.Active = newTask.Active;
                     rowsAffected = 1;
                     break;
                 }
@@ -208,5 +255,70 @@ namespace DataAccessFakes
             return tasks;
         }
 
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Select method that gets a list of the fake taskAssignments 
+        ///     for a task.
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>List TaskAssignments</returns>
+        public List<TaskAssignmentVM> SelectTaskAssignmentsByTaskID(int taskID)
+        {
+            List<TaskAssignmentVM> assignments = new List<TaskAssignmentVM>();
+            foreach(TaskAssignmentVM taskAssignment in _taskAssignments)
+            {
+                if(taskAssignment.TaskID == taskID)
+                {
+                    assignments.Add(taskAssignment);
+                }
+            }
+            return assignments;
+        }
+
+        public bool UserCanEditDeleteTask(int userID)
+        {
+            bool result = false;
+
+            foreach (var userRole in _fakeUserRoles)
+            {
+                if (userRole.Key.UserID == userID && (userRole.Value.RoleID == "Event Planner" || userRole.Value.RoleID == "Event Manager"))
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        private void addFakeUserRoles()
+        {
+            _fakeUserRoles.Add(new User { UserID = 100000 }, new Role { RoleID = "Event Planner" });
+            _fakeUserRoles.Add(new User { UserID = 100001 }, new Role { RoleID = "Test" });
+            _fakeUserRoles.Add(new User { UserID = 100002 }, new Role { RoleID = "Test" });
+            _fakeUserRoles.Add(new User { UserID = 100003 }, new Role { RoleID = "Event Planner" });
+            _fakeUserRoles.Add(new User { UserID = 100004 }, new Role { RoleID = "Attendee" });
+            _fakeUserRoles.Add(new User { UserID = 100000 }, new Role { RoleID = "Attendee" });
+        }
+
+        public bool DeleteTaskByTaskID(int taskID)
+        {
+            bool result = false;
+
+            foreach (var fakeTask in _fakeTasks)
+            {
+                if (fakeTask.TaskID == taskID)
+                {
+                    _fakeTasks.Remove(fakeTask);
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
     }
 }

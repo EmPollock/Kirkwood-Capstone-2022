@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Activity.cs" />
     <Compile Include="ActivityResult.cs" />
-    <Compile Include="ActivityVM.cs" />
     <Compile Include="AppData.cs" />
     <Compile Include="Availability.cs" />
     <Compile Include="Entrance.cs" />
@@ -63,6 +62,7 @@
     <Compile Include="StringValidationHelpers.cs" />
     <Compile Include="Sublocation.cs" />
     <Compile Include="Supplier.cs" />
+    <Compile Include="TaskAssignment.cs" />
     <Compile Include="Tasks.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserImage.cs" />

@@ -30,7 +30,7 @@
                 <li>@Html.ActionLink("My Past and Future Events", "UserAllEvents", "Event", new { @class = "dropdown-item" })</li>                
             </ul>
         </div>
-        @Html.Hidden("user", loggedInUser);
+        @Html.Hidden("user", loggedInUser)
 
         <form class=" col-md-2 m-3">
             <input class=" form-control" type="text" placeholder="Search" aria-label="Search">
@@ -107,13 +107,13 @@
             <th>
                 <div class="d-flex">
                     <p class="text-start text-nowrap me-2">Name</p>
-                    <button onclick="sortTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                    <button onclick="sortEventTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
                 </div>
             </th>
             <th>
                 <div class="d-flex">
                     <p class="text-start text-nowrap me-2">Organizer</p>
-                    <button onclick="sortTable(1)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                    <button onclick="sortEventTable(1)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
                 </div>
             </th>
             <th>
@@ -127,7 +127,7 @@
             <th>
                 <div class="d-flex ">
                     <p class="text-start text-nowrap me-2">Event Dates</p>
-                    <button onclick="sortTable(3)" class="btn btn-sm btn-outline-dark ms-auto">
+                    <button onclick="sortEventTable(3)" class="btn btn-sm btn-outline-dark ms-auto">
                         <i class="bi bi-arrow-down-up"></i>
                     </button>
                 </div>
@@ -136,7 +136,7 @@
                 <div class="d-flex">
                     <p class="text-start text-nowrap me-2">Location</p>
 
-                    <button onclick="sortTable(4)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                    <button onclick="sortEventTable(4)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
                 </div>
 
 

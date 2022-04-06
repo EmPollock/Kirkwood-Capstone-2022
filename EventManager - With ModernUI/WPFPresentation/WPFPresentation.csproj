@@ -62,11 +62,17 @@
     <Compile Include="CustomControls\TimeComboBoxes.xaml.cs">
       <DependentUpon>TimeComboBoxes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Event\pgCreateActivity.xaml.cs">
+      <DependentUpon>pgCreateActivity.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Event\pgCreateEvent.xaml.cs">
       <DependentUpon>pgCreateEvent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Event\pgEventEditDetail.xaml.cs">
       <DependentUpon>pgEventEditDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Event\pgEventFrame.xaml.cs">
+      <DependentUpon>pgEventFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Event\pgTaskListCreate.xaml.cs">
       <DependentUpon>pgTaskListCreate.xaml</DependentUpon>
@@ -94,11 +100,23 @@
     <Compile Include="Location\pgAddEditEntrance.xaml.cs">
       <DependentUpon>pgAddEditEntrance.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Location\pgLocationDetails.xaml.cs">
+      <DependentUpon>pgLocationDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgLocationEntrance.xaml.cs">
+      <DependentUpon>pgLocationEntrance.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgLocationFrame.xaml.cs">
+      <DependentUpon>pgLocationFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgLocationSchedule.xaml.cs">
+      <DependentUpon>pgLocationSchedule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Location\pgLocationSublocations.xaml.cs">
+      <DependentUpon>pgLocationSublocations.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Location\pgParkingLot.xaml.cs">
       <DependentUpon>pgParkingLot.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Location\pgViewLocationDetails.xaml.cs">
-      <DependentUpon>pgViewLocationDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Location\pgViewLocations.xaml.cs">
       <DependentUpon>pgViewLocations.xaml</DependentUpon>
@@ -109,6 +127,18 @@
     </Compile>
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\pgSupplierDetails.xaml.cs">
+      <DependentUpon>pgSupplierDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\pgSupplierFrame.xaml.cs">
+      <DependentUpon>pgSupplierFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\pgSupplierPricing.xaml.cs">
+      <DependentUpon>pgSupplierPricing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\pgSupplierSchedule.xaml.cs">
+      <DependentUpon>pgSupplierSchedule.xaml</DependentUpon>
     </Compile>
     <Compile Include="Supplier\pgViewSupplierListing.xaml.cs">
       <DependentUpon>pgViewSupplierListing.xaml</DependentUpon>
@@ -125,11 +155,25 @@
     <Compile Include="Volunteer\pgViewVolunteerDetails.xaml.cs">
       <DependentUpon>pgViewVolunteerDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Volunteer\pgViewVolunteerSchedule.xaml.cs">
+      <DependentUpon>pgViewVolunteerSchedule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Volunteer\pgVolunteerFrame.xaml.cs">
+      <DependentUpon>pgVolunteerFrame.xaml</DependentUpon>
+    </Compile>
     <Page Include="CustomControls\TimeComboBoxes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Event\pgCreateActivity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Event\pgEventEditDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Event\pgEventFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,11 +201,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Location\pgParkingLot.xaml">
+    <Page Include="Location\pgLocationDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Location\pgViewLocationDetails.xaml">
+    <Page Include="Location\pgLocationEntrance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgLocationFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgLocationSchedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgLocationSublocations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Location\pgParkingLot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -201,6 +261,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Supplier\pgSupplierDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Supplier\pgSupplierFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Supplier\pgSupplierPricing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Supplier\pgSupplierSchedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Supplier\pgViewSupplierListing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -218,6 +294,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Volunteer\pgViewVolunteerDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Volunteer\pgViewVolunteerSchedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Volunteer\pgVolunteerFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

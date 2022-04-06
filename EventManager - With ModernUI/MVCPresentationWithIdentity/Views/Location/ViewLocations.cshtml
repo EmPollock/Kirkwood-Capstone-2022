@@ -1,0 +1,39 @@
+﻿@model MVCPresentationWithIdentity.Models.LocationListViewModel
+
+@{
+    ViewBag.Title = "Locations";
+
+}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<link href="~/Content/Site.css" rel="stylesheet" />
+<h2 class="mt-4">Locations</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col" class="d-none d-sm-table-cell">Address</th>
+            <th scope="col" class="d-none d-sm-table-cell">City</th>
+            <th scope="col" class="d-none d-sm-table-cell">State</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataObjects.Location location in Model.Locations)
+        {
+        <tr>
+            <td><a href="#">@location.Name <i class="bi bi-box-arrow-up-right"></i></a></td>
+            <td>@location.Description</td>
+            <td class="d-none d-sm-table-cell">@location.Address1</td>
+            <td class="d-none d-sm-table-cell">@location.City</td>
+            <td class="d-none d-sm-table-cell">@location.State</td>
+            <td><button onclick="@("window.location.href='" + @Url.Action("About", "Home") + "'");">Request</button></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination justify-content-center">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("ViewLocations", new { page = x }))
+</div>

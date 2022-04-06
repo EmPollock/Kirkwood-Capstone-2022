@@ -53,6 +53,33 @@ namespace DataAccessFakes
         }
 
         /// <summary>
+        /// Logan Baccam
+        /// Created 2022/03/06
+        /// 
+        /// Description:
+        /// method that deactivates an entrance from the _fakeEntrances List by setting active to false
+        /// <param name="entranceID"/>
+        /// </summary>
+        public int DeactivateEntranceByEntranceID(int entranceID)
+        {
+            int rows = 0;
+            if (entranceID <= 99999)
+            {
+                throw new ArgumentException("Invalid entrance");
+            }
+            foreach (Entrance entrance in _fakeEntrances)
+            {
+                if (entrance.EntranceID == entranceID)
+                {
+                    entrance.Active = false;
+                    rows++;
+                }
+            }
+
+            return rows;
+        }
+
+        /// <summary>
         /// Alaina Gilson
         /// Created: 2022/02/27
         /// 
@@ -105,6 +132,25 @@ namespace DataAccessFakes
             }
 
             return entrances;
+        }
+
+        public int UpdateEntrance(Entrance oldEntrance, Entrance newEntrance)
+        {
+            int rowsAffected = 0;
+
+            foreach(var fakeEntrance in _fakeEntrances)
+            {
+                if(fakeEntrance.EntranceID == oldEntrance.EntranceID 
+                    && fakeEntrance.EntranceName.Equals(oldEntrance.EntranceName)
+                    && fakeEntrance.Description.Equals(oldEntrance.Description))
+                {
+                    fakeEntrance.EntranceName = newEntrance.EntranceName;
+                    fakeEntrance.Description = newEntrance.Description;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
         }
     }
 }

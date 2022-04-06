@@ -13,6 +13,12 @@ GO
 /
 / Description: 
 / Added the test records for "Finn" and "River"
+/
+/ Christopher Repko
+/ Updated: 2022/02/07
+/
+/ Description: 
+/ Changed default password
 ****************************************************************/
 print '' print '*** creating Users Table ...'
 /* Whatever you're adding goes here. */
@@ -26,7 +32,7 @@ CREATE TABLE [dbo].[Users](
 	[FamilyName]		[nvarchar](50)				NOT NULL,
 	[Email]				[nvarchar](250)				NOT NULL,
 	[PasswordHash]		[nvarchar](100)				NOT NULL DEFAULT 
-		'9C9064C59F1FFA2E174EE754D2979BE80DD30DB552EC03E7E327E9B1A4BD594E',
+		'b03ddf3ca2e714a6548e7495e2a03f5e824eaac9837cd7f159c67b90fb4b7342',
 	[UserState] 		[char](2) 					NULL,
 	[City]				[nvarchar](75) 				NULL,
 	[Zip]				[int]						NULL,

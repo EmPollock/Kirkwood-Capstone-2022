@@ -1,9 +1,9 @@
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\LogicLayerTests\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\b\LogicLayerTests\bin\Debug\LogicLayerTests.dll
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\LogicLayerTests\Debug\LogicLayerTests.csprojAssemblyReference.cache
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\LogicLayerTests\Debug\LogicLayerTests.csproj.CoreCompileInputs.cache
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\LogicLayerTests\Debug\LogicLayerTests.csproj.CopyComplete
-E:\CIS-624\BicycleRentalAM\BicycleRentalAM\.vs\BicycleRentalAM\v16\lut\0\i\LogicLayerTests\Debug\LogicLayerTests.dll
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\LogicLayerTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\LogicLayerTests\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\LogicLayerTests\bin\Debug\LogicLayerTests.dll
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\LogicLayerTests\Debug\LogicLayerTests.csproj.AssemblyReference.cache
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\LogicLayerTests\Debug\LogicLayerTests.csproj.CoreCompileInputs.cache
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\LogicLayerTests\Debug\LogicLayerTests.csproj.CopyComplete
+C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\LogicLayerTests\Debug\LogicLayerTests.dll

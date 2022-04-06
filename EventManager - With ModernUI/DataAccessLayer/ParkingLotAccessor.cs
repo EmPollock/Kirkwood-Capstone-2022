@@ -139,6 +139,12 @@ namespace DataAccessLayer
         /// Description:
         /// Deletes parking lot
         /// </summary>
+        /// <remarks>
+        /// Emma Pollock
+        /// Updated: 2022/03/24
+        /// Removed unnecessary empty try-catch block
+        /// </remarks>
+        /// 
         /// <param name="lotID">The lot to delete</param>
         /// <returns>True is removed, false if not</returns>
         public bool DeleteParkingLotByLotID(int lotID)
@@ -162,16 +168,6 @@ namespace DataAccessLayer
             {
                 conn.Open();
                 isDeleted = (1 == cmd.ExecuteNonQuery());
-
-                try
-                {
-
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
-
             }
             catch (Exception ex)
             {

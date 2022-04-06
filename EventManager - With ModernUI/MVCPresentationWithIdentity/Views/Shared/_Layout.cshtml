@@ -28,7 +28,21 @@
 
                     <li class="nav-item">
                         @*<a class="nav-link" href="">Nav-Bar 2</a>*@
-                        @Html.ActionLink("Events", "EventList", "Event", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                        @Html.ActionLink("Events", "EventList", "Event", routeValues: null, htmlAttributes: new { @class = "nav-link" })                        
+                    </li>
+
+                    <li class="nav-item">
+                        @Html.ActionLink("Suppliers", "ViewSuppliers", "Supplier", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>
+
+                    <li class="nav-item">
+                        @*<a class="nav-link" href="">Nav-Bar 2</a>*@
+                        @Html.ActionLink("Locations", "ViewLocations", "Location", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>
+
+                    <li class="nav-item">
+                        @*<a class="nav-link" href="">Nav-Bar 2</a>*@
+                        @Html.ActionLink("Volunteers", "ViewVolunteers", "Volunteer", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                     </li>
 
                     <li class="nav-item">
@@ -39,7 +53,10 @@
                     <li class="nav-item">
                         @Html.ActionLink("Contact", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                     </li>
-
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("Administration", "Index", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+                    }
                 </ul>
 
                 <ul class="navbar-nav ms-auto">
@@ -67,6 +84,7 @@
 
     @Scripts.Render("~/bundles/jquery")
 
+@*    @Scripts.Render("~/bundles/bootstrap")*@
     @Scripts.Render("~/bundles/scripts")
 
     @RenderSection("scripts", required: false)

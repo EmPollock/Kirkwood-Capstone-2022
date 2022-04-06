@@ -70,6 +70,12 @@ Added test records:
 	,(100002, 'Event Planner', 100005)
 	,(100002, 'Event Planner', 100006)
 	,(100002, 'Event Planner', 100007)
+**************************************************************
+Derrick Nagy
+Updated: 2023/03/27
+
+Description: 
+Added Suprise Party event to 
 ****************************************************************/
 print '' print '*** test records for UserEvent table'
 GO
@@ -97,5 +103,6 @@ INSERT INTO [dbo].[UserEvent] (
 	,(100002, 'Event Planner', 100005)
 	,(100002, 'Event Planner', 100006)
 	,(100002, 'Event Planner', 100007)
+	,(100000, 'Event Manager', 100009) -- Suprise Party, no date
 
 GO

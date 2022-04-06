@@ -46,6 +46,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Removed constructors that were for "all activities all events" button which was removed
         /// </summary>
         /// <param name="eventParam"></param>
         /// <param name="managerProvider"></param>
@@ -58,21 +64,6 @@ namespace WPFPresentation.Event
 
             InitializeComponent();
         }
-        internal pgViewActivities(User user, ManagerProvider managerProvider)
-        {
-            _managerProvider = managerProvider;
-            _activityManager = managerProvider.ActivityManager;
-            _user = user;
-
-            InitializeComponent();
-        }
-        internal pgViewActivities(ManagerProvider managerProvider)
-        {
-            _managerProvider = managerProvider;
-            _activityManager = managerProvider.ActivityManager;
-
-            InitializeComponent();
-        }
 
         /// <summary>
         /// Emma Pollock
@@ -80,15 +71,12 @@ namespace WPFPresentation.Event
         /// 
         /// Description:
         /// Handler for loading activities
-        /// </summary>
-        /// /// /// <summary>
+        /// 
         /// Logan Baccam
         /// Updated: 2022/02/25
         /// Description:
         /// Updated loading activities to data grid 
         /// </summary>
-        /// <param name="eventID"></param>
-        /// <returns>A list of Activity objects</returns>
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -143,51 +131,6 @@ namespace WPFPresentation.Event
             ActivityVM selectedActivity = (ActivityVM)datEventActivities.SelectedItem;
             pgViewActivityDetails activityDetailsPage = new pgViewActivityDetails(selectedActivity, _event, _managerProvider, _user);
             this.NavigationService.Navigate(activityDetailsPage);
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/24
-        /// 
-        /// Description:
-        /// Click event handler to send a user back to Event Edit Details page
-        /// 
-        /// Derrick Nagy
-        /// Updated: 2022/02/26
-        /// 
-        /// Description:
-        /// Added _user to be passed with page constructor
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnEventDetails_Click(object sender, RoutedEventArgs e)
-        {
-            pgEventEditDetail pgEventEditDetail = new pgEventEditDetail(_event, _managerProvider, _user);
-            this.NavigationService.Navigate(pgEventEditDetail);
-        }
-
-        /// <summary>
-        /// Mike Cahow
-        /// Created: 2022/02/24
-        /// 
-        /// Description:
-        /// Click event handler to send a user to the Task list View page
-        /// 
-        /// Update:
-        /// Derrick Nagy
-        /// Updated: 2022/02/26
-        /// 
-        /// Description:
-        /// Added _user to be passed with page constructor
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnTasks_Click(object sender, RoutedEventArgs e)
-        {
-            pgTaskListView ViewTaskListPage = new pgTaskListView(_event, _managerProvider, _user);
-            this.NavigationService.Navigate(ViewTaskListPage);
         }
 
         /// <summary>
@@ -400,6 +343,21 @@ namespace WPFPresentation.Event
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Click handler for button to add activity to current event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAddActivity_Click(object sender, RoutedEventArgs e)
+        {
+            pgCreateActivity CreateActivityPage = new pgCreateActivity(_user, _event, _managerProvider);
+            this.NavigationService.Navigate(CreateActivityPage);
         }
     }
 }

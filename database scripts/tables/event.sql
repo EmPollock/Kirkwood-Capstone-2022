@@ -86,6 +86,12 @@ Updated: 2022/03/24
 
 Description: 
 Changed Location information for inserted events
+**************************************************************
+Derrick Nagy
+Updated: 2023/03/27
+
+Description: 
+Added Suprise Party event
 ****************************************************************/
 
 print '' print '*** test records for Event table'
@@ -105,6 +111,8 @@ VALUES
 	('Jazzfest','Live jazz performances and food vendors downtown Iowa City.',1000.00,100004),
 	('Bix7 2021','7 mile race in Davenport, Iowa ',1000.00,100000),
 	('Spelling Bee for the Bees','A spelling bee contest to raise money for a bee sanctuary.',1000.00,100000),
-	('Apple-Bobbing','Apple-Bobbing contest.',1000.00,100000)	
+	('Apple-Bobbing','Apple-Bobbing contest.',1000.00,100000),
+	('Suprise Birthday Party for Alaina','Surprise party for Alaina. Will add date when I find out when her birthday is.',1000.00,NULL)
+
 GO
 

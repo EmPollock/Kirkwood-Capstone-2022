@@ -365,5 +365,62 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Creates a new activity object and inserts it into the database
+        /// </summary>
+        /// <param name="activity">New activity object to be created</param>
+        /// <returns>int number of rows affected</returns>
+        public int CreateActivity(Activity activity)
+        {
+            int rowsAffected;
+
+            if (activity.ActivityName == null || activity.ActivityName == "")
+            {
+                throw new ApplicationException("Activity name cannot be empty");
+            }
+            if (activity.ActivityName.Length > 50)
+            {
+                throw new ApplicationException("Activity name cannot be longer than 50 characters");
+            }
+            if (activity.ActivityDescription.Length > 250)
+            {
+                throw new ApplicationException("Activity description cannot be longer than 250 characters");
+            }
+            if (activity.StartTime == new DateTime()) // defaults to 01/01/0001 if it had never been set
+            {
+                throw new ApplicationException("Activity must have a start time");
+            }
+            if (activity.EndTime == new DateTime())
+            {
+                throw new ApplicationException("Activity must have an end time");
+            }
+            if (activity.StartTime.CompareTo(activity.EndTime) >= 0)
+            {
+                throw new ApplicationException("Activity start time must be before its end time");
+            }
+            if (activity.SublocationID == null)
+            {
+                throw new ApplicationException("Activity must have a sublocation");
+            }
+            if (activity.EventDateID == new DateTime())
+            {
+                throw new ApplicationException("Activity must have a date");
+            }
+
+            try
+            {
+                rowsAffected = _activityAccessor.InsertActivity(activity);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
     }
 }

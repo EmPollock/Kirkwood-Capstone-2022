@@ -9,6 +9,7 @@ namespace LogicLayerInterfaces
 {
     public interface IActivityManager
     {
+        int CreateActivity(Activity activity);
         List<Activity> RetrieveActivitiesByEventID(int eventID);
         List<ActivityVM> RetrieveActivitiesByEventIDForVM(int eventID);
         List<ActivityVM> RetrieveActivitiesByEventIDAndEventDateID(int eventID, DateTime? eventDateID);

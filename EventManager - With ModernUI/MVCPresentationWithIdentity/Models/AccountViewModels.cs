@@ -65,6 +65,30 @@ namespace MVCPresentationWithIdentity.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Given Name")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        public string GivenName { get; set; }
+
+        [Required]
+        [Display(Name = "Family Name")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        public string FamilyName { get; set; }
+
+        [Required]
+        [Display(Name = "City")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        public string City { get; set; }
+
+        [Required]
+        [Display(Name = "State Abbreviation")]
+        [StringLength(2, ErrorMessage = "The {0} must be {2} characters long.", MinimumLength = 2)]
+        public string State { get; set; }
+
+        [Required]
+        [Display(Name = "Zip Code")]
+        public int Zip { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

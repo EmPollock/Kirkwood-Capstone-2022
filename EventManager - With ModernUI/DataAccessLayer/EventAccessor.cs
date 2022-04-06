@@ -613,6 +613,12 @@ namespace DataAccessLayer
         /// Description:
         /// Select list of upcoming dates for a user with location and event managers
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/26
+        /// 
+        /// Description:
+        /// Added events that have no date
+        /// 
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>Event view models</returns>
@@ -690,6 +696,54 @@ namespace DataAccessLayer
             eventListRef = getManagersForEvents(eventListRef);
 
             return eventListRef;
+            string cmdText2 = "sp_select_active_events_with_no_dates_for_user";
+            var cmd2 = new SqlCommand(cmdText2, conn);
+            cmd2.CommandType = CommandType.StoredProcedure;
+
+            cmd2.Parameters.Add("@UserID", SqlDbType.NVarChar, 50);
+            cmd2.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd2.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
+                            EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
+                                        {                                            
+                                            EventDateID = DateTime.MinValue,
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+
+                                        }
+                                    },
+                            Active = true
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return eventDateVMHelper(eventListRef);
 
 
         }
@@ -1035,18 +1089,25 @@ namespace DataAccessLayer
             foreach (EventVM item in eventList)
             {
                 for (int i = 0; i < allDates.Count; i++)
-                {
-                    if (item.EventID == allDates[i].EventID)
+                {                    
+
+                    if (item.EventID == allDates[i].EventID && allDates[i].EventDateID != DateTime.MinValue)
                     {
                         item.EventDates.Add(allDates[i]);
                     }
                 }
             }
 
-            // sort by earliest date
-            noDuplicates.Sort((ev1, ev2) => ev1.EventDates[0].EventDateID.CompareTo(ev2.EventDates[0].EventDateID));
+            // take out no dates
+            List<EventVM> noDates = noDuplicates.FindAll(e => e.EventDates.Count == 0);
+            List<EventVM> eventsWithDates = noDuplicates.FindAll(e => e.EventDates.Count > 0);
 
-            return noDuplicates;
+            // sort by earliest date
+            eventsWithDates.Sort((ev1, ev2) => ev1.EventDates[0].EventDateID.CompareTo(ev2.EventDates[0].EventDateID));
+
+            noDates.AddRange(eventsWithDates);
+
+            return noDates;
         }
 
         /// <summary>

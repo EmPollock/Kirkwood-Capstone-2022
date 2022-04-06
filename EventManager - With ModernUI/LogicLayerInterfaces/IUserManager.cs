@@ -24,5 +24,11 @@ namespace LogicLayerInterfaces
         bool UpdatePasswordHash(string email, string oldPassword, string newPassword);
 
         bool CreateUser(User user);
+        bool CreateUserWithPassword(User user, string password);
+        List<string> RetrieveAllRoles();
+        bool RetrieveHasUserByEmail(string email);
+
+        bool AddUserRole(int userID , string role);
+        bool RemoveUserRole(int userID, string role);
     }
 }

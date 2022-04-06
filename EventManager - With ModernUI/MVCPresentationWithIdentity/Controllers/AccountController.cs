@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MVCPresentationWithIdentity.Models;
+using DataObjects;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
@@ -85,6 +86,33 @@ namespace MVCPresentationWithIdentity.Controllers
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
+                    LogicLayer.UserManager usrMgr = new LogicLayer.UserManager();
+                    try
+                    {
+                        if (usrMgr.AuthenticateUserByEmailAndPassword(model.Email, model.Password))
+                        {
+
+                            var oldUser = usrMgr.LoginUser(model.Email, model.Password);
+
+                            var user = this.CreateApplicationUserFromDesktop(oldUser);
+                            var result2 = await UserManager.CreateAsync(user, model.Password);
+                            if (result2.Succeeded)
+                            {
+                                foreach (var role in usrMgr.RetrieveUserRolesByUserID(oldUser.UserID))
+                                {
+                                    UserManager.AddToRole(user.Id, role);
+                                }
+                                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                                return RedirectToLocal(returnUrl);
+                            }
+                            AddErrors(result2);
+                        }
+                    } catch(Exception ex)
+                    {
+                        
+                    }
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
@@ -151,21 +179,77 @@ namespace MVCPresentationWithIdentity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                LogicLayer.UserManager usrMgr = new LogicLayer.UserManager();
+                try
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    if (usrMgr.RetrieveHasUserByEmail(model.Email))
+                    {
 
-                    return RedirectToAction("Index", "Home");
+                        var oldUser = usrMgr.LoginUser(model.Email, model.Password);
+
+                        var user = this.CreateApplicationUserFromDesktop(oldUser);
+
+                        var result = await UserManager.CreateAsync(user, model.Password);
+                        if (result.Succeeded)
+                        {
+                            foreach (var role in usrMgr.RetrieveUserRolesByUserID(oldUser.UserID))
+                            {
+                                UserManager.AddToRole(user.Id, role);
+                            }
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        AddErrors(result);
+                    }
+                    else
+                    {
+                        var user = new DataObjects.User()
+                        {
+                            EmailAddress = model.Email,
+                            GivenName = model.GivenName,
+                            FamilyName = model.FamilyName,
+                            City = model.City,
+                            State = model.State,
+                            Zip = model.Zip,
+                            Active = true
+                        };
+                        if (usrMgr.CreateUserWithPassword(user, model.Password))
+                        {
+                            User newUser = usrMgr.RetrieveUserByEmail(model.Email);
+                            var IUser = new ApplicationUser { UserName = model.Email, Email = model.Email, UserID = newUser.UserID, GivenName = newUser.GivenName, FamilyName = newUser.FamilyName, City = newUser.City, State = newUser.State, Zip = newUser.Zip };
+                            var result = await UserManager.CreateAsync(IUser, model.Password);
+                            if (result.Succeeded)
+                            {
+                                UserManager.AddToRole(IUser.Id, "Attendee");
+                                await SignInManager.SignInAsync(IUser, isPersistent: false, rememberBrowser: false);
+                                try
+                                {
+                                    usrMgr.AddUserRole(newUser.UserID, "Attendee");
+                                }
+                                catch (Exception ex)
+                                {
+
+                                }
+
+                                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                                // Send an email with this link
+                                // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                                // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                                // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                                return RedirectToAction("Index", "Home");
+                            }
+                            AddErrors(result);
+                        }
+
+                    }
                 }
-                AddErrors(result);
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "Failed to migrate or create new user. Trying again may resolve this issue.";
+                    return View(model);
+                }
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -479,6 +563,22 @@ namespace MVCPresentationWithIdentity.Controllers
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
+        }
+
+        private ApplicationUser CreateApplicationUserFromDesktop(User user)
+        {
+            var applicationUser = new ApplicationUser
+            {
+                Email = user.EmailAddress,
+                UserName = user.EmailAddress,
+                GivenName = user.GivenName,
+                FamilyName = user.FamilyName,
+                City = user.City,
+                State = user.State,
+                Zip = user.Zip,
+                UserID = user.UserID
+            };
+            return applicationUser;
         }
         #endregion
     }

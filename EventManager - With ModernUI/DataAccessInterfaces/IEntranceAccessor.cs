@@ -11,5 +11,7 @@ namespace DataAccessInterfaces
     {
         int InsertEntrance(int locationID, string entranceName, string description);
         List<Entrance> SelectEntranceByLocationID(int locationID);
+        int UpdateEntrance(Entrance oldEntrance, Entrance newEntrance);
+        int DeactivateEntranceByEntranceID(int entranceID);
     }
 }

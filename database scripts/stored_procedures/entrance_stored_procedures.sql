@@ -57,6 +57,7 @@ AS
 			[Description]
 		FROM [dbo].[Entrance]
 		WHERE [LocationID] = @LocationID
+		AND [Active] = 1
 		ORDER BY [EntranceName] DESC
 	END
 GO     
@@ -74,10 +75,8 @@ GO
 CREATE PROCEDURE [dbo].[sp_update_entrance_by_entranceID]
 (
 	@EntranceID 			[int],
-	@OldLocationID 			[int],
 	@OldEntranceName		[nvarchar](100),
 	@OldDescription			[nvarchar](255),
-	@NewLocationID 			[int],
 	@NewEntranceName		[nvarchar](100),
 	@NewDescription			[nvarchar](255)
 )
@@ -85,17 +84,38 @@ AS
 	BEGIN
 		UPDATE [dbo].[Entrance]
 		SET		
-			[LocationID] = @NewLocationID,
 			[EntranceName] = @NewEntranceName,
 			[Description] = @NewDescription
 		WHERE 	
 			[EntranceID] = @EntranceID
-		  AND	
-			@OldLocationID = [LocationID]
 		  AND
 			@OldEntranceName = [EntranceName]
 		  AND
 			@OldDescription = [Description]
+		RETURN @@ROWCOUNT
+	END
+GO
+
+/***************************************************************
+Logan Baccam
+Created: 2022/02/25
+
+Description:
+Stored procedure to deactivate an entrance by entrance id
+**************************************************************/
+print '' print '*** creating sp_deactivate_entrance_by_entranceID***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_entrance_by_entranceID]
+(
+	@EntranceID 				[int]
+)
+AS
+	BEGIN
+		UPDATE	[Entrance]
+		SET	
+			[Active] = 0
+		WHERE
+			[EntranceID] = @EntranceID
 		RETURN @@ROWCOUNT
 	END
 GO

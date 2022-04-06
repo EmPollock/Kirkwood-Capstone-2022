@@ -78,5 +78,53 @@ namespace LogicLayerTests
 
             Assert.AreEqual(expectedAmount, actualAmount);
         }
+
+        /// Austin Timmerman
+        /// Created: 2022/03/30
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveAvailabilityByVolunteerIDAndDate correctly returns an empty
+        /// list when no availability is found
+        /// </summary>
+        /// (Original Author: Kris Howell LocationManagerTests.cs)
+        [TestMethod]
+        public void TestRetrieveAvailabilityByVolunteerIDAndDateReturnsNullWithNoneFound()
+        {
+            // arrange
+            const int volunteerID = 100000;
+            DateTime badDate = new DateTime(1999, 01, 01);
+            List<Availability> actualList;
+
+            // act
+            actualList = _volunteerManager.RetrieveAvailabilityByVolunteerIDAndDate(volunteerID, badDate);
+
+            // assert
+            Assert.IsFalse(actualList.Any());
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/30
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveAvailabilityByVolunteerIDAndDate correctly returns an Availability
+        /// object with null TimeStart/TimeEnd properties when there is an exception for a day with no availability
+        /// </summary>
+        /// (Original Author: Kris Howell LocationManagerTests.cs)
+        [TestMethod]
+        public void TestRetrieveAvailabilityByVolunteerIDAndDateReturnsEmptyAvailabilityForEmptyException()
+        {
+            // arrange
+            const int volunteerID = 100000;
+            DateTime date = new DateTime(2022, 01, 03);
+            DateTime? expected = null;
+            DateTime? actual;
+
+            // act
+            actual = _volunteerManager.RetrieveAvailabilityByVolunteerIDAndDate(volunteerID, date).First().TimeStart;
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

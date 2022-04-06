@@ -8,6 +8,10 @@
     user-select: none;
 }
 
+.indent {
+    padding-left: 150px;
+}
+
 main > .container {
     padding: 60px 15px 0;
 }

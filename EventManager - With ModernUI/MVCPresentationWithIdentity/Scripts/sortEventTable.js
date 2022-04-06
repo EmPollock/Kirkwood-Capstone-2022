@@ -7,7 +7,7 @@
 // shamelessly lifted from
 //https://www.w3schools.com/howto/howto_js_sort_table.asp
 /// </summary>
-function sortTable(n) {
+function sortEventTable(n) {
     /*console.log("works");*/
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("eventListTable");

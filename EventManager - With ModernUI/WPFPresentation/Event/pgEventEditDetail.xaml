@@ -8,40 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="pgEventEditDetail" Loaded="Page_Loaded">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" >
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-
-            <Button x:Name="btnEventDetails" Grid.Row="0" HorizontalAlignment="Center" Padding="34 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="#FFFFFF99">Event Details</Button>
-            <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White" Click="btnTasks_Click">Tasks</Button>
-            <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White" Click="btnItinerary_Click">Itinerary</Button>
-            <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Budget</Button>
-            <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Advertising</Button>
-            <Button x:Name="btnAfterEventReport" Grid.Row="5" HorizontalAlignment="Center" Padding="17 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">After Event Report</Button>
-            <Button x:Name="btnFiles" Grid.Row="6" HorizontalAlignment="Center" Padding="63 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Files</Button>
-            <Button x:Name="btnInvitations" Grid.Row="7" HorizontalAlignment="Center" Padding="43 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Invitations</Button>
-        </Grid>
-        <TabControl x:Name="tabsetEditViewEvents" Grid.Column="1">
+        <TabControl x:Name="tabsetEditViewEvents">
             <TabItem x:Name="tabGeneralEvent" Header="General">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -50,7 +17,7 @@
                         <RowDefinition Height="100"/>
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition/>
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -120,7 +87,11 @@
                                 <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat=\{0:hh:mm tt\}}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <TextBlock Grid.Row="0" Grid.Column="0" x:Name="txtBlockEventDateValidationMessage" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Visibility="Hidden" Foreground="#FFFF4040" ></TextBlock>
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   x:Name="txtBlockEventDateValidationMessage" 
+                                   Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                   Style="{StaticResource BodyTextBlockStyle}" Visibility="Hidden" Foreground="#FFFF4040" ></TextBlock>
                     </Grid>
                     <Grid x:Name="grdAddEventDate" Grid.Row="1" Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -197,7 +168,7 @@
                     <Frame x:Name="locationFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Margin="5px" />
                 </Grid>
             </TabItem>
-            <TabItem x:Name="tabEventVolunteerRequests" Header="Requests" Loaded="tabEventVolunteerRequests_Loaded" Visibility="Collapsed">
+            <TabItem x:Name="tabEventVolunteerRequests" Header="Requests" Loaded="tabEventVolunteerRequests_Loaded">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"></RowDefinition>
@@ -212,9 +183,9 @@
                         <ColumnDefinition Width="160" />
                         <ColumnDefinition Width="160" />
                     </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="dgRequestList" Grid.Row="1" CanUserAddRows="False" Grid.ColumnSpan="6" AutoGenerateColumns="false">
+                    <DataGrid x:Name="dgRequestList" Grid.Row="1" CanUserAddRows="False" Grid.ColumnSpan="6" AutoGenerateColumns="false" IsReadOnly="True">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Request ID" Binding="{Binding RequestID}" Width="*"/>
+                            <!--<DataGridTextColumn Header="Request ID" Binding="{Binding RequestID}" Width="*"/>-->
                             <DataGridTextColumn Header="Volunteer" Binding="{Binding VolunteerName}" Width="*"/>
                             <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*"/>
                             <DataGridTextColumn Header="Volunteer Response" Binding="{Binding StrVolunteerResponse}" Width="*"/>

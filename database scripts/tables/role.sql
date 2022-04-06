@@ -51,6 +51,13 @@ GO
 
  Description: 
  Added Event Planner, Event Manager, and Attendee
+ 
+***************************************************************
+ Christopher Repko
+ Updated: 2022/03/24
+
+ Description: 
+ Added Administrator
 ****************************************************************/
 print '' print '*** test records for Role table'
 GO
@@ -63,5 +70,6 @@ INSERT INTO [dbo].[Role] (
 	("Supply Donor", "Volunteer role used when a volunteer donates specific materials"),
 	('Event Planner','Creates the event, plans for the event.'),
 	('Event Manager','Handles day of activities.'),
-	('Attendee','An attendee for the event.')
+	('Attendee','An attendee for the event.'),
+	('Administrator','An administrator for the application.')
 GO
