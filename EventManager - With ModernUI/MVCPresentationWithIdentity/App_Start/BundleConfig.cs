@@ -33,6 +33,10 @@ namespace MVCPresentationWithIdentity
                       "~/Content/bootstrap-theme-lumen.css",
                                             
                       "~/Content/site.css"));
+            //Add java script files here
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                        "~/Scripts/sortTable.js"
+                        ));
         }
     }
 }

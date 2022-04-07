@@ -24,6 +24,11 @@
 
                     <li class="nav-item">
                         @*<a class="nav-link" href="">Nav-Bar 2</a>*@
+                        @Html.ActionLink("Suppliers", "ViewSuppliers", "Supplier", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                    </li>
+
+                    <li class="nav-item">
+                        @*<a class="nav-link" href="">Nav-Bar 2</a>*@
                         @Html.ActionLink("Locations", "ViewLocations", "Location", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                     </li>
 
@@ -68,6 +73,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/scripts")
     @RenderSection("scripts", required: false)
 </body>
 </html>
