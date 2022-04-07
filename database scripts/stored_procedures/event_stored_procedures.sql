@@ -790,8 +790,9 @@ AS
 	END	
 GO	
 	
+/***************************************************************
+Derrick Nagy
 Created: 2022/03/26
-
 Description:
 Selects all the events for a user that do no have dates
 ****************************************************************/

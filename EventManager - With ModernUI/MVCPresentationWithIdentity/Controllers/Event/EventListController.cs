@@ -10,7 +10,7 @@ using MVCPresentationWithIdentity.Models;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class EventController : Controller
     {
         private IEventManager _eventManager;
@@ -44,7 +44,7 @@ namespace MVCPresentationWithIdentity.Controllers
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    TempData["errorMessage"] = ex.Message;
                 }
             }
             
@@ -69,7 +69,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -94,7 +94,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -123,7 +123,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -151,7 +151,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -178,7 +178,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
