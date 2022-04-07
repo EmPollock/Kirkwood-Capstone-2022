@@ -22,6 +22,7 @@ namespace MVCPresentationWithIdentity.Controllers
     public class LocationController : Controller
     {
         ILocationManager _locationManager;
+        IEventDateManager _eventDateManager = new EventDateManager();
         public int _pageSize = 10;
 
         /// <summary>
@@ -75,6 +76,24 @@ namespace MVCPresentationWithIdentity.Controllers
             };
 
             return View(model);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// For the View Location Schedule page
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns>ActionResult</returns>
+        public ActionResult ViewLocationSchedule()
+        {
+            List<EventDateVM> eventDates = new List<EventDateVM>();
+
+            eventDates = _eventDateManager.RetrieveEventDatesByLocationID(100000);
+
+            return View("~/Views/Location/ViewLocationSchedule.cshtml", eventDates);
         }
     }
 }

@@ -28,7 +28,7 @@
             <td class="d-none d-sm-table-cell">@location.Address1</td>
             <td class="d-none d-sm-table-cell">@location.City</td>
             <td class="d-none d-sm-table-cell">@location.State</td>
-            <td><button onclick="@("window.location.href='" + @Url.Action("About", "Home") + "'");">Request</button></td>
+            <td><button onclick="@("window.location.href='" + @Url.Action("ViewLocationSchedule", "Location") + "'");">Request</button></td>
         </tr>
         }
     </tbody>
