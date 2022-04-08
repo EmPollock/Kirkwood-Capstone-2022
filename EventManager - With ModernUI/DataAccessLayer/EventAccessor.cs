@@ -45,11 +45,11 @@ namespace DataAccessLayer
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
             cmd.Parameters.Add("@TotalBudget", SqlDbType.Money);
-            
+
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
             cmd.Parameters["@TotalBudget"].Value = totalBudget;
-            
+
 
             try
             {
@@ -116,7 +116,7 @@ namespace DataAccessLayer
                             TotalBudget = reader.GetDecimal(4),
                             LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             Active = true
-                        }); 
+                        });
                     }
                 }
             }
@@ -368,7 +368,7 @@ namespace DataAccessLayer
             eventListRef = eventDateVMHelper(eventListRef);
             eventListRef = getManagersForEvents(eventListRef);
 
-            return eventListRef ;
+            return eventListRef;
 
         }
 
@@ -625,6 +625,7 @@ namespace DataAccessLayer
         public List<EventVM> SelectUserEventsForUpcomingDates(int userID)
         {
             List<EventVM> eventListRef = new List<EventVM>();
+            List<EventVM> eventListRefNoDates = new List<EventVM>();
 
             var conn = DBConnection.GetConnection();
             string cmdText = "sp_select_active_events_for_upcoming_dates_for_user";
@@ -692,10 +693,6 @@ namespace DataAccessLayer
                 conn.Close();
             }
 
-            eventListRef = eventDateVMHelper(eventListRef);
-            eventListRef = getManagersForEvents(eventListRef);
-
-            return eventListRef;
             string cmdText2 = "sp_select_active_events_with_no_dates_for_user";
             var cmd2 = new SqlCommand(cmdText2, conn);
             cmd2.CommandType = CommandType.StoredProcedure;
@@ -712,7 +709,7 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        eventListRef.Add(new EventVM()
+                        eventListRefNoDates.Add(new EventVM()
                         {
                             EventID = reader.GetInt32(0),
                             EventName = reader.GetString(1),
@@ -723,7 +720,7 @@ namespace DataAccessLayer
                             EventDates = new List<EventDate>()
                                     {
                                         new EventDate()
-                                        {                                            
+                                        {
                                             EventDateID = DateTime.MinValue,
                                             EventID = reader.GetInt32(0),
                                             Active = true
@@ -743,7 +740,15 @@ namespace DataAccessLayer
             {
                 conn.Close();
             }
-            return eventDateVMHelper(eventListRef);
+
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRefNoDates = eventDateWithNoDatesVMHelper(eventListRefNoDates);
+
+            eventListRef.AddRange(eventListRefNoDates);
+
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
 
 
         }
@@ -979,21 +984,23 @@ namespace DataAccessLayer
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@EventID", eventID);
-            if(oldLocationID is null)
+            if (oldLocationID is null)
             {
                 cmd.Parameters.Add("@OldLocationID", SqlDbType.Int);
                 cmd.Parameters["@OldLocationID"].Value = DBNull.Value;
-            } else
+            }
+            else
             {
                 cmd.Parameters.Add("@OldLocationID", SqlDbType.Int);
                 cmd.Parameters["@OldLocationID"].Value = oldLocationID;
             }
-            if(newLocationID is null)
+            if (newLocationID is null)
             {
 
                 cmd.Parameters.Add("@LocationID", SqlDbType.Int);
                 cmd.Parameters["@LocationID"].Value = DBNull.Value;
-            } else
+            }
+            else
             {
                 cmd.Parameters.Add("@LocationID", SqlDbType.Int);
                 cmd.Parameters["@LocationID"].Value = newLocationID;
@@ -1011,7 +1018,7 @@ namespace DataAccessLayer
 
 
             return rowsAffected;
-        
+
 
         }
 
@@ -1089,7 +1096,7 @@ namespace DataAccessLayer
             foreach (EventVM item in eventList)
             {
                 for (int i = 0; i < allDates.Count; i++)
-                {                    
+                {
 
                     if (item.EventID == allDates[i].EventID && allDates[i].EventDateID != DateTime.MinValue)
                     {
@@ -1109,6 +1116,67 @@ namespace DataAccessLayer
 
             return noDates;
         }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Removes duplicates and adds the dates to the appropriate event
+        /// These events have no dates
+        /// 
+        /// </summary>
+        /// <param name="eventListRef">Takes an eventvm list</param>
+        /// <returns>A list of Events with no duplicate EventIDs and all the EventDates in a list in the Event object</returns>
+        private List<EventVM> eventDateWithNoDatesVMHelper(List<EventVM> eventListRef)
+        {
+            List<EventVM> eventList = new List<EventVM>();
+            List<EventDate> allDates = new List<EventDate>();
+            if (eventListRef.Count > 0)
+            {
+                foreach (EventVM item in eventListRef)
+                {
+                    allDates.Add(item.EventDates[0]);
+
+                    eventList.Add(new EventVM()
+                    {
+                        EventID = item.EventID,
+                        EventName = item.EventName,
+                        EventDescription = item.EventDescription,
+                        EventCreatedDate = item.EventCreatedDate,
+                        TotalBudget = item.TotalBudget,
+                        LocationID = item.LocationID,
+                        EventDates = new List<EventDate>()
+                    });
+                }
+            }
+
+            //remove duplicates
+            List<EventVM> noDuplicates = eventList.GroupBy(e => e.EventID).Select(e => e.First()).ToList();
+
+            foreach (EventVM item in eventList)
+            {
+                for (int i = 0; i < allDates.Count; i++)
+                {
+
+                    if (item.EventID == allDates[i].EventID && allDates[i].EventDateID != DateTime.MinValue)
+                    {
+                        item.EventDates.Add(allDates[i]);
+                    }
+                }
+            }
+
+            // take out no dates
+            List<EventVM> noDates = noDuplicates.FindAll(e => e.EventDates.Count == 0);
+            List<EventVM> eventsWithDates = noDuplicates.FindAll(e => e.EventDates.Count > 0);
+
+
+            noDates.AddRange(eventsWithDates);
+
+            return noDates;
+        }
+
 
         /// <summary>
         /// Derrick Nagy
@@ -1135,7 +1203,7 @@ namespace DataAccessLayer
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);            
+            cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
             cmd.Parameters.Add("@TotalBudget", SqlDbType.Money);
             cmd.Parameters.Add("@UserID", SqlDbType.Int);
 

@@ -38,6 +38,7 @@ namespace MVCPresentationWithIdentity
                       "~/Content/site.css"));
             //Add java script files here
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                        "~/Scripts/index.js",
                         "~/Scripts/sortEventTable.js",
                         "~/Scripts/sortTable.js"
                         ));

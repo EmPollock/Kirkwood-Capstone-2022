@@ -19,11 +19,6 @@ GO
 /
 / Description: 
 / Changed default password
-
-Vinayak Deshpande
- Updated: 2022/04/08
-
- Description: Added user test data
 ****************************************************************/
 print '' print '*** creating Users Table ...'
 /* Whatever you're adding goes here. */

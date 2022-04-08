@@ -10,7 +10,7 @@ using MVCPresentationWithIdentity.Models;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class EventController : Controller
     {
         private IEventManager _eventManager;

@@ -50,10 +50,10 @@ GO
  Description:
  Test records for volunteer table
 ***************************************************************
- Vinayak Deshpande
- Updated: 2022/04/08
+ <Updater Name>
+ Updated: yyyy/mm/dd
 
- Description: Added user volunteer test data
+ Description: 
 ****************************************************************/
 print '' print '*** test records for Volunteers table'
 GO

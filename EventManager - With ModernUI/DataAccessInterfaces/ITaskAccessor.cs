@@ -18,5 +18,7 @@ namespace DataAccessInterfaces
         bool DeleteTaskByTaskID(int taskID);
         bool UserCanEditDeleteTask(int userID);
         List<TaskAssignmentVM> SelectTaskAssignmentsByTaskID(int taskID);
+        int InsertNewTaskAssignmentByTaskID(int taskID);
+        int UpdateTaskAssignmentWithUserID(int taskAssignmentID, int userID);
     }
 }
