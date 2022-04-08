@@ -443,8 +443,8 @@ namespace DataAccessLayer
                             TaskAssignmentID = reader.GetInt32(0),
                             DateAssigned = DateTime.Parse(reader[1].ToString()),
                             TaskID = taskID,
-                            UserID = reader.GetInt32(2),
-                            RoleID = reader.GetString(3),
+                            UserID = reader.IsDBNull(2) ? 0 : reader.GetInt32(2) ,
+                            RoleID = reader.IsDBNull(3) ? null : reader.GetString(3),
                             Name = reader.GetString(4) + " " + reader.GetString(5)
                         });
                     }

@@ -227,7 +227,14 @@ namespace WPFPresentation.Event
         {
             TasksVM selectedTask = (TasksVM)datViewAllTasksForEvent.SelectedItem;
             lblVolunteers.Content = "Volunteers assigned to " + selectedTask.Name + ":";
-            datTaskVolunteers.ItemsSource = _taskManager.RetrieveTaskAssignmentsByTaskID(selectedTask.TaskID);
+            try
+            {
+                datTaskVolunteers.ItemsSource = _taskManager.RetrieveTaskAssignmentsByTaskID(selectedTask.TaskID);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was a problem loading the assigned volunteers.\n" + ex.Message);
+            }
         }
     }
 
