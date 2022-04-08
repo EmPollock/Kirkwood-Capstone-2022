@@ -200,7 +200,6 @@ namespace LogicLayerTests
         /// Description:
         /// Test that returns list of active events (currently 4 in fake data)
         /// </summary>
-
         [TestMethod]
         public void TestRetrieveActiveEventsReturnsCorrectList()
         {
@@ -1003,5 +1002,74 @@ namespace LogicLayerTests
             // Assert
             
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/06
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for a search criteria
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMForSearch()
+        {
+            // arrange
+            const string search = "test";
+            const int expectedCount = 4;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForSearch(search);
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/06
+        /// 
+        /// Description:
+        /// Test that returns a list of event view objects for a name, description, location that contains the number 4
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveEventVMForSearchSearchesForNumber4()
+        {
+            // arrange
+            const string search = "4";
+            const int expectedCount = 1;
+            List<EventVM> actualList = null;
+            int actualCount;
+
+            // act
+            actualList = _eventManager.RetrieveEventListForSearch(search);
+            actualCount = actualList.Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/06
+        /// 
+        /// Description:
+        /// Test that throws an error if the search word is longer than 50 characters
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestRetrieveEventVMForSearchThrowsExceptionIfTooLongOfSearch()
+        {
+            // arrange
+            const string search = "1Bc7fBGBhzfcZ47naVEiSnZ0rlOjxxNSxINj72IwprJiQpLZlw1";
+
+            // act
+            _eventManager.RetrieveEventListForSearch(search);
+            // assert
+            
+        }
+
     }
 }

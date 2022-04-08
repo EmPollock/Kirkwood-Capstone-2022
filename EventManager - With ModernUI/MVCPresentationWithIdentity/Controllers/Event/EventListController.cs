@@ -44,11 +44,49 @@ namespace MVCPresentationWithIdentity.Controllers
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    TempData["errorMessage"] = ex.Message;
                 }
             }
             
             return View(eventList);
+        }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/04/06
+        /// 
+        /// Description:
+        /// Controller that returns a list that includes the search word
+        /// in the event name, description, or in the location name, city, or state
+        /// 
+        /// </summary>
+        /// <param name="search">Search criteria</param>
+        /// <returns>EventList View</returns>
+        [HttpPost]
+        public ActionResult EventList(string search)
+        {
+
+            if (search.Length > 50)
+            {
+                TempData["errorMessage"] = "Search criteria too long. Please shorten.";
+                eventList = new List<EventVM>();
+            }
+            else
+            {
+                try
+                {
+                    eventList = _eventManager.RetrieveEventListForSearch(search);
+                }
+                catch (Exception ex)
+                {
+
+                    TempData["errorMessage"] = ex.Message;
+                }
+            }
+
+            return View(eventList);
+
         }
 
         /// <summary>
@@ -69,7 +107,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -94,7 +132,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -123,7 +161,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -151,7 +189,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -178,7 +216,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);

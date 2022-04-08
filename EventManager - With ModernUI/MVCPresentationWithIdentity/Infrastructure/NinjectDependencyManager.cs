@@ -27,16 +27,20 @@ namespace MVCPresentationWithIdentity.Infrastructure
 
         private void AddBindings()
         {
-
+            // live
             kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().InRequestScope();
-            kernel.Bind<IUserManager>().To<LogicLayer.UserManager>().InRequestScope();            
-            
-            //kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().WithConstructorArgument("fake", new EventAccessorFake());
-
-
+            kernel.Bind<IUserManager>().To<LogicLayer.UserManager>().InRequestScope();
             kernel.Bind<IVolunteerManager>().To<VolunteerManager>();
             kernel.Bind<ILocationManager>().To<LocationManager>();
             kernel.Bind<ISupplierManager>().To<SupplierManager>();
+
+
+            // fake
+            //kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().WithConstructorArgument("eventAccessor", new EventAccessorFake());
+
+
+
+
 
         }
 

@@ -790,8 +790,9 @@ AS
 	END	
 GO	
 	
+/***************************************************************
+Derrick Nagy
 Created: 2022/03/26
-
 Description:
 Selects all the events for a user that do no have dates
 ****************************************************************/
@@ -822,6 +823,66 @@ AS
 				WHERE [EventID] = [Event].[EventID]
 			)
 	
+		ORDER BY [Event].[EventID] ASC
+		
+	END	
+GO
+
+	
+/***************************************************************
+Derrick Nagy
+Created: 2022/04/06
+Description:
+Selects the active events by the search query
+
+****************************************************************/
+print '' print '*** creating sp_select_active_events_by_search'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_by_search]
+(
+	@Search 	nvarchar(50)
+)
+AS
+	BEGIN
+		SELECT DISTINCT
+			[Event].[EventID],
+			[EventName],
+			[EventDescription],
+			[DateCreated],
+			[TotalBudget],
+			[Event].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+			[Location].[LocationAddress1],		
+			[Location].[LocationAddress2],		
+			[Location].[LocationCity],			
+			[Location].[LocationState],			
+			[Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+		WHERE [Event].[Active] = 1
+			AND [EventDateID] >= GETDATE()
+			AND 
+				(
+				[EventName] LIKE '%'+@Search+'%'
+				OR
+				[EventDescription] LIKE '%'+@Search+'%'
+				OR
+				[LocationName] LIKE '%'+@Search+'%'
+				OR
+				[LocationCity] LIKE '%'+@Search+'%'
+				OR
+				[LocationState] LIKE '%'+@Search+'%'
+				)
+			
 		ORDER BY [Event].[EventID] ASC
 		
 	END	

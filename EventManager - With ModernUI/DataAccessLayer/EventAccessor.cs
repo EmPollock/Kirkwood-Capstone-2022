@@ -1287,5 +1287,94 @@ namespace DataAccessLayer
 
             return users;
         }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/04/06
+        /// 
+        /// Description:
+        /// Returns a list that includes the search word
+        /// in the event name, description, or in the location name, city, or state
+        /// 
+        /// </summary>
+        /// <param name="search">Search criteria</param>
+        /// <returns>List of EventVMs that contain search criteria</returns>
+        public List<EventVM> SelectEventsForSearch(string search)
+        {
+            List<EventVM> eventListRef = new List<EventVM>();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_events_by_search";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@Search", SqlDbType.NVarChar,50);
+            cmd.Parameters["@Search"].Value = search;
+
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
+                            EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
+                                        {
+                                            EventDateID = reader.GetDateTime(6),
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+                                        }
+                                    },
+                            Active = true,
+                            Location = new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(10),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
+                        });
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
+        }
     }
 }

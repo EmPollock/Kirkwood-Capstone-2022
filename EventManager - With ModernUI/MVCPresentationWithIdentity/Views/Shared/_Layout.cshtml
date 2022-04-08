@@ -68,6 +68,15 @@
     </nav>
     <main flex-shrink-0>
         <div class="container">
+            @if (TempData["errorMessage"] != null)
+            {
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong class="text-white">Oh, no! There was an error.</strong>
+                <p class="text-white">@TempData["message"]</p>
+            </div>    
+            }
+            
             @RenderBody()
 
         </div>

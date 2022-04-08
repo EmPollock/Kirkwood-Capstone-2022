@@ -563,5 +563,45 @@ namespace LogicLayer
 
             return users;
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/04/06
+        /// 
+        /// Description:
+        /// Returns a list that includes the search word
+        /// in the event name, description, or in the location name, city, or state
+        /// 
+        /// </summary>
+        /// <param name="search">Search criteria</param>
+        /// <returns>List of EventVMs that contain search criteria</returns>
+        public List<EventVM> RetrieveEventListForSearch(string search)
+        {
+            List<EventVM> eventVMs = new List<EventVM>();
+
+            //Green
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+
+            if (search.Length > 50)
+            {
+                throw new ApplicationException("The search criteria can not be longer than 50 characters.");
+            }
+
+            try
+            {
+                eventVMs = _eventAccessor.SelectEventsForSearch(search);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return eventVMs;
+        }
     }
 }
