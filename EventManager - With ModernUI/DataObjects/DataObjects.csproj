@@ -62,6 +62,7 @@
     <Compile Include="StringValidationHelpers.cs" />
     <Compile Include="Sublocation.cs" />
     <Compile Include="Supplier.cs" />
+    <Compile Include="TaskAssignment.cs" />
     <Compile Include="Tasks.cs" />
     <Compile Include="User.cs" />
     <Compile Include="ValidationHelpers.cs" />

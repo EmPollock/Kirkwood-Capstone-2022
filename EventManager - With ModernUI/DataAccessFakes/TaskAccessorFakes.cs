@@ -20,6 +20,7 @@ namespace DataAccessFakes
     {
         private List<TasksVM> _fakeTasks = new List<TasksVM>();
         private List<Priority> _priorities = new List<Priority>();
+        private List<TaskAssignment> _fakeTaskAssignments = new List<TaskAssignment>();
 
         public TaskAccessorFakes()
         {
@@ -96,6 +97,37 @@ namespace DataAccessFakes
                 PriorityID = 3,
                 Description = "High"
             });
+
+            /// <summary>
+            /// Jace Pettinger
+            /// Created: 2022/01/24
+            /// 
+            /// Description:
+            /// Creating a "fake" list of task assignments to use for testing purposes
+            /// </summary>
+            _fakeTaskAssignments.Add(new TaskAssignment() 
+            {
+                TaskAssignmentID = 999999,
+                DateAssigned = DateTime.Now,
+                TaskID = 999999,
+                UserID = 999999
+               // RoleID = 
+            });
+            _fakeTaskAssignments.Add(new TaskAssignment()
+            {
+                TaskAssignmentID = 999998,
+                DateAssigned = DateTime.Now,
+                TaskID = 999998,
+                UserID = 999999
+                // RoleID = 
+            });
+            _fakeTaskAssignments.Add(new TaskAssignment()
+            {
+                TaskAssignmentID = 999997,
+                DateAssigned = DateTime.Now,
+                TaskID = 999999,
+                // RoleID = 
+            });
         }
 
         /// <summary>
@@ -109,19 +141,18 @@ namespace DataAccessFakes
         /// <returns>int rowsAffected</returns>
         public int InsertTasks(Tasks newTask, int numTotalVolunteers = 0)
         {
-            int rowsAffected = 0;
+            int taskID = 999995;
 
             try
             {
                 _fakeTasks.Add(new TasksVM()
                 {
-                    EventID = 999999,
+                    TaskID = taskID,
                     Name = "Clean",
                     Description = "Clean this room.",
                     DueDate = DateTime.Now,
                     Priority = 3
-                });
-                rowsAffected = 1;
+                });            
             }
             catch (Exception)
             {
@@ -129,7 +160,7 @@ namespace DataAccessFakes
                 throw;
             }
 
-            return rowsAffected;
+            return taskID;
         }
 
         /// <summary>
@@ -208,5 +239,52 @@ namespace DataAccessFakes
             return tasks;
         }
 
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Adds a new task assignment into the fake task asiignment list with a fake task id
+        /// </summary>
+        /// <returns>List Tasks</returns>
+        public int InsertNewTaskAssignmentByTaskID(int taskID)
+        {
+            int taskAssignmentID = 999996;
+
+                _fakeTaskAssignments.Add(new TaskAssignment()
+                {
+                    TaskAssignmentID = taskAssignmentID,
+                    DateAssigned = DateTime.Now,
+                    TaskID = taskID,
+                    // RoleID = 
+                });
+            taskAssignmentID = 999996;
+
+            return taskAssignmentID;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Updates task assignment to add a volunteer
+        /// </summary>
+        /// <returns>List Tasks</returns>
+        public int UpdateTaskAssignmentWithUserID(int taskAssignmentID, int userID)
+        {
+            int rowsAffected = 0;
+
+            foreach (var taskAssignment in _fakeTaskAssignments)
+            {
+                if(taskAssignmentID == taskAssignment.TaskAssignmentID)
+                {
+                    taskAssignment.UserID = userID;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
     }
 }

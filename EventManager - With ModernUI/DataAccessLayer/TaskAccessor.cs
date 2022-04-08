@@ -38,7 +38,6 @@ namespace DataAccessLayer
 
         public int InsertTasks(Tasks newTask, int numTotalVolunteers)
         {
-            int rowsAffected = 0;
             int taskID;
 
             var conn = DBConnection.GetConnection();
@@ -85,7 +84,7 @@ namespace DataAccessLayer
             try
             {
                 conn.Open();
-                rowsAffected = cmd2.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -96,7 +95,8 @@ namespace DataAccessLayer
             {
                 conn.Close();
             }
-            return rowsAffected;
+
+            return taskID;
         }
 
         /// <summary>
@@ -251,5 +251,83 @@ namespace DataAccessLayer
             return tasks;
         }
 
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Insert new Task Assignment into task assignment table with a TaskID
+        /// </summary>
+        /// <returns>The new TaskAssignment ID</returns>
+        public int InsertNewTaskAssignmentByTaskID(int taskID)
+        {
+            int taskAssignmentID;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_insert_new_taskAssignment_by_taskID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@taskID", SqlDbType.Int);
+            cmd.Parameters["@taskID"].Value = taskID;
+
+            try
+            {
+                conn.Open();
+                taskAssignmentID = Convert.ToInt32(cmd.ExecuteScalar());
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return taskAssignmentID;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Update a Task Assignment with a volunteer UserID
+        /// </summary>
+        /// <returns>number of rows affected</returns>
+        public int UpdateTaskAssignmentWithUserID(int taskAssignmentID, int userID)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_update_task_assignment_with_userID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@TaskAssignmentID", SqlDbType.Int);
+            cmd.Parameters["@TaskAssignmentID"].Value = taskAssignmentID;
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
+        }
     }
 }

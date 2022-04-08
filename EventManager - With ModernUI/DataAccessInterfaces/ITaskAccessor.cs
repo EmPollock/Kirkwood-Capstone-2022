@@ -15,5 +15,7 @@ namespace DataAccessInterfaces
         int UpdateTasks(Tasks oldTask, Tasks newTask);
         List<Priority> SelectAllPriorities();
         List<TasksVM> SelectAllActiveTasksByEventID(int eventID);
+        int InsertNewTaskAssignmentByTaskID(int taskID);
+        int UpdateTaskAssignmentWithUserID(int taskAssignmentID, int userID);
     }
 }

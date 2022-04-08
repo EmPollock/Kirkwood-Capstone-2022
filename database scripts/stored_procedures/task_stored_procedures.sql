@@ -359,3 +359,64 @@ AS
 		 
 	END
 GO
+
+/***************************************************************
+/ Jace Pettinger
+/ Created: 2022/03/25
+/ 
+/ Description: Stored proceduring for creating a task assignment
+/ and returning the new task assignment id
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print '*** sp_insert_new_taskAssignment_by_taskID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_new_taskAssignment_by_taskID]
+(
+	@taskID			[int]
+)
+AS
+	BEGIN
+		INSERT INTO	[dbo].[TaskAssignment]
+				([TaskID])
+			VALUES
+				(@taskID)
+			SELECT  SCOPE_IDENTITY()
+	END
+GO
+
+/***************************************************************
+/ Jace Pettinger
+/ Created: 2022/03/31
+/ 
+/ Description: Stored Procedure for adding a volunteer to a 
+/ task assignment
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print'*** creating sp_update_task_assignment_with_userID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_task_assignment_with_userID]
+(
+	@TaskAssignmentID		[int],
+	@UserID					[int]
+)
+AS
+	BEGIN
+		
+		UPDATE	[TaskAssignment]
+		SET		[UserID] 				= @UserID
+		WHERE	[TaskAssignmentID]		= @TaskAssignmentID
+		
+	END
+GO
