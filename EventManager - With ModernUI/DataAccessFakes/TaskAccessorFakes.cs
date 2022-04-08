@@ -170,7 +170,7 @@ namespace DataAccessFakes
             {
                 TaskAssignmentID = 999997,
                 DateAssigned = DateTime.Now,
-                TaskID = 999999,
+                TaskID = 999999
                 // RoleID = 
             });
         }

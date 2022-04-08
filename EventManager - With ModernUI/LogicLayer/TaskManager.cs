@@ -305,7 +305,8 @@ namespace LogicLayer
 
             try
             {
-                result = _taskAccessor.UserCanEditDeleteTask(userID);
+                int rowsAffected = _taskAccessor.UpdateTaskAssignmentWithUserID(taskAssignmentID, userID);
+                result = rowsAffected == 1;
             }
             catch (Exception ex)
             {
