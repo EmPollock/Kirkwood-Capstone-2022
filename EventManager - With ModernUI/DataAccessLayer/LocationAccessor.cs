@@ -612,5 +612,46 @@ namespace DataAccessLayer
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/03
+        /// 
+        /// Description:
+        /// returns a list of tags associated with the location
+        /// 
+        /// </summary>
+        /// <param name="locationID"
+        /// <returns>List of all active locations</returns>
+        public List<string> SelectTagsbyLocationID(int locationID)
+        {
+            List<string> tags = new List<string>();
+
+            var cmdText = "sp_select_tags_by_locationID";
+            var conn = DBConnection.GetConnection();
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters["@LocationID"].Value = locationID;
+
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        tags.Add(reader.GetString(0));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return tags;
+        }
     }
 }

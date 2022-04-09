@@ -18,5 +18,6 @@ namespace LogicLayerInterfaces
         int DeactivateLocationByLocationID(int locationID);
         int UpdateLocationBioByLocationID(Location oldLocation, Location newLocation);
         List<Availability> RetrieveLocationAvailabilityByLocationIDAndDate(int locationID, DateTime date);
+        List<string> RetrieveTagsByLocationID(int locationID);
     }
 }

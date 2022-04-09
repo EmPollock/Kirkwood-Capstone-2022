@@ -38,6 +38,19 @@ namespace MVCPresentationWithIdentity.Controllers
         }
 
         /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Returns the navivagion bar for a selected
+        /// locations pages
+        /// </summary>
+        public PartialViewResult LocationNav()
+        {
+            return PartialView();
+        }
+
+        /// <summary>
         /// Austin Timmerman
         /// Created: 2022/04/04
         /// 
@@ -74,6 +87,58 @@ namespace MVCPresentationWithIdentity.Controllers
                 }
             };
 
+            return View(model);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Method that returns user to ViewLocationDetails View
+        /// </summary>
+        /// <param name="locationID"
+        /// <returns>ActionResult</returns>
+        public ActionResult ViewLocationDetails(int locationID)
+        {
+            Location location = null;
+            LocationDetailsViewModel model = null;
+            List<Reviews> locationReviews = null;
+            List<LocationImage> locationImages = null;
+            List<string> locationTags = null;
+            try
+            {
+                ViewBag.Title = "Location Details";
+                location = _locationManager.RetrieveLocationByLocationID(locationID);
+                locationReviews = _locationManager.RetrieveLocationReviews(locationID);
+                locationTags = _locationManager.RetrieveTagsByLocationID(locationID);
+                locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
+
+                if (locationReviews.Count != 0)
+                {
+                    int avg = 0;
+                    int total = 0;
+                    foreach (Reviews review in locationReviews)
+                    {
+                        avg += review.Rating;
+                        total++;
+                    }
+                    int sum = avg / total;
+                    location.AverageRating = sum;
+                }
+
+                model = new LocationDetailsViewModel()
+                {
+                    Location = location,
+                    LocationReviews = locationReviews,
+                    LocationTags = locationTags,
+                    LocationImages = locationImages
+                };
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Location not found.");
+            }
             return View(model);
         }
     }

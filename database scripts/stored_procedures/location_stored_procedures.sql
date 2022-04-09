@@ -232,3 +232,31 @@ AS
 		RETURN @@ROWCOUNT
 	END
 GO
+
+/**************************************************************
+Logan Baccam
+created 2022/04/03
+Description:
+Stored procedure to retrieve tags by locationID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** sp_select_tags_by_locationID***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_tags_by_locationID](
+	@LocationID [int]
+)
+AS
+	BEGIN
+		select 
+			[SupplierTag].[TagID]
+		FROM [dbo].[SupplierTag] JOIN [dbo].[Supplier] ON [Supplier].[SupplierID] = [SupplierTag].[SupplierID]
+								 JOIN [dbo].[Location] ON [Location].[UserID] = [Supplier].[UserID]
+		WHERE
+			[Location].[LocationID] = @LocationID
+			RETURN @@ROWCOUNT
+	END
+GO	

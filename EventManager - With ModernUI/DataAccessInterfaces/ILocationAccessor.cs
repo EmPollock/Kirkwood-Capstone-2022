@@ -19,5 +19,6 @@ namespace DataAccessInterfaces
         int UpdateLocationBioByLocationID(Location oldLocation, Location newLocation);
         List<Availability> SelectLocationAvailabilityByLocationIDAndDate(int locationID, DateTime date);
         List<Availability> SelectLocationAvailabilityExceptionByLocationIDAndDate(int locationID, DateTime date);
+        List<string> SelectTagsbyLocationID(int locationID);
     }
 }

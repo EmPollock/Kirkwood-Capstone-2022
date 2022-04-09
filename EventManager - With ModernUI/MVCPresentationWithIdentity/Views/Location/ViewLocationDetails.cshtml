@@ -1,0 +1,320 @@
+﻿@model MVCPresentationWithIdentity.Models.LocationDetailsViewModel
+
+@{
+    ViewBag.Title = "ViewLocationDetails";
+    Layout = "~/Views/Shared/_SupplierDetailsLayout.cshtml";
+    int rating = Model.Location.AverageRating;
+}
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
+
+
+
+
+
+<div class="col w-100">
+    <div class="d-flex flex-row justify-content-center">
+        @Html.ValidationMessage("", new { @class = "text-danger" })
+        <h2 class="mt-4">@Html.DisplayFor(model => model.Location.Name)</h2>
+
+        @if (Request.IsAuthenticated)
+        {
+            if (User.IsInRole("Event Planner"))
+            {
+                <div class="offset-8 d-flex flex-row mt-4">
+                    @Html.ActionLink("Edit", "EditLocation", "Location", new { locationID = Model.Location.LocationID }, new { @class = "btn btn-outline-dark" })
+                </div>
+            }
+        }
+
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            @Html.Partial("LocationNav")
+        </div>
+        <div class="col-md-9 col-sm-12">
+            <div class="d-flex flex-column justify-content-between">
+                <div>
+                    <h4>About @Model.Location.Name</h4>
+                    <div class="d-flex flex-row">
+                    </div>
+
+                    <textarea readonly class="w-75">@Html.DisplayFor(model => model.Location.Description)</textarea>
+                </div>
+            </div>
+
+            <div class="d-flex flex-row">
+                <p>Tags:&nbsp;</p>
+                @if (Model.LocationTags.Count == 0)
+                {
+                    <p>None</p>
+                }
+                else
+                {
+                    for (int i = 0; i < Model.LocationTags.Count - 1; i++)
+                    {
+                        <p>
+
+                            @Model.LocationTags[i], &nbsp;
+                        </p>
+                    }
+                    <p>@Model.LocationTags[Model.LocationTags.Count - 1]</p>
+                }
+            </div>
+
+            <div class="d-flex flex-row">
+                <p>Contact Info: &nbsp; @Html.DisplayFor(model => model.Location.Phone) &emsp; @Html.DisplayFor(model => model.Location.Email)</p>
+            </div>
+
+            <div class="d-flex flex-row">
+                <p>Address &nbsp; @Html.DisplayFor(model => model.Location.Address1) </p>
+                <p> @Html.DisplayFor(model => model.Location.Address2)</p>
+            </div>
+
+            @if (Model.LocationImages.Count > 0)
+            {
+                <h4>Photos</h4>
+                <div id="carouselLocationImages" class="carousel slide col-6 offset-1" data-bs-ride="carousel" data-bs-interval="false">
+                    <div class="carousel-inner text-center bg-black">
+                        @{
+                            bool first = true;
+                            foreach (DataObjects.LocationImage image in Model.LocationImages)
+                            {
+                                if (first)
+                                {
+                                    first = false;
+                                    <div class="carousel-item active w-100">
+                                        <img src="~/content/images/LocationImages/@image.ImageName" style="height: 120px; width: auto; align-content: center; ">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="carousel-item w-100">
+                                        <img src="~/content/images/LocationImages/@image.ImageName" style="height: 120px; width: auto; align-content: center; ">
+                                    </div>
+
+                                }
+                            }
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
+
+
+
+
+
+
+            <div class="pt-4">
+                <h4>Reviews</h4>
+            </div>
+
+            <div class="d-flex flex-row">
+                @if (Model.LocationReviews.Count == 0)
+                {
+                    <p>No Reviews yet</p>
+                }
+                else
+                {
+                    switch (rating)
+                    {
+                        case 0:
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 1:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 2:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 3:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 4:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 5:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            break;
+                    }
+                }
+            </div>
+
+
+            @if (Model.LocationReviews.Count != 0)
+            {
+                <div class="d-flex flex-column">
+                    <div class="d-flex flex-row">
+                        <i class="bi bi-person-circle"></i>
+                        &nbsp;
+                        <p>@Model.LocationReviews[0].FullName</p>
+                        &nbsp;
+                        @switch (Model.LocationReviews[0].Rating)
+                        {
+                            case 0:
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 1:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 2:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 3:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 4:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 5:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                break;
+                        }
+                    </div>
+
+
+                    <div class="d-flex flex-column">
+                        <textarea readonly class="w-75">@Html.DisplayFor(modelItem => Model.LocationReviews[0].Review)</textarea>
+                    </div>
+                </div>
+                if (Model.LocationReviews.Count >= 2)
+                {
+                    <div class="d-flex flex-column pt-2">
+                        <div class="d-flex flex-row mt-2">
+                            <i class="bi bi-person-circle"></i>
+                            &nbsp;
+                            <p>@Model.LocationReviews[1].FullName</p>
+                            &nbsp;
+                            @switch (Model.LocationReviews[1].Rating)
+                            {
+                                case 0:
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 1:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 2:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 3:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 4:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 5:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    break;
+                            }
+                        </div>
+
+
+                        <div class="d-flex flex-column">
+                            <textarea readonly class="w-75">@Html.DisplayFor(modelItem => Model.LocationReviews[1].Review)</textarea>
+                        </div>
+                    </div>
+                }
+
+                if (Model.LocationReviews.Count > 2)
+                {
+                    <div>
+                        <p class="p-2"><a href="">See More Reviews</a></p>
+                    </div>
+                }
+            }
+
+            <div class="d-flex flex-column">
+                <div>
+                    <h4>Pricing</h4>
+                </div>
+                <textarea readonly class="w-75">@Html.DisplayFor(model => model.Location.PricingInfo) </textarea>
+            </div>
+
+            <div class="offset-4 pt-4">
+                <button class="mt-4 btn btn-outline-dark">Get Directions</button>
+            </div>
+        </div>
+    </div>
+</div>

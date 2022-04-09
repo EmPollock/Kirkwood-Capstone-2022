@@ -218,6 +218,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LocationDetailsViewModel.cs" />
     <Compile Include="Models\LocationListViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
@@ -245,6 +246,16 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Images\LocationImages\7263a839-3428-49f2-b26f-875d3811ef85.jpg" />
+    <Content Include="Content\Images\LocationImages\f43faecc-5d0f-4b4a-ba47-4c1d3ce56912.jpg" />
+    <Content Include="Content\Images\LocationImages\lincolnway-park-street-parking.jpg" />
+    <Content Include="Content\Images\LocationImages\lincolnway-park.jpg" />
+    <Content Include="Content\Images\LocationImages\test-parkinglot-1.jpg" />
+    <Content Include="Content\Images\LocationImages\test-parkinglot-2.jpg" />
+    <Content Include="Content\Images\LocationImages\test-parkinglot-3.jpg" />
+    <Content Include="Content\Images\LocationImages\the-hotel-at-kirkwood-parking.jpg" />
+    <Content Include="Content\Images\LocationImages\the-hotel-at-kirkwood.jpg" />
+    <Content Include="Content\media.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -330,6 +341,9 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Location\ViewLocations.cshtml" />
     <Content Include="Views\Supplier\ViewSuppliers.cshtml" />
+    <Content Include="Views\Shared\_SupplierDetailsLayout.cshtml" />
+    <Content Include="Views\Location\LocationNav.cshtml" />
+    <Content Include="Views\Location\ViewLocationDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
