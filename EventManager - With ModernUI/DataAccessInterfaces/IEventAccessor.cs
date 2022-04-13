@@ -27,6 +27,7 @@ namespace DataAccessInterfaces
         int UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID);
 
         bool CheckUserEditPermissionForEvent(int eventID, int userID);
+        EventVM SelectEventByEventID(int eventID);
 
     }
 }

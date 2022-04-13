@@ -18,6 +18,7 @@ using DataObjects;
 using DataAccessFakes;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using WPFPresentation.Duplicate;
 
 namespace WPFPresentation
 {
@@ -29,6 +30,7 @@ namespace WPFPresentation
         ILocationManager _locationManager = null;
         ISublocationManager _sublocationManager = null;
         ITaskManager _taskManager = null;
+        IVolunteerNeedManager _needManager = null;
 
         ManagerProvider _managerProvider = null;
         DataObjects.Event newEvent = null;
@@ -36,7 +38,7 @@ namespace WPFPresentation
         User _user = null;
 
         EventVM newEventVM = new EventVM();
-
+        EventVM copyEventVM = new EventVM();
 
         /// <summary>
         /// Derrick Nagy
@@ -66,6 +68,12 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Update:
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/31
+        /// 
+        /// Description: defaulted sldr to 0 instead of 25 since max value is 10
         /// </summary>
         /// <param name="user"></param>
         /// <param name="managerProvider"></param>
@@ -76,6 +84,7 @@ namespace WPFPresentation
             _eventDateManager = managerProvider.EventDateManager;
             _locationManager = managerProvider.LocationManager;
             _taskManager = managerProvider.TaskManager;
+            _needManager = managerProvider.NeedManager;
 
             _sublocationManager = managerProvider.SublocationManager;
             _user = user;
@@ -85,13 +94,102 @@ namespace WPFPresentation
             // Looked up how to set the calendar to not display past dates
             // https://stackoverflow.com/questions/17401488/how-to-disable-past-days-in-calender-in-wpf/45780931
             datePickerEventDate.DisplayDateStart = DateTime.Today;
-            sldrNumVolunteers.Value = 25;
+            sldrNumVolunteers.Value = 0;
 
             //disable tabs that should not be viewed
             tabAddEventDate.IsEnabled = false;
             tabsetAddEventLocation.IsEnabled = false;
             tabAddEventVolunteer.IsEnabled = false;
 
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/30
+        /// 
+        /// Description: Alternate Constructor for the pgCreateEvent that takes an event
+        /// object so that it can be duplicated into a new object to make a repeat
+        /// event. fills all the values for description and budget as well as location and
+        /// volunteer needs, but leaves the dates blank. name defaults to old name + (copy) 
+        /// to prevent locations not being added. Also leaves name editable so that it can be
+        /// changed.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="managerProvider"></param>
+        /// <param name="eventVM"></param>
+        internal pgCreateEvent(User user, ManagerProvider managerProvider, EventVM eventVM)
+        {
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
+            _eventDateManager = managerProvider.EventDateManager;
+            _locationManager = managerProvider.LocationManager;
+            _taskManager = managerProvider.TaskManager;
+            _needManager = managerProvider.NeedManager;
+
+            _sublocationManager = managerProvider.SublocationManager;
+            _user = user;
+            copyEventVM = eventVM;
+            VolunteerNeed copyNeed = null;
+            DataObjects.Location copyLocation = null;
+            TasksVM copyTask = null;
+            InitializeComponent();
+
+            txtBoxEventName.Text = copyEventVM.EventName + " (copy)";
+            txtBoxEventDescription.Text = copyEventVM.EventDescription;
+            txtBoxEventDescription.IsReadOnly = true;
+            txtBoxTotalBudget.Text = copyEventVM.TotalBudget.ToString();
+            txtBoxTotalBudget.IsReadOnly = true;
+            try
+            {
+                copyLocation = _locationManager.RetrieveLocationByLocationID((int)copyEventVM.LocationID);
+                if (copyLocation != null)
+                {
+                    txtBoxLocationName.Text = copyLocation.Name;
+                    txtBoxLocationName.IsReadOnly = true;
+                    txtBoxStreet.Text = copyLocation.Address1;
+                    txtBoxStreet.IsReadOnly = true;
+                    txtBoxCity.Text = copyLocation.City;
+                    txtBoxCity.IsReadOnly = true;
+                    cboState.SelectedValue = copyLocation.State;
+                    cboState.IsReadOnly = true;
+                    txtBoxZip.Text = copyLocation.ZipCode;
+                    txtBoxZip.IsReadOnly = true;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("This Event did not have a Location originally!");
+            }
+            
+            
+            
+
+            // Looked up how to set the calendar to not display past dates
+            // https://stackoverflow.com/questions/17401488/how-to-disable-past-days-in-calender-in-wpf/45780931
+            sldrNumVolunteers.Value = 5;
+            foreach (var task in _taskManager.RetrieveAllActiveTasksByEventID(copyEventVM.EventID))
+            {
+                if (task.Name.Equals("General Help"))
+                {
+                    copyTask = task;
+                }
+            }
+            if (copyTask != null)
+            {
+                copyNeed = _needManager.RetrieveVolunteerNeedByTaskID(copyTask.TaskID);
+                chkBxNeedVolunteers.IsChecked = true;
+                sldrNumVolunteers.Value = copyNeed.NumTotalVolunteers;
+            }
+            datePickerEventDate.DisplayDateStart = DateTime.Today;
+            
+            btnEventNext.Content = "Duplicate Event";
+            btnVolunteersNext.Content = "Finish Duplication";
+            //disable tabs that should not be viewed
+            tabAddEventDate.IsEnabled = false;
+            tabsetAddEventLocation.IsEnabled = false;
+            tabAddEventVolunteer.IsEnabled = false;
         }
 
         /// <summary>
@@ -482,7 +580,6 @@ namespace WPFPresentation
         {
             txtBlkNumVolunteers.Visibility = Visibility.Visible;
             dcPnlNumVolunteers.Visibility = Visibility.Visible;
-            sldrNumVolunteers.Value = 0;
             btnRequestVolunteers.Visibility = Visibility.Visible;
 
         }
@@ -498,14 +595,48 @@ namespace WPFPresentation
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/01
+        /// 
+        /// Description: Added duplication functionality.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnVolunteersNext_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Event details added");
-            pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
-            this.NavigationService.Navigate(viewEventsPage);
+            
+            if (btnVolunteersNext.Content.Equals("Finish"))
+            {
+                System.Windows.MessageBox.Show("Event details added");
+                pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                this.NavigationService.Navigate(viewEventsPage);
+            }
+            else if (btnVolunteersNext.Content.Equals("Finish Duplication"))
+            {
+                MessageBoxResult result;
+                var message = "Would You like to Duplicate Tasks?";
+                var caption = "Finished Duplicating";
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+
+               result =  MessageBox.Show(message, caption, buttons,
+                     MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.No)
+                {
+                    System.Windows.MessageBox.Show("Event Duplication Complete.");
+                    pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                    this.NavigationService.Navigate(viewEventsPage);
+                }
+                if (result == MessageBoxResult.Yes)
+                {
+                    
+                    pgDuplicateEvent duplicateEventPage = new pgDuplicateEvent(copyEventVM, newEvent, _managerProvider, _user);
+                    this.NavigationService.Navigate(duplicateEventPage);
+                    
+                }
+            }
+            
         }
 
         /// <summary>
@@ -526,6 +657,11 @@ namespace WPFPresentation
         /// Made it optional to add a location
         /// Added validation
         /// 
+        /// 
+        /// Vinayk Deshpande
+        /// Updated 2022/04/01
+        /// Description: changed reference to eventid from retrieved object to 
+        /// created newEvent object
         /// </summary>
         private void btnEventLocationAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -595,8 +731,8 @@ namespace WPFPresentation
                     {
                         _locationManager.CreateLocation(locationName, locationStreet, locationCity, ((ComboBoxItem)locationState).Tag.ToString(), locationZip);
                         eventLocation = _locationManager.RetrieveLocationByNameAndAddress(locationName, locationStreet);
-                        DataObjects.EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription/*txtBoxEventDescription.Text*/);
-                        _eventManager.UpdateEventLocationByEventID(eventObj.EventID, null, eventLocation.LocationID);
+                        // DataObjects.EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription/*txtBoxEventDescription.Text*/);
+                        _eventManager.UpdateEventLocationByEventID(newEvent.EventID, null, eventLocation.LocationID);
                         locationName = "";
                         locationStreet = "";
                         locationCity = "";
@@ -607,14 +743,14 @@ namespace WPFPresentation
                     {
                         //int? eventLocationID = null; if the event location is not null that means there is a locationID
                         int newEventLocationID = eventLocation.LocationID;
-                        EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription /*txtBoxEventDescription.Text*/);
+                        // EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription /*txtBoxEventDescription.Text*/);
                         int? oldEventLocationID = null; // added
 
-                        if (eventObj.LocationID != null)
+                        if (newEvent.LocationID != null)
                         {
-                            oldEventLocationID = eventObj/*.Location*/.LocationID;
+                            oldEventLocationID = newEvent/*.Location*/.LocationID;
                         }
-                        _eventManager.UpdateEventLocationByEventID(eventObj.EventID, oldEventLocationID /*eventLocationID*/, newEventLocationID /*eventLocation.LocationID*/);
+                        _eventManager.UpdateEventLocationByEventID(newEvent.EventID, oldEventLocationID /*eventLocationID*/, newEventLocationID /*eventLocation.LocationID*/);
                         //locationName = ""; // cannot add multiple locations, this step is not needed 
                         //locationStreet = "";
                         //locationCity = "";
@@ -704,6 +840,11 @@ namespace WPFPresentation
         /// Description:
         /// Handled errors that occur for events with no dates
         /// 
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/31
+        /// 
+        /// Description: removed setting the sldr to 0 by default
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

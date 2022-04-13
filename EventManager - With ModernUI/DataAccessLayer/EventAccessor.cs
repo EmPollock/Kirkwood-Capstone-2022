@@ -1008,5 +1008,62 @@ namespace DataAccessLayer
 
             return result;
         }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/01
+        /// 
+        /// Description: returns event using eventID
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public EventVM SelectEventByEventID(int eventID)
+        {
+            EventVM eventToGet = null;
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_event_by_event_id";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+
+            cmd.Parameters["@EventID"].Value = eventID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventToGet = new EventVM()
+                        {
+                            EventID = eventID,
+                            EventName = reader.GetString(0),
+                            EventDescription = reader.GetString(1),
+                            EventCreatedDate = reader.GetDateTime(2),
+                            TotalBudget = reader.GetDecimal(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(5),
+                            Active = true
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return eventToGet;
+        }
     }
 }

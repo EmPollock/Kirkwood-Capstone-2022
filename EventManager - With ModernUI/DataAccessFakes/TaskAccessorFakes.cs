@@ -320,5 +320,28 @@ namespace DataAccessFakes
 
             return result;
         }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/05
+        /// 
+        /// Description: Returns all the tasks based on eventID
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<TasksVM> SelectAllTasksByEventID(int eventID)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            foreach (var task in _fakeTasks)
+            {
+                if (task.EventID == eventID)
+                {
+                    tasks.Add(task);
+                }
+            }
+
+            return tasks;
+        }
     }
 }

@@ -811,6 +811,26 @@ namespace DataAccessFakes
             });
         }
 
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/01
+        /// 
+        /// Description: returns fake event with the correct id
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public EventVM SelectEventByEventID(int eventID)
+        {
+            EventVM fakeEvent = null;
+
+            if (_fakeEvents.Exists(e => (e.EventID == eventID)))
+            {
+                fakeEvent = _fakeEvents.First(e => (e.EventID == eventID));
+            }
+
+            return fakeEvent;
+        }
     }
 
     internal class fakeUserEvent

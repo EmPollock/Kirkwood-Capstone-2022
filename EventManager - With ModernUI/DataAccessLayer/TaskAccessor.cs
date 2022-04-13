@@ -471,5 +471,57 @@ namespace DataAccessLayer
 
             return deleted;
         }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/05
+        /// 
+        /// Description: Returns all tasks tied to an event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<TasksVM> SelectAllTasksByEventID(int eventID)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_tasks_by_eventID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+            cmd.Parameters["@EventID"].Value = eventID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        tasks.Add(new TasksVM()
+                        {
+                            TaskID = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Description = reader.GetString(2),
+                            DueDate = (reader.IsDBNull(3)) ? new DateTime() : reader.GetDateTime(3),
+                            Priority = reader.GetInt32(4),
+                            TaskPriority = reader.GetString(5),
+                            TaskEventName = reader.GetString(6),
+                            Active = reader.GetBoolean(7)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return tasks;
+        }
     }
 }

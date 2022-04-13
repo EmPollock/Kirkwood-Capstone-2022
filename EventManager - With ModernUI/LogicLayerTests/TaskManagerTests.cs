@@ -748,5 +748,75 @@ namespace LogicLayerTests
             // Exception checking
 
         }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/02
+        /// 
+        /// Description:
+        /// Test that checks if the correct number of items in a list of tasks will be returned
+        /// Should be four according to TaskAccessorFakes
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllTasksByEventIDReturnsCorrectNumberOfListItems()
+        {
+            // arrange
+            const int eventID = 1000000;
+            const int expectedCount = 4;
+            int actualCount;
+
+            // act
+            actualCount = _taskManager.RetrieveAllTasksByEventID(eventID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/02
+        /// 
+        /// Description:
+        /// Test that checks if the method returned the correct number of list items
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllTasksByEventIDFailsWithIncorrectNumberOfListItems()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int expectedCount = 2;
+            int actualCount;
+
+
+            // act
+            actualCount = _taskManager.RetrieveAllTasksByEventID(eventID).Count;
+
+            // assert
+            Assert.AreNotEqual(expectedCount, actualCount);
+
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/02
+        /// 
+        /// Description:
+        /// Test that fails because an incorrect list was passed
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllTasksByEventIDFailsWithIncorrectListBeingReturned()
+        {
+            // arrange
+            const int badEventID = 100001;
+            const int expectedCount = 3;
+            int actualCount;
+
+            // act
+            actualCount = _taskManager.RetrieveAllTasksByEventID(badEventID).Count;
+
+            // assert
+            Assert.AreNotEqual(expectedCount, actualCount);
+
+        }
     }
 }

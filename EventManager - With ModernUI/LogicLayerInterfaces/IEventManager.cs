@@ -27,6 +27,7 @@ namespace LogicLayerInterfaces
         bool UpdateEventLocationByEventID(int eventID, int? oldLocationID, int? newLocationID);
 
         bool CheckUserEditPermissionForEvent(int eventID, int userID);
+        EventVM RetrieveEventByEventID(int eventID);
 
     }
 }

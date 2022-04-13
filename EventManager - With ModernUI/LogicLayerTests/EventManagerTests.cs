@@ -902,5 +902,56 @@ namespace LogicLayerTests
             Assert.AreEqual(expected, actual);
         }
 
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/01
+        /// Description:
+        /// returns true if it can return the event
+        /// </summary>
+        [TestMethod]
+        public void TestRetreieveEventByEventIDReturnsTrueIfEventExists()
+        {
+            //arrange
+            const int eventID = 1000000;
+            EventVM expectedEvent = new EventVM()
+            {
+                EventID = 1000000,
+                LocationID = 100000,
+                EventName = "Test Event 1",
+                EventDescription = "A description of test event 1",
+                EventCreatedDate = DateTime.Now,
+                TotalBudget = 1000.00m,
+                Active = true
+            };
+            EventVM actualEvent;
+
+            // act
+            actualEvent = _eventManager.RetrieveEventByEventID(eventID);
+
+            // assert
+            Assert.AreEqual(expectedEvent.EventID, actualEvent.EventID);
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/01
+        /// Description:
+        /// throws exception if event can't be found
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestRetrieveEventByEventIDThrowsExceptionWhenNotFound()
+        {
+            // arrange
+            const int eventID = 2000000;
+            EventVM actualEvent;
+
+            // act
+            actualEvent = _eventManager.RetrieveEventByEventID(eventID);
+
+            // assert
+            // no assert should throw error
+
+        }
     }
 }

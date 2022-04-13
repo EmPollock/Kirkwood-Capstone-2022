@@ -534,5 +534,35 @@ namespace LogicLayer
 
             return result;
         }
+
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/01
+        /// 
+        /// Description: returns event using eventid
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public EventVM RetrieveEventByEventID(int eventID)
+        {
+            EventVM eventToGet = null;
+
+            try
+            {
+                eventToGet = _eventAccessor.SelectEventByEventID(eventID);
+                if (eventToGet == null)
+                {
+                    throw new ApplicationException("Could not find an event with that name and description.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventToGet;
+        }
     }
 }

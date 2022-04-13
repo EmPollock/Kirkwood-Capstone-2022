@@ -17,5 +17,6 @@ namespace LogicLayerInterfaces
         bool UserCanEditDeleteTask(int userID);
         bool RemoveTaskByTaskID(int taskID);
         List<TaskAssignmentVM> RetrieveTaskAssignmentsByTaskID(int taskID);
+        List<TasksVM> RetrieveAllTasksByEventID(int eventID);
     }
 }

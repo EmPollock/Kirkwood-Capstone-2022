@@ -425,3 +425,33 @@ AS
 	
 	END
 GO
+
+/***************************************************************
+/ Vinayak Deshpande
+/ Created: 2022/04/05
+/ 
+/ Description: Creating Stored Procedure for selecting all tasks by
+/					the eventID
+/
+***************************************************************/
+
+
+print '' print '*** creating sp_select_tasks_by_eventID...'
+GO
+CREATE PROCEDURE [dbo].[sp_select_tasks_by_eventID]
+(
+	@EventID			[int]
+)
+AS
+	BEGIN
+	
+		SELECT	[TaskID], [Name], [Task].[Description], [DueDate],
+				[Task].[Priority], [Priority].[Description], 
+				[Event].[EventName], [Task].[Active]
+		FROM	[dbo].[Task] JOIN [dbo].[Priority]
+					ON [Task].[Priority] = [Priority].[PriorityID]
+				JOIN [dbo].[Event]
+					ON [Task].[EventID] = [Event].[EventID]
+		WHERE	[Task].[EventID] = @EventID
+	END
+GO

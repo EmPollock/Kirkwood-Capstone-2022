@@ -197,9 +197,13 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Method that retrieves all tasks for an event
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/31
+        /// removed default value for eventID
         /// </summary>
         /// <returns>list Tasks</returns>
-        public List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID = 100000)
+        public List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID)
         {
             List<TasksVM> tasks = new List<TasksVM>();
 
@@ -296,6 +300,32 @@ namespace LogicLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Returns all tasks tied to an event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<TasksVM> RetrieveAllTasksByEventID(int eventID)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            try
+            {
+                tasks = _taskAccessor.SelectAllTasksByEventID(eventID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return tasks;
         }
     }
 }
