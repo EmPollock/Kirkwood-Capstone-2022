@@ -347,5 +347,118 @@ namespace DataAccessLayer
 
             return supplierAvailabilities;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select availability records matching the given supplierID 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of availability objects for a Supplier</returns>
+        public List<AvailabilityVM> SelectSupplierAvailabilityBySupplierID(int supplierID)
+        {
+            List<AvailabilityVM> supplierAvailabilities = new List<AvailabilityVM>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_by_supplierID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        supplierAvailabilities.Add(new AvailabilityVM()
+                        {
+                            ForeignID = supplierID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            Sunday = reader.GetBoolean(3),
+                            Monday = reader.GetBoolean(4),
+                            Tuesday = reader.GetBoolean(5),
+                            Wednesday = reader.GetBoolean(6),
+                            Thursday = reader.GetBoolean(7),
+                            Friday = reader.GetBoolean(8),
+                            Saturday = reader.GetBoolean(9)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return supplierAvailabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select availability exception records matching the given supplierID
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of availability objects for a Supplier</returns>
+        public List<Availability> SelectSupplierAvailabilityExceptionBySupplierID(int supplierID)
+        {
+            List<Availability> supplierAvailabilities = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_exception_by_supplierID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        supplierAvailabilities.Add(new Availability()
+                        {
+                            ForeignID = supplierID,
+                            AvailabilityID = reader.GetInt32(0),
+                            DateID = reader.GetDateTime(1),
+                            TimeStart = reader.IsDBNull(2) ? DateTime.MinValue : DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = reader.IsDBNull(3) ? DateTime.MinValue : DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
+                        });
+                        if(supplierAvailabilities.Last().TimeStart == DateTime.MinValue && supplierAvailabilities.Last().TimeEnd == DateTime.MinValue)
+                        {
+                            supplierAvailabilities.Last().TimeStart = null;
+                            supplierAvailabilities.Last().TimeEnd = null;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return supplierAvailabilities;
+        }
     }
 }

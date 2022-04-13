@@ -173,5 +173,57 @@ namespace LogicLayer
 
             return supplierAvailabilities;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Retrieve supplier availability by SupplierID 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of AvailabilityVM objects</returns>
+        public List<AvailabilityVM> RetrieveSupplierAvailabilityBySupplierID(int supplierID)
+        {
+            List<AvailabilityVM> availabilities = new List<AvailabilityVM>();
+
+            try
+            {
+                availabilities = _supplierAccessor.SelectSupplierAvailabilityBySupplierID(supplierID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Retrieve supplier availability exceptions by SupplierID
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of Availability objects</returns>
+        public List<Availability> RetrieveSupplierAvailabilityExceptionBySupplierID(int supplierID)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            try
+            {
+                availabilities = _supplierAccessor.SelectSupplierAvailabilityExceptionBySupplierID(supplierID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
     }
 }

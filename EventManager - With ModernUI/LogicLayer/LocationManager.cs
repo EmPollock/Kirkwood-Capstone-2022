@@ -365,5 +365,57 @@ namespace LogicLayer
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Retrieve location availability by LocationID 
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of AvailabilityVM objects</returns>
+        public List<AvailabilityVM> RetrieveLocationAvailabilityByLocationID(int locationID)
+        {
+            List<AvailabilityVM> availabilities = new List<AvailabilityVM>();
+
+            try
+            {
+                availabilities = _locationAccessor.SelectLocationAvailabilityByLocationID(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Retrieve location availability exceptions by LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of Availability objects</returns>
+        public List<Availability> RetrieveLocationAvailabilityExceptionByLocationID(int locationID)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            try
+            {
+                availabilities = _locationAccessor.SelectLocationAvailabilityExceptionByLocationID(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
     }
 }

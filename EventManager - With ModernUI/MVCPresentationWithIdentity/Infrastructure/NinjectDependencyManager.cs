@@ -23,6 +23,8 @@ namespace MVCPresentationWithIdentity.Infrastructure
             kernel.Bind<IVolunteerManager>().To<VolunteerManager>();
             kernel.Bind<ILocationManager>().To<LocationManager>();
             kernel.Bind<ISupplierManager>().To<SupplierManager>();
+            kernel.Bind<IActivityManager>().To<ActivityManager>();
+            kernel.Bind<IEventDateManager>().To<EventDateManager>();
         }
 
         public object GetService(Type serviceType)

@@ -21,8 +21,9 @@ namespace MVCPresentationWithIdentity.Controllers
     /// </summary>
     public class LocationController : Controller
     {
-        ILocationManager _locationManager;
-        IEventDateManager _eventDateManager = new EventDateManager();
+        ILocationManager _locationManager = null;
+        IEventDateManager _eventDateManager = null;
+        LocationScheduleViewModel _locationSchedule = new LocationScheduleViewModel();
         public int _pageSize = 10;
 
         /// <summary>
@@ -33,9 +34,10 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Constructor that sets the _locationManager
         /// </summary>
         /// <param name="locationManager"></param>
-        public LocationController(ILocationManager locationManager)
+        public LocationController(ILocationManager locationManager, IEventDateManager eventDateManager)
         {
             _locationManager = locationManager;
+            _eventDateManager = eventDateManager;
         }
 
         /// <summary>
@@ -87,13 +89,88 @@ namespace MVCPresentationWithIdentity.Controllers
         /// </summary>
         /// <param name="page"></param>
         /// <returns>ActionResult</returns>
-        public ActionResult ViewLocationSchedule()
+        public ActionResult ViewLocationSchedule(Location location)
         {
             List<EventDateVM> eventDates = new List<EventDateVM>();
+            //eventDates = _eventDateManager.RetrieveEventDatesByLocationID(location.LocationID);
+            //_location = location;
 
-            eventDates = _eventDateManager.RetrieveEventDatesByLocationID(100000);
+            if (location.LocationID == 0)
+            {
 
-            return View("~/Views/Location/ViewLocationSchedule.cshtml", eventDates);
+                return RedirectToAction("ViewLocations", "Location");
+            }
+
+            _locationSchedule.Location = location;
+            GetAvailability(location.LocationID);
+            return View("~/Views/Location/ViewLocationSchedule.cshtml", _locationSchedule);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// For getting events by the location id passed to it
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>JsonResult</returns>
+        public JsonResult GetEvents(string id)
+        {
+            int locationID;
+            try
+            {
+                locationID = int.Parse(id);
+            }
+            catch (Exception)
+            {
+
+                locationID = 0;
+            }
+            List<EventDateVM> eventDates;
+            if (locationID == 0)
+            {
+                eventDates = new List<EventDateVM>();
+            }
+            else
+            {
+                eventDates = _eventDateManager.RetrieveEventDatesByLocationID(locationID);
+            }
+            return new JsonResult { Data = eventDates, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// For getting availability by the location id passed to it and sets it to the 
+        /// _locationSchedule
+        /// </summary>
+        /// <param name="id"></param>
+        public void GetAvailability(int id)
+        {
+            List<AvailabilityVM> availability;
+            List<Availability> availabilityException;
+            if (id == 0)
+            {
+                availability = new List<AvailabilityVM>();
+            }
+            else
+            {
+                availability = _locationManager.RetrieveLocationAvailabilityByLocationID(id);
+            }
+            if (id == 0)
+            {
+                availabilityException = new List<Availability>();
+            }
+            else
+            {
+                availabilityException = _locationManager.RetrieveLocationAvailabilityExceptionByLocationID(id);
+            }
+
+            _locationSchedule.Availability = availability;
+            _locationSchedule.AvailabilityException = availabilityException;
         }
     }
 }

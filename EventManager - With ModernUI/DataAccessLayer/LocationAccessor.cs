@@ -612,5 +612,118 @@ namespace DataAccessLayer
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select regular weekly availability records matching the given locationID;
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of availability objects for a Location</returns>
+        public List<AvailabilityVM> SelectLocationAvailabilityByLocationID(int locationID)
+        {
+            List<AvailabilityVM> locationAvailabilities = new List<AvailabilityVM>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_by_locationID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters["@LocationID"].Value = locationID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        locationAvailabilities.Add(new AvailabilityVM()
+                        {
+                            ForeignID = locationID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            Sunday = reader.GetBoolean(3),
+                            Monday = reader.GetBoolean(4),
+                            Tuesday = reader.GetBoolean(5),
+                            Wednesday = reader.GetBoolean(6),
+                            Thursday = reader.GetBoolean(7),
+                            Friday = reader.GetBoolean(8),
+                            Saturday = reader.GetBoolean(9)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return locationAvailabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select one-off availability exception records matching the given locationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of availability objects for a Location</returns>
+        public List<Availability> SelectLocationAvailabilityExceptionByLocationID(int locationID)
+        {
+            List<Availability> locationAvailabilities = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_exception_by_locationID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@LocationID", SqlDbType.Int);
+            cmd.Parameters["@LocationID"].Value = locationID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        locationAvailabilities.Add(new Availability()
+                        {
+                            ForeignID = locationID,
+                            AvailabilityID = reader.GetInt32(0),
+                            DateID = reader.GetDateTime(1),
+                            TimeStart = reader.IsDBNull(2) ? DateTime.MinValue : DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = reader.IsDBNull(3) ? DateTime.MinValue : DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
+                        });
+                        if (locationAvailabilities.Last().TimeStart == DateTime.MinValue && locationAvailabilities.Last().TimeEnd == DateTime.MinValue)
+                        {
+                            locationAvailabilities.Last().TimeStart = null;
+                            locationAvailabilities.Last().TimeEnd = null;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return locationAvailabilities;
+        }
     }
 }

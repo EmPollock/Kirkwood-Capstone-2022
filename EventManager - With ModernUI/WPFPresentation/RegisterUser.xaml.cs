@@ -104,7 +104,7 @@ namespace WPFPresentation
                     Zip = Int32.Parse(this.txtZipCode.Text.Replace("-", "")) // Already has to be numeric to get this far.
                 };
                 this._userManager.CreateUser(user);
-                this._userManager.UpdatePasswordHash(user.EmailAddress, "newuser", this.pwdPassword.Password);
+                this._userManager.UpdatePasswordHash(user.EmailAddress, "P@ssw0rd", this.pwdPassword.Password);
                 this.DialogResult = true;
             } catch (Exception ex)
             {

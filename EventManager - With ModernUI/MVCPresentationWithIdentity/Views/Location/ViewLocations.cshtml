@@ -23,7 +23,7 @@
         @foreach (DataObjects.Location location in Model.Locations)
         {
         <tr>
-            <td><a href="#">@location.Name <i class="bi bi-box-arrow-up-right"></i></a></td>
+            <td><a href=@Url.Action("ViewLocationSchedule", "Location", location)>@location.Name <i class="bi bi-box-arrow-up-right"></i></a></td>
             <td>@location.Description</td>
             <td class="d-none d-sm-table-cell">@location.Address1</td>
             <td class="d-none d-sm-table-cell">@location.City</td>

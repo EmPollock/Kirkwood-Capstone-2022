@@ -325,5 +325,50 @@ namespace LogicLayerTests
             // assert
             Assert.AreEqual(expected, actual);
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierAvailabilityBySupplierID correctly returns an AvailabilityVM list
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierAvailabilityBySupplierIDReturnsCorrectAmount()
+        {
+            // arrange
+            const int supplierID = 100000;
+            int expectedCount = 3;
+            int actualCount;
+
+            // act
+            actualCount = _supplierManager.RetrieveSupplierAvailabilityBySupplierID(supplierID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierAvailabilityBySupplierID correctly returns an AvailabilityVM list
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierAvailabilityExceptionBySupplierIDReturnsCorrectAmount()
+        {
+            // arrange
+            const int supplierID = 100000;
+
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _supplierManager.RetrieveSupplierAvailabilityExceptionBySupplierID(supplierID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
     }
 }

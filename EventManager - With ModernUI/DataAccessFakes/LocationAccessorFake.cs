@@ -531,5 +531,150 @@ namespace DataAccessFakes
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select regular weekly availability records matching the given locationID;
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of availability objects for a Location</returns>
+        public List<AvailabilityVM> SelectLocationAvailabilityByLocationID(int locationID)
+        {
+            List<AvailabilityVM> availabilities = new List<AvailabilityVM>();
+
+            try
+            {
+                foreach (LocationAvailabilityTableFake fake in _dbFake)
+                {
+                    if (!fake.IsException)
+                    {
+                        foreach (Availability a in fake.Availabilities)
+                        {
+                            if (a.ForeignID == locationID)
+                            {
+                                switch (fake.Date.DayOfWeek)
+                                {
+                                    case DayOfWeek.Monday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = locationID,
+                                            Monday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Tuesday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = locationID,
+                                            Tuesday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Wednesday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = locationID,
+                                            Wednesday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Thursday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = locationID,
+                                            Thursday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Friday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = locationID,
+                                            Monday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Saturday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = locationID,
+                                            Monday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Sunday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = locationID,
+                                            Monday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select one-off availability exception records matching the given locationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of availability objects for a Location</returns>
+        public List<Availability> SelectLocationAvailabilityExceptionByLocationID(int locationID)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            try
+            {
+                foreach (LocationAvailabilityTableFake fake in _dbFake)
+                {
+                    if (fake.IsException)
+                    {
+                        foreach (Availability a in fake.Availabilities)
+                        {
+                            if (a.ForeignID == locationID)
+                            {
+                                availabilities.Add(a);
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
     }
 }

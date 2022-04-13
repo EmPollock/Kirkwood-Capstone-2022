@@ -4,19 +4,19 @@
 <!-- JSDELIVR LINK: https://www.jsdelivr.com/package/npm/fullcalendar -->
 <!-- UNDER USE OF THE MIT LICENSE -->
 <!-- --------------------------------------------------------------------------------------------------------- -->
-@model MVCPresentationWithIdentity.Models.LocationScheduleViewModel
+@model MVCPresentationWithIdentity.Models.SupplierScheduleViewModel
 @{
-    ViewBag.Title = "Location Schedule";
+    ViewBag.Title = "Supplier Schedule";
 }
 
-@if (Model.Location.Name == null || Model.Location.Name == "")
+@if (Model.Supplier.Name == null || Model.Supplier.Name == "")
 {
-    <h2 class="mt-4">Location's Schedule </h2>
+    <h2 class="mt-4">Supplier's Schedule </h2>
     <br />
 }
 else
 {
-    <h2 class="mt-4">@Model.Location.Name's Schedule </h2>
+    <h2 class="mt-4">@Model.Supplier.Name's Schedule </h2>
     <br />
 }
 
@@ -34,11 +34,12 @@ else
     document.addEventListener('DOMContentLoaded', function () {
         $.ajax({
             type: "GET",
-            url: '@Url.Action("GetEvents", new { id = Model.Location.LocationID })',
+            url: '@Url.Action("GetActivities", new { id = Model.Supplier.SupplierID })',
             success: function (event) {
                 $.each(event, function (i, v) {
                     events.push({
-                        title: v.EventName,
+                        title: v.ActivityName,
+                        description: v.ActivityDescription,
                         start: moment(v.StartTime).format(),
                         end: moment(v.EndTime).format()
                     });
@@ -46,7 +47,7 @@ else
                 GenerateCalendar(events);
             },
             error: function (error) {
-                alert('Could not load locations events.');
+                alert('Could not load suppliers events.');
             }
         });
 
@@ -88,6 +89,9 @@ else
                     document.getElementById('eventName').innerHTML = e.event.title;
                     document.getElementById('start').innerHTML = 'Starts: ' + moment(e.event.start).format("LLL");
                     document.getElementById('end').innerHTML = 'Ends: ' + moment(e.event.end).format("LLL");
+                    if (e.event.extendedProps.description != null) {
+                        document.getElementById('description').innerHTML = e.event.extendedProps.description;
+                    }
 
                     dialog.showModal();
                 },
@@ -163,11 +167,11 @@ else
                     document.getElementById('saturdayEnd').innerHTML = moment(model[i].TimeEnd).format("hh:mma");
                 }
             }
-            // IF ANY EXCEPTION DATES ARE LISTED BY THE SUPPLIER, CHECKS THE LIST
+            // IF ANY EXCEPTION DATES ARE LISTED BY THE SUPPLIER, CHECKS THE LIST 
             // FOR ANY DATES MATCHING THE CURRENTLY VISIBLE CALENDAR
             for (let i = 0; i < modelForException.length; i++)
             {
-                if (moment(calendar.view.activeStart).format("L") <= moment(modelForException[i].DateID).format("L") &&
+                if (moment(calendar.view.activeStart).format("L") <= moment(modelForException[i].DateID).format("L") && 
                     moment(calendar.view.activeEnd).format("L") > moment(modelForException[i].DateID).format("L")) {
                     switch (moment(modelForException[i].DateID).format("dddd")) {
                         case "Sunday":
@@ -252,7 +256,7 @@ else
         </header>
         <main>
             <p id="description"></p>
-            <p id="start"></p>
+            <p id="start"></p> 
             <p id="end"></p>
         </main>
         <form method="dialog">

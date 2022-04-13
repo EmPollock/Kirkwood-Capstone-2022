@@ -374,3 +374,36 @@ AS
 		RETURN @@ROWCOUNT
 	END
 GO
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/04/06
+
+Description:
+Select all activities that a given supplier is associated with
+****************************************************************/
+print '' print '*** creating sp_select_activities_by_supplierID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_activities_by_supplierID]
+(
+    @SupplierID     [int]
+)
+AS
+	BEGIN
+		SELECT
+			[SupplierAttendance].[ActivityID]
+			,[ActivityName]
+			,[ActivityDescription]
+			,[PublicActivity]
+			,[StartTime]
+			,[EndTime]
+			,[ActivityImageName]
+			,[SublocationID]
+			,[EventDateID]
+			,[EventID]
+		FROM [dbo].[Activity]
+		JOIN [dbo].[SupplierAttendance]
+			ON [Activity].[ActivityID] = [SupplierAttendance].[ActivityID]
+		WHERE [SupplierAttendance].[SupplierID] = @SupplierID
+	END
+GO
