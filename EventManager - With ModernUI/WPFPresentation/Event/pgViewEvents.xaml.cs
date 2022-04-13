@@ -417,47 +417,7 @@ namespace WPFPresentation
             }
         }
 
-        /// <summary>
-        /// Logan Baccam
-        /// Created: 2022/02/18
-        /// 
-        /// Description:
-        /// handler for navigating to the view activities page
-        /// 
-        /// </summary>
-        private void btnActivity_Click(object sender, RoutedEventArgs e)
-        {
-            selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
-            Event.pgViewActivities page;
-            Uri pageURI = new Uri("Event/pgViewActivities.xaml", UriKind.Relative);
-
-            if (_user != null)
-            {
-                if (selectedEvent is null)
-                {
-                    page = new Event.pgViewActivities(_user, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-                else
-                {
-                    page = new Event.pgViewActivities(selectedEvent, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-            }
-            else
-            {
-                if (selectedEvent is null)
-                {
-                    page = new Event.pgViewActivities(_managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-                else 
-                {
-                    page = new Event.pgViewActivities(selectedEvent, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-            }
-        }
+        
 
         /// <summary>
         /// Vinayak Deshpande
