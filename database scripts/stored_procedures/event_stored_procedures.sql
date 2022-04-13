@@ -854,32 +854,6 @@ AS
 	END	
 GO
 
-/***************************************************************
-Vinayak Deshpande
-Created: 2022/04/01
-
-Description:
-selects event by event id
-****************************************************************/
-print '' print '*** creating sp_select_event_by_event_id ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_event_by_event_id]
-(
-	@EventID [int]
-)
-AS
-	BEGIN
-		SELECT
-			[EventName],
-			[EventDescription],
-			[DateCreated],
-			[TotalBudget],
-			[LocationID]
-		FROM [dbo].[Event]
-		WHERE [EventID] = @EventID
-	END	
-GO
-
 
 /***************************************************************
 Derrick Nagy

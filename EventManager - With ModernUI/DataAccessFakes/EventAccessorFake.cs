@@ -1026,7 +1026,7 @@ namespace DataAccessFakes
             return events;
         }
     }
-}
+
 
     internal class fakeUserEvent
     {
