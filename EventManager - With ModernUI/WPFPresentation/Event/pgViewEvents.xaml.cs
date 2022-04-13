@@ -202,6 +202,12 @@ namespace WPFPresentation
         /// 
         /// solution for how to pass an event object to a new page found at 
         /// https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1ea74ce-fd91-46c6-83bd-90cba1528b04/how-to-get-values-from-one-wpf-page-to-another-wpf-page?forum=wpf
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Updated to direct to pgEventFrame, which will load pgEventEditDetail within it
         /// </summary>
         private void datActiveEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -210,7 +216,8 @@ namespace WPFPresentation
                 return;
             }
             DataObjects.EventVM selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
-            pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _managerProvider, _user);
+            // pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _managerProvider, _user);
+            Page viewEditPage = new pgEventFrame(selectedEvent, _managerProvider, _user);
             this.NavigationService.Navigate(viewEditPage);
         }
 

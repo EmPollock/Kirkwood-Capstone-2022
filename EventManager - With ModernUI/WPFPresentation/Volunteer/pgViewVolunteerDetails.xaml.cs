@@ -75,7 +75,6 @@ namespace WPFPresentation
         /// </summary>
         private void loadVolunteerDetails()
         {
-            btnVolunteerDetails.Background = new SolidColorBrush(Colors.Gray);
             txtVolunteerName.Text = _volunteer.GivenName + " " + _volunteer.FamilyName;
             txtAboutVolunnteerName.Text = "About " + _volunteer.GivenName;
             if (_volunteer.UserDescription == null || _volunteer.UserDescription == "")
@@ -89,10 +88,6 @@ namespace WPFPresentation
                 txtBoxAboutVolunteer.FontStyle = FontStyles.Normal;
             }
             txtVolunteerType.Text = _volunteer.VolunteerType;
-            if(_volunteer.VolunteerType == "Supply Donor")
-            {
-                btnVolunteerSupplies.Visibility = Visibility.Visible;
-            }
             loadVolunteerReviews();
             loadVolunteerSkillSet();
             loadUserImages();
@@ -363,18 +358,6 @@ namespace WPFPresentation
                         break;
                 }
             }
-        }
-
-        /// <summary>
-        /// Austin Timmerman
-        /// Created: 2022/03/10
-        /// 
-        /// Description:
-        /// Method which will load the volunteer details page up when the button is clicked
-        /// </summary>
-        private void btnVolunteerDetails_Click(object sender, RoutedEventArgs e)
-        {
-            loadVolunteerDetails();
         }
     }
 }

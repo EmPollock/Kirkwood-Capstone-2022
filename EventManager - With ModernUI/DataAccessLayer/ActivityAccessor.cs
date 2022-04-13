@@ -558,5 +558,63 @@ namespace DataAccessLayer
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/10
+        /// 
+        /// Description:
+        /// Accessor method for selecting activities by SupplierID
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of Activity data objects</returns>
+        public List<Activity> SelectActivitiesBySupplierID(int supplierID)
+        {
+            List<Activity> result = new List<Activity>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_activities_by_supplierID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(new Activity()
+                        {
+                            ActivityID = reader.GetInt32(0),
+                            ActivityName = reader.GetString(1),
+                            ActivityDescription = reader.GetString(2),
+                            PublicActivity = reader.GetBoolean(3),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            ActivityImageName = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            SublocationID = reader.GetInt32(7),
+                            EventDateID = DateTime.Parse(reader[8].ToString()),
+                            EventID = reader.GetInt32(9)
+                        });
+                        // To be able to set the start and end time for the web calendar's automatic event placement
+                        result.Last().StartTime = new DateTime(result.Last().EventDateID.Year, result.Last().EventDateID.Month, result.Last().EventDateID.Day, result.Last().StartTime.Hour, result.Last().StartTime.Minute, result.Last().StartTime.Second);
+                        result.Last().EndTime = new DateTime(result.Last().EventDateID.Year, result.Last().EventDateID.Month, result.Last().EventDateID.Day, result.Last().EndTime.Hour, result.Last().EndTime.Minute, result.Last().EndTime.Second);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
     }
 }

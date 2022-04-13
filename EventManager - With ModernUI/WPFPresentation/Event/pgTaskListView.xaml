@@ -11,50 +11,19 @@
     <Grid Loaded="Grid_Loaded">
         <Grid.RowDefinitions>
             <RowDefinition Height="130"/>
-            <RowDefinition Height="250" />
+            <RowDefinition Height="150" />
             <RowDefinition MaxHeight="100"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-
-            <Button x:Name="btnEventDetails" Grid.Row="0" HorizontalAlignment="Center" Padding="34 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White" Click="btnEventDetails_Click">Event Details</Button>
-            <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="#FFFFFF99" >Tasks</Button>
-            <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White" Click="btnItinerary_Click">Itinerary</Button>
-            <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Budget</Button>
-            <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Advertising</Button>
-            <Button x:Name="btnAfterEventReport" Grid.Row="5" HorizontalAlignment="Center" Padding="17 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">After Event Report</Button>
-            <Button x:Name="btnFiles" Grid.Row="6" HorizontalAlignment="Center" Padding="63 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Files</Button>
-            <Button x:Name="btnInvitations" Grid.Row="7" HorizontalAlignment="Center" Padding="43 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Invitations</Button>
-        </Grid>
-
-        <TextBlock x:Name="lblEventName" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+        <TextBlock x:Name="lblEventName" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"
                    VerticalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Event Name</TextBlock>
         
-        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <!-- Task List View -->
             <DataGrid x:Name="datViewAllTasksForEvent" SelectionMode="Single" IsReadOnly="True" 
                       GridLinesVisibility="Horizontal" MouseDoubleClick="datViewAllTasksForEvent_MouseDoubleClick"
@@ -101,13 +70,13 @@
 
         </Grid>
         
-        <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" />
-        <TextBlock x:Name="lblTaskListCreate" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" />
+        <TextBlock x:Name="lblTaskListCreate" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                         Margin="30 0 0 65" Style="{StaticResource BodyTextBlockStyle}">Add Task:</TextBlock>
-        <Button x:Name="btnTaskListCreate" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+        <Button x:Name="btnTaskListCreate" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                 Margin="100 0 0 60"  Click="btnTaskListCreate_Click" Background="Black" Foreground="White">+</Button>
         
-        <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition></RowDefinition>

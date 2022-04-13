@@ -54,6 +54,12 @@ Updated: 2022/03/02
 
 Description:
 Added Lincolnway park and The Hotel at Kirkwood
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added more test locations
 ****************************************************************/
 print '' print '*** test records for Location table ***'
 GO
@@ -78,6 +84,10 @@ INSERT INTO [dbo].[Location] (
 	-- LocationID 100002
 	(100001, 'Lincolnway Park', 'Park in Cedar Rapids, Iowa', 'Free', null, NULL, 'J St SW', null, 'Cedar Rapids', 'Iowa', '52404', 'lincolnway-park.jpg'),
 	-- LocationID 100003
-	(100002, 'The Hotel at Kirkwood', 'Hotel and Conference Center', 'Request prices', '319-848-8700', 'hotel@kirkwood.edu', '7725 Kirkwood Blvd SW', null, 'Cedar Rapids', 'Iowa', '52404', 'the-hotel-at-kirkwood.jpg')
+	(100002, 'The Hotel at Kirkwood', 'Hotel and Conference Center', 'Request prices', '319-848-8700', 'hotel@kirkwood.edu', '7725 Kirkwood Blvd SW', null, 'Cedar Rapids', 'Iowa', '52404', 'the-hotel-at-kirkwood.jpg'),
+		-- LocationID 100004
+	(100002, 'Downtown Iowa City', 'The pedmall and old capital area downtown Iowa City', 'Request prices', '319-848-1231', 'icity@iowa.gov', ' 201 S Clinton St', null, 'Iowa City', 'Iowa', '52240', NULL),
+		-- LocationID 100005
+	(100002, 'Mason City', 'City hall area', 'Request prices', '641-421-3600', 'mcity@iowa.gov', '1st St NW', null, 'Mason City', 'Iowa', '50401', NULL)
 GO
 

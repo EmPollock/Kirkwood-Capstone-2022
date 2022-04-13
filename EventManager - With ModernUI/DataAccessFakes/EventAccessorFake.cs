@@ -12,6 +12,7 @@ namespace DataAccessFakes
         private List<EventVM> _fakeEvents = new List<EventVM>();
         private List<EventVM> _fakeEventVMs = new List<EventVM>();
         private List<fakeUserEvent> _fakeRolesForUsersForEvents = new List<fakeUserEvent>();
+        private List<Location> _fakeLocations = new List<Location>();
 
         // This list only contains the values for the user ID first, and the EventID second
         private List<int[]> _fakeUserEvents = new List<int[]>();
@@ -44,9 +45,16 @@ namespace DataAccessFakes
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Updated: 2022/03/24
+        /// 
+        /// Description:
+        /// Added fake location data
+        /// 
         public EventAccessorFake()
         {
-            
+            createFakeLocations();
+
                _fakeEvents.Add(new EventVM()
             {
                 EventID = 1000000,
@@ -55,7 +63,9 @@ namespace DataAccessFakes
                 EventDescription = "A description of test event 1",
                 EventCreatedDate = DateTime.Now,
                 TotalBudget = 1000.00m,
-                Active = true
+                Active = true,
+                Location = _fakeLocations[0]
+               
             });
 
             _fakeEvents.Add(new EventVM()
@@ -66,7 +76,8 @@ namespace DataAccessFakes
                 EventDescription = "A description of test event 2",
                 EventCreatedDate = DateTime.Now.AddMinutes(1),
                 TotalBudget = 120.00m,
-                Active = true
+                Active = true,
+                Location = _fakeLocations[1]
             });
 
             _fakeEvents.Add(new EventVM()
@@ -77,7 +88,8 @@ namespace DataAccessFakes
                 EventDescription = "A description of test event 3",
                 EventCreatedDate = DateTime.Now.AddMinutes(2),
                 TotalBudget = 222.00m,
-                Active = true
+                Active = true,
+                Location = _fakeLocations[2]
             });
 
 
@@ -89,7 +101,8 @@ namespace DataAccessFakes
                 EventDescription = "A description of test event 4",
                 EventCreatedDate = DateTime.Now.AddMinutes(3),
                 TotalBudget = 2938.00m,
-                Active = true
+                Active = true,
+                Location = _fakeLocations[3]
             });
 
 
@@ -102,7 +115,8 @@ namespace DataAccessFakes
                 EventCreatedDate = DateTime.Now,
                 TotalBudget = 1000.00m,
                 Active = true,
-                EventDates = new List<EventDate>()
+                EventDates = new List<EventDate>(),
+                Location = _fakeLocations[4]
             });
 
             // fake eventVM 100000 Dates
@@ -811,7 +825,149 @@ namespace DataAccessFakes
             });
         }
 
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Adds fake list of locations. Copied and pasted original code from 
+        /// Kris Howell, who wrote it on 2022/01/27
+        /// Original method in LocationAccessor Fakes
+        /// 
+        /// </summary>
+        private void createFakeLocations()
+        {
+            _fakeLocations.Add(new Location()
+            {
+                LocationID = 100000,
+                UserID = 100000,
+                Name = "Test Location 1",
+                Description = "Description of Test Location 1 goes here.",
+                PricingInfo = "Pricing information for renting Test Location 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testLocation1@locations.com",
+                Address1 = "Test Location 1 Street",
+                City = "Iowa City",
+                State = "Iowa",
+                ZipCode = "52240",
+                ImagePath = "http://imagehost.com/testlocation1.png",
+                Active = true
+            });
 
+            _fakeLocations.Add(new Location()
+            {
+                LocationID = 100001,
+                UserID = 100000,
+                Name = "Test Location 2",
+                Description = "Description of Test Location 2 goes here.",
+                PricingInfo = "Pricing information for renting Test Location 2 goes here.",
+                Phone = "222-222-2222",
+                Email = "testLocation2@locations.com",
+                Address1 = "Test Location 2 Street",
+                Address2 = "Apt 2",
+                City = "Cedar Rapids",
+                State = "Iowa",
+                ZipCode = "52404",
+                ImagePath = "http://imagehost.com/testlocation2.png",
+                Active = true
+            });
+
+            _fakeLocations.Add(new Location()
+            {
+                LocationID = 100002,
+                UserID = 100000,
+                Name = "Test Location 3",
+                Description = "Description of Test Location 3 goes here.",
+                PricingInfo = "Pricing information for renting Test Location 3 goes here.",
+                Phone = "333-333-3333",
+                Email = "testLocation3@locations.com",
+                Address1 = "Test Location 3 Street",
+                Address2 = "Apt 33",
+                City = "Chicago",
+                State = "Illinois",
+                ZipCode = "60007",
+                ImagePath = "http://imagehost.com/testlocation3.png",
+                Active = true
+            });
+
+            _fakeLocations.Add(new Location()
+            {
+                LocationID = 100003,
+                UserID = 100000,
+                Name = "Test Location 4",
+                Description = "Description of Test Location 4 goes here.",
+                PricingInfo = "Pricing information for renting Test Location 4 goes here.",
+                Phone = "444-444-4444",
+                Email = "testLocation4@locations.com",
+                Address1 = "Test Location 4 Street",
+                Address2 = "Apt 44",
+                City = "New York City",
+                State = "New York",
+                ZipCode = "10036",
+                ImagePath = "http://imagehost.com/testlocation4.png",
+                Active = true
+            });
+
+            _fakeLocations.Add(new Location()
+            {
+                LocationID = 100004,
+                UserID = 100000,
+                Name = "Test Location 5 Inactive",
+                Description = "Description of Inactive Test Location 5 goes here.",
+                PricingInfo = "Pricing information for renting inactive Test Location 5 goes here.",
+                Phone = "555-555-5555",
+                Email = "testLocation5@locations.com",
+                Address1 = "Test Location 5 Street",
+                Address2 = "Apt 55",
+                City = "Detroit",
+                State = "Michigan",
+                ZipCode = "48202",
+                ImagePath = "http://imagehost.com/testlocation5.png",
+                Active = false
+            });
+
+            _fakeLocations.Add(new Location()
+            {
+                LocationID = 100005,
+                Name = "Test Location 6 Min Info",
+                Address1 = "Test Location 6 Street",
+                City = "Detroit",
+                State = "Michigan",
+                ZipCode = "48202",
+                Active = true
+            });
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/03/24
+        /// 
+        /// Description:
+        /// Fake method for testing if it returns Users with the event planner role
+        /// 
+        /// </summary>
+        /// <param name="eventID">The Event ID</param>
+        /// <returns></returns>
+        public List<User> SelectEventPlannersForEvent(int eventID)
+        {
+            List<User> users = new List<User>();
+
+            foreach (var item in _fakeRolesForUsersForEvents)
+            {
+                if (item.EventID == eventID && item.RoleID == "Event Planner")
+                {
+                    users.Add(new User()
+                    {
+                        UserID = item.UserID
+                    });
+                }
+            }
+
+            return users;
+
+
+
+        }
         /// <summary>
         /// Vinayak Deshpande
         /// Created: 2022/04/01
@@ -831,7 +987,46 @@ namespace DataAccessFakes
 
             return fakeEvent;
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/04/06
+        /// 
+        /// Description:
+        /// Fake method for testing if it returns a list that includes the search word
+        /// in the event name, description, or in the location name, city, or state
+        /// 
+        /// </summary>
+        /// <param name="search">Search criteria</param>
+        /// <returns>List of EventVMs that contain search criteria</returns>
+        public List<EventVM> SelectEventsForSearch(string search)
+        {
+            List<EventVM> events = new List<EventVM>();
+
+            search = search.ToLower();
+
+            foreach (EventVM eventV in _fakeEvents)
+            {
+                eventV.EventName = eventV.EventName.ToLower();
+                eventV.EventDescription = eventV.EventDescription.ToLower();
+                eventV.Location.Name = eventV.Location.Name.ToLower();
+                eventV.Location.City = eventV.Location.City.ToLower();
+                eventV.Location.State = eventV.Location.State.ToLower();
+
+                if (eventV.EventName.Contains(search) ||
+                    eventV.EventDescription.Contains(search) ||
+                    eventV.Location.Name.Contains(search) ||
+                    eventV.Location.City.Contains(search) ||
+                    eventV.Location.State.Contains(search))
+                {
+                    events.Add(eventV);
+                }
+            }
+
+            return events;
+        }
     }
+}
 
     internal class fakeUserEvent
     {

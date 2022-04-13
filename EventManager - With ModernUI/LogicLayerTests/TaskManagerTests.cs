@@ -46,8 +46,9 @@ namespace LogicLayerTests
                 DueDate = DateTime.Today,
                 Priority = 2
             };
-            bool expectedResult = true;
-            bool actualResult;
+
+            int expectedResult = 999995;
+            int actualResult;
 
             //act
             actualResult = _taskManager.AddTask(task, 1);
@@ -595,7 +596,6 @@ namespace LogicLayerTests
             // exception checking
         }
 
-
         /// <summary>
         /// Emma Pollock
         /// Created: 2022/03/10
@@ -680,7 +680,28 @@ namespace LogicLayerTests
 
             // assert
             Assert.AreEqual(expectedResult, actualResult);
+        }
 
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/01/31
+        /// 
+        /// Description: 
+        /// Test that adding a task assignment will return the task assignment id
+        /// </summary>
+        [TestMethod]
+        public void TestInsertNewTaskAssignmentReturnsCorrectTaskAssignmentID()
+        {
+            // arrange
+            const int testTaskID = 999996;
+            const int expectedTaskAssignmentID = 999996;
+            int actualTaskAssignmentID;
+
+            // act
+            actualTaskAssignmentID = _taskManager.AddTaskAssignment(testTaskID);
+
+            // assert
+            Assert.AreEqual(expectedTaskAssignmentID, actualTaskAssignmentID);
         }
 
         /// <summary>
@@ -722,6 +743,28 @@ namespace LogicLayerTests
 
             // act
             actual = _taskManager.RemoveTaskByTaskID(taskID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// Jace Pettinger
+        /// Created: 2022/01/31
+        /// 
+        /// Description: 
+        /// Test that volunteer can be successfully added to a task assignment
+        /// </summary>
+        [TestMethod]
+        public void TestAddVolunteerToTaskAssignmentReturnsTrue()
+        {
+            // arrange
+            const int taskAssignmentID = 999997;
+            const int userID = 999999;
+            const bool expected = true;
+            bool actual;
+
+            // act
+            actual = _taskManager.AddVolunteerToTaskAssignment(taskAssignmentID, userID);
 
             // assert
             Assert.AreEqual(expected, actual);

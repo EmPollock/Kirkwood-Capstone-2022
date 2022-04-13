@@ -54,6 +54,7 @@ namespace LogicLayer
             }
             return result;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -88,6 +89,7 @@ namespace LogicLayer
 
             return result;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -95,6 +97,12 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Method to retrieve user data using an email address.
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/03/24
+        /// 
+        /// Description:
+        /// Added roles to the data added when retrieving a user.
         /// </summary>
         /// <param name="email">Email to be used to retrieve user</param>
         /// <returns>User with matching email.</returns>
@@ -105,6 +113,7 @@ namespace LogicLayer
             try
             {
                 requestedUser = this._userAccessor.SelectUserByEmail(email);
+                requestedUser.Roles = this._userAccessor.SelectRolesByUserID(requestedUser.UserID);
             }
             catch (Exception)
             {
@@ -128,6 +137,7 @@ namespace LogicLayer
             }
             return roles;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -212,7 +222,6 @@ namespace LogicLayer
             return result;
         }
 
-
         /// <summary>
         /// Ramiro Pena
         /// Created: Unknown
@@ -231,6 +240,136 @@ namespace LogicLayer
             catch (Exception ex)
             {
                 throw ex;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/3/25
+        /// 
+        /// Description:
+        /// Method to retrieve a list of all roles in the database 
+        /// 
+        /// </summary>
+        /// <returns>List of strings with all roles in database</returns>
+        public List<string> RetrieveAllRoles()
+        {
+            List<string> result = new List<String>();
+            try
+            {
+                result = this._userAccessor.SelectAllRoles();
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve user roles", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/3/25
+        /// 
+        /// Description:
+        /// Method to check if a user exists with a specific email address
+        /// 
+        /// </summary>
+        /// <param name="email">Email address to check for</param>
+        /// <returns>true if the user exists in the database, otherwise false</returns>
+        public bool RetrieveHasUserByEmail(string email)
+        {
+            try
+            {
+                return _userAccessor.SelectUserByEmail(email) != null;
+            }
+            catch (ApplicationException ex)
+            {
+                if (ex.Message == "User not found.")
+                {
+                    return false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Database error", ex);
+            }
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/3/25
+        /// 
+        /// Description:
+        /// Method to create a user and update their password.
+        /// 
+        /// </summary>
+        /// <param name="user">User data to create a database entry</param>
+        /// <param name="password">Password to set the user's password to</param>
+        /// <returns>true if successful, otherwise false</returns>
+        public bool CreateUserWithPassword(User user, string password)
+        {
+            bool result = false;
+            try
+            {
+                result = CreateUser(user);
+                result = result && UpdatePasswordHash(user.EmailAddress, "P@ssw0rd", password);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to create user", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/3/25
+        /// 
+        /// Description:
+        /// Method to add a role to a user
+        /// 
+        /// </summary>
+        /// <param name="userID">ID of user to add role to</param>
+        /// <param name="role">role to add</param>
+        /// <returns>True if successful, otherwise false</returns>
+        public bool AddUserRole(int userID, string role)
+        {
+            bool result = false;
+            try
+            {
+                result = 1 == this._userAccessor.InsertUserRole(userID, role);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to add user role", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/3/25
+        /// 
+        /// Description:
+        /// Method to remove a role from a user
+        /// 
+        /// </summary>
+        /// <param name="userID">User ID to remove role for</param>
+        /// <param name="role">role to remove</param>
+        /// <returns>true if successful, otherwise false</returns>
+        public bool RemoveUserRole(int userID, string role)
+        {
+            bool result = false;
+            try
+            {
+                result = 1 == this._userAccessor.DeleteUserRole(userID, role);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to remove role", ex);
             }
             return result;
         }

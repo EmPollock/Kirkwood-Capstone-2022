@@ -720,5 +720,28 @@ namespace LogicLayerTests
             // assert
             // exception checking, nothing to do
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitiesBySupplierID returns a correct
+        /// list of activities for the given supplier.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesBySupplierIDRetrievesCorrectAmount()
+        {
+            //arrange
+            const int supplierID = 100000;
+            int actualCount;
+            int expectedCount = 2;
+
+            // act
+            actualCount = _activityManager.RetrieveActivitiesBySupplierID(supplierID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
     }
 }

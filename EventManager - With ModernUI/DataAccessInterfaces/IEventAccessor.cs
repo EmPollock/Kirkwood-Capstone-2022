@@ -29,6 +29,8 @@ namespace DataAccessInterfaces
         bool CheckUserEditPermissionForEvent(int eventID, int userID);
         EventVM SelectEventByEventID(int eventID);
 
+        List<User> SelectEventPlannersForEvent(int eventID);
+        List<EventVM> SelectEventsForSearch(string search);
     }
 }
 

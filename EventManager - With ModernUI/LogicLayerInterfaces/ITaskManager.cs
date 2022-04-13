@@ -10,13 +10,15 @@ namespace LogicLayerInterfaces
 {
     public interface ITaskManager
     {
-        bool AddTask(Tasks newTask, int numTotalVolunteers);
+        int AddTask(Tasks newTask, int numTotalVolunteers);
         bool EditTask(Tasks oldTask, Tasks newTasks);
         List<Priority> RetrieveAllPriorities();
-        List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID);
         bool UserCanEditDeleteTask(int userID);
         bool RemoveTaskByTaskID(int taskID);
         List<TaskAssignmentVM> RetrieveTaskAssignmentsByTaskID(int taskID);
+        List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID = 100000);
+        int AddTaskAssignment(int taskID);
+        bool AddVolunteerToTaskAssignment(int taskAssignmentID, int userID);
         List<TasksVM> RetrieveAllTasksByEventID(int eventID);
     }
 }

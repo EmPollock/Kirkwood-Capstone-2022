@@ -200,3 +200,40 @@ AS
 		AND   [LocationID] = @LocationID
 	END	
 GO
+
+/***************************************************************
+/ Austin Timmerman
+/ Created: 2022/03/31
+/ 
+/ Description: Creating Stored Procedure to select any volunteers
+/ participating for an event by their task
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print '*** creating sp_select_event_date_by_userID_and_date'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_date_by_userID_and_date]
+(
+	@UserID 	[int],
+	@EventDate	[date]
+)
+AS
+	BEGIN
+	
+		SELECT 
+			[Event].[EventName],
+			[EventDate].[EventID],
+			[EventDate].[StartTime],
+			[EventDate].[EndTime]	
+		FROM [dbo].[EventDate] 
+		JOIN [Event] ON [Event].[EventID] = [EventDate].[EventID]
+		JOIN [Task] ON [Task].[EventID] = [EventDate].[EventID]
+		JOIN [TaskAssignment] ON [TaskAssignment].[TaskID] = [Task].[TaskID]
+		WHERE [TaskAssignment].[UserID] = @UserID AND [EventDateID] = @EventDate AND [Event].[Active] = 1
+	END
+GO

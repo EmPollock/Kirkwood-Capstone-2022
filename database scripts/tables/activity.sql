@@ -34,7 +34,6 @@ Updated: 2022/03/24
 
 Description: Changed sublocationID field to be non-nullable.
 ****************************************************************/
-
 print '' print '*** creating Activity table'
 CREATE TABLE [dbo].[Activity] (
 	[ActivityID]			[int] IDENTITY(100000,1)	NOT NULL

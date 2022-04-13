@@ -63,9 +63,9 @@ namespace LogicLayer
         /// </summary>
         /// <param name="newtask"></param>
         /// <returns>bool result that returns true if successful</returns>
-        public bool AddTask(Tasks newtask, int numTotalVolunteers)
+        public int AddTask(Tasks newtask, int numTotalVolunteers)
         {
-            bool result = false;
+            int result;
 
             
             if(newtask.Name.Length >= 50)
@@ -95,7 +95,7 @@ namespace LogicLayer
 
             try
             {
-                result = (1 == _taskAccessor.InsertTasks(newtask, numTotalVolunteers));
+                result = _taskAccessor.InsertTasks(newtask, numTotalVolunteers);
             }
             catch (Exception)
             {
@@ -261,6 +261,56 @@ namespace LogicLayer
             try
             {
                 result = _taskAccessor.UserCanEditDeleteTask(userID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
+
+        /// Jace Pettinger
+        /// 2022/01/31
+        /// 
+        /// Description:
+        /// Method that adds a task assignment for a specified task
+        /// </summary>
+        /// <returns>the new task assignment id</returns>
+        public int AddTaskAssignment(int taskID)
+        {
+            int taskAssignmentID;
+
+            try
+            {
+                taskAssignmentID = _taskAccessor.InsertNewTaskAssignmentByTaskID(taskID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return taskAssignmentID;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// 2022/03/31
+        /// 
+        /// Description:
+        /// Method that adds a volunteer to a task assignment
+        /// </summary>
+        /// <returns>true or false if the update to taskAssignment was successful</returns>
+        public bool AddVolunteerToTaskAssignment(int taskAssignmentID, int userID)
+        {
+            bool result = false;
+
+            try
+            {
+                int rowsAffected = _taskAccessor.UpdateTaskAssignmentWithUserID(taskAssignmentID, userID);
+                result = rowsAffected == 1;
             }
             catch (Exception ex)
             {

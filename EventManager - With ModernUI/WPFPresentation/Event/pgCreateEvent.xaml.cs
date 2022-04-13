@@ -879,7 +879,8 @@ namespace WPFPresentation
             };
             try
             {
-                if (_taskManager.AddTask(genericTask, numTotalVolunteers))
+                int addedTasks = _taskManager.AddTask(genericTask, numTotalVolunteers);
+                if (addedTasks == 1)
                 {
                     MessageBox.Show("Volunteers have been requested.");
                     btnRequestVolunteers.Visibility = Visibility.Hidden;
@@ -894,9 +895,6 @@ namespace WPFPresentation
 
                 MessageBox.Show(ex.Message);
             }
-
-
-
 
         }
     }

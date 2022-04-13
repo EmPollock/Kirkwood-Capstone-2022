@@ -407,5 +407,28 @@ namespace DataAccessFakes
             }
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/06
+        /// 
+        /// Description:
+        /// Select fake Activities that are associated with a specific supplier
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of Activities which have booked a specific supplier on a given date</returns>
+        /// (Original Author: Kris Howell SelectActivitiesBySupplierIDAndDate)
+        public List<Activity> SelectActivitiesBySupplierID(int supplierID)
+        {
+            List<Activity> allSupplierActivities;
+            _supplierActivityJoin.TryGetValue(supplierID, out allSupplierActivities);
+            if (allSupplierActivities == null)
+            {
+                // TryGetValue assigns null if it can't find a value.  I want it to return an empty list.
+                allSupplierActivities = new List<Activity>();
+            }
+
+            return allSupplierActivities;
+        }
     }
 }

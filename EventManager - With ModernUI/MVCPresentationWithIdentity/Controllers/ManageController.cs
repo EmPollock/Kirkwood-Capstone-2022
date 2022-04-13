@@ -233,9 +233,20 @@ namespace MVCPresentationWithIdentity.Controllers
             var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
+                
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
+                    try
+                    {
+                        LogicLayer.UserManager usrMgr = new LogicLayer.UserManager();
+                        usrMgr.UpdatePasswordHash(user.Email, model.OldPassword, model.NewPassword);
+                    }
+                    catch (Exception)
+                    {
+                        ViewBag.error = "Could not reset password";
+                        return View(model);
+                    }
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
                 return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
