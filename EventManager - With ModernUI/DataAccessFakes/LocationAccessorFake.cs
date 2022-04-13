@@ -14,6 +14,7 @@ namespace DataAccessFakes
         private List<Reviews> _fakeLocationReviews = new List<Reviews>();
         private List<LocationImage> _fakeLocationImages = new List<LocationImage>();
         private List<LocationAvailabilityTableFake> _dbFake = new List<LocationAvailabilityTableFake>();
+        private Dictionary<int, List<string>> _tags = new Dictionary<int, List<string>>();
 
         /// <summary>
         /// Kris Howell
@@ -21,6 +22,13 @@ namespace DataAccessFakes
         /// 
         /// Description:
         /// Constructor to populate _fakeLocations with dummy values for testing purposes
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/03/23
+        /// 
+        /// Description:
+        /// Copy and pasted the fake location data into the Event Accessor Fake
         /// 
         /// </summary>
         public LocationAccessorFake()
@@ -245,7 +253,17 @@ namespace DataAccessFakes
                 },
                 IsException = true
             });
-        }
+
+            List<string> tags = new List<string>();
+            tags.Add("Location");
+            tags.Add("Outdoor");
+            tags.Add("Indoor");
+            _tags.Add(100000, tags);
+        
+    }
+
+
+
         private class LocationAvailabilityTableFake
         {
             public DateTime Date { get; set; }
@@ -675,6 +693,22 @@ namespace DataAccessFakes
             }
 
             return availabilities;
+		}
+		
+        /// Logan Baccam
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// test that returns fake location tags for a location by location
+        /// </summary>
+        public List<string> SelectTagsbyLocationID(int locationID)
+        {
+            List<string> tags = new List<string>();
+            if (_tags.ContainsKey(locationID))
+            {
+                tags = _tags[locationID];
+            }
+            return tags;
         }
     }
 }

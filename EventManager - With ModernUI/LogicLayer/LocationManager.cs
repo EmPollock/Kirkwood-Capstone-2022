@@ -416,6 +416,30 @@ namespace LogicLayer
             }
 
             return availabilities;
+		}
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/03
+        /// 
+        /// Description:
+        /// returns a list of tags associated with the location
+        /// 
+        /// </summary>
+        /// <param name="locationID"
+        /// <returns>List of all active locations</returns>
+        public List<string> RetrieveTagsByLocationID(int locationID)
+        {
+            List<string> tags = new List<string>();
+            try
+            {
+                tags = _locationAccessor.SelectTagsbyLocationID(locationID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return tags;
         }
     }
 }

@@ -29,17 +29,24 @@ namespace WPFPresentation
     /// </summary
     public partial class pgTaskListCreate : Page
     {
-        
+
         ITaskManager _taskManager = null;
         IEventManager _eventManager = null;
         ISublocationManager _sublocationManager = null;
+        IVolunteerManager _volunteerManager = null;
         ManagerProvider _managerProvider = null;
+        IVolunteerNeedManager _needManager = null;
         DataObjects.EventVM _event = null;
         User _user = null;
 
         // priority values to populate cboPriority
         List<Priority> _priorities = new List<Priority>();
 
+        // volunteers to populate cboAssign
+        List<Volunteer> _volunteers = new List<Volunteer>();
+
+        // list of volunteers assigned to task
+        List<String> _assigned = new List<String>();
         /// <summary>
         /// Mike Cahow
         /// Created: 2022/01/23
@@ -67,6 +74,8 @@ namespace WPFPresentation
             _managerProvider = managerProvider;
             _taskManager = managerProvider.TaskManager;
             _eventManager = managerProvider.EventManager;
+            _volunteerManager = managerProvider.VolunteerManager;
+            _needManager = managerProvider.NeedManager;
             _event = selectedEvent;
             _user = user;
 
@@ -88,6 +97,11 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Raise EditOngoing flag when page is loaded
+        /// Jace Pettinger
+        /// Updated 2022/03/20
+        /// 
+        /// Description:
+        /// Adding functionality to combo box for assign volunteers
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -101,6 +115,23 @@ namespace WPFPresentation
                 cboPriority.ItemsSource = from p in _priorities
                                           orderby p.PriorityID
                                           select p.Description;
+                _volunteers = _volunteerManager.RetrieveAllVolunteers();
+                foreach (var volunteer in _volunteers)
+                {
+                    cboAssign.Items.Add(volunteer.GivenName);
+                }
+
+
+                //if (cboSchedulePicker.Items.Count == 0)
+                //{
+                //    cboSchedulePicker.Items.Add(_location.Name);
+
+                //    foreach (Sublocation sublocation in _sublocations)
+                //    {
+                //        cboSchedulePicker.Items.Add(sublocation.SublocationName);
+                //    }
+                //}
+                //_sublocationID = _sublocations.First(m => m.SublocationName == cboSchedulePicker.SelectedItem.ToString()).SublocationID;
             }
             catch (Exception ex)
             {
@@ -133,6 +164,10 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Lowered EditOngoing flag when task is saved successfully
+        /// Jace Pettinger
+        /// Updated: 2022/03/20
+        /// 
+        /// Description: Finished logic to assign volunteers to task
         /// </summary>
         private void btnSaveTask_Click(object sender, RoutedEventArgs e)
         {
@@ -156,7 +191,7 @@ namespace WPFPresentation
 
             string taskDescription = txtTaskDescription.Text.ToString();
 
-            if(dtpTaskDueDate.SelectedDate == null)
+            if (dtpTaskDueDate.SelectedDate == null)
             {
                 MessageBox.Show("Please set a due date before continuing");
                 dtpTaskDueDate.Focus();
@@ -173,19 +208,44 @@ namespace WPFPresentation
             }
             int priority = _priorities.First(p => p.Description == cboPriority.Text.ToString()).PriorityID;
 
+            if (_assigned.Count == 0)
+            {
+                string message = "Continue without assigning volunteers?";
+                string title = "No volunteers assigned.";
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+                MessageBoxImage image = MessageBoxImage.Warning;
+                var result = MessageBox.Show(message, title, buttons, image);
+
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
             var task = new Tasks()
             {
                 EventID = eventID,
                 Name = taskName,
                 Description = taskDescription,
-                // cboAssign variable,
                 DueDate = taskDueDate,
                 Priority = priority
             };
             int numTotalVolunteers = (int)sldrNumVolunteers.Value;
             try
             {
-                _taskManager.AddTask(task, numTotalVolunteers);
+                int taskID = _taskManager.AddTask(task, numTotalVolunteers);
+                int taskAssignmentID = _taskManager.AddTaskAssignment(taskID);
+                if (_assigned.Count != 0)
+                {
+                    foreach (var volunteerName in _assigned)
+                    {
+                        int taskVolunteerID = _volunteers.First(m => m.GivenName == volunteerName).UserID;
+                        int volunteerID = (int)taskVolunteerID;
+                        _taskManager.AddVolunteerToTaskAssignment(taskAssignmentID, volunteerID);
+                        var need = _needManager.RetrieveVolunteerNeedByTaskID(taskID);
+                        _needManager.UpdateCurrVolunteers(need, 1);
+                    }
+
+                }
                 MessageBox.Show("Task has been added.");
                 ValidationHelpers.EditOngoing = false;
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
@@ -227,7 +287,7 @@ namespace WPFPresentation
             MessageBoxImage image = MessageBoxImage.Warning;
             var result = MessageBox.Show(message, title, buttons, image);
 
-            if(result == MessageBoxResult.No)
+            if (result == MessageBoxResult.No)
             {
                 return;
             }
@@ -236,6 +296,70 @@ namespace WPFPresentation
                 ValidationHelpers.EditOngoing = false;
                 pgTaskListView viewTasksPage = new pgTaskListView(_event, _managerProvider, _user);
                 this.NavigationService.Navigate(viewTasksPage);
+            }
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Event handler to show and hide assign volunteers depending on the number volunteers needed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void sldrNumVolunteers_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var numAssigned = datAssigned.Items.Count;
+            var numRequested = sldrNumVolunteers.Value;
+            if (numRequested < numAssigned)
+            {
+                sldrNumVolunteers.Value = numAssigned;
+                MessageBox.Show("Cannot request less volunteers than the number of volunteers assigned");
+            }
+            else if (numRequested == 0)
+            {
+                datAssigned.Visibility = Visibility.Hidden;
+                txtBlkAssigned.Visibility = Visibility.Hidden;
+                cboAssign.Visibility = Visibility.Hidden;
+                txtBlkTaskAssign.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                datAssigned.Visibility = Visibility.Visible;
+                txtBlkAssigned.Visibility = Visibility.Visible;
+                cboAssign.Visibility = Visibility.Visible;
+                txtBlkTaskAssign.Visibility = Visibility.Visible;
+                btnAssignVolunteer.Visibility = Visibility.Visible;
+            }
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Event handler to add volunteer to list of assigned volunteers
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAssignVolunteer_Click(object sender, RoutedEventArgs e)
+        {
+            if (_assigned.Count >= 10)
+            {
+                MessageBox.Show("Cannot assign more than 10 volunteers to a task.");
+            }
+            else if (cboAssign.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a volunteer to assign");
+            }
+            else
+            {
+                string volunteerName = cboAssign.SelectedItem.ToString();
+                _assigned.Add(volunteerName);
+                cboAssign.Items.Remove(volunteerName);
+                datAssigned.Items.Add(volunteerName);
+                sldrNumVolunteers.Value = datAssigned.Items.Count;
             }
         }
     }

@@ -21,5 +21,6 @@ namespace DataAccessInterfaces
         List<Availability> SelectLocationAvailabilityExceptionByLocationIDAndDate(int locationID, DateTime date);
         List<AvailabilityVM> SelectLocationAvailabilityByLocationID(int locationID);
         List<Availability> SelectLocationAvailabilityExceptionByLocationID(int locationID);
+        List<string> SelectTagsbyLocationID(int locationID);
     }
 }

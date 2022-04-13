@@ -103,6 +103,8 @@
                             </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Location" Binding="{Binding Location.Name}"/>
                 </DataGridTemplateColumn>-->
             </DataGrid.Columns>
         </DataGrid>

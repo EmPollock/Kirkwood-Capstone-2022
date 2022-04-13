@@ -28,5 +28,7 @@ namespace LogicLayerInterfaces
 
         bool CheckUserEditPermissionForEvent(int eventID, int userID);
 
+        List<User> RetrieveEventPlannersForEvent(int eventID);
+        List<EventVM> RetrieveEventListForSearch(string search);
     }
 }

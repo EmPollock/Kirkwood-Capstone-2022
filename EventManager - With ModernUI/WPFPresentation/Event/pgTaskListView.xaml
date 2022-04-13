@@ -11,7 +11,7 @@
     <Grid Loaded="Grid_Loaded">
         <Grid.RowDefinitions>
             <RowDefinition Height="130"/>
-            <RowDefinition Height="250" />
+            <RowDefinition Height="150" />
             <RowDefinition MaxHeight="100"/>
             <RowDefinition/>
         </Grid.RowDefinitions>

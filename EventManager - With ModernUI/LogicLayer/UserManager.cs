@@ -54,6 +54,7 @@ namespace LogicLayer
             }
             return result;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -88,6 +89,7 @@ namespace LogicLayer
 
             return result;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -135,6 +137,7 @@ namespace LogicLayer
             }
             return roles;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -218,7 +221,6 @@ namespace LogicLayer
 
             return result;
         }
-
 
         /// <summary>
         /// Ramiro Pena

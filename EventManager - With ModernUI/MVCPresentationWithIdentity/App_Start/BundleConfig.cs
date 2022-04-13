@@ -9,6 +9,7 @@ namespace MVCPresentationWithIdentity
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
+
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -16,27 +17,33 @@ namespace MVCPresentationWithIdentity
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
+                       
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-            //          "~/Scripts/bootstrap.js"));            
+            ////Add java script files here
+            //bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+            //            "~/Scripts/sortEventTable.js"
+                        
+
+            //            ));
+
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-
-                      //"~/Content/bootstrap-theme-quartz.css",
-
-                      "~/Content/bootstrap-theme-lumen.css",
-                                            
-                      "~/Content/site.css"));
+                      //"~/Content/bootstrap.css",
+                      "~/Content/bootstrap-theme-lumen.css",                                            
+                      "~/Content/site.css",
+                      "~/Content/media.css"));
             //Add java script files here
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                        "~/Scripts/index.js",
+                        "~/Scripts/sortEventTable.js",
                         "~/Scripts/sortTable.js"
                         ));
+
         }
     }
 }
