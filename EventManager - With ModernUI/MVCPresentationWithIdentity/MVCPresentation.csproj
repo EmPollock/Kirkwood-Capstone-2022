@@ -449,6 +449,7 @@
     <Content Include="Views\Shared\_SupplierDetailsLayout.cshtml" />
     <Content Include="Views\Location\LocationNav.cshtml" />
     <Content Include="Views\Location\ViewLocationDetails.cshtml" />
+    <Content Include="Views\Location\LocationEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

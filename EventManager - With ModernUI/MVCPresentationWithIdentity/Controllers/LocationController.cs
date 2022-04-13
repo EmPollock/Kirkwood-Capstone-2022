@@ -185,14 +185,15 @@ namespace MVCPresentationWithIdentity.Controllers
             _locationSchedule.Availability = availability;
             _locationSchedule.AvailabilityException = availabilityException;
 		}
-
+        
+        /// <summary>
         /// Logan Baccam
         /// Created: 2022/04/07
         /// 
         /// Description:
         /// Method that returns user to ViewLocationDetails View
         /// </summary>
-        /// <param name="locationID"
+        /// <param name="locationID"></param>
         /// <returns>ActionResult</returns>
         public ActionResult ViewLocationDetails(int locationID)
         {
@@ -235,6 +236,74 @@ namespace MVCPresentationWithIdentity.Controllers
                 ModelState.AddModelError("", "Location not found.");
             }
             return View(model);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Returns a location from the details page in edit mode
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>ActionResult, LocationEdit View</returns>
+        [Authorize(Roles = "Administrator, Event Planner, Supplier")]
+        public ActionResult LocationEdit(int locationID)
+        {
+            Location location = null;
+            LocationDetailsViewModel model = null;
+            List<LocationImage> locationImages = null;
+            List<string> locationTags = null;
+            try
+            {
+                location = _locationManager.RetrieveLocationByLocationID(locationID);
+                locationTags = _locationManager.RetrieveTagsByLocationID(locationID);
+                locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
+
+                model = new LocationDetailsViewModel()
+                {
+                    Location = location,
+                    LocationTags = locationTags,
+                    LocationImages = locationImages
+                };
+
+                ViewBag.Title = "Edit " + model.Location.Name;
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Location not found.");
+            }
+            return View(model);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Method that deactivates a location from the edit page
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>ActionResult, ViewLocations View</returns>
+        [Authorize(Roles = "Administrator, Event Planner, Supplier")]
+        public ActionResult DeleteLocation(int locationID)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    _locationManager.DeactivateLocationByLocationID(locationID);
+                    return RedirectToAction("ViewLocations", new { page = 1 });
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Location not found.");
+                    return View();
+                }
+            }
+            return View();
+
         }
     }
 }
