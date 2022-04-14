@@ -235,6 +235,13 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select regular weekly availability records matching the given supplierID and date.
+        /// 
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Added exception
+        /// 
         /// </summary>
         /// <param name="supplierID"></param>
         /// <param name="date"></param>
@@ -270,9 +277,9 @@ namespace DataAccessLayer
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
             finally
             {
@@ -346,6 +353,123 @@ namespace DataAccessLayer
             }
 
             return supplierAvailabilities;
+        }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Accessor that returns a list of dates that the supplier has available for the next three months
+        /// 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns></returns>
+        public List<DateTime> SelectSupplierAvailabilityForNextThreeMonths(int supplierID)
+        {
+            List<DateTime> threeMonthAvailability = new List<DateTime>();
+            List<Availability> weeklyAvailability = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_by_supplierID_for_three_months";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;            
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        weeklyAvailability.Add(new Availability()
+                        {
+                            ForeignID = supplierID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            Sunday = reader.GetBoolean(3),
+                            Monday = reader.GetBoolean(4),
+                            Tuesday = reader.GetBoolean(5),
+                            Wednesday = reader.GetBoolean(6),
+                            Thursday = reader.GetBoolean(7),
+                            Friday = reader.GetBoolean(8),
+                            Saturday = reader.GetBoolean(9)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            foreach (Availability availability in weeklyAvailability)
+            {
+                DateTime timeStart = (DateTime)availability.TimeStart;
+                // get about 13 weeks of dates, drop any that happen before or after
+                for (int i = 0; i < 92; i += 7)
+                {
+                    int currentDayOfWeek = (int)DateTime.Now.DayOfWeek;
+
+                    if (availability.Sunday)
+                    {
+                        // target day - current day
+                        int diff = 0 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Monday)
+                    {                     
+                        int diff = 1 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Tuesday)
+                    {                     
+                        int diff = 2 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Wednesday)
+                    {                     
+                        int diff = 3 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Thursday)
+                    {                     
+                        int diff = 4 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Friday)
+                    {
+                        int diff = 5 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Saturday)
+                    {
+                        int diff = 6 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                }
+            }
+
+            // remove unwanted dates
+
+
+            return threeMonthAvailability;
         }
     }
 }

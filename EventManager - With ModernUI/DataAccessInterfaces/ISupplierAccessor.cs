@@ -15,5 +15,7 @@ namespace DataAccessInterfaces
         List<string> SelectSupplierImagesBySupplierID(int supplierID);
         List<Availability> SelectSupplierAvailabilityBySupplierIDAndDate(int supplierID, DateTime date);
         List<Availability> SelectSupplierAvailabilityExceptionBySupplierIDAndDate(int supplierID, DateTime date);
+
+        List<DateTime> SelectSupplierAvailabilityForNextThreeMonths(int supplierID);
     }
 }

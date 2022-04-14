@@ -134,7 +134,7 @@ namespace DataAccessFakes
                 Review = "Could be better.",
                 DateCreated = DateTime.Now,
                 Active = true
-            }); 
+            });
 
             _fakeReviews.Add(new Reviews()
             {
@@ -292,7 +292,7 @@ namespace DataAccessFakes
             {
                 if (supplier.SupplierID == supplierID)
                 {
-                    if(_fakeImages.Count > _fakeSuppliers.IndexOf(supplier))
+                    if (_fakeImages.Count > _fakeSuppliers.IndexOf(supplier))
                     {
                         result = _fakeImages[_fakeSuppliers.IndexOf(supplier)];
                     }
@@ -334,9 +334,9 @@ namespace DataAccessFakes
         public List<string> SelectSupplierTagsBySupplierID(int supplierID)
         {
             List<string> result = new List<string>();
-            foreach(Supplier supplier in _fakeSuppliers)
+            foreach (Supplier supplier in _fakeSuppliers)
             {
-                if(supplier.SupplierID == supplierID)
+                if (supplier.SupplierID == supplierID)
                 {
                     result = supplier.Tags;
                 }
@@ -404,6 +404,34 @@ namespace DataAccessFakes
             }
 
             return availabilities;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Fake supplier availability for three months
+        /// 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>List of Date times supplier is available</returns>
+        public List<DateTime> SelectSupplierAvailabilityForNextThreeMonths(int supplierID)
+        {
+            List<DateTime> fakeDates = new List<DateTime>();
+
+            foreach (SupplierAvailabilityTableFake avails in _dbFake)
+            {
+                foreach (Availability avail in avails.Availabilities)
+                {
+                    if (avail.ForeignID == supplierID && avail.TimeStart != null)
+                    {
+                        fakeDates.Add((DateTime)avail.TimeStart);
+                    }
+                }
+            }
+
+            return fakeDates;
         }
     }
 }

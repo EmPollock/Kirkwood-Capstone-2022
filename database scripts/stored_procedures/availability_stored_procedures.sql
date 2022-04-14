@@ -148,3 +148,42 @@ AS
 			AND [AvailabilityException].[ExceptionDate] = @ExceptionDate
 	END
 GO
+
+
+
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/03/31
+
+Description: 
+Collects the availability for the supplier for the next three months
+
+****************************************************************/
+print '' print '*** creating sp_select_availability_by_supplierID_for_three_months'
+GO
+CREATE PROCEDURE [dbo].[sp_select_availability_by_supplierID_for_three_months]
+(
+	@SupplierID			[int]
+)
+AS
+	BEGIN
+		SELECT
+			[Availability].[AvailabilityID],
+			[Availability].[TimeStart],
+			[Availability].[TimeEnd],
+			[Availability].[Sunday],
+			[Availability].[Monday],
+			[Availability].[Tuesday],
+			[Availability].[Wednesday],
+			[Availability].[Thursday],
+			[Availability].[Friday],
+			[Availability].[Saturday]
+		FROM [Availability] 
+		JOIN [SupplierAvailability]
+			ON [Availability].[AvailabilityID] = [SupplierAvailability].[AvailabilityID]
+		WHERE 
+			[SupplierAvailability].[SupplierID] = @SupplierID
+	END	
+GO

@@ -325,5 +325,36 @@ namespace LogicLayerTests
             // assert
             Assert.AreEqual(expected, actual);
         }
+
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// That that makes usr ethat the supplier availablity is returned
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestSupplierAvailabilityForNextThreeMonthsReturnsCorrectList()
+        {
+            // arrange
+            const int supplierID = 100000;
+            const int expected = 3;
+            int actual;
+
+
+            // act
+            List<DateTime> results = _supplierManager.SupplierAvailabilityForNextThreeMonths(supplierID);
+            actual = results.Count;
+
+            // assert
+            Assert.AreEqual(expected, actual);
+
+
+
+
+        }
+
     }
 }

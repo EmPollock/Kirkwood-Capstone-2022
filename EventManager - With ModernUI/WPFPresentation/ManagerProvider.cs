@@ -14,6 +14,13 @@ namespace WPFPresentation
     /// Created: 2022/01/27
     /// 
     /// Provider class for Manager classes
+    /// 
+    /// Update:
+    /// Derrick Nagy
+    /// Created: 2022/04/05
+    /// 
+    /// Description:
+    /// Added email service provider
     /// </summary>
     internal class ManagerProvider
     {
@@ -35,6 +42,7 @@ namespace WPFPresentation
         public IVolunteerReviewManager VolunteerReviewManager { get; set; }
         public IEntranceManager EntranceManager { get; set; }
         public IVolunteerNeedManager NeedManager { get; set; }
+        public IEmailProvider EmailProvider { get; set; }
 
         public ManagerProvider()
         {
@@ -57,6 +65,9 @@ namespace WPFPresentation
             EntranceManager = new EntranceManager();
             NeedManager = new VolunteerNeedManager();
 
+            // please ask how to use if you would like to test the real email provider
+            //EmailProvider = new EmailProvider();
+
             // Fake versions here
             //ActivityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
             //EventDateManager = new EventDateManager(new EventDateAccessorFake());
@@ -65,7 +76,7 @@ namespace WPFPresentation
             //SublocationManager = new SublocationManager(new SublocationAccessorFake());
             //SupplierManager = new SupplierManager(new SupplierAccessorFake());
             //TaskManager = new TaskManager(new TaskAccessorFakes());
-            //UserManager = new UserManager(new UserAccessorFake());
+            //UserManager = new UserManager(new UserAccessoCrFake());
             //VolunteerManager = new VolunteerManager(new VolunteerAccessorFake());
             //VolunteerRequestManager = new VolunteerRequestManager(new VolunteerRequestAccessorFake());
             //ServiceManager = new ServiceManager(new ServiceAccessorFake());
@@ -75,6 +86,8 @@ namespace WPFPresentation
             //VolunteerReviewManager = new VolunteerReviewManager(new VolunteerReviewAccessorFake());
             //EntranceManager = new EntranceManager(new EntranceAccessorFake());
             //NeedManager = new VolunteerNeedManager(new VolunteerNeedAccessorFake());
+
+            EmailProvider = new EmailProviderFake();
 
             ImageHelper = new ImageHelperDevelopment();
         }

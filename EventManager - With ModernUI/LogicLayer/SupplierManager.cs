@@ -173,5 +173,38 @@ namespace LogicLayer
 
             return supplierAvailabilities;
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Manager for supplier availability for the next three months
+        /// 
+        /// </summary>
+        /// <param name="supplierID">The id for the supplier</param>
+        /// <returns>A list of dates that the supplier is available</returns>
+        public List<DateTime> SupplierAvailabilityForNextThreeMonths(int supplierID)
+        {
+            List<DateTime> datesAvailable = new List<DateTime>();
+            // green
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+
+            try
+            {
+                datesAvailable = _supplierAccessor.SelectSupplierAvailabilityForNextThreeMonths(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return datesAvailable;
+
+        }
     }
 }

@@ -31,4 +31,16 @@ namespace DataObjects
         public List<string> Tags { get; set; }
         public bool Active { get; set; }
     }
+    /// <summary>
+    /// Derrick Nagy
+    /// Created: 2022/04/05
+    /// 
+    /// Description:
+    /// Create SupplierVM with their availablity for three months
+    /// </summary>
+    public class SupplierVM : Supplier
+    {
+        public List<DateTime> ThreeMonthAvailability { get; set; }
+
+    }
 }
