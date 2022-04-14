@@ -29,6 +29,7 @@ namespace DataObjects
         public string State { get; set; }
         public string ZipCode { get; set; }
         public string ImagePath { get; set; }
+        public int AverageRating { get; set; }
         public bool Active { get; set; }
     }
 }

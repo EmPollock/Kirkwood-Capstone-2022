@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Ninject;
 
+using LogicLayer;
+using LogicLayerInterfaces;
+using DataAccessFakes;
+using Ninject.Web.Common;
+
+using DataObjects;
+using LogicLayer;
+using LogicLayerInterfaces;
+
+
 namespace MVCPresentationWithIdentity.Infrastructure
 {
     public class NinjectDependencyResolver : IDependencyResolver
@@ -17,7 +27,18 @@ namespace MVCPresentationWithIdentity.Infrastructure
 
         private void AddBindings()
         {
-            
+            // live
+            kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().InRequestScope();
+            kernel.Bind<IUserManager>().To<LogicLayer.UserManager>().InRequestScope();
+            kernel.Bind<IVolunteerManager>().To<VolunteerManager>();
+            kernel.Bind<ILocationManager>().To<LocationManager>();
+            kernel.Bind<ISupplierManager>().To<SupplierManager>();
+            kernel.Bind<IActivityManager>().To<ActivityManager>();
+            kernel.Bind<IEventDateManager>().To<EventDateManager>();
+
+
+            // fake
+            //kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().WithConstructorArgument("eventAccessor", new EventAccessorFake());
         }
 
         public object GetService(Type serviceType)

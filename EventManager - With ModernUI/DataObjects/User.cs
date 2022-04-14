@@ -19,6 +19,7 @@ namespace DataObjects
         public string UserDescription { get; set; }
         public bool Active { get; set; }
         public string DateCreated { get; set; }
+        public List<string> Roles { get; set; }
 
         public User()
         {

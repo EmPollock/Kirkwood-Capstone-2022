@@ -356,5 +356,96 @@ namespace LogicLayerTests
 
         }
 
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierAvailabilityBySupplierID correctly returns an AvailabilityVM list
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierAvailabilityBySupplierIDReturnsCorrectAmount()
+        {
+            // arrange
+            const int supplierID = 100000;
+            int expectedCount = 3;
+            int actualCount;
+
+            // act
+            actualCount = _supplierManager.RetrieveSupplierAvailabilityBySupplierID(supplierID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierAvailabilityBySupplierID correctly returns an AvailabilityVM list
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierAvailabilityExceptionBySupplierIDReturnsCorrectAmount()
+        {
+            // arrange
+            const int supplierID = 100000;
+
+            int expectedCount = 1;
+            int actualCount;
+
+            // act
+            actualCount = _supplierManager.RetrieveSupplierAvailabilityExceptionBySupplierID(supplierID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierBySupplierID returns the correct supplier
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveSupplierBySupplierIDReturnsCorrectSupplier()
+        {
+            // arrange
+            const int id = 100000;
+            const string expected = "Test Supplier 1";
+            Supplier supplier = new Supplier();
+            string actual;
+
+            // act
+            supplier = _supplierManager.RetrieveSupplierBySupplierID(id);
+            actual = supplier.Name;
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveSupplierBySupplierID returns an 
+        /// application exception given an invalid id
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestRetrieveSupplierBySupplierIDReturnsApplicationExceptionIfInvalidID()
+        {
+            // arrange
+            const int id = 200000;
+            Supplier supplier = new Supplier();
+
+            // act
+            supplier = _supplierManager.RetrieveSupplierBySupplierID(id);
+
+            // assert
+            // nothing to assert
+        }
     }
 }

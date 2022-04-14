@@ -146,7 +146,6 @@ namespace LogicLayer
         /// <param name="oldEvent">The record previously stored</param>
         /// <param name="newEvent">The new record containing the updates to the old</param>
         /// <returns>True or false if one record was updated</returns>
-
         public bool UpdateEvent(Event oldEvent, Event newEvent)
         {
             bool result = false;
@@ -506,7 +505,6 @@ namespace LogicLayer
             return eventID;
         }
 
-
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/02/18
@@ -533,6 +531,107 @@ namespace LogicLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Returns a list of event planners given an event ID
+        /// 
+        /// </summary>
+        /// <param name="eventID">Event ID</param>
+        /// <returns>List of event planners</returns>
+        public List<User> RetrieveEventPlannersForEvent(int eventID)
+        {
+            List<User> users = new List<User>();
+
+            try
+            {
+                users = _eventAccessor.SelectEventPlannersForEvent(eventID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (users.Count == 0)
+            {
+                throw new ApplicationException("No users were found for this event.");
+            }
+
+            return users;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/04/06
+        /// 
+        /// Description:
+        /// Returns a list that includes the search word
+        /// in the event name, description, or in the location name, city, or state
+        /// 
+        /// </summary>
+        /// <param name="search">Search criteria</param>
+        /// <returns>List of EventVMs that contain search criteria</returns>
+        public List<EventVM> RetrieveEventListForSearch(string search)
+        {
+            List<EventVM> eventVMs = new List<EventVM>();
+
+            //Green
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+            //eventVMs.Add(new EventVM());
+
+            if (search.Length > 50)
+            {
+                throw new ApplicationException("The search criteria can not be longer than 50 characters.");
+            }
+
+            try
+            {
+                eventVMs = _eventAccessor.SelectEventsForSearch(search);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return eventVMs;
+        }
+
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/01
+        /// 
+        /// Description: returns event using eventid
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public EventVM RetrieveEventByEventID(int eventID)
+        {
+            EventVM eventToGet = null;
+
+            try
+            {
+                eventToGet = _eventAccessor.SelectEventByEventID(eventID);
+                if (eventToGet == null)
+                {
+                    throw new ApplicationException("Could not find an event with that name and description.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return eventToGet;
         }
     }
 }

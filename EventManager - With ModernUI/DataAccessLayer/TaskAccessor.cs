@@ -43,7 +43,6 @@ namespace DataAccessLayer
         /// 
         public int InsertTasks(Tasks newTask, int numTotalVolunteers)
         {
-            int rowsAffected = 0;
             int taskID;
 
             var conn = DBConnection.GetConnection();
@@ -101,7 +100,7 @@ namespace DataAccessLayer
             try
             {
                 conn.Open();
-                rowsAffected = cmd2.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -112,7 +111,8 @@ namespace DataAccessLayer
             {
                 conn.Close();
             }
-            return rowsAffected;
+
+            return taskID;
         }
 
         /// <summary>
@@ -260,13 +260,6 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select method that grabs a list of all tasks for an event
-        /// 
-        /// Derrick Nagy
-        /// Update: 2022/03/27
-        /// 
-        /// Description:
-        /// Added check for DateTime.MinValue so that it would pass a sql null if true
-        /// 
         /// </summary>
         /// <returns>List Tasks</returns>
         public List<TasksVM> SelectAllActiveTasksByEventID(int eventID)
@@ -295,7 +288,7 @@ namespace DataAccessLayer
                             TaskID = reader.GetInt32(0),
                             Name = reader.GetString(1),
                             Description = reader.GetString(2),
-                            DueDate = (reader.IsDBNull(3)) ? new DateTime() : reader.GetDateTime(3),
+                            DueDate = reader.GetDateTime(3),
                             Priority = reader.GetInt32(4),
                             TaskPriority = reader.GetString(5),
                             TaskEventName = reader.GetString(6),
@@ -313,63 +306,45 @@ namespace DataAccessLayer
             return tasks;
         }
 
-        /// <summary>
-        /// Emma Pollock
-        /// Created: 2022/03/10
+        /// Jace Pettinger
+        /// Created: 2022/03/31
         /// 
         /// Description:
-        /// Select method that gets a list of taskAssginments for a task
+        /// Insert new Task Assignment into task assignment table with a TaskID
         /// </summary>
-        /// <param name="taskID"></param>
-        /// <returns>List Tasks</returns>
-        public List<TaskAssignmentVM> SelectTaskAssignmentsByTaskID(int taskID)
+        /// <returns>The new TaskAssignment ID</returns>
+        public int InsertNewTaskAssignmentByTaskID(int taskID)
         {
-            List<TaskAssignmentVM> taskAssignments = new List<TaskAssignmentVM>();
+            int taskAssignmentID;
 
             var conn = DBConnection.GetConnection();
-            var cmdText = "sp_select_task_assignments_by_task_id";
+            var cmdText = "sp_insert_new_taskAssignment_by_taskID";
             var cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@TaskID", SqlDbType.Int);
-            cmd.Parameters["@TaskID"].Value = taskID;
+            cmd.Parameters.Add("@taskID", SqlDbType.Int);
+            cmd.Parameters["@taskID"].Value = taskID;
 
             try
             {
                 conn.Open();
-                var reader = cmd.ExecuteReader();
+                taskAssignmentID = Convert.ToInt32(cmd.ExecuteScalar());
 
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        taskAssignments.Add(new TaskAssignmentVM()
-                        {
-                            /*
-                              [TaskAssignmentID]	
-                              [DateAssigned]		 				 		 
-                              [UserID]			 
-                              [RoleID]	
-                              [GivenName]
-                              [FamilyName]
-                            */
-                            TaskAssignmentID = reader.GetInt32(0),
-                            DateAssigned = DateTime.Parse(reader[1].ToString()),
-                            TaskID = taskID,
-                            UserID = reader.GetInt32(2),
-                            RoleID = reader.GetString(3),
-                            Name = reader.GetString(4) + " " + reader.GetString(5)
-                        });
-                    }
-                }
             }
             catch (Exception ex)
             {
+
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return taskAssignments;
+            return taskAssignmentID;
         }
+
+
 
         /// <summary>
         /// Mike Cahow
@@ -434,6 +409,96 @@ namespace DataAccessLayer
         }
 
         /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/10
+        /// 
+        /// Description:
+        /// Select method that gets a list of taskAssginments for a task
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <returns>List Tasks</returns>
+        public List<TaskAssignmentVM> SelectTaskAssignmentsByTaskID(int taskID)
+        {
+            List<TaskAssignmentVM> taskAssignments = new List<TaskAssignmentVM>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_task_assignments_by_task_id";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@TaskID", SqlDbType.Int);
+            cmd.Parameters["@TaskID"].Value = taskID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        taskAssignments.Add(new TaskAssignmentVM()
+                        {
+                            TaskAssignmentID = reader.GetInt32(0),
+                            DateAssigned = DateTime.Parse(reader[1].ToString()),
+                            TaskID = taskID,
+                            UserID = reader.IsDBNull(2) ? 0 : reader.GetInt32(2) ,
+                            RoleID = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Name = reader.GetString(4) + " " + reader.GetString(5)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return taskAssignments;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Update a Task Assignment with a volunteer UserID
+        /// </summary>
+        /// <returns>number of rows affected</returns>
+        public int UpdateTaskAssignmentWithUserID(int taskAssignmentID, int userID)
+        {
+            int rowsAffected = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_update_task_assignment_with_userID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@TaskAssignmentID", SqlDbType.Int);
+            cmd.Parameters["@TaskAssignmentID"].Value = taskAssignmentID;
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
         /// Mike Cahow
         /// Created: 2022/03/25
         /// 
@@ -470,6 +535,58 @@ namespace DataAccessLayer
             }
 
             return deleted;
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/05
+        /// 
+        /// Description: Returns all tasks tied to an event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<TasksVM> SelectAllTasksByEventID(int eventID)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_tasks_by_eventID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+            cmd.Parameters["@EventID"].Value = eventID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        tasks.Add(new TasksVM()
+                        {
+                            TaskID = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Description = reader.GetString(2),
+                            DueDate = (reader.IsDBNull(3)) ? new DateTime() : reader.GetDateTime(3),
+                            Priority = reader.GetInt32(4),
+                            TaskPriority = reader.GetString(5),
+                            TaskEventName = reader.GetString(6),
+                            Active = reader.GetBoolean(7)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return tasks;
         }
     }
 }

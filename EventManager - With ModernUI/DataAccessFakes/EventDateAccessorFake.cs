@@ -13,6 +13,8 @@ namespace DataAccessFakes
     {
         private List<EventDate> _fakeEventDate = new List<EventDate>();
         private List<EventDateVM> _fakeEventDatesForLocation = new List<EventDateVM>();
+        private List<TasksVM> _fakeTasks = new List<TasksVM>();
+        private List<TaskAssignmentVM> _taskAssignments = new List<TaskAssignmentVM>();
 
         /// <summary>
         /// Derrick Nagy
@@ -110,6 +112,60 @@ namespace DataAccessFakes
                 StartTime = new DateTime(2022, 01, 01, 8, 0, 0),
                 EndTime = new DateTime(2022, 01, 01, 20, 0, 0),
                 Active = true
+            });
+
+            _fakeTasks.Add(new TasksVM()
+            {
+                EventID = 1,
+                TaskID = 999999,
+                TaskEventName = "Test Event 1",
+                Name = "Mop",
+                Description = "Mop up spilled drink",
+                DueDate = DateTime.Today,
+                Priority = 3,
+                TaskPriority = "High",
+                Active = true
+            });
+
+            _fakeTasks.Add(new TasksVM()
+            {
+                EventID = 1,
+                TaskID = 999998,
+                TaskEventName = "Test Event 1",
+                Name = "Wash Towels",
+                Description = "Wash Towels after Events",
+                DueDate = DateTime.Today,
+                Priority = 1,
+                TaskPriority = "Low",
+                Active = true
+            });
+
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 1,
+                DateAssigned = new DateTime(2022, 1, 20),
+                TaskID = 999999,
+                RoleID = "Event Planner",
+                UserID = 999999,
+                Name = "Tess Data"
+            });
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 2,
+                DateAssigned = new DateTime(2022, 2, 3),
+                TaskID = 999999,
+                RoleID = "Volunteer",
+                UserID = 999998,
+                Name = "Tess Data"
+            });
+            _taskAssignments.Add(new TaskAssignmentVM()
+            {
+                TaskAssignmentID = 1,
+                DateAssigned = new DateTime(2022, 3, 7),
+                TaskID = 999998,
+                RoleID = "Event Planner",
+                UserID = 999999,
+                Name = "Tess Data"
             });
         }
 
@@ -252,6 +308,52 @@ namespace DataAccessFakes
             });
 
             return eventDatesForLocation;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// The fake accessor for selecting event dates by their userID and eventDate
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="eventDate"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
+        public List<EventDateVM> SelectEventDateByUserIDAndDate(int userID, DateTime eventDate)
+        {
+            List<EventDateVM> eventDates = new List<EventDateVM>();
+
+            foreach(EventDate fakeEventDate in _fakeEventDate)
+            {
+                if (fakeEventDate.EventDateID.Date == eventDate.Date)
+                {
+                    foreach(TasksVM task in _fakeTasks)
+                    {
+                        if(task.EventID == fakeEventDate.EventID)
+                        {
+                            foreach(TaskAssignmentVM taskAssignment in _taskAssignments)
+                            {
+                                if(taskAssignment.TaskID == task.TaskID)
+                                {
+                                    if(taskAssignment.UserID == userID)
+                                    {
+                                        eventDates.Add(new EventDateVM() 
+                                        {
+                                            EventName = task.TaskEventName,
+                                            EventID = fakeEventDate.EventID,
+                                            StartTime = fakeEventDate.StartTime,
+                                            EndTime = fakeEventDate.EndTime
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return eventDates;
         }
     }
 }

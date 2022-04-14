@@ -17,5 +17,7 @@ namespace DataAccessInterfaces
     {
         List<Volunteer> SelectAllVolunteers();
         List<Volunteer> SelectAllVolunteerReviews();
+        List<Availability> SelectAvailabilityByVolunteerIDAndDate(int volunteerID, DateTime date);
+        List<Availability> SelectAvailabilityExceptionByVolunteerIDAndDate(int volunteerID, DateTime date);
     }
 }

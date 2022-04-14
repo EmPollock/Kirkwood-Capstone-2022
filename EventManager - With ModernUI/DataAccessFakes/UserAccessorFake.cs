@@ -27,7 +27,7 @@ namespace DataAccessFakes
                 State = "CA",
                 City = "Los Angeles",
                 Zip = 12345,
-                //Roles = new List<String>(),
+                Roles = new List<String>(),
                 Active = true
             });
             this.fakeUsers.Add(new User()
@@ -39,7 +39,7 @@ namespace DataAccessFakes
                 State = "NV",
                 City = "Reno",
                 Zip = null,
-                //Roles = new List<String>(),
+                Roles = new List<String>(),
                 Active = true
             });
             this.fakeUsers.Add(new User()
@@ -51,14 +51,14 @@ namespace DataAccessFakes
                 State = "IA",
                 City = "Cedar Rapids",
                 Zip = 12345,
-                //Roles = new List<String>(),
+                Roles = new List<String>(),
                 Active = true
             });
 
-            //this.fakeUsers[0].Roles.Add("Prep");
-            //this.fakeUsers[0].Roles.Add("Rental");
+            this.fakeUsers[0].Roles.Add("Attendee");
+            this.fakeUsers[0].Roles.Add("Administrator");
 
-            this.fakePasswordHashes.Add("9C9064C59F1FFA2E174EE754D2979BE80DD30DB552EC03E7E327E9B1A4BD594E");
+            this.fakePasswordHashes.Add("b03ddf3ca2e714a6548e7495e2a03f5e824eaac9837cd7f159c67b90fb4b7342".ToUpper());
             this.fakePasswordHashes.Add("dup-9C9064C59F1FFA2E174EE754D2979BE80DD30DB552EC03E7E327E9B1A4BD594E");
             this.fakePasswordHashes.Add("dup-9C9064C59F1FFA2E174EE754D2979BE80DD30DB552EC03E7E327E9B1A4BD594E");
         }
@@ -94,12 +94,42 @@ namespace DataAccessFakes
         }
 
         /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/3/25
+        /// 
+        /// Description:
+        /// Method to test deleting a user role
+        /// 
+        /// </summary>
+        /// <param name="userID">ID to insert for</param>
+        /// <param name="role">Role to insert</param>
+        /// <returns>number of affected roles</returns>
+        public int DeleteUserRole(int userID, string role)
+        {
+            int rowsAffected = 0;
+            foreach (User user in fakeUsers)
+            {
+                if (user.UserID == userID)
+                {
+                    user.Roles.Remove(role);
+                    rowsAffected++;
+                }
+            }
+            return rowsAffected;
+        }
+
+        /// <summary>
         /// Ramiro Pena
         /// Created: 2022/01/26
         /// 
         /// Description:
         /// create fake user with fake data
         /// 
+        /// Updated 2022/03/24
+        /// Updated By: Christopher Repko
+        /// 
+        /// Description:
+        /// Added password entry when creating new user.
         /// </summary>
         /// <param name="newUser">User to be used to insert</param>
         /// <returns>Number of insert operations carried out</returns>
@@ -119,9 +149,51 @@ namespace DataAccessFakes
                 Zip = newUser.Zip
             });
 
+            fakePasswordHashes.Add("b03ddf3ca2e714a6548e7495e2a03f5e824eaac9837cd7f159c67b90fb4b7342".ToUpper());
+
             rowsAffected++;
 
             return rowsAffected;
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Method to test role logic
+        /// 
+        /// </summary>
+        /// <returns>The number of rows affected</returns>
+        public int InsertUserRole(int userID, string role)
+        {
+            int rowsAffected = 0;
+            foreach(User user in fakeUsers)
+            {
+                if (user.UserID == userID)
+                {
+                    user.Roles.Add(role);
+                    rowsAffected++;
+                }
+            }
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Method to test role logic
+        /// 
+        /// </summary>
+        /// <returns>A list of strings representing roles</returns>
+        public List<string> SelectAllRoles()
+        {
+            List<string> result = new List<string>();
+            result.Add("Administrator");
+            result.Add("Event Planner");
+            return result;
         }
 
         /// <summary>

@@ -202,6 +202,12 @@ namespace WPFPresentation
         /// 
         /// solution for how to pass an event object to a new page found at 
         /// https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1ea74ce-fd91-46c6-83bd-90cba1528b04/how-to-get-values-from-one-wpf-page-to-another-wpf-page?forum=wpf
+        /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Updated to direct to pgEventFrame, which will load pgEventEditDetail within it
         /// </summary>
         private void datActiveEvents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -210,7 +216,8 @@ namespace WPFPresentation
                 return;
             }
             DataObjects.EventVM selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
-            pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _managerProvider, _user);
+            // pgEventEditDetail viewEditPage = new pgEventEditDetail(selectedEvent, _managerProvider, _user);
+            Page viewEditPage = new pgEventFrame(selectedEvent, _managerProvider, _user);
             this.NavigationService.Navigate(viewEditPage);
         }
 
@@ -410,46 +417,39 @@ namespace WPFPresentation
             }
         }
 
+        
+
         /// <summary>
-        /// Logan Baccam
-        /// Created: 2022/02/18
+        /// Vinayak Deshpande
+        /// Created: 2022/03/30
         /// 
         /// Description:
-        /// handler for navigating to the view activities page
-        /// 
+        /// Reveals a button for duplicating an event if an existing event is selected.
         /// </summary>
-        private void btnActivity_Click(object sender, RoutedEventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datActiveEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedEvent = (DataObjects.EventVM)datActiveEvents.SelectedItem;
-            Event.pgViewActivities page;
-            Uri pageURI = new Uri("Event/pgViewActivities.xaml", UriKind.Relative);
+            btnCopyEvent.Visibility = Visibility.Visible;
+        }
 
-            if (_user != null)
-            {
-                if (selectedEvent is null)
-                {
-                    page = new Event.pgViewActivities(_user, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-                else
-                {
-                    page = new Event.pgViewActivities(selectedEvent, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-            }
-            else
-            {
-                if (selectedEvent is null)
-                {
-                    page = new Event.pgViewActivities(_managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-                else 
-                {
-                    page = new Event.pgViewActivities(selectedEvent, _managerProvider);
-                    this.NavigationService.Navigate(page, pageURI);
-                }
-            }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/30
+        /// 
+        /// Description: 
+        /// Functionality for the duplicate event button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCopyEvent_Click(object sender, RoutedEventArgs e)
+        {
+            EventVM selectedEvent = new EventVM();
+            selectedEvent = (EventVM)datActiveEvents.SelectedItem;
+            pgCreateEvent createEventPage = new pgCreateEvent(_user, _managerProvider, selectedEvent);
+            this.NavigationService.Navigate(createEventPage);
+
         }
     }
 

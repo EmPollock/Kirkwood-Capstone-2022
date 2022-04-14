@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -65,6 +66,9 @@
     <Compile Include="CustomControls\TimeComboBoxes.xaml.cs">
       <DependentUpon>TimeComboBoxes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Duplicate\pgDuplicateEvent.xaml.cs">
+      <DependentUpon>pgDuplicateEvent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Event\pgCreateActivity.xaml.cs">
       <DependentUpon>pgCreateActivity.xaml</DependentUpon>
     </Compile>
@@ -73,6 +77,9 @@
     </Compile>
     <Compile Include="Event\pgEventEditDetail.xaml.cs">
       <DependentUpon>pgEventEditDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Event\pgEventFrame.xaml.cs">
+      <DependentUpon>pgEventFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Event\pgTaskListCreate.xaml.cs">
       <DependentUpon>pgTaskListCreate.xaml</DependentUpon>
@@ -128,6 +135,18 @@
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Supplier\pgSupplierDetails.xaml.cs">
+      <DependentUpon>pgSupplierDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\pgSupplierFrame.xaml.cs">
+      <DependentUpon>pgSupplierFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\pgSupplierPricing.xaml.cs">
+      <DependentUpon>pgSupplierPricing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\pgSupplierSchedule.xaml.cs">
+      <DependentUpon>pgSupplierSchedule.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Supplier\pgViewSupplierListing.xaml.cs">
       <DependentUpon>pgViewSupplierListing.xaml</DependentUpon>
     </Compile>
@@ -147,7 +166,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Volunteer\pgViewVolunteerSchedule.xaml.cs">
+      <DependentUpon>pgViewVolunteerSchedule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Volunteer\pgVolunteerFrame.xaml.cs">
+      <DependentUpon>pgVolunteerFrame.xaml</DependentUpon>
+    </Compile>
     <Page Include="CustomControls\TimeComboBoxes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Duplicate\pgDuplicateEvent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -156,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Event\pgEventEditDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Event\pgEventFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -243,6 +276,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Supplier\pgSupplierDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Supplier\pgSupplierFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Supplier\pgSupplierPricing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Supplier\pgSupplierSchedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Supplier\pgViewSupplierListing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,6 +309,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Volunteer\pgViewVolunteerDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Volunteer\pgViewVolunteerSchedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Volunteer\pgVolunteerFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

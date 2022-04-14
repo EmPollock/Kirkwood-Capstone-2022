@@ -240,7 +240,7 @@ namespace WPFPresentation.Location
                 }
             }
 
-            txtLocationNamesSchedule.Text = _location.Name + "'s Schedule";
+            txtLocationNamesSchedule.Text = _location.Name + "'s Schedu le";
             lblBookings.Text = "Booked Events";
             _eventDatesForLocation = _eventDateManager.RetrieveEventDatesByLocationID(_location.LocationID);
         }
