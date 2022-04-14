@@ -8,16 +8,17 @@
     {
         @Html.AntiForgeryToken()
 
-
-            <li class="nav-item">
-
+<li class="nav-item">
+    @if (user != null)
+    {
         @Html.ActionLink("Hello " + user.GivenName + " " + user.FamilyName + "!", "Index", "Manage", routeValues: null,
-                htmlAttributes: new
-                        {
-                    title = "Manage",
-                    @class = "nav-link"
-                })
-        </li>
+        htmlAttributes: new
+        {
+            title = "Manage",
+            @class = "nav-link"
+        })
+    }
+</li>
         <li class="nav-item">
             <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         </li>

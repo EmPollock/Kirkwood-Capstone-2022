@@ -625,6 +625,7 @@ namespace DataAccessLayer
         public List<EventVM> SelectUserEventsForUpcomingDates(int userID)
         {
             List<EventVM> eventListRef = new List<EventVM>();
+            List<EventVM> eventListRefNoDates = new List<EventVM>();
 
             var conn = DBConnection.GetConnection();
             string cmdText = "sp_select_active_events_for_upcoming_dates_for_user";
@@ -692,10 +693,6 @@ namespace DataAccessLayer
                 conn.Close();
             }
 
-            eventListRef = eventDateVMHelper(eventListRef);
-            eventListRef = getManagersForEvents(eventListRef);
-
-            return eventListRef;
             string cmdText2 = "sp_select_active_events_with_no_dates_for_user";
             var cmd2 = new SqlCommand(cmdText2, conn);
             cmd2.CommandType = CommandType.StoredProcedure;
@@ -712,7 +709,7 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        eventListRef.Add(new EventVM()
+                        eventListRefNoDates.Add(new EventVM()
                         {
                             EventID = reader.GetInt32(0),
                             EventName = reader.GetString(1),
@@ -743,7 +740,15 @@ namespace DataAccessLayer
             {
                 conn.Close();
             }
-            return eventDateVMHelper(eventListRef);
+
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRefNoDates = eventDateWithNoDatesVMHelper(eventListRefNoDates);
+
+            eventListRef.AddRange(eventListRefNoDates);
+
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
 
 
         }
@@ -1109,6 +1114,57 @@ namespace DataAccessLayer
 
             return noDates;
         }
+
+        private List<EventVM> eventDateWithNoDatesVMHelper(List<EventVM> eventListRef)
+        {
+            List<EventVM> eventList = new List<EventVM>();
+            List<EventDate> allDates = new List<EventDate>();
+            if (eventListRef.Count > 0)
+            {
+                foreach (EventVM item in eventListRef)
+                {
+                    allDates.Add(item.EventDates[0]);
+
+                    eventList.Add(new EventVM()
+                    {
+                        EventID = item.EventID,
+                        EventName = item.EventName,
+                        EventDescription = item.EventDescription,
+                        EventCreatedDate = item.EventCreatedDate,
+                        TotalBudget = item.TotalBudget,
+                        LocationID = item.LocationID,
+                        EventDates = new List<EventDate>()
+                    });
+                }
+            }
+
+            //remove duplicates
+            List<EventVM> noDuplicates = eventList.GroupBy(e => e.EventID).Select(e => e.First()).ToList();
+
+            foreach (EventVM item in eventList)
+            {
+                for (int i = 0; i < allDates.Count; i++)
+                {
+
+                    if (item.EventID == allDates[i].EventID && allDates[i].EventDateID != DateTime.MinValue)
+                    {
+                        item.EventDates.Add(allDates[i]);
+                    }
+                }
+            }
+
+            // take out no dates
+            List<EventVM> noDates = noDuplicates.FindAll(e => e.EventDates.Count == 0);
+            List<EventVM> eventsWithDates = noDuplicates.FindAll(e => e.EventDates.Count > 0);
+
+            // sort by earliest date
+            eventsWithDates.Sort((ev1, ev2) => ev1.EventDates[0].EventDateID.CompareTo(ev2.EventDates[0].EventDateID));
+
+            noDates.AddRange(eventsWithDates);
+
+            return noDates;
+        }
+
 
         /// <summary>
         /// Derrick Nagy

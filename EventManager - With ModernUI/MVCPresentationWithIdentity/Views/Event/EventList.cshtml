@@ -3,21 +3,23 @@
 @using Microsoft.AspNet.Identity.Owin;
 @{
     ViewBag.Title = "Events";
+
+
 }
 
 @{
-        ApplicationUserManager userManager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
-        var loggedInUser = userManager.FindById(User.Identity.GetUserId()); 
+    ApplicationUserManager userManager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+    var loggedInUser = userManager.FindById(User.Identity.GetUserId());
 }
-<div class="container mt-2">
+<div class="container mt-3">
     <div class="d-flex">
-        <nav class="col-md-2 me-auto" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">@Html.ActionLink("Events", "EventList", "Event", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+        <nav class="col-sm-4 me-auto" aria-label="breadcrumb">
+            <ol class="breadcrumb">                
+                <li class="breadcrumb-item active">Events</li>
             </ol>
         </nav>
 
-        <div class="dropdown m-3">
+        <div class="dropdown m-2">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="FilterDropDown" data-bs-toggle="dropdown" aria-expanded="false">
                 Filters
             </button>
@@ -27,12 +29,12 @@
                 <li>@Html.ActionLink("Past and Future Events", "AllEvents", "Event", new { @class = "dropdown-item" })</li>
                 <li>@Html.ActionLink("My Future Events", "UserFutureEvents", "Event", new { @class = "dropdown-item" })</li>
                 <li>@Html.ActionLink("My Past Events", "UserPastEvents", "Event", new { @class = "dropdown-item" })</li>
-                <li>@Html.ActionLink("My Past and Future Events", "UserAllEvents", "Event", new { @class = "dropdown-item" })</li>                
+                <li>@Html.ActionLink("My Past and Future Events", "UserAllEvents", "Event", new { @class = "dropdown-item" })</li>
             </ul>
         </div>
         @Html.Hidden("user", loggedInUser)
 
-        <form class=" col-md-2 m-3">
+        <form class=" col-md-2 m-2">
             <input class=" form-control" type="text" placeholder="Search" aria-label="Search">
         </form>
 
@@ -42,267 +44,105 @@
 <div class="row">
     <h2 class="m-2">Events</h2>
 </div>
-
-
-
-
-@*<div class="row">
-        <ul class="dropdown-menu">
-            <li><h5 class="dropdown-header">All Event or My Events</h5></li>
-            <li class="m-3">
-                @using (Html.BeginForm("FilterResults", "Event"))
-                {
-                    <div class="form-check">
-                        <label class="form-check-label" for="radAllEvents">
-                            @Html.RadioButton("radEventFilterAllOrUser", "all", true, new { @class = "form-check-input", name = "radEventFilterAllOrUser", id = "radAllEvents" }) All Events
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radMyEvents">
-                            @Html.RadioButton("radEventFilterAllOrUser", "user", false, new { @class = "form-check-input", name = "radEventFilterAllOrUser", id = "radMyEvents" }) My Events
-                        </label>
-                    </div>
-                }
-            </li>
-            <li><hr class="dropdown-divider"></hr></li>
-            <li><h5 class="dropdown-header">Dates</h5></li>
-            <li>
-            <li class="m-3">
-                @using (Html.BeginForm("FilterResults", "Event"))
-                {
-                    <div class="form-check">
-                        <label class="form-check-label" for="radUpcomingEvents">
-                            @Html.RadioButton("radEventFilterTime", "upcoming", true, new { @class = "form-check-input", name = "radEventFilterTime", id = "radUpcomingEvents" }) Upcoming Events
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radPastEvents">
-                            @Html.RadioButton("radEventFilterTime", "past", false, new { @class = "form-check-input", name = "radEventFilterTime", id = "radPastEvents" }) Past Events
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radPastAndUpcomingEvents">
-                            @Html.RadioButton("radEventFilterTime", "pastAndFuture", false, new { @class = "form-check-input", name = "radEventFilterTime", id = "radPastAndUpcomingEvents" }) Past and Upcoming Events
-                        </label>
-                    </div>
-                    <input type="submit" />
-                }
-
-            </li>
-
-
-        </ul>
-    </div>*@
-
-
-
-
-
-@*<p>
-        @Html.ActionLink("Create New", "Create")
-    </p>*@
-<div class="row table-responsive-md">
-    <table class="table table-bordered" id="eventListTable">
-        <tr class="bg-light">
-            <th>
-                <div class="d-flex">
-                    <p class="text-start text-nowrap me-2">Name</p>
-                    <button onclick="sortEventTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
-                </div>
-            </th>
-            <th>
-                <div class="d-flex">
-                    <p class="text-start text-nowrap me-2">Organizer</p>
-                    <button onclick="sortEventTable(1)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
-                </div>
-            </th>
-            <th>
-                <div class="d-flex">
-                    <p class="text-start text-nowrap me-2">Description</p>
-                </div>
-                @*<div class="float-end">
-                        <i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i>
-                    </div>*@
-            </th>
-            <th>
-                <div class="d-flex ">
-                    <p class="text-start text-nowrap me-2">Event Dates</p>
-                    <button onclick="sortEventTable(3)" class="btn btn-sm btn-outline-dark ms-auto">
-                        <i class="bi bi-arrow-down-up"></i>
-                    </button>
-                </div>
-            </th>
-            <th>
-                <div class="d-flex">
-                    <p class="text-start text-nowrap me-2">Location</p>
-
-                    <button onclick="sortEventTable(4)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
-                </div>
-
-
-            </th>
-            <th>Details</th>
-            <th>Volunteer</th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.EventName)
-                </td>
-                <td>
-                    @foreach (var user in item.EventManagers)
-                    {
-                        <p class="">@user.GivenName @user.FamilyName</p>
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EventDescription)
-                </td>
-                <td>
-                    @foreach (var date in item.EventDates)
-                    {
-                        <span class="">@Html.DisplayFor(modelItem => date.EventDateID)</span><br />
-                    }
-                </td>
-                <td>
-                    <p>@item.Location.Name, @item.Location.City, @item.Location.State</p>
-                </td>
-
-                <td>
-                    @Html.ActionLink("Details", "Details", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-info m-1" })
-
-                </td>
-                <td>
-                    @Html.ActionLink("Apply", "Apply", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-primary m-1" })
-
-                </td>
-            </tr>
-        }
-
-    </table>
+<div class="row">
+    <span class="col-2">@Html.ActionLink("Create an Event", "EventCreate", "EventCreate", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })</span>
+    
 </div>
 
 
-@*<div class="row">
-        @using (Html.BeginForm("FilterResults", "Event"))
-        {
-            <div class="row mb-2">
-                <div class="col"></div>
-                <div class="col-md-2">
-                    <h5 class="border-bottom">All Events or My Events</h5>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radAllEvents">
-                            @Html.RadioButton("radEventFilterAllOrUser", "all", true, new { @class = "form-check-input", name = "radEventFilterAllOrUser", id = "radAllEvents" }) All Events
-                        </label>
+@if (Model != null && Model.Count() > 0 )
+{
+    <div class="row table-responsive-md mt-3">
+        <table class="table table-bordered" id="eventListTable">
+            <tr class="bg-light">
+                <th>
+                    <div class="d-flex">
+                        <p class="text-start text-nowrap me-2">Name</p>
+                        <button onclick="sortEventTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
                     </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radMyEvents">
-                            @Html.RadioButton("radEventFilterAllOrUser", "user", false, new { @class = "form-check-input", name = "radEventFilterAllOrUser", id = "radMyEvents" }) My Events
-                        </label>
+                </th>
+                <th>
+                    <div class="d-flex">
+                        <p class="text-start text-nowrap me-2">Organizer</p>
+                        <button onclick="sortEventTable(1)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <h5 class="border-bottom">Dates</h5>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radUpcomingEvents">
-                            @Html.RadioButton("radEventFilterTime", "upcoming", true, new { @class = "form-check-input", name = "radEventFilterTime", id = "radUpcomingEvents" }) Upcoming Events
-                        </label>
+                </th>
+                <th>
+                    <div class="d-flex">
+                        <p class="text-start text-nowrap me-2">Description</p>
                     </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radPastEvents">
-                            @Html.RadioButton("radEventFilterTime", "past", false, new { @class = "form-check-input", name = "radEventFilterTime", id = "radPastEvents" }) Past Events
-                        </label>
+                    @*<div class="float-end">
+                            <i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i>
+                        </div>*@
+                </th>
+                <th>
+                    <div class="d-flex ">
+                        <p class="text-start text-nowrap me-2">Event Dates</p>
+                        <button onclick="sortEventTable(3)" class="btn btn-sm btn-outline-dark ms-auto">
+                            <i class="bi bi-arrow-down-up"></i>
+                        </button>
                     </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radPastAndUpcomingEvents">
-                            @Html.RadioButton("radEventFilterTime", "pastAndFuture", false, new { @class = "form-check-input", name = "radEventFilterTime", id = "radPastAndUpcomingEvents" }) Past and Upcoming Events
-                        </label>
+                </th>
+                <th>
+                    <div class="d-flex">
+                        <p class="text-start text-nowrap me-2">Location</p>
+
+                        <button onclick="sortEventTable(4)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
                     </div>
-                </div>
-                <div class="col-md-2">
-                    <input class="btn btn-sm btn-outline-dark" type="submit" value="Filter" />
-                </div>
-            </div>
-
-        }
-    </div>*@
 
 
+                </th>
+                <th>Details</th>
+                <th>Volunteer</th>
+            </tr>
 
-@*<div class="row">
-        @using (Html.BeginForm("FilterResults", "Event"))
-        {
-            <div class="row mb-2">
-                <div class="col"></div>
-                <div class="col-md-2">
-                    <h5 class="border-bottom">All Events or My Events</h5>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radAllEvents">
-                            @Html.RadioButton("radEventFilterAllOrUser", "all", true, new { @class = "form-check-input", name = "radEventFilterAllOrUser", id = "radAllEvents" }) All Events
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radMyEvents">
-                            @Html.RadioButton("radEventFilterAllOrUser", "user", false, new { @class = "form-check-input", name = "radEventFilterAllOrUser", id = "radMyEvents" }) My Events
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <h5 class="border-bottom">Dates</h5>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radUpcomingEvents">
-                            @Html.RadioButton("radEventFilterTime", "upcoming", true, new { @class = "form-check-input", name = "radEventFilterTime", id = "radUpcomingEvents" }) Upcoming Events
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radPastEvents">
-                            @Html.RadioButton("radEventFilterTime", "past", false, new { @class = "form-check-input", name = "radEventFilterTime", id = "radPastEvents" }) Past Events
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radPastAndUpcomingEvents">
-                            @Html.RadioButton("radEventFilterTime", "pastAndFuture", false, new { @class = "form-check-input", name = "radEventFilterTime", id = "radPastAndUpcomingEvents" }) Past and Upcoming Events
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <input class="btn btn-sm btn-outline-dark" type="submit" value="Filter" />
-                </div>
-            </div>
+            @foreach (var item in Model)
+            {
+                <tr>
 
-        }
-    </div>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EventName)
+                    </td>
+                    <td>
+                        @foreach (var user in item.EventManagers)
+                        {
+                            <p class="">@user.GivenName @user.FamilyName</p>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EventDescription)
+                    </td>
+                    <td>
+                        @foreach (var date in item.EventDates)
+                        {
+                            <span class="">@Html.DisplayFor(modelItem => date.EventDateID)</span><br />
+                        }
+                    </td>
+                    <td>
+                        @if (item.LocationID != null)
+                        {
+                            <p>@item.Location.Name, @item.Location.City, @item.Location.State</p>
+                        }
 
 
+                    </td>
 
-@*<div class="container mt-2">
-        <div class="d-flex">
-            <nav class="col-md-2 me-auto" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">@Html.ActionLink("Events", "EventList", "Event", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
-                </ol>
-            </nav>
+                    <td>
+                        @Html.ActionLink("Details", "Details", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-info m-1" })
 
-            <form>
-                <select class="form-select col m-3" aria-label="All events or my events">
-                    <option selected>Filter</option>
-                    <option value="all">All Upcoming</option>
-                    <option value="user">All Past</option>
-                    <option value="user">All past and future</option>
-                    <option value="all">All Upcoming</option>
-                    <option value="user">All Past</option>
-                    <option value="user">All past and future</option>
-                </select>
-                <input class="visually-hidden" type="submit" value="Filter" />
-            </form>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Apply", "Apply", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-primary m-1" })
 
-            <form class=" col-md-2 m-3">
-                <input class=" form-control" type="text" placeholder="Search" aria-label="Search">
-            </form>
+                    </td>
+                </tr>
+            }
 
-        </div>
-    </div>*@
+        </table>
+    </div>
+}
+else
+{
+    <p class="m-2 me-auto text-info">No events found for this search.</p>
+}
 

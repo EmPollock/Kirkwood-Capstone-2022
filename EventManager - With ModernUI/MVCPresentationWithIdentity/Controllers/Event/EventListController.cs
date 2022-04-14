@@ -44,7 +44,7 @@ namespace MVCPresentationWithIdentity.Controllers
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    TempData["errorMessage"] = ex.Message;
                 }
             }
             
@@ -69,7 +69,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -94,7 +94,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -116,14 +116,13 @@ namespace MVCPresentationWithIdentity.Controllers
             try
             {
                 int userID = _userManager.RetrieveUserByEmail(currentUserName).UserID;
-                eventList = _eventManager.RetrieveEventListForUpcomingDatesForUser(userID);
+                  eventList = _eventManager.RetrieveEventListForUpcomingDatesForUser(userID);
 
-
+                
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -151,7 +150,7 @@ namespace MVCPresentationWithIdentity.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);
@@ -173,12 +172,11 @@ namespace MVCPresentationWithIdentity.Controllers
             {
                 int userID = _userManager.RetrieveUserByEmail(currentUserName).UserID;
                 eventList = _eventManager.RetrieveEventListForPastAndUpcomingDatesForUser(userID);
-
             }
             catch (Exception ex)
             {
 
-                throw ex;
+                TempData["errorMessage"] = ex.Message;
             }
 
             return View("EventList", eventList);

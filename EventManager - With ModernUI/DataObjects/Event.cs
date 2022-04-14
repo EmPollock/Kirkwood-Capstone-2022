@@ -25,14 +25,27 @@ namespace DataObjects
     /// </summary>
     public class Event
     {
+
+
         public int EventID { get; set; }
         public int? LocationID { get; set; }
+
+        [Display(Name = "Title")]
+        [Required(ErrorMessage = "Please enter a title")]
+        [StringLength(50,ErrorMessage = "The title can not be longer than 50 characters.")]
         public string EventName { get; set; }
+
+        [Display(Name ="Description")]
+        [Required(ErrorMessage = "Please enter a description")]
+        [StringLength(1000, ErrorMessage = "The description can not be longer than 1000 characters.")]
         public string EventDescription { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime EventCreatedDate { get; set; }
 
+        [Required(ErrorMessage = "Please enter a budget")]
+        [Display(Name = "Total Budget")]
+        [Range(0.01, double.MaxValue, ErrorMessage ="Please enter an amount")]
         public decimal TotalBudget { get; set; }
         public bool Active { get; set; }
 
