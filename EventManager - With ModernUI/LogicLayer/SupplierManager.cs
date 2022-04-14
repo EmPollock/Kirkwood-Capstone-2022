@@ -173,5 +173,90 @@ namespace LogicLayer
 
             return supplierAvailabilities;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Retrieve supplier availability by SupplierID 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of AvailabilityVM objects</returns>
+        public List<AvailabilityVM> RetrieveSupplierAvailabilityBySupplierID(int supplierID)
+        {
+            List<AvailabilityVM> availabilities = new List<AvailabilityVM>();
+
+            try
+            {
+                availabilities = _supplierAccessor.SelectSupplierAvailabilityBySupplierID(supplierID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Retrieve supplier availability exceptions by SupplierID
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of Availability objects</returns>
+        public List<Availability> RetrieveSupplierAvailabilityExceptionBySupplierID(int supplierID)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            try
+            {
+                availabilities = _supplierAccessor.SelectSupplierAvailabilityExceptionBySupplierID(supplierID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Retrieves a supplier from the supplier table.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+
+        public Supplier RetrieveSupplierBySupplierID(int supplierID)
+        {
+            if (supplierID < 99999)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+            Supplier supplier = null;
+            try
+            {
+                supplier = _supplierAccessor.SelectSupplierBySupplierID(supplierID);
+                if (supplier is null || supplier.Name.Length == 0)
+                {
+                    throw new ApplicationException("Supplier not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve supplier.");
+            }
+
+            return supplier;
+        }
     }
 }

@@ -281,6 +281,9 @@ namespace DataAccessLayer
                             EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
                             Active = true
                         });
+
+                        eventDatesForLocation.Last().StartTime = new DateTime(eventDatesForLocation.Last().EventDateID.Year, eventDatesForLocation.Last().EventDateID.Month, eventDatesForLocation.Last().EventDateID.Day, eventDatesForLocation.Last().StartTime.Hour, eventDatesForLocation.Last().StartTime.Minute, eventDatesForLocation.Last().StartTime.Second);
+                        eventDatesForLocation.Last().EndTime = new DateTime(eventDatesForLocation.Last().EventDateID.Year, eventDatesForLocation.Last().EventDateID.Month, eventDatesForLocation.Last().EventDateID.Day, eventDatesForLocation.Last().EndTime.Hour, eventDatesForLocation.Last().EndTime.Minute, eventDatesForLocation.Last().EndTime.Second);
                     }
                 }
             }
@@ -296,6 +299,16 @@ namespace DataAccessLayer
             return eventDatesForLocation;
         }
 
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/01
+        /// 
+        /// Description:
+        /// Accessor method for selecting event dates by userID and date
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="eventDate"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
         public List<EventDateVM> SelectEventDateByUserIDAndDate(int userID, DateTime eventDate)
         {
             List<EventDateVM> eventDates = new List<EventDateVM>();

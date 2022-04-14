@@ -58,6 +58,6 @@ INSERT INTO [dbo].[SupplierImage] (
     [SupplierID],
     [ImageName]			
 )VALUES 
-	(100000, "3605c9e6-66ee-4fcc-aa13-8be89b0996ad.jpg"),
-    (100000, "da3bc68b-6f78-400a-abcf-9c9122de4094.jpg")
+	(100000, "7263a839-3428-49f2-b26f-875d3811ef85.jpg"),
+    (100000, "lincolnway-park.jpg")
 GO

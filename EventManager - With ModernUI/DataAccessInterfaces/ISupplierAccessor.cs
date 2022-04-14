@@ -10,10 +10,13 @@ namespace DataAccessInterfaces
     public interface ISupplierAccessor
     {
         List<Supplier> SelectActiveSuppliers();
+        Supplier SelectSupplierBySupplierID(int supplierID);
         List<Reviews> SelectSupplierReviewsBySupplierID(int supplierID);
         List<string> SelectSupplierTagsBySupplierID(int supplierID);
         List<string> SelectSupplierImagesBySupplierID(int supplierID);
         List<Availability> SelectSupplierAvailabilityBySupplierIDAndDate(int supplierID, DateTime date);
         List<Availability> SelectSupplierAvailabilityExceptionBySupplierIDAndDate(int supplierID, DateTime date);
+        List<AvailabilityVM> SelectSupplierAvailabilityBySupplierID(int supplierID);
+        List<Availability> SelectSupplierAvailabilityExceptionBySupplierID(int supplierID);
     }
 }

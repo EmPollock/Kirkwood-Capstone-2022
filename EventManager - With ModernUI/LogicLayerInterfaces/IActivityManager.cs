@@ -18,5 +18,6 @@ namespace LogicLayerInterfaces
         List<ActivityVM> RetreiveUserActivitiesPastAndUpcomingDates(int userID);
         List<ActivityVM> RetrieveActivitiesBySupplierIDAndDate(int supplierID, DateTime date);
         bool UpdateActivitySublocationByActivityID(int activityID, int? oldSublocationID, int? newSublocationID);
+        List<Activity> RetrieveActivitiesBySupplierID(int supplierID);
     }
 }

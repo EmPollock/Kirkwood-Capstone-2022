@@ -14,7 +14,7 @@
 <div class="container mt-3">
     <div class="d-flex">
         <nav class="col-sm-4 me-auto" aria-label="breadcrumb">
-            <ol class="breadcrumb">                
+            <ol class="breadcrumb">
                 <li class="breadcrumb-item active">Events</li>
             </ol>
         </nav>
@@ -34,9 +34,17 @@
         </div>
         @Html.Hidden("user", loggedInUser)
 
-        <form class=" col-md-2 m-2">
+        @using (Html.BeginForm("EventList", "Event", FormMethod.Post, new { @class="col-md-2 mb-3 d-flex"})) {
+
+            @Html.TextBox("search", null, new { @class = "form-control", placeholder = "Search" })
+            <button class="btn btn-secondary" type="submit" >
+                <i class="bi bi-search"></i>
+            </button>
+            }
+
+        @*<form class=" col-md-2 m-3">
             <input class=" form-control" type="text" placeholder="Search" aria-label="Search">
-        </form>
+        </form>*@
 
     </div>
 </div>
@@ -44,99 +52,107 @@
 <div class="row">
     <h2 class="m-2">Events</h2>
 </div>
-<div class="row">
-    <span class="col-2">@Html.ActionLink("Create an Event", "EventCreate", "EventCreate", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })</span>
-    
-</div>
 
 
-@if (Model != null && Model.Count() > 0 )
+@if (Model != null && Model.Count() > 0)
 {
     <div class="row table-responsive-md mt-3">
         <table class="table table-bordered" id="eventListTable">
-            <tr class="bg-light">
-                <th>
-                    <div class="d-flex">
-                        <p class="text-start text-nowrap me-2">Name</p>
-                        <button onclick="sortEventTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
-                    </div>
-                </th>
-                <th>
-                    <div class="d-flex">
-                        <p class="text-start text-nowrap me-2">Organizer</p>
-                        <button onclick="sortEventTable(1)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
-                    </div>
-                </th>
-                <th>
-                    <div class="d-flex">
-                        <p class="text-start text-nowrap me-2">Description</p>
-                    </div>
-                    @*<div class="float-end">
-                            <i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i>
-                        </div>*@
-                </th>
-                <th>
-                    <div class="d-flex ">
-                        <p class="text-start text-nowrap me-2">Event Dates</p>
-                        <button onclick="sortEventTable(3)" class="btn btn-sm btn-outline-dark ms-auto">
-                            <i class="bi bi-arrow-down-up"></i>
-                        </button>
-                    </div>
-                </th>
-                <th>
-                    <div class="d-flex">
-                        <p class="text-start text-nowrap me-2">Location</p>
 
-                        <button onclick="sortEventTable(4)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
-                    </div>
+            <thead>
 
+                <tr class="bg-light">
+                    <th>
+                        <div class="d-flex">
+                            <p class="text-start text-nowrap me-2">Name</p>
+                            <button onclick="sortEventTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex">
+                            <p class="text-start text-nowrap me-2">Organizer</p>
+                            <button onclick="sortEventTable(1)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex">
+                            <p class="text-start text-nowrap me-2">Description</p>
+                        </div>
+                        @*<div class="float-end">
+                    <i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i>
+                </div>*@
+                    </th>
+                    <th>
+                        <div class="d-flex ">
+                            <p class="text-start text-nowrap me-2">Event Dates</p>
+                            <button onclick="sortEventTable(3)" class="btn btn-sm btn-outline-dark ms-auto">
+                                <i class="bi bi-arrow-down-up"></i>
+                            </button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex">
+                            <p class="text-start text-nowrap me-2">Location</p>
 
-                </th>
-                <th>Details</th>
-                <th>Volunteer</th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EventName)
-                    </td>
-                    <td>
-                        @foreach (var user in item.EventManagers)
-                        {
-                            <p class="">@user.GivenName @user.FamilyName</p>
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EventDescription)
-                    </td>
-                    <td>
-                        @foreach (var date in item.EventDates)
-                        {
-                            <span class="">@Html.DisplayFor(modelItem => date.EventDateID)</span><br />
-                        }
-                    </td>
-                    <td>
-                        @if (item.LocationID != null)
-                        {
-                            <p>@item.Location.Name, @item.Location.City, @item.Location.State</p>
-                        }
+                            <button onclick="sortEventTable(4)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                        </div>
 
 
-                    </td>
-
-                    <td>
-                        @Html.ActionLink("Details", "Details", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-info m-1" })
-
-                    </td>
-                    <td>
-                        @Html.ActionLink("Apply", "Apply", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-primary m-1" })
-
-                    </td>
+                    </th>
+                    <th>Details</th>
+                    <th>Volunteer</th>
                 </tr>
-            }
+
+            </thead>
+
+            
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventName)
+                        </td>
+                        <td>
+                            @foreach (var user in item.EventManagers)
+                            {
+                                <p class="">@user.GivenName @user.FamilyName</p>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventDescription)
+                        </td>
+                        <td>
+                            @foreach (var date in item.EventDates)
+                            {
+                                <span class="">@Html.DisplayFor(modelItem => date.EventDateID)</span><br />
+                            }
+                        </td>
+                        <td>
+                            @if (item.LocationID != null)
+                            {
+                                <p>@item.Location.Name, @item.Location.City, @item.Location.State</p>
+                            }
+
+
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Details", "Details", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-info m-1" })
+
+                        </td>
+                        <td>
+                            @Html.ActionLink("Apply", "Apply", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-primary m-1" })
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+            
 
         </table>
     </div>

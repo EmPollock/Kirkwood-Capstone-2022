@@ -65,7 +65,7 @@
         </DataGrid>-->
 
         <DataGrid x:Name="datActiveEvents" Grid.Row="1" Grid.Column="1" SelectionMode="Single" IsReadOnly="True" 
-                  ItemsSource="{Binding}" AutoGenerateColumns="False"   MouseDoubleClick="datActiveEvents_MouseDoubleClick" VerticalContentAlignment="Center">
+                  ItemsSource="{Binding}" AutoGenerateColumns="False"   MouseDoubleClick="datActiveEvents_MouseDoubleClick" VerticalContentAlignment="Center" SelectionChanged="datActiveEvents_SelectionChanged">
             
             <DataGrid.Columns>                
                 <DataGridTextColumn  Header="Event Name" Binding="{Binding EventName}"/>
@@ -110,5 +110,6 @@
         </DataGrid>
 
         <Button x:Name="btnCreateEvent" Content="Create Event" Grid.Row="2" Grid.Column="1" Click="btnCreateEvent_Click" />
+        <Button x:Name="btnCopyEvent" Content="Copy Event" Grid.Row="2" Grid.Column="1" Margin="120 0 0 0" Click="btnCopyEvent_Click" Visibility="Collapsed"/>
     </Grid>
 </Page>

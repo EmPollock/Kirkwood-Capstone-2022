@@ -19,6 +19,11 @@ GO
 /
 / Description: 
 / Changed default password
+
+Vinayak Deshpande
+ Updated: 2022/04/08
+
+ Description: Added user test data
 ****************************************************************/
 print '' print '*** creating Users Table ...'
 /* Whatever you're adding goes here. */
@@ -53,4 +58,15 @@ INSERT INTO [dbo].[Users]
 		('Joanne', 'Smith', 'joanne@company.com', 'IA', 'Cedar Rapids', 52402, NULL, NULL)
 		,('Finn', 'Human', 'finn@company.com', 'IA', 'Coralville', 52241, NULL, NULL)
 		,('River', 'Blueberry Rainbow', 'river@company.com', 'IA', 'Boone', 50036, NULL, NULL)
+		,('Nicholas', 'Hart', 'nicholas@company.com', 'IA', 'Cedar Rapids', 52402, Null, Null)
+		,('Alan', 'Graham', 'alan@company.com', 'IA', 'Coralville', 52241, NULL, NULL)
+		,('Sarah', 'Greene', 'sarah@company.com', 'IA', 'Coralville', 52241, NULL, NULL)
+		,('Madeleine', 'Fraser', 'madeleine@company.com', 'IA', 'Cedar Rapids', 52402, NULL, NULL)
+		,('Elizabeth', 'Blake', 'elizabeth@company.com', 'IA', 'Coralville', 52241, NULL, NULL)
+		,('Sally', 'King', 'sally@company.com', 'IA', 'Cedar Rapids', 52402, NULL, NULL)
+		,('Adrian', 'Skinner', 'adrian@company.com', 'IA', 'Coralville', 52241, NULL, NULL)
+		,('Lauren', 'Bower', 'lauren@company.com', 'IA', 'Cedar Rapids', 52402, NULL, NULL)
+		,('Joe', 'Arnold', 'joe@company.com', 'IA', 'Coralville', 52241, NULL, NULL)
+		,('Irene', 'Rutherford', 'irene@company.com', 'IA', 'Cedar Rapids', 52402, NULL, NULL)
+		,('Sean', 'Morrison', 'sean@company.com', 'IA', 'Coralville', 52241, NULL, NULL)
 GO

@@ -91,3 +91,35 @@ AS
 		WHERE [SupplierID] = @SupplierID	
 	END	
 GO
+
+
+
+/***************************************************************
+Logan Baccam
+Created: 2022/04/03
+
+Description:
+stored procedure to retrieve a supplier by id
+****************************************************************/
+print '' print '*** creating sp_select_supplier_by_supplierID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_supplier_by_supplierID]
+(
+    @SupplierID     [int]
+)
+AS
+	BEGIN
+		SELECT 
+			[SupplierID],
+			[SupplierName],
+			[SupplierDescription],
+			[SupplierPhone],
+			[SupplierEmail],
+			[SupplierTypeID],
+			[SupplierAddress1],
+			[SupplierCity],
+			[SupplierState]
+		FROM [dbo].[Supplier]
+		WHERE [SupplierID] = @SupplierID	
+	END	
+GO

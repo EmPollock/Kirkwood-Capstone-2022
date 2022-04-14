@@ -59,8 +59,8 @@ INSERT INTO [dbo].[LocationImage] (
     [LocationID],
     [ImageName]			
 )VALUES 
-	(100000, "f43faecc-5d0f-4b4a-ba47-4c1d3ce56912.jpg"),
-    (100000, "7263a839-3428-49f2-b26f-875d3811ef85.jpg")
+	(100000, "7263a839-3428-49f2-b26f-875d3811ef85.jpg"),
+    (100000, "lincolnway-park.jpg")
 	-- added for testing purposes
 	-- ,
     -- (100002, "lincolnway-park.jpg"),

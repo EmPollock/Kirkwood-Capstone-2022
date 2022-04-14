@@ -365,5 +365,81 @@ namespace LogicLayer
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Retrieve location availability by LocationID 
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of AvailabilityVM objects</returns>
+        public List<AvailabilityVM> RetrieveLocationAvailabilityByLocationID(int locationID)
+        {
+            List<AvailabilityVM> availabilities = new List<AvailabilityVM>();
+
+            try
+            {
+                availabilities = _locationAccessor.SelectLocationAvailabilityByLocationID(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Retrieve location availability exceptions by LocationID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>A list of Availability objects</returns>
+        public List<Availability> RetrieveLocationAvailabilityExceptionByLocationID(int locationID)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            try
+            {
+                availabilities = _locationAccessor.SelectLocationAvailabilityExceptionByLocationID(locationID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+		}
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/03
+        /// 
+        /// Description:
+        /// returns a list of tags associated with the location
+        /// 
+        /// </summary>
+        /// <param name="locationID"
+        /// <returns>List of all active locations</returns>
+        public List<string> RetrieveTagsByLocationID(int locationID)
+        {
+            List<string> tags = new List<string>();
+            try
+            {
+                tags = _locationAccessor.SelectTagsbyLocationID(locationID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return tags;
+        }
     }
 }

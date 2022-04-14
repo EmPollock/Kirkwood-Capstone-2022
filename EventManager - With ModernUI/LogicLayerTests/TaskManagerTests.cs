@@ -46,8 +46,9 @@ namespace LogicLayerTests
                 DueDate = DateTime.Today,
                 Priority = 2
             };
-            bool expectedResult = true;
-            bool actualResult;
+
+            int expectedResult = 999995;
+            int actualResult;
 
             //act
             actualResult = _taskManager.AddTask(task, 1);
@@ -595,7 +596,6 @@ namespace LogicLayerTests
             // exception checking
         }
 
-
         /// <summary>
         /// Emma Pollock
         /// Created: 2022/03/10
@@ -680,7 +680,28 @@ namespace LogicLayerTests
 
             // assert
             Assert.AreEqual(expectedResult, actualResult);
+        }
 
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/01/31
+        /// 
+        /// Description: 
+        /// Test that adding a task assignment will return the task assignment id
+        /// </summary>
+        [TestMethod]
+        public void TestInsertNewTaskAssignmentReturnsCorrectTaskAssignmentID()
+        {
+            // arrange
+            const int testTaskID = 999996;
+            const int expectedTaskAssignmentID = 999996;
+            int actualTaskAssignmentID;
+
+            // act
+            actualTaskAssignmentID = _taskManager.AddTaskAssignment(testTaskID);
+
+            // assert
+            Assert.AreEqual(expectedTaskAssignmentID, actualTaskAssignmentID);
         }
 
         /// <summary>
@@ -727,6 +748,28 @@ namespace LogicLayerTests
             Assert.AreEqual(expected, actual);
         }
 
+        /// Jace Pettinger
+        /// Created: 2022/01/31
+        /// 
+        /// Description: 
+        /// Test that volunteer can be successfully added to a task assignment
+        /// </summary>
+        [TestMethod]
+        public void TestAddVolunteerToTaskAssignmentReturnsTrue()
+        {
+            // arrange
+            const int taskAssignmentID = 999997;
+            const int userID = 999999;
+            const bool expected = true;
+            bool actual;
+
+            // act
+            actual = _taskManager.AddVolunteerToTaskAssignment(taskAssignmentID, userID);
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
+
         /// <summary>
         /// Mike Cahow
         /// Created: 2022/03/25
@@ -746,6 +789,76 @@ namespace LogicLayerTests
 
             // assert
             // Exception checking
+
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/02
+        /// 
+        /// Description:
+        /// Test that checks if the correct number of items in a list of tasks will be returned
+        /// Should be four according to TaskAccessorFakes
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllTasksByEventIDReturnsCorrectNumberOfListItems()
+        {
+            // arrange
+            const int eventID = 1000000;
+            const int expectedCount = 4;
+            int actualCount;
+
+            // act
+            actualCount = _taskManager.RetrieveAllTasksByEventID(eventID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/02
+        /// 
+        /// Description:
+        /// Test that checks if the method returned the correct number of list items
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllTasksByEventIDFailsWithIncorrectNumberOfListItems()
+        {
+            // arrange
+            const int eventID = 100000;
+            const int expectedCount = 2;
+            int actualCount;
+
+
+            // act
+            actualCount = _taskManager.RetrieveAllTasksByEventID(eventID).Count;
+
+            // assert
+            Assert.AreNotEqual(expectedCount, actualCount);
+
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/02
+        /// 
+        /// Description:
+        /// Test that fails because an incorrect list was passed
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveAllTasksByEventIDFailsWithIncorrectListBeingReturned()
+        {
+            // arrange
+            const int badEventID = 100001;
+            const int expectedCount = 3;
+            int actualCount;
+
+            // act
+            actualCount = _taskManager.RetrieveAllTasksByEventID(badEventID).Count;
+
+            // assert
+            Assert.AreNotEqual(expectedCount, actualCount);
 
         }
     }
