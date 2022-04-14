@@ -550,5 +550,36 @@ namespace DataAccessFakes
 
             return availabilities;
         }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Retrieves a supplier from the fake supplier list.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+        public Supplier SelectSupplierBySupplierID(int supplierID)
+        {
+            if (supplierID < 99999)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+            Supplier _supplier = new Supplier();
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    _supplier = supplier;
+                }
+            }
+            if (_supplier is null || _supplier.Name.Length == 0)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+
+            return _supplier;
+        }
     }
 }

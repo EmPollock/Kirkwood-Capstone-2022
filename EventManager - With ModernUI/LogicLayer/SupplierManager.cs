@@ -225,5 +225,38 @@ namespace LogicLayer
 
             return availabilities;
         }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Retrieves a supplier from the supplier table.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+
+        public Supplier RetrieveSupplierBySupplierID(int supplierID)
+        {
+            if (supplierID < 99999)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+            Supplier supplier = null;
+            try
+            {
+                supplier = _supplierAccessor.SelectSupplierBySupplierID(supplierID);
+                if (supplier is null || supplier.Name.Length == 0)
+                {
+                    throw new ApplicationException("Supplier not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve supplier.");
+            }
+
+            return supplier;
+        }
     }
 }

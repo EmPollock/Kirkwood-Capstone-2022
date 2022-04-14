@@ -186,9 +186,9 @@
     <Compile Include="Controllers\Event\EventListController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\Location\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\SupplierController.cs" />
+    <Compile Include="Controllers\Supplier\SupplierController.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -223,6 +223,7 @@
     <Compile Include="Models\LocationScheduleViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Models\SupplierDetailsViewModel.cs" />
     <Compile Include="Models\SupplierListViewModel.cs" />
     <Compile Include="Models\SupplierScheduleViewModel.cs" />
     <Compile Include="Models\VolunteerListViewModel.cs" />
@@ -293,6 +294,7 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Views\Supplier\SupplierNav.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar.min.js" />
@@ -450,6 +452,7 @@
     <Content Include="Views\Location\LocationNav.cshtml" />
     <Content Include="Views\Location\ViewLocationDetails.cshtml" />
     <Content Include="Views\Location\LocationEdit.cshtml" />
+    <Content Include="Views\Supplier\ViewSupplierDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

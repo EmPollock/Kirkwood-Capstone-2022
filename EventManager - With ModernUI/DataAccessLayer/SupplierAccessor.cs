@@ -460,5 +460,56 @@ namespace DataAccessLayer
 
             return supplierAvailabilities;
         }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Selects a supplier from the supplier table.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+        public Supplier SelectSupplierBySupplierID(int supplierID)
+        {
+            Supplier supplier = null;
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_supplier_by_supplierID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        supplier = new Supplier()
+                        {
+                            SupplierID = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Description = reader.GetString(2),
+                            Phone = reader.GetString(3),
+                            Email = reader.GetString(4),
+                            TypeID = reader.GetString(5),
+                            Address1 = reader.GetString(6),
+                            City = reader.GetString(7),
+                            State = reader.GetString(8),
+                            Active = true
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return supplier;
+        }
     }
 }

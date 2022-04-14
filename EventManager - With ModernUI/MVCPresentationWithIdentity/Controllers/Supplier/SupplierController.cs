@@ -181,5 +181,71 @@ namespace MVCPresentationWithIdentity.Controllers
             _supplierSchedule.Availability = availability;
             _supplierSchedule.AvailabilityException = availabilityException;
         }
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/02
+        /// 
+        /// Description:
+        /// For the Supplier details page
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns>ActionResult</returns>
+        public ActionResult ViewSupplierDetails(int supplierID)
+        {
+            SupplierDetailsViewModel model = null;
+            Supplier supplier = new Supplier();
+            List<string> supplierImages = new List<string>();
+            List<Reviews> supplierReviews = new List<Reviews>();
+            List<string> supplierTags = new List<string>();
+
+            try
+            {
+                if (model is null)
+                {
+                    supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+                    supplierImages = _supplierManager.RetrieveSupplierImagesBySupplierID(supplierID);
+                    if (supplierImages.Count > 0 || supplierImages is null)
+                    {
+                        supplierImages.Add("");
+                    }
+                    supplierReviews = _supplierManager.RetrieveSupplierReviewsBySupplierID(supplierID);
+                    if (supplierReviews.Count > 0)
+                    {
+                        Reviews noReview = new Reviews()
+                        {
+                            Rating = 0,
+                            FullName = ""
+                        };
+                    }
+                    if (supplierTags.Count > 0)
+                    {
+                        supplierTags.Add("");
+                    }
+                    if (supplierReviews.Count != 0)
+                    {
+                        int avg = 0;
+                        int total = 0;
+
+                        foreach (Reviews review in supplierReviews)
+                        {
+                            avg += review.Rating;
+                            total++;
+                        }
+                        int sum = avg / total;
+                        supplier.AverageRating = sum;
+                    }
+                }
+                model = new SupplierDetailsViewModel();
+                model.Supplier = supplier;
+                model.SupplierImages = supplierImages;
+                model.SupplierReviews = supplierReviews;
+                model.SupplierTags = supplierTags;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Location not found.");
+            }
+            return View(model);
+        }
     }
 }
