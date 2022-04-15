@@ -1,7 +1,7 @@
 ﻿@model MVCPresentationWithIdentity.Models.LocationDetailsViewModel
 
 @{
-    ViewBag.Title = Model.Location.Name + " Details";
+    ViewBag.Title = "Tadpole: View Location Details";
     Layout = "~/Views/Shared/_SupplierDetailsLayout.cshtml";
     int rating = Model.Location.AverageRating;
 }
@@ -34,7 +34,7 @@
     <hr />
     <div class="row">
         <div class="col-md-3">
-            @Html.Partial("LocationNav")
+            @Html.Partial("LocationNav", Model.Location.LocationID)
         </div>
         <div class="col-md-9 col-sm-12">
             <div class="d-flex flex-column justify-content-between">

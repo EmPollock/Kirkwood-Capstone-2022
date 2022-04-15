@@ -81,7 +81,7 @@
             @foreach (DataObjects.Supplier supplier in Model.Suppliers)
             {
                 <tr>
-                    <td><a href=@Url.Action("ViewSupplierSchedule", "Supplier", supplier)>@supplier.Name <i class="bi bi-box-arrow-up-right"></i></a></td>
+                    <td><a href=@Url.Action("ViewSupplierDetails","Supplier",new {supplierID = supplier.SupplierID })>@supplier.Name <i class="bi bi-box-arrow-up-right"></i></a></td>
                     <td>
                         @Html.DisplayFor(modelItem => supplier.Description)
                     </td>

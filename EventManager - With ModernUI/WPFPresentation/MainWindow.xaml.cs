@@ -385,9 +385,21 @@ namespace WPFPresentation
             this.MainFrame.NavigationService.Navigate(page);
         }
 
+        /// <summary>
+        /// Original author and creation date missing.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Added user to page constructor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnViewSuppliers_Click(object sender, RoutedEventArgs e)
         {
-            var page = new pgViewSuppliers(_managerProvider);
+            var page = new pgViewSuppliers(_managerProvider, _user);
             if (ValidationHelpers.EditOngoing)
             {
                 MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);

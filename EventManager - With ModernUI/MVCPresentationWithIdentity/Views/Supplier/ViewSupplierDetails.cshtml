@@ -1,0 +1,315 @@
+﻿@model MVCPresentationWithIdentity.Models.SupplierDetailsViewModel
+
+@{
+    ViewBag.Title = Model.Supplier.Name +" Details";
+    Layout = "~/Views/Shared/_SupplierDetailsLayout.cshtml";
+    int rating = Model.Supplier.AverageRating;
+}
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
+<div class="col w-100">
+    <div class="d-flex flex-row justify-content-center">
+        @Html.ValidationMessage("", new { @class = "text-danger" })
+        <h2 class="mt-4">@Html.DisplayFor(model => model.Supplier.Name)</h2>
+
+        @if (Request.IsAuthenticated)
+        {
+            if (User.IsInRole("Event Planner"))
+            {
+                <div class="offset-8 d-flex flex-row mt-4">
+                    @Html.ActionLink("Edit", null, null, new { @class = "btn btn-outline-dark" })
+                </div>
+            }
+        }
+
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            @Html.Partial("SupplierNav", Model)
+        </div>
+
+        <div class="col-md-9 col-sm-12">
+            @if (Model.Supplier.TypeID is null || Model.Supplier.TypeID.Length == 0)
+            {
+                <h4>Type</h4>
+                <p>Not specified</p>
+            }
+            else
+            {
+                <h4>Type</h4>
+                <p>@Model.Supplier.TypeID</p>
+            }
+
+            <div class="d-flex flex-column justify-content-between">
+                <div>
+                    <h4>About @Model.Supplier.Name</h4>
+                    <div class="d-flex flex-row">
+                    </div>
+                    @if (Model.Supplier.Description is null || Model.Supplier.Description.Length == 0) { }
+                    else
+                    {
+                        <textarea readonly class="w-75">@Html.DisplayFor(model => model.Supplier.Description)</textarea>
+                    }
+                </div>
+            </div>
+
+            <div class="d-flex flex-row">
+                <p>Tags:&nbsp;</p>
+                @if (Model.SupplierTags is null || Model.SupplierTags.Count == 0)
+                {
+                    <p>None</p>
+                }
+                else
+                {
+                    for (int i = 0; i < Model.SupplierTags.Count - 1; i++)
+                    {
+                        <p>
+
+                            @Model.SupplierTags[i], &nbsp;
+                        </p>
+                    }
+                    <p>@Model.SupplierTags[Model.SupplierTags.Count - 1]</p>
+                }
+            </div>
+
+            <div class="d-flex flex-row">
+                <p>Contact Info: &nbsp; @Html.DisplayFor(model => model.Supplier.Phone) &emsp; @Html.DisplayFor(model => model.Supplier.Email)</p>
+            </div>
+
+            <div class="d-flex flex-row">
+                <p>Address &nbsp; @Html.DisplayFor(model => model.Supplier.Address1) </p>
+                <p> @Html.DisplayFor(model => model.Supplier.Address2)</p>
+            </div>
+
+            @if (Model.SupplierImages.Count > 0)
+            {
+                <h4>Photos</h4>
+                <div id="carouselLocationImages" class="carousel slide col-6 offset-1" data-bs-ride="carousel" data-bs-interval="false">
+                    <div class="carousel-inner text-center bg-black">
+                        @{
+                            bool first = true;
+                            foreach (string image in Model.SupplierImages)
+                            {
+                                if (first && image.Length > 1)
+                                {
+                                    first = false;
+                                    <div class="carousel-item active w-100">
+                                        <img src="~/content/images/LocationImages/@image" class="w-100" />
+                                    </div>
+                                }
+                                else if (!first && image.Length > 1)
+                                {
+                                    <div class="carousel-item w-100">
+                                        <img src="~/content/images/LocationImages/@image" class="w-100" />
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
+
+            <div class="pt-4">
+                <h4>Reviews</h4>
+            </div>
+
+            <div class="d-flex flex-row">
+                @if (Model.SupplierReviews is null || Model.SupplierReviews.Count == 0)
+                {
+                    <p>No Reviews yet</p>
+                }
+                else
+                {
+                    switch (rating)
+                    {
+                        case 0:
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 1:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 2:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 3:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 4:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            break;
+                        case 5:
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            break;
+                    }
+                }
+            </div>
+
+
+            @if (Model.SupplierReviews.Count != 0)
+            {
+                <div class="d-flex flex-column">
+                    <div class="d-flex flex-row">
+                        <i class="bi bi-person-circle"></i>
+                        &nbsp;
+                        <p>@Model.SupplierReviews[0].FullName</p>
+                        &nbsp;
+                        @switch (Model.SupplierReviews[0].Rating)
+                        {
+                            case 0:
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 1:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 2:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 3:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 4:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                                break;
+                            case 5:
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                break;
+                        }
+                    </div>
+
+
+                    <div class="d-flex flex-column">
+                        <textarea readonly class="w-75">@Html.DisplayFor(modelItem => Model.SupplierReviews[0].Review)</textarea>
+                    </div>
+                </div>
+                if (Model.SupplierReviews.Count >= 2)
+                {
+                    <div class="d-flex flex-column pt-2">
+                        <div class="d-flex flex-row mt-2">
+                            <i class="bi bi-person-circle"></i>
+                            &nbsp;
+                            <p>@Model.SupplierReviews[1].FullName</p>
+                            &nbsp;
+                            @switch (Model.SupplierReviews[1].Rating)
+                            {
+                                case 0:
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 1:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 2:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 3:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 4:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    break;
+                                case 5:
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    break;
+                            }
+                        </div>
+                        <div class="d-flex flex-column">
+                            <textarea readonly class="w-75">@Html.DisplayFor(modelItem => Model.SupplierReviews[1].Review)</textarea>
+                        </div>
+                    </div>
+                }
+
+                if (Model.SupplierReviews.Count > 2)
+                {
+                    <div>
+                        <p class="p-2"><a href="">See More Reviews</a></p>
+                    </div>
+                }
+            }
+
+            <div class="offset-4 pt-4">
+                <button class="mt-4 btn btn-outline-dark">Get Directions</button>
+            </div>
+        </div>
+    </div>
+</div>

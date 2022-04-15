@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IActivityManager.cs" />
+    <Compile Include="IEmailProvider.cs" />
     <Compile Include="IEntranceManager.cs" />
     <Compile Include="IEventDateManager.cs" />
     <Compile Include="IEventManager.cs" />

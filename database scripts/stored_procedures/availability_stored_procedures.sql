@@ -149,6 +149,21 @@ AS
 	END
 GO
 
+
+
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/03/31
+
+Description: 
+Collects the availability for the supplier for the next three months
+
+****************************************************************/
+-- print '' print '*** creating sp_select_availability_by_supplierID_for_three_months'
+-- GO
+-- CREATE PROCEDURE [dbo].[sp_select_availability_by_supplierID_for_three_months]
 -----------------------------------------------------------------------------------------------------
 
 /***************************************************************

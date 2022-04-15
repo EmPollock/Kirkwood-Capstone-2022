@@ -134,7 +134,7 @@ namespace DataAccessFakes
                 Review = "Could be better.",
                 DateCreated = DateTime.Now,
                 Active = true
-            }); 
+            });
 
             _fakeReviews.Add(new Reviews()
             {
@@ -292,7 +292,7 @@ namespace DataAccessFakes
             {
                 if (supplier.SupplierID == supplierID)
                 {
-                    if(_fakeImages.Count > _fakeSuppliers.IndexOf(supplier))
+                    if (_fakeImages.Count > _fakeSuppliers.IndexOf(supplier))
                     {
                         result = _fakeImages[_fakeSuppliers.IndexOf(supplier)];
                     }
@@ -334,9 +334,9 @@ namespace DataAccessFakes
         public List<string> SelectSupplierTagsBySupplierID(int supplierID)
         {
             List<string> result = new List<string>();
-            foreach(Supplier supplier in _fakeSuppliers)
+            foreach (Supplier supplier in _fakeSuppliers)
             {
-                if(supplier.SupplierID == supplierID)
+                if (supplier.SupplierID == supplierID)
                 {
                     result = supplier.Tags;
                 }
@@ -407,6 +407,33 @@ namespace DataAccessFakes
         }
 
         /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Fake supplier availability for three months
+        /// 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>List of Date times supplier is available</returns>
+        public List<DateTime> SelectSupplierAvailabilityForNextThreeMonths(int supplierID)
+        {
+            List<DateTime> fakeDates = new List<DateTime>();
+
+            foreach (SupplierAvailabilityTableFake avails in _dbFake)
+            {
+                foreach (Availability avail in avails.Availabilities)
+                {
+                    if (avail.ForeignID == supplierID && avail.TimeStart != null)
+                    {
+                        fakeDates.Add((DateTime)avail.TimeStart);
+                    }
+                }
+            }
+
+            return fakeDates;
+        }
+        
         /// Austin Timmerman
         /// Created: 2022/04/09
         /// 
@@ -549,6 +576,37 @@ namespace DataAccessFakes
             }
 
             return availabilities;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Retrieves a supplier from the fake supplier list.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+        public Supplier SelectSupplierBySupplierID(int supplierID)
+        {
+            if (supplierID < 99999)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+            Supplier _supplier = new Supplier();
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    _supplier = supplier;
+                }
+            }
+            if (_supplier is null || _supplier.Name.Length == 0)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+
+            return _supplier;
         }
     }
 }

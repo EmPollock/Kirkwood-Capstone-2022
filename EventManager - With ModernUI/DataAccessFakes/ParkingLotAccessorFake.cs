@@ -247,6 +247,10 @@ namespace DataAccessFakes
         /// 
         /// Description:
         /// Method that selects a parking lot out of a list of fakes by lot ID
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/04/13
+        /// Removed exception causing issues in UI.
         /// </summary>
         /// <param name="lotID"></param>
         /// <returns></returns>
@@ -260,11 +264,6 @@ namespace DataAccessFakes
                 {
                     parkingLot = fakeParkingLot;
                 }
-            }
-
-            if(parkingLot == null)
-            {
-                throw new ApplicationException("Parking lot not found.");
             }
 
             return parkingLot;

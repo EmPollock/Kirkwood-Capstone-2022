@@ -342,6 +342,10 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Method that returns the Parking lot VM with the corresponding lot ID
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/04/13
+        /// Removed exception causing issues in UI.
         /// </summary>
         /// <param name="lotID">ID of selected parking lot</param>
         /// <returns>Parking lot object with matching lotID</returns>
@@ -376,10 +380,6 @@ namespace DataAccessLayer
 
                         parkingLot = lotVM;
                     }
-                }
-                else
-                {
-                    throw new ApplicationException("Parking Lot not found.");
                 }
             }
             catch (Exception)

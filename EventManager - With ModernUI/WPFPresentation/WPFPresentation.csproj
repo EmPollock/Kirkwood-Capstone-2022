@@ -60,6 +60,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomControls\SpecificStartAndEndTimesComboBox.xaml.cs">
+      <DependentUpon>SpecificStartAndEndTimesComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\TimeComboBoxes.xaml.cs">
       <DependentUpon>TimeComboBoxes.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,10 @@
     <Compile Include="Volunteer\pgViewVolunteerDetails.xaml.cs">
       <DependentUpon>pgViewVolunteerDetails.xaml</DependentUpon>
     </Compile>
+    <Page Include="CustomControls\SpecificStartAndEndTimesComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="Volunteer\pgViewVolunteerSchedule.xaml.cs">
       <DependentUpon>pgViewVolunteerSchedule.xaml</DependentUpon>
     </Compile>

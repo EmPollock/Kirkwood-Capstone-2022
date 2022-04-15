@@ -175,6 +175,37 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Manager for supplier availability for the next three months
+        /// 
+        /// </summary>
+        /// <param name="supplierID">The id for the supplier</param>
+        /// <returns>A list of dates that the supplier is available</returns>
+        public List<DateTime> SupplierAvailabilityForNextThreeMonths(int supplierID)
+        {
+            List<DateTime> datesAvailable = new List<DateTime>();
+            // green
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+
+            try
+            {
+                datesAvailable = _supplierAccessor.SelectSupplierAvailabilityForNextThreeMonths(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return datesAvailable;
+        }
+
         /// Austin Timmerman
         /// Created: 2022/04/09
         /// 
@@ -224,6 +255,39 @@ namespace LogicLayer
             }
 
             return availabilities;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Retrieves a supplier from the supplier table.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+
+        public Supplier RetrieveSupplierBySupplierID(int supplierID)
+        {
+            if (supplierID < 99999)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+            Supplier supplier = null;
+            try
+            {
+                supplier = _supplierAccessor.SelectSupplierBySupplierID(supplierID);
+                if (supplier is null || supplier.Name.Length == 0)
+                {
+                    throw new ApplicationException("Supplier not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve supplier.");
+            }
+
+            return supplier;
         }
     }
 }

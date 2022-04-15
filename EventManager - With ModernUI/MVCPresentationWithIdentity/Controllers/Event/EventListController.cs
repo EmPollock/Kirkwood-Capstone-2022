@@ -25,6 +25,18 @@ namespace MVCPresentationWithIdentity.Controllers
         }
 
         /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/14
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        // GET: Event
+        public PartialViewResult EventNavBar(int eventID)
+        {
+            return PartialView(eventID);
+        }
+
+        /// <summary>
         /// Derrick Nagy
         /// Created: 2022/03/24
         /// 
@@ -154,9 +166,9 @@ namespace MVCPresentationWithIdentity.Controllers
             try
             {
                 int userID = _userManager.RetrieveUserByEmail(currentUserName).UserID;
-                eventList = _eventManager.RetrieveEventListForUpcomingDatesForUser(userID);
+                  eventList = _eventManager.RetrieveEventListForUpcomingDatesForUser(userID);
 
-
+                
             }
             catch (Exception ex)
             {
@@ -211,7 +223,6 @@ namespace MVCPresentationWithIdentity.Controllers
             {
                 int userID = _userManager.RetrieveUserByEmail(currentUserName).UserID;
                 eventList = _eventManager.RetrieveEventListForPastAndUpcomingDatesForUser(userID);
-
             }
             catch (Exception ex)
             {

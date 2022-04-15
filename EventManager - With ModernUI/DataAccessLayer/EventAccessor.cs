@@ -1096,7 +1096,7 @@ namespace DataAccessLayer
             foreach (EventVM item in eventList)
             {
                 for (int i = 0; i < allDates.Count; i++)
-                {
+                {                    
 
                     if (item.EventID == allDates[i].EventID && allDates[i].EventDateID != DateTime.MinValue)
                     {
@@ -1116,6 +1116,56 @@ namespace DataAccessLayer
 
             return noDates;
         }
+
+        //private List<EventVM> eventDateWithNoDatesVMHelper(List<EventVM> eventListRef)
+        //{
+        //    List<EventVM> eventList = new List<EventVM>();
+        //    List<EventDate> allDates = new List<EventDate>();
+        //    if (eventListRef.Count > 0)
+        //    {
+        //        foreach (EventVM item in eventListRef)
+        //        {
+        //            allDates.Add(item.EventDates[0]);
+
+        //            eventList.Add(new EventVM()
+        //            {
+        //                EventID = item.EventID,
+        //                EventName = item.EventName,
+        //                EventDescription = item.EventDescription,
+        //                EventCreatedDate = item.EventCreatedDate,
+        //                TotalBudget = item.TotalBudget,
+        //                LocationID = item.LocationID,
+        //                EventDates = new List<EventDate>()
+        //            });
+        //        }
+        //    }
+
+        //    //remove duplicates
+        //    List<EventVM> noDuplicates = eventList.GroupBy(e => e.EventID).Select(e => e.First()).ToList();
+
+        //    foreach (EventVM item in eventList)
+        //    {
+        //        for (int i = 0; i < allDates.Count; i++)
+        //        {
+
+        //            if (item.EventID == allDates[i].EventID && allDates[i].EventDateID != DateTime.MinValue)
+        //            {
+        //                item.EventDates.Add(allDates[i]);
+        //            }
+        //        }
+        //    }
+
+        //    // take out no dates
+        //    List<EventVM> noDates = noDuplicates.FindAll(e => e.EventDates.Count == 0);
+        //    List<EventVM> eventsWithDates = noDuplicates.FindAll(e => e.EventDates.Count > 0);
+
+        //    // sort by earliest date
+        //    eventsWithDates.Sort((ev1, ev2) => ev1.EventDates[0].EventDateID.CompareTo(ev2.EventDates[0].EventDateID));
+
+        //    noDates.AddRange(eventsWithDates);
+
+        //    return noDates;
+        //}
 
 
         /// <summary>
