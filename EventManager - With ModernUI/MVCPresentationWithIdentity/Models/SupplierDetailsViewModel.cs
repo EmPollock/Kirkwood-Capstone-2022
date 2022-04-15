@@ -12,5 +12,7 @@ namespace MVCPresentationWithIdentity.Models
         public List<string> SupplierImages { get; set; }
         public List<string> SupplierTags { get; set; }
         public List<Reviews> SupplierReviews { get; set; }
+        public List<AvailabilityVM> Availability { get; set; }
+        public List<Availability> AvailabilityException { get; set; }
     }
 }

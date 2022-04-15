@@ -17,7 +17,7 @@ namespace MVCPresentationWithIdentity.Controllers
     {
         ISupplierManager _supplierManager;
         IActivityManager _activityManager = null;
-        SupplierScheduleViewModel _supplierSchedule = new SupplierScheduleViewModel();
+        SupplierDetailsViewModel _supplierDetails = new SupplierDetailsViewModel();
         public int _pageSize = 10;
 
 
@@ -102,22 +102,32 @@ namespace MVCPresentationWithIdentity.Controllers
         /// 
         /// Description:
         /// For the View Supplier Schedule page
+        /// 
+        /// Logan Baccam
+        /// Updated: 2022/04/14
+        /// Description:
+        /// Changed parameter from Supplier object
+        /// to supplierID and changed Model type to
+        /// SupplierDetailsViewModel
+        /// 
+        /// 
         /// </summary>
         /// <returns>ActionResult</returns>
-        public ActionResult ViewSupplierSchedule(Supplier supplier)
+        public ActionResult ViewSupplierSchedule(int supplierID = 0)
         {
             //Request.Params["supplier"];
-            
-            if(supplier.SupplierID == 0)
+            if (supplierID == 0)
             {
-                
+
                 return RedirectToAction("ViewSuppliers", "Supplier");
             }
+            Supplier supplier = new Supplier();
+            supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
 
-            _supplierSchedule.Supplier = supplier;
-            GetAvailability(supplier.SupplierID);
+            _supplierDetails.Supplier = supplier;
+            GetAvailability(_supplierDetails.Supplier.SupplierID);
 
-            return View("~/Views/Supplier/ViewSupplierSchedule.cshtml", _supplierSchedule);
+            return View("~/Views/Supplier/ViewSupplierSchedule.cshtml", _supplierDetails);
         }
 
         /// <summary>
@@ -131,7 +141,7 @@ namespace MVCPresentationWithIdentity.Controllers
         /// <returns>JsonResult</returns>
         public JsonResult GetActivities(string id)
         {
-            int supplierID ;
+            int supplierID;
             try
             {
                 supplierID = int.Parse(id);
@@ -160,31 +170,34 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// For getting availability by the location id passed to it and sets it to the 
         /// _supplierSchedule
+        /// 
+        /// Logan Baccam 
         /// </summary>
         /// <param name="id"></param>
-        public void GetAvailability(int id)
+        public void GetAvailability(int supplierID = 0)
         {
+
             List<AvailabilityVM> availability;
             List<Availability> availabilityException;
-            if (id == 0)
+            if (supplierID == 0)
             {
                 availability = new List<AvailabilityVM>();
             }
             else
             {
-                availability = _supplierManager.RetrieveSupplierAvailabilityBySupplierID(id);
+                availability = _supplierManager.RetrieveSupplierAvailabilityBySupplierID(supplierID);
             }
-            if(id == 0)
+            if (supplierID == 0)
             {
                 availabilityException = new List<Availability>();
             }
             else
             {
-                availabilityException = _supplierManager.RetrieveSupplierAvailabilityExceptionBySupplierID(id);
+                availabilityException = _supplierManager.RetrieveSupplierAvailabilityExceptionBySupplierID(supplierID);
             }
 
-            _supplierSchedule.Availability = availability;
-            _supplierSchedule.AvailabilityException = availabilityException;
+            _supplierDetails.Availability = availability;
+            _supplierDetails.AvailabilityException = availabilityException;
         }
         /// <summary>
         /// Logan Baccam
@@ -199,14 +212,17 @@ namespace MVCPresentationWithIdentity.Controllers
         /// </summary>
         /// <param name="page"></param>
         /// <returns>ActionResult</returns>
-        public ActionResult ViewSupplierDetails(int supplierID)
+        public ActionResult ViewSupplierDetails(int supplierID = 0)
         {
             SupplierDetailsViewModel model = new SupplierDetailsViewModel();
             Supplier supplier = new Supplier();
             List<string> supplierImages = new List<string>();
             List<Reviews> supplierReviews = new List<Reviews>();
             List<string> supplierTags = new List<string>();
-
+            if (supplierID == 0)
+            {
+                return RedirectToAction("ViewSuppliers", "Supplier");
+            }
             try
             {
                 supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
@@ -239,8 +255,8 @@ namespace MVCPresentationWithIdentity.Controllers
                 }
                 int avg = sum / total;
                 supplier.AverageRating = avg;
-                    
-                
+
+
                 model = new SupplierDetailsViewModel();
                 model.Supplier = supplier;
                 model.SupplierImages = supplierImages;
