@@ -130,7 +130,7 @@ GO
  
  Description:
  Test records for availability exception dates
-/***************************************************************
+***************************************************************
  Derrick Nagy
  Updated: 2022/04/14
  
