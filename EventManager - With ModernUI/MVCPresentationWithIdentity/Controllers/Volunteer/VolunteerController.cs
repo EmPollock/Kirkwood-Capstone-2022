@@ -38,6 +38,20 @@ namespace MVCPresentationWithIdentity.Controllers
         }
 
         /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/14
+        /// 
+        /// Description
+        /// Controller passthrough for the navbar
+        /// </summary>
+        /// <param name="volunteerID">ID of volunteer so that the navbar can navigate properly</param>
+        /// <returns></returns>
+        public PartialViewResult VolunteerNavBar(int volunteerID)
+        {
+            return PartialView(volunteerID);
+        }
+
+        /// <summary>
         /// Austin Timmerman
         /// Created: 2022/04/04
         /// 
