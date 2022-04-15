@@ -71,5 +71,6 @@ INSERT INTO [dbo].[Role] (
 	('Event Planner','Creates the event, plans for the event.'),
 	('Event Manager','Handles day of activities.'),
 	('Attendee','An attendee for the event.'),
+	('Supplier','A supplier for events.'),
 	('Administrator','An administrator for the application.')
 GO

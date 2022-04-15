@@ -89,7 +89,7 @@ namespace MVCPresentationWithIdentity.Controllers
                     LogicLayer.UserManager usrMgr = new LogicLayer.UserManager();
                     try
                     {
-                        if (usrMgr.AuthenticateUserByEmailAndPassword(model.Email, model.Password))
+                        if (usrMgr.AuthenticateUserByEmailAndPassword(model.Email, usrMgr.HashSha256(model.Password)))
                         {
 
                             var oldUser = usrMgr.LoginUser(model.Email, model.Password);

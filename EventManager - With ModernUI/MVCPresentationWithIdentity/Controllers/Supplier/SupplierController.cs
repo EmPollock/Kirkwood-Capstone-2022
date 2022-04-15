@@ -253,5 +253,54 @@ namespace MVCPresentationWithIdentity.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public ActionResult CreateSupplier()
+        {
+            EditSupplierModel model = new EditSupplierModel()
+            {
+                Name = "",
+                Address1 = "",
+                Address2 = "",
+                SupplierID = 0,
+                Active = true,
+                AverageRating = 0,
+                City = "",
+                Description = "",
+                Email = "",
+                Images = new List<string>(),
+                NewAddress1 = "",
+                NewAddress2 = "",
+                NewCity = "",
+                NewDescription = "",
+                NewEmail = "",
+                NewImages = new List<string>(),
+                NewName = "",
+                NewPhone = "",
+                NewState = "",
+                NewTags = new List<string>(),
+                NewTypeID = "",
+                NewZipCode = "",
+                Phone = "",
+                State = "",
+                Tags = new List<string>(),
+                TypeID = "",
+                UserID = 0,
+                ZipCode = ""
+            };
+            return View("EditSupplier", model);
+        }
+
+        [HttpGet]
+        public ActionResult EditSupplier(int supplierId)
+        {
+            return View("EditSupplier");
+        }
+
+        [HttpPost]
+        public ActionResult EditSupplier(EditSupplierModel model)
+        {
+            return View();
+        }
     }
 }

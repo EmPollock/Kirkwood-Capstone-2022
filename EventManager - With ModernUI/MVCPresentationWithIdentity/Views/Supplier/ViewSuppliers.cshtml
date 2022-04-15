@@ -15,10 +15,10 @@
     </div>
     @if (Request.IsAuthenticated)
     {
-        if (User.IsInRole("Event Planner"))
+        if (!User.IsInRole("Supplier"))
         {
             <div class="d-flex flex-row justify-content-end">
-                <button class="btn btn-outline-dark">Create Listing</button>
+                @Html.ActionLink("Create a Listing for your Business", "CreateSupplier", "Supplier", null, new { @class = "btn btn-outline-dark" })
             </div>
         }
     }
@@ -152,6 +152,5 @@
         <div class="pagination justify-content-center">
             @Html.PageLinks(Model.PagingInfo, x => Url.Action("ViewSuppliers", new { page = x }))
         </div>
-
     </div>
 </div>

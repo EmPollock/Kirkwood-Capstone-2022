@@ -123,3 +123,59 @@ AS
 		WHERE [SupplierID] = @SupplierID	
 	END	
 GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/04/14
+
+Description:
+stored procedure to insert a supplier
+****************************************************************/
+print '' print '*** creating sp_insert_supplier ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_supplier]
+(
+    @UserID     			[int]
+	@SupplierName     		[nvarchar](160)	
+	@SupplierDescription	[nvarchar](3000)
+	@SupplierPhone     		[nvarchar](15)	
+	@SupplierEmail     		[nvarchar](250)	
+	@SupplierType			[nvarchar](10)
+	@SupplierAddress1     	[nvarchar](100)
+	@SupplierAddress2     	[nvarchar](100)
+	@City     				[nvarchar](100)
+	@SupplierState     		[nvarchar](100)
+	@Zip	     			[nvarchar](100)
+)
+AS
+	BEGIN
+		insert into [dbo].[Supplier] 
+		(
+			UserID,
+			SupplierName,
+			SupplierDescription,
+			SupplierPhone,
+			SupplierEmail,
+			SupplierTypeID,
+			SupplierAddress1,
+			SupplierAddress2,
+			SupplierCity,
+			SupplierState,
+			SupplierZipCode
+		)
+		values
+		(
+			@UserID,
+			@SupplierName,
+			@SupplierDescription,
+			@SupplierPhone,
+			@SupplierEmail,	
+			@SupplierType,
+			@SupplierAddress1, 
+			@SupplierAddress2,
+			@City,
+			@SupplierState,
+			@Zip
+		)
+	END	
+GO

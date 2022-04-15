@@ -17,11 +17,10 @@
             if (User.IsInRole("Event Planner"))
             {
                 <div class="offset-8 d-flex flex-row mt-4">
-                    @Html.ActionLink("Edit", null, null, new { @class = "btn btn-outline-dark" })
+                    @Html.ActionLink("Edit", "EditSupplier", "Supplier", new { supplierId = Model.Supplier.SupplierID }, new { @class = "btn btn-outline-dark" })
                 </div>
             }
         }
-
     </div>
 
     <hr />
