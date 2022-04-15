@@ -11,7 +11,8 @@ using DataAccessInterfaces;
 using DataAccessFakes;
 using MVCPresentationWithIdentity.Models;
 
-namespace MVCPresentationWithIdentity.Controllers
+
+namespace MVCPresentationWithIdentity.Controllers.Locations
 {
     /// <summary>
     /// Austin Timmerman
@@ -24,6 +25,7 @@ namespace MVCPresentationWithIdentity.Controllers
         ILocationManager _locationManager = null;
         IEventDateManager _eventDateManager = null;
         LocationScheduleViewModel _locationSchedule = new LocationScheduleViewModel();
+
         public int _pageSize = 10;
 
         /// <summary>
@@ -47,10 +49,15 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// Returns the navivagion bar for a selected
         /// locations pages
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/04/11
+        /// Added a necessary model field to the view
+        /// 
         /// </summary>
-        public PartialViewResult LocationNav()
+        public PartialViewResult LocationNav(int locationId)
         {
-            return PartialView();
+            return PartialView(locationId);
         }
 
         /// <summary>
