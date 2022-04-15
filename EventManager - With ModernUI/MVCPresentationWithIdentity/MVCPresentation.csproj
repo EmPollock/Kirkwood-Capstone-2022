@@ -186,12 +186,12 @@
     <Compile Include="Controllers\Event\EventListController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Locations\LocationController.cs" />
-    <Compile Include="Controllers\Locations\ParkingLotController.cs" />
+    <Compile Include="Controllers\Location\LocationController.cs" />
+    <Compile Include="Controllers\Location\ParkingLotController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="Controllers\VolunteerController.cs" />
-    <Compile Include="Controllers\Locations\SublocationController.cs" />
+    <Compile Include="Controllers\Location\SublocationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
