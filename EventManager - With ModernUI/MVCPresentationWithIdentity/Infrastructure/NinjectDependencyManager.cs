@@ -7,7 +7,8 @@ using DataAccessFakes;
 using Ninject.Web.Common;
 
 using DataObjects;
-
+using LogicLayerInterfaces;
+using LogicLayer;
 
 namespace MVCPresentationWithIdentity.Infrastructure
 {
