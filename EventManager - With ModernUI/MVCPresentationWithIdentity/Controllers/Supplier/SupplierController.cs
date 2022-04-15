@@ -201,7 +201,7 @@ namespace MVCPresentationWithIdentity.Controllers
         /// <returns>ActionResult</returns>
         public ActionResult ViewSupplierDetails(int supplierID)
         {
-            SupplierDetailsViewModel model = null;
+            SupplierDetailsViewModel model = new SupplierDetailsViewModel();
             Supplier supplier = new Supplier();
             List<string> supplierImages = new List<string>();
             List<Reviews> supplierReviews = new List<Reviews>();
@@ -209,42 +209,38 @@ namespace MVCPresentationWithIdentity.Controllers
 
             try
             {
-                if (model is null)
+                supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+                supplierImages = _supplierManager.RetrieveSupplierImagesBySupplierID(supplierID);
+                supplierTags = _supplierManager.RetrieveSupplierTagsBySupplierID(supplierID);
+                supplierReviews = _supplierManager.RetrieveSupplierReviewsBySupplierID(supplierID);
+                if (supplierImages.Count == 0 || supplierImages is null)
                 {
-                    supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
-                    supplierImages = _supplierManager.RetrieveSupplierImagesBySupplierID(supplierID);
-                    supplierTags = _supplierManager.RetrieveSupplierTagsBySupplierID(supplierID);
-                    if (supplierImages.Count == 0 || supplierImages is null)
-                    {
-                        supplierImages.Add("");
-                    }
-                    supplierReviews = _supplierManager.RetrieveSupplierReviewsBySupplierID(supplierID);
-                    if (supplierReviews.Count == 0)
-                    {
-                        Reviews noReview = new Reviews()
-                        {
-                            Rating = 0,
-                            FullName = ""
-                        };
-                    }
-                    if (supplierTags.Count == 0)
-                    {
-                        supplierTags.Add("");
-                    }
-                    if (supplierReviews.Count != 0)
-                    {
-                        int avg = 0;
-                        int total = 0;
-
-                        foreach (Reviews review in supplierReviews)
-                        {
-                            avg += review.Rating;
-                            total++;
-                        }
-                        int sum = avg / total;
-                        supplier.AverageRating = sum;
-                    }
+                    supplierImages.Add("");
                 }
+                if (supplierTags.Count == 0)
+                {
+                    supplierTags.Add("");
+                }
+                if (supplierReviews.Count == 0)
+                {
+                    supplierReviews.Add(new Reviews()
+                    {
+                        Rating = 0,
+                        FullName = ""
+                    });
+                }
+                int sum = 0;
+                int total = 0;
+
+                foreach (Reviews review in supplierReviews)
+                {
+                    sum += review.Rating;
+                    total++;
+                }
+                int avg = sum / total;
+                supplier.AverageRating = avg;
+                    
+                
                 model = new SupplierDetailsViewModel();
                 model.Supplier = supplier;
                 model.SupplierImages = supplierImages;
