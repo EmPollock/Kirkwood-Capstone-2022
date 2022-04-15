@@ -35,6 +35,7 @@ namespace WPFPresentation
         public IVolunteerReviewManager VolunteerReviewManager { get; set; }
         public IEntranceManager EntranceManager { get; set; }
         public IVolunteerNeedManager NeedManager { get; set; }
+        public IZipManager ZipManager { get; set; }
 
         public ManagerProvider()
         {
@@ -56,6 +57,7 @@ namespace WPFPresentation
             VolunteerReviewManager = new VolunteerReviewManager();
             EntranceManager = new EntranceManager();
             NeedManager = new VolunteerNeedManager();
+            ZipManager = new ZipManager();
 
             // Fake versions here
             //ActivityManager = new ActivityManager(new ActivityAccessorFake(), new EventDateAccessorFake(), new SublocationAccessorFake(), new ActivityResultAccessorFake());
@@ -75,7 +77,7 @@ namespace WPFPresentation
             //VolunteerReviewManager = new VolunteerReviewManager(new VolunteerReviewAccessorFake());
             //EntranceManager = new EntranceManager(new EntranceAccessorFake());
             //NeedManager = new VolunteerNeedManager(new VolunteerNeedAccessorFake());
-
+            //ZipManager = new ZipManager(new ZipAccessorFake());
             ImageHelper = new ImageHelperDevelopment();
         }
     }

@@ -62,6 +62,7 @@
     <Compile Include="VolunteerRequestAccessor.cs" />
     <Compile Include="VolunteerReviewAccessor.cs" />
     <Compile Include="VolunteerSkillSetAccessor.cs" />
+    <Compile Include="ZipAccessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessInterfaces\DataAccessInterfaces.csproj">
