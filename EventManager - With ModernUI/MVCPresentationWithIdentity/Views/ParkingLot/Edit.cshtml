@@ -16,6 +16,7 @@
             @Html.HiddenFor(model => model.Description)
             @Html.HiddenFor(model => model.LocationID)
             @Html.HiddenFor(model => model.LotID)
+            @Html.HiddenFor(model => model.ImageName)
             <dt>
                 @Html.DisplayNameFor(model => model.NewName)
             </dt>
@@ -43,12 +44,12 @@
             </dt>
 
             <dd>
-                @Html.TextBoxFor(model => model.NewImage, new { type = "file", @class = "form-control"})
+                @Html.TextBoxFor(model => model.NewImage, new { type = "file", @class = "form-control", accept = ".jpg,.gif,.png,.apng,.svg,.bmp" })
             </dd>
         </dl>
 
         <input type="submit" class="btn btn-primary" />
-        @Html.ActionLink("Cancel", "Index", new { locationId = Model.LocationID }, new { @class = "btn btn-secondary" })
+        @Html.ActionLink("Cancel", "Index", new { locationId = Model.LocationID }, new { onclick = "return confirm('This will discard any changes you have made. Continue?');", @class = "btn btn-secondary" })
     }
 
 </div>

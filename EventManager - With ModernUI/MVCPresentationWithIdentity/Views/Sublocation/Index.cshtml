@@ -43,7 +43,12 @@
                             @Html.DisplayFor(modelItem => item.SublocationName)
                         </td>
                         <td class="d-table-cell">
-                            @Html.DisplayFor(modelItem => item.SublocationDescription)
+                            @if(item.SublocationDescription != null) { 
+                                @Html.DisplayFor(modelItem => item.SublocationDescription)
+                            } else
+                            {
+                                @Html.Display(" ");
+                            }
                         </td>
                         @if (Model.CanEdit)
                         {
@@ -53,7 +58,7 @@
                                 {
                                     @Html.Hidden("locationId", item.LocationID)
                                     @Html.Hidden("sublocationId", item.SublocationID)
-                                    <input class="btn btn-secondary" type="submit" value="Delete" />
+                                    <input class="btn btn-secondary" type="submit" value="Delete" onclick="return confirm('Are you sure want to delete this area?')"/>
                                 }
                             </td>
                         }

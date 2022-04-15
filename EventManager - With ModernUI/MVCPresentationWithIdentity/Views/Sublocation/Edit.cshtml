@@ -41,7 +41,7 @@
         </dl>
 
         <input type="submit" class="btn btn-primary" />
-        @Html.ActionLink("Cancel", "Index", new { locationId = Model.LocationID }, new { @class = "btn btn-secondary" })
+        @Html.ActionLink("Cancel", "Index", new { locationId = Model.LocationID }, new { onclick = "return confirm('This will discard any changes you have made. Continue?');", @class = "btn btn-secondary" })
     }
 
 </div>

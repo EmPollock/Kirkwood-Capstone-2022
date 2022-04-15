@@ -18,12 +18,31 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
     {
         IParkingLotManager _parkingLotManager;
         ILocationManager _locationManager;
-
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/14
+        /// 
+        /// Description:
+        /// Parking lot controller constructor. Gets ninject bindings for managers.
+        /// </summary>
+        /// <param name="parking"></param>
+        /// <param name="location"></param>
         public ParkingLotController(IParkingLotManager parking, ILocationManager location)
         {
             _parkingLotManager = parking;
             _locationManager = location;
         }
+
+        /// <summary>
+        /// 
+        /// Christopher Repko
+        /// Created: 2022/04/14
+        /// 
+        /// Description:
+        /// Parking Lot index GET method
+        /// </summary>
+        /// <param name="locationID">Location the parking lots belong to</param>
+        /// <returns>The index view model</returns>
         // GET: PartkingLot
         public ActionResult Index(int locationID)
         {
@@ -39,7 +58,7 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
                 Location location = _locationManager.RetrieveLocationByLocationID(locationID);
                 var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 ApplicationUser applicationUser = userManager.FindById(User.Identity.GetUserId());
-                if (applicationUser != null && applicationUser.UserID == location.UserID)
+                if (applicationUser != null && applicationUser.UserID == location.UserID || (location.UserID == null && User.IsInRole("Event Planner")))
                 {
                     canEdit = true;
                 }
@@ -66,8 +85,15 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             model.CanEdit = canEdit;
             return View(model);
         }
-
-        // GET: ParkingLot/Create
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/14
+        /// 
+        /// Description:
+        /// Parking lot create GET handler
+        /// </summary>
+        /// <param name="locationId">location ID of the location the new lot belongs to.</param>
+        /// <returns>The edit view with a special model loaded.</returns>
         public ActionResult Create(int locationId)
         {
             return View("Edit", new EditParkingLotModel()
@@ -82,7 +108,15 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             });
         }
 
-        // GET: ParkingLot/Edit/5
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/14
+        /// 
+        /// Description:
+        /// Parking lot edit GET handler
+        /// </summary>
+        /// <param name="lotId">The ID of the lot being editted</param>
+        /// <returns>The edit view model</returns>
         public ActionResult Edit(int lotId)
         {
             try
@@ -107,7 +141,15 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             }
         }
 
-        // POST: ParkingLot/Edit/5
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/14
+        /// 
+        /// Description:
+        /// Parking lot edit POST handler
+        /// </summary>
+        /// <param name="model">EditParkingLotModel containing post data</param>
+        /// <returns>Index view if successful, otherwise repopulates edit.</returns>
         [HttpPost]
         public ActionResult Edit(EditParkingLotModel model)
         {
@@ -168,7 +210,16 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
 
         }
 
-        // POST: ParkingLot/Delete/5
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/14
+        /// 
+        /// Description:
+        /// Parking lot delete POST handler
+        /// </summary>
+        /// <param name="lotId">lot ID of the lot to delete</param>
+        /// <param name="locationId">location ID to return to after delete</param>
+        /// <returns>index of the passed location</returns>
         [HttpPost]
         public ActionResult Delete(int lotId, int locationId)
         {

@@ -23,8 +23,7 @@ namespace MVCPresentationWithIdentity.Models
         [Display(Name = "Name")]
         public string NewSublocationName { get; set; }
 
-        [Required(ErrorMessage = "You must enter a description")]
-        [StringLength(1000, ErrorMessage = "The {0} must be less than {1} characters long.")]
+        [StringLength(3000, ErrorMessage = "The {0} must be less than {1} characters long.")]
         [Display(Name = "Description")]
         public string NewSublocationDescription { get; set; }
     }

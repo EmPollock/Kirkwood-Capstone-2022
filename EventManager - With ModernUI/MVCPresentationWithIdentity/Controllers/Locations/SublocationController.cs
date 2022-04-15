@@ -16,6 +16,17 @@ namespace MVCPresentationWithIdentity.Controllers
     {
         ISublocationManager _sublocationManager;
         ILocationManager _locationManager;
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/13
+        /// 
+        /// Description
+        /// 
+        /// Constructor for controller. Gets ninject bindings for managers.
+        /// </summary>
+        /// <param name="sublocationManager"></param>
+        /// <param name="locationManager"></param>
         public SublocationController(ISublocationManager sublocationManager, ILocationManager locationManager)
         {
             _sublocationManager = sublocationManager;
@@ -35,16 +46,15 @@ namespace MVCPresentationWithIdentity.Controllers
             SublocationModel model = new SublocationModel();
             model.Sublocations = new List<Sublocation>();
 
-            var sublocationManager = new SublocationManager();
             bool canEdit = false;
             try
             {
-                List<Sublocation> sublocations = sublocationManager.RetrieveSublocationsByLocationID(locationID);
+                List<Sublocation> sublocations = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
 
                 Location location = _locationManager.RetrieveLocationByLocationID(locationID);
                 var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 ApplicationUser applicationUser = userManager.FindById(User.Identity.GetUserId());
-                if (applicationUser != null && applicationUser.UserID == location.UserID)
+                if (applicationUser != null && applicationUser.UserID == location.UserID || (location.UserID == null && User.IsInRole("Event Planner")))
                 {
                     canEdit = true;
                 }
@@ -70,7 +80,15 @@ namespace MVCPresentationWithIdentity.Controllers
             return View(model);
         }
 
-        // GET: Sublocation/Create
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/13
+        /// Description
+        /// 
+        /// Create GET method for the sublocation controller
+        /// </summary>
+        /// <param name="locationId">ID of the current location</param>
+        /// <returns>The sublocation edit view with a special create model loaded</returns>
         public ActionResult Create(int locationId)
         {
             return View("Edit", new EditSublocationModel()
@@ -84,13 +102,20 @@ namespace MVCPresentationWithIdentity.Controllers
             });
         }
 
-        // GET: Sublocation/Edit/5
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/13
+        /// Description
+        /// 
+        /// Index GET method for the sublocation controller
+        /// </summary>
+        /// <param name="sublocationId">ID of the sublocation being editted</param>
+        /// <returns>The sublocation edit view</returns>
         public ActionResult Edit(int sublocationId)
         {
             try
             {
-                var sublocationManager = new SublocationManager();
-                Sublocation sublocation = sublocationManager.RetrieveSublocationBySublocationID(sublocationId);
+                Sublocation sublocation = _sublocationManager.RetrieveSublocationBySublocationID(sublocationId);
                 EditSublocationModel model = new EditSublocationModel()
                 {
                     LocationID = sublocation.LocationID,
@@ -107,15 +132,22 @@ namespace MVCPresentationWithIdentity.Controllers
             }
         }
 
-        // POST: Sublocation/Edit/5
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/13
+        /// Description
+        /// 
+        /// Index GET method for the sublocation controller
+        /// </summary>
+        /// <param name="model">Model for editting</param>
+        /// <returns>The sublocation index view</returns>
         [HttpPost]
         public ActionResult Edit(EditSublocationModel model)
         {
             if(ModelState.IsValid) {
                 try
                 {
-                    var sublocationManager = new SublocationManager();
-                    if(sublocationManager.RetrieveSublocationBySublocationID(model.SublocationID) != null)
+                    if(_sublocationManager.RetrieveSublocationBySublocationID(model.SublocationID) != null)
                     {
                         var oldSublocation = new Sublocation()
                         {
@@ -131,10 +163,10 @@ namespace MVCPresentationWithIdentity.Controllers
                             SublocationName = model.NewSublocationName,
                             SublocationDescription = model.NewSublocationDescription
                         };
-                        sublocationManager.EditSublocationBySublocationID(oldSublocation, newSublocation);
+                        _sublocationManager.EditSublocationBySublocationID(oldSublocation, newSublocation);
                     } else
                     {
-                        sublocationManager.CreateSublocationByLocationID(model.LocationID, model.NewSublocationName, model.NewSublocationDescription);
+                        _sublocationManager.CreateSublocationByLocationID(model.LocationID, model.NewSublocationName, model.NewSublocationDescription);
                     }
                     return RedirectToAction("Index", new { locationId = model.LocationID });
                 }
@@ -150,14 +182,22 @@ namespace MVCPresentationWithIdentity.Controllers
             
         }
 
-        // POST: Sublocation/Delete/5
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/13
+        /// Description
+        /// 
+        /// Index GET method for the sublocation controller
+        /// </summary>
+        /// <param name="sublocationId">ID of the sublocation being deleted</param>
+        /// <param name="locationId">ID of the location being viewed</param>
+        /// <returns>The sublocation index view</returns>
         [HttpPost]
         public ActionResult Delete(int sublocationId, int locationId)
         {
             try
             {
-                var sublocationManager = new SublocationManager();
-                sublocationManager.DeactivateSublocationBySublocationID(sublocationId);
+                _sublocationManager.DeactivateSublocationBySublocationID(sublocationId);
 
                 return RedirectToAction("Index", new { locationId = locationId });
             }
