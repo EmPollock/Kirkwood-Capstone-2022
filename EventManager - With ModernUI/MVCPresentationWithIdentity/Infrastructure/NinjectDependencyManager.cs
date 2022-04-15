@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Ninject;
 
-using LogicLayer;
-using LogicLayerInterfaces;
 using DataAccessFakes;
 using Ninject.Web.Common;
 
@@ -33,6 +31,8 @@ namespace MVCPresentationWithIdentity.Infrastructure
             kernel.Bind<IVolunteerManager>().To<VolunteerManager>();
             kernel.Bind<ILocationManager>().To<LocationManager>();
             kernel.Bind<ISupplierManager>().To<SupplierManager>();
+            kernel.Bind<ISublocationManager>().To<SublocationManager>();
+            kernel.Bind<IParkingLotManager>().To<ParkingLotManager>();
 
 
             // fake

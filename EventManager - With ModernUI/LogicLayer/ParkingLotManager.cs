@@ -204,6 +204,10 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Retrieves a Parking lot VM based on Lot ID
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/04/13
+        /// Removed exception causing issues in UI.
         /// </summary>
         /// <param name="lotID">ID of the selected Parking Lot</param>
         /// <returns>Parking lot object of the same lotID</returns>
@@ -215,10 +219,10 @@ namespace LogicLayer
             {
                 requestedParkingLot = _parkingLotAccessor.SelectParkingLotByLotID(lotID);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new ApplicationException("Failed to retrieve parking lot.", ex);
             }
 
             return requestedParkingLot;
