@@ -71,6 +71,7 @@
     <Compile Include="VolunteerRequestManager.cs" />
     <Compile Include="VolunteerReviewManager.cs" />
     <Compile Include="VolunteerSkillSetManager.cs" />
+    <Compile Include="ZipManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">

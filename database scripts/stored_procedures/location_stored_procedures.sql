@@ -16,6 +16,12 @@ Created: 2022/02/03
 Description:
 Stored procedure to select all active locations 
 from the locations table
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_active_locations ***'
 GO
@@ -23,20 +29,21 @@ CREATE PROCEDURE [dbo].[sp_select_active_locations]
 AS
 	BEGIN
 		SELECT 
-			[LocationID]			
-			,[UserID]				
-			,[LocationName]			
-			,[LocationDescription]	
-			,[LocationPricingText]	
-			,[LocationPhone]		
-			,[LocationEmail]		
-			,[LocationAddress1]		
-			,[LocationAddress2]		
-			,[LocationCity]			
-			,[LocationState]		
-			,[LocationZipCode]		
-			,[LocationImagePath]	
-		FROM [dbo].[Location]
+			[Location].[LocationID]			
+			,[Location].[UserID]				
+			,[Location].[LocationName]			
+			,[Location].[LocationDescription]	
+			,[Location].[LocationPricingText]	
+			,[Location].[LocationPhone]		
+			,[Location].[LocationEmail]		
+			,[Location].[LocationAddress1]		
+			,[Location].[LocationAddress2]		
+			,[ZIP].[City]			
+			,[ZIP].[States]		
+			,[Location].[LocationZipCode]		
+			,[Location].[LocationImagePath]	
+		FROM [dbo].[Location] JOIN [dbo].[ZIP]
+			ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [LocationActive] = 1
 	END	
 GO
@@ -47,11 +54,12 @@ Created: 2022/02/02
 
 Description:
 Stored procedure to select a location by LocationID
-**************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
 
 Description: 
+modified the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_location_by_locationID'
 GO
@@ -62,20 +70,20 @@ CREATE PROCEDURE [dbo].[sp_select_location_by_locationID]
 AS
 	BEGIN
 		SELECT 
-			[UserID],				
-			[LocationName],			
-			[LocationDescription],	
-			[LocationPricingText],	
-			[LocationPhone],		
-			[LocationEmail],			
-            [LocationAddress1],		
-            [LocationAddress2],		
-            [LocationCity],			
-            [LocationState],			
-            [LocationZipCode],		
-			[LocationImagePath],		
-			[LocationActive]		
-		FROM [Location] 
+			[Location].[UserID]				
+			,[Location].[LocationName]			
+			,[Location].[LocationDescription]	
+			,[Location].[LocationPricingText]	
+			,[Location].[LocationPhone]		
+			,[Location].[LocationEmail]		
+			,[Location].[LocationAddress1]		
+			,[Location].[LocationAddress2]		
+			,[ZIP].[City]			
+			,[ZIP].[States]		
+			,[Location].[LocationZipCode]		
+			,[Location].[LocationImagePath]	
+		FROM [dbo].[Location] JOIN [dbo].[ZIP]
+			ON [Location].[LocationZipCode] = [ZIP].[ZIPCode] 
 		WHERE [LocationID] = @LocationID AND [LocationActive] = 1
 	END	
 GO
@@ -87,11 +95,12 @@ Created: 2022/01/26
 
 Description:
 Stored procedure to retrieve Locations by locationID
-**************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
 
 Description: 
+removed the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_location_by_name_and_address'
 GO
@@ -127,10 +136,12 @@ Created: 2022/01/22
 Description:
 Stored procedure to create a new Location record
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
 
 Description: 
+removed the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_insert_location_by_name_address_city_state_zip'
 GO
@@ -148,13 +159,11 @@ AS
 		INSERT INTO [dbo].[Location]
 		(
 		[LocationName]						
-		,[LocationAddress1]
-		,[LocationCity]			
-		,[LocationState]	
+		,[LocationAddress1]	
 		,[LocationZipCode]
 		)
 		VALUES
-		(@LocationName, @LocationAddress1, @LocationCity, @LocationState, @LocationZipCode)		
+		(@LocationName, @LocationAddress1, @LocationZipCode)		
 	END	
 GO
 

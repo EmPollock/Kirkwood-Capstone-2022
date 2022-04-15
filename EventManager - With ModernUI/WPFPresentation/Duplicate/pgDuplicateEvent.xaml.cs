@@ -290,6 +290,12 @@ namespace WPFPresentation.Duplicate
         /// 
         /// Description:
         /// Fills both datagrids when page loads
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/14
+        /// 
+        /// Description:
+        /// Tells user there is nothing to duplicate and skips the screen
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -301,6 +307,12 @@ namespace WPFPresentation.Duplicate
             try
             {
                 _oldActivities = _activityManager.RetrieveActivitiesByEventIDForVM(_oldEvent.EventID);
+                if (_oldActivities.Count == 0)
+                {
+                    MessageBox.Show("This Event did not have any activites to duplicate." + "\n\n");
+                    pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                    this.NavigationService.Navigate(viewEventsPage);
+                }
             }
             catch (Exception ex)
             {
@@ -322,34 +334,51 @@ namespace WPFPresentation.Duplicate
         /// 
         /// Description:
         /// Code for filling list of dupable tasks
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/14
+        /// 
+        /// Description:
+        /// Tells user there is nothing to duplicate and skips the screen
         /// </summary>
         private void SetUpDupeTasks()
         {
             try
             {
                 _oldTasks = _taskManager.RetrieveAllTasksByEventID(_oldEvent.EventID);
-                foreach (var task in _oldTasks)
+                if (_oldTasks.Count == 0)
                 {
-                    VolunteerNeed tempNeed = _needManager.RetrieveVolunteerNeedByTaskID(task.TaskID);
-                    VolunteerNeedVM needVM = new VolunteerNeedVM();
-                    needVM.TaskID = tempNeed.TaskID;
-                    needVM.NumTotalVolunteers = tempNeed.NumTotalVolunteers;
-                    needVM.NumCurrVolunteers = tempNeed.NumCurrVolunteers;
-                    needVM.Name = task.Name;
-                    needVM.Description = task.Description;
-                    needVM.DueDate = task.DueDate;
-                    needVM.Priority = task.Priority;
-                    needVM.CompletionDate = task.CompletionDate;
-                    needVM.ProofID = task.ProofID;
-                    needVM.isDone = task.isDone;
-                    needVM.EventID = task.EventID;
-                    needVM.Active = task.Active;
-                    needVM.TaskPriority = task.TaskPriority;
-                    needVM.TaskEventName = task.TaskEventName;
-
-                    _oldNeeds.Add(needVM);
-
+                    MessageBox.Show("This Event did not have any tasks to duplicate." + "\n\n");
+                    tabDuplicateTasks.IsEnabled = false;
+                    tabDuplicateActivities.IsEnabled = true;
+                    tabDuplicateActivities.Focus();
                 }
+                else
+                {
+                    foreach (var task in _oldTasks)
+                    {
+                        VolunteerNeed tempNeed = _needManager.RetrieveVolunteerNeedByTaskID(task.TaskID);
+                        VolunteerNeedVM needVM = new VolunteerNeedVM();
+                        needVM.TaskID = tempNeed.TaskID;
+                        needVM.NumTotalVolunteers = tempNeed.NumTotalVolunteers;
+                        needVM.NumCurrVolunteers = tempNeed.NumCurrVolunteers;
+                        needVM.Name = task.Name;
+                        needVM.Description = task.Description;
+                        needVM.DueDate = task.DueDate;
+                        needVM.Priority = task.Priority;
+                        needVM.CompletionDate = task.CompletionDate;
+                        needVM.ProofID = task.ProofID;
+                        needVM.isDone = task.isDone;
+                        needVM.EventID = task.EventID;
+                        needVM.Active = task.Active;
+                        needVM.TaskPriority = task.TaskPriority;
+                        needVM.TaskEventName = task.TaskEventName;
+
+                        _oldNeeds.Add(needVM);
+
+                    }
+                }
+                
             }
             catch (Exception ex)
             {

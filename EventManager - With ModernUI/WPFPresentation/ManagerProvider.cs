@@ -43,6 +43,7 @@ namespace WPFPresentation
         public IEntranceManager EntranceManager { get; set; }
         public IVolunteerNeedManager NeedManager { get; set; }
         public IEmailProvider EmailProvider { get; set; }
+        public IZipManager ZipManager { get; set; }
 
         public ManagerProvider()
         {
@@ -64,6 +65,7 @@ namespace WPFPresentation
             VolunteerReviewManager = new VolunteerReviewManager();
             EntranceManager = new EntranceManager();
             NeedManager = new VolunteerNeedManager();
+            ZipManager = new ZipManager();
 
             // please ask how to use if you would like to test the real email provider
             //EmailProvider = new EmailProvider();
@@ -89,6 +91,7 @@ namespace WPFPresentation
 
             EmailProvider = new EmailProviderFake();
 
+            //ZipManager = new ZipManager(new ZipAccessorFake());
             ImageHelper = new ImageHelperDevelopment();
         }
     }

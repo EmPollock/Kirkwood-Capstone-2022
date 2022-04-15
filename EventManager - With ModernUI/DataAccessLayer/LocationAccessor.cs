@@ -124,7 +124,7 @@ namespace DataAccessLayer
                             State = reader.IsDBNull(9) ? null : reader.GetString(9),
                             ZipCode = reader.IsDBNull(10) ? null : reader.GetString(10),
                             ImagePath = reader.IsDBNull(11) ? null : reader.GetString(11),
-                            Active = reader.GetBoolean(12)
+                            // Active = reader.GetBoolean(12)
                         };
                     }
                 }

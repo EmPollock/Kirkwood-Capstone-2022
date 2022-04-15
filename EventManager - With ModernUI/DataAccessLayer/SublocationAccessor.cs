@@ -75,7 +75,7 @@ namespace DataAccessLayer
             cmd.Parameters["@SublocationName"].Value = sublocationName;
 
             cmd.Parameters.Add("@SublocationDescription", SqlDbType.NVarChar, 1000);
-            cmd.Parameters["@SublocationDescription"].Value = sublocationDesc;
+            cmd.Parameters["@SublocationDescription"].Value = sublocationDesc ?? "";
 
             try
             {
@@ -232,16 +232,16 @@ namespace DataAccessLayer
             cmd.Parameters["@OldSublocationDescription"].Value = oldSublocation.SublocationDescription;
             cmd.Parameters["@NewLocationID"].Value = newSublocation.LocationID;
             cmd.Parameters["@NewSublocationName"].Value = newSublocation.SublocationName;
-            cmd.Parameters["@NewSublocationDescription"].Value = newSublocation.SublocationDescription;
+            cmd.Parameters["@NewSublocationDescription"].Value = newSublocation.SublocationDescription ?? "";
 
             try
             {
                 conn.Open();
                 result = cmd.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
             return result;

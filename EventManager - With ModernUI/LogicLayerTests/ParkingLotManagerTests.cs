@@ -472,10 +472,10 @@ namespace LogicLayerTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestSelectParkingLotByLotIDReturnsApplicationExceptionWithBadLotID()
+        public void TestSelectParkingLotByLotIDReturnsNullWithBadLotID()
         {
             // arrange
+            ParkingLotVM expected = null;
             ParkingLotVM parkingLot = null;
             const int badLotID = -1;
 
@@ -483,7 +483,7 @@ namespace LogicLayerTests
             parkingLot = _parkingLotManager.RetrieveParkingLotByLotID(badLotID);
 
             // assert
-            // Exception checking, nothing to do
+            Assert.AreEqual(expected, parkingLot);
 
         }
            

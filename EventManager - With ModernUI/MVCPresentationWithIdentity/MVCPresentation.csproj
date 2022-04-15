@@ -191,6 +191,8 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Supplier\SupplierController.cs" />
     <Compile Include="Controllers\Volunteer\VolunteerController.cs" />
+    <Compile Include="Controllers\Location\ParkingLotController.cs" />
+    <Compile Include="Controllers\Location\SublocationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -225,8 +227,10 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\SupplierDetailsViewModel.cs" />
+    <Compile Include="Models\ParkingLotModel.cs" />
     <Compile Include="Models\SupplierListViewModel.cs" />
     <Compile Include="Models\VolunteerListViewModel.cs" />
+    <Compile Include="Models\SublocationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -416,6 +420,10 @@
     <Content Include="Views\Event\EventNavBar.cshtml" />
     <Content Include="Views\Volunteer\VolunteerNavBar.cshtml" />
     <Content Include="Views\Supplier\ViewSupplierServices.cshtml" />
+    <Content Include="Views\Sublocation\Index.cshtml" />
+    <Content Include="Views\Sublocation\Edit.cshtml" />
+    <Content Include="Views\ParkingLot\Index.cshtml" />
+    <Content Include="Views\ParkingLot\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

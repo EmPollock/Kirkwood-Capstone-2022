@@ -59,6 +59,7 @@
     <Compile Include="IVolunteerRequestManager.cs" />
     <Compile Include="IVolunteerReviewManager.cs" />
     <Compile Include="IVolunteerSkillSetManager.cs" />
+    <Compile Include="IZipManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
