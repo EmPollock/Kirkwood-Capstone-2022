@@ -1,0 +1,67 @@
+﻿@model MVCPresentationWithIdentity.Models.SupplierDetailsViewModel
+
+@{
+    ViewBag.Title = "Supplier Services";
+    Layout = "~/Views/Shared/_SupplierDetailsLayout.cshtml";
+}
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+<style>
+    img {
+        height: 200px;
+        max-width: 300px;
+    }
+
+    @@media only screen and (max-width: 600px) {
+        img {
+            height: 150px;
+            width: 200px;
+        }
+
+        tr {
+            border-bottom: solid;
+        }
+        
+    }
+</style>
+
+<br />
+<h2 class="mt-4 text-center">Services</h2>
+<br />
+<div class="row">
+    <div class="col-md-3">
+        @Html.Partial("SupplierNav", Model)
+    </div>
+    <div class="col-md-8 col-sm-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataObjects.ServiceVM service in Model.Services)
+                {
+
+                    <tr>
+                        @if (service.ServiceImagePath == null)
+                        {
+                            <td><img height="200" width="300"></td>
+                        }
+                        else
+                        {
+                            <td><img src="~/Content/Images/LocationImages/@service.ServiceImagePath"></td>
+                        }
+                        <td>@service.ServiceName</td>
+                        <td>$@service.Price</td>
+                        <td>@service.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -9,8 +9,6 @@ using DataAccessFakes;
 using Ninject.Web.Common;
 
 using DataObjects;
-using LogicLayer;
-using LogicLayerInterfaces;
 
 
 namespace MVCPresentationWithIdentity.Infrastructure
@@ -35,6 +33,7 @@ namespace MVCPresentationWithIdentity.Infrastructure
             kernel.Bind<ISupplierManager>().To<SupplierManager>();
             kernel.Bind<IActivityManager>().To<ActivityManager>();
             kernel.Bind<IEventDateManager>().To<EventDateManager>();
+            kernel.Bind<IServiceManager>().To<ServiceManager>();
 
 
             // fake

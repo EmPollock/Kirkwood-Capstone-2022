@@ -17,6 +17,7 @@ namespace MVCPresentationWithIdentity.Controllers
     {
         ISupplierManager _supplierManager;
         IActivityManager _activityManager = null;
+        IServiceManager _serviceManager = null;
         SupplierDetailsViewModel _supplierDetails = new SupplierDetailsViewModel();
         public int _pageSize = 10;
 
@@ -28,10 +29,11 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// Default constructor for the Supplier controller
         /// </summary>
-        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager)
+        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager)
         {
             _supplierManager = supplierManager;
             _activityManager = activityManager;
+            _serviceManager = serviceManager;
         }
 
         public PartialViewResult SupplierNav(int eventId)
@@ -268,6 +270,43 @@ namespace MVCPresentationWithIdentity.Controllers
                 ModelState.AddModelError("", "Location not found.");
             }
             return View(model);
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/13
+        /// 
+        /// Description:
+        /// For getting the supplier services page
+        /// </summary>
+        /// <param name="supplier"></param>
+        public ActionResult ViewSupplierServices(int supplierID = 0)
+        {
+            if (supplierID == 0)
+            {
+                return RedirectToAction("ViewSuppliers", "Supplier");
+            }
+
+            List<Service> services = new List<Service>();
+            services = _serviceManager.RetrieveServicesBySupplierID(supplierID);
+            _supplierDetails.Supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+            List<ServiceVM> serviceVMs = new List<ServiceVM>();
+            foreach (Service service in services)
+            {
+                serviceVMs.Add(new ServiceVM()
+                {
+                    ServiceID = service.ServiceID,
+                    SupplierID = service.SupplierID,
+                    ServiceName = service.ServiceName,
+                    Price = service.Price,
+                    Description = service.Description,
+                    ServiceImagePath = service.ServiceImagePath
+                });
+            }
+
+            _supplierDetails.Services = serviceVMs;
+
+            return View(_supplierDetails);
         }
     }
 }
