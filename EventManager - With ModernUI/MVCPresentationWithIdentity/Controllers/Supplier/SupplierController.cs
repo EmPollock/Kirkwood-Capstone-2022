@@ -34,6 +34,11 @@ namespace MVCPresentationWithIdentity.Controllers
             _activityManager = activityManager;
         }
 
+        public PartialViewResult SupplierNav(int eventId)
+        {
+            return PartialView(eventId);
+        }
+
         /// <summary>
         /// Logan Baccam
         /// Created: 2022/04/02
@@ -187,6 +192,10 @@ namespace MVCPresentationWithIdentity.Controllers
         /// 
         /// Description:
         /// For the Supplier details page
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/04/14
+        /// Fixed some issues with wrong comparators, also made tags queried from database
         /// </summary>
         /// <param name="page"></param>
         /// <returns>ActionResult</returns>
@@ -204,12 +213,13 @@ namespace MVCPresentationWithIdentity.Controllers
                 {
                     supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
                     supplierImages = _supplierManager.RetrieveSupplierImagesBySupplierID(supplierID);
-                    if (supplierImages.Count > 0 || supplierImages is null)
+                    supplierTags = _supplierManager.RetrieveSupplierTagsBySupplierID(supplierID);
+                    if (supplierImages.Count == 0 || supplierImages is null)
                     {
                         supplierImages.Add("");
                     }
                     supplierReviews = _supplierManager.RetrieveSupplierReviewsBySupplierID(supplierID);
-                    if (supplierReviews.Count > 0)
+                    if (supplierReviews.Count == 0)
                     {
                         Reviews noReview = new Reviews()
                         {
@@ -217,7 +227,7 @@ namespace MVCPresentationWithIdentity.Controllers
                             FullName = ""
                         };
                     }
-                    if (supplierTags.Count > 0)
+                    if (supplierTags.Count == 0)
                     {
                         supplierTags.Add("");
                     }
