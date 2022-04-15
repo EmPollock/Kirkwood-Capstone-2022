@@ -1,0 +1,22 @@
+﻿@model Int32
+
+<div class="d-none d-md-flex flex-column">
+    @Html.ActionLink("Details", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+    @Html.ActionLink("Tasks", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+    @Html.ActionLink("Itenerary", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+    @Html.ActionLink("Budget", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+    @Html.ActionLink("Advertising", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+    @Html.ActionLink("After Event Report", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+    @Html.ActionLink("Files", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+    @Html.ActionLink("Invitations", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+</div>
+<div class="d-flex d-md-none flex-row justify-content-center">
+    @Html.ActionLink("Details", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-sm" })
+    @Html.ActionLink("Tasks", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-sm" })
+    @Html.ActionLink("Itenerary", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-sm" })
+    @Html.ActionLink("Budget", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-sm" })
+    @Html.ActionLink("Advertising", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-sm" })
+    @Html.ActionLink("After Event Report", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-sm" })
+    @Html.ActionLink("Files", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-sm" })
+    @Html.ActionLink("Invitations", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-sm" })
+</div>
