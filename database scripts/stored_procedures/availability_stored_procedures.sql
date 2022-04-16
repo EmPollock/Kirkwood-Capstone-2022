@@ -149,6 +149,21 @@ AS
 	END
 GO
 
+
+
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/03/31
+
+Description: 
+Collects the availability for the supplier for the next three months
+
+****************************************************************/
+-- print '' print '*** creating sp_select_availability_by_supplierID_for_three_months'
+-- GO
+-- CREATE PROCEDURE [dbo].[sp_select_availability_by_supplierID_for_three_months]
 -----------------------------------------------------------------------------------------------------
 
 /***************************************************************
@@ -215,5 +230,129 @@ AS
 			ON [AvailabilityException].[ExceptionID] = [VolunteerAvailabilityException].[ExceptionID]
 		WHERE [VolunteerAvailabilityException].[VolunteerID] = @VolunteerID
 			AND [AvailabilityException].[ExceptionDate] = @ExceptionDate
+	END
+GO
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/04/09
+
+Description: 
+Select supplier availability by SupplierID 
+****************************************************************/
+print '' print '*** creating sp_select_availability_by_supplierID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_availability_by_supplierID]
+(
+	@SupplierID			[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[Availability].[AvailabilityID],
+			[Availability].[TimeStart],
+			[Availability].[TimeEnd],
+			[Availability].[Sunday],	
+			[Availability].[Monday],	
+			[Availability].[Tuesday],	
+			[Availability].[Wednesday],	
+			[Availability].[Thursday],	
+			[Availability].[Friday],	
+			[Availability].[Saturday]	
+		FROM [Availability] 
+		JOIN [SupplierAvailability]
+			ON [Availability].[AvailabilityID] = [SupplierAvailability].[AvailabilityID]
+		WHERE 
+			[SupplierAvailability].[SupplierID] = @SupplierID
+	END	
+GO
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/04/09
+
+Description:
+Stored procedure to select supplier availability exceptions 
+by supplierID
+****************************************************************/
+print '' print '*** creating sp_select_availability_exception_by_supplierID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_availability_exception_by_supplierID]
+(
+	@SupplierID		[int]
+)
+AS
+	BEGIN
+		SELECT
+			[AvailabilityException].[ExceptionID],
+			[AvailabilityException].[ExceptionDate],
+			[AvailabilityException].[TimeStart],
+			[AvailabilityException].[TimeEnd]
+		FROM [AvailabilityException]
+		JOIN [SupplierAvailabilityException] 
+			ON [AvailabilityException].[ExceptionID] = [SupplierAvailabilityException].[ExceptionID]
+		WHERE [SupplierAvailabilityException].[SupplierID] = @SupplierID
+	END
+GO
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/04/11
+
+Description: 
+Select location availability by LocationID 
+****************************************************************/
+print '' print '*** creating sp_select_availability_by_locationID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_availability_by_locationID]
+(
+	@LocationID			[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[Availability].[AvailabilityID],
+			[Availability].[TimeStart],
+			[Availability].[TimeEnd],
+			[Availability].[Sunday],	
+			[Availability].[Monday],	
+			[Availability].[Tuesday],	
+			[Availability].[Wednesday],	
+			[Availability].[Thursday],	
+			[Availability].[Friday],	
+			[Availability].[Saturday]	
+		FROM [Availability] 
+		JOIN [LocationAvailability]
+			ON [Availability].[AvailabilityID] = [LocationAvailability].[AvailabilityID]
+		WHERE 
+			[LocationAvailability].[LocationID] = @LocationID
+	END	
+GO
+
+/***************************************************************
+Austin Timmerman
+Created: 2022/04/11
+
+Description:
+Stored procedure to select location availability exceptions 
+by LocationID
+****************************************************************/
+print '' print '*** creating sp_select_availability_exception_by_locationID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_availability_exception_by_locationID]
+(
+	@LocationID		[int]
+)
+AS
+	BEGIN
+		SELECT
+			[AvailabilityException].[ExceptionID],
+			[AvailabilityException].[ExceptionDate],
+			[AvailabilityException].[TimeStart],
+			[AvailabilityException].[TimeEnd]
+		FROM [AvailabilityException]
+		JOIN [LocationAvailabilityException] 
+			ON [AvailabilityException].[ExceptionID] = [LocationAvailabilityException].[ExceptionID]
+		WHERE [LocationAvailabilityException].[LocationID] = @LocationID
 	END
 GO

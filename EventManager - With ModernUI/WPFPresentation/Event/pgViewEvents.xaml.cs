@@ -416,6 +416,41 @@ namespace WPFPresentation
                 eventFilter = EventFilter.AllUpcomingEvents;
             }
         }
+
+        
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/30
+        /// 
+        /// Description:
+        /// Reveals a button for duplicating an event if an existing event is selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void datActiveEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btnCopyEvent.Visibility = Visibility.Visible;
+        }
+
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/30
+        /// 
+        /// Description: 
+        /// Functionality for the duplicate event button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCopyEvent_Click(object sender, RoutedEventArgs e)
+        {
+            EventVM selectedEvent = new EventVM();
+            selectedEvent = (EventVM)datActiveEvents.SelectedItem;
+            pgCreateEvent createEventPage = new pgCreateEvent(_user, _managerProvider, selectedEvent);
+            this.NavigationService.Navigate(createEventPage);
+
+        }
     }
 
     /// <summary>

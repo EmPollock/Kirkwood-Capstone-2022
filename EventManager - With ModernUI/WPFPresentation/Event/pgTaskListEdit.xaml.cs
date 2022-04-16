@@ -331,7 +331,6 @@ namespace WPFPresentation.Event
                 TaskID = _task.TaskID,
                 Name = _task.Name,
                 Description = txtTaskDescription.Text,
-                // cboAssign variable,
                 DueDate = (DateTime)dtpTaskDueDate.SelectedDate,
                 Priority = priority,
                 TaskPriority = cboPriority.Text.ToString(),

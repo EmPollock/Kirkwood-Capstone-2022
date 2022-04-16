@@ -173,5 +173,121 @@ namespace LogicLayer
 
             return supplierAvailabilities;
         }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Manager for supplier availability for the next three months
+        /// 
+        /// </summary>
+        /// <param name="supplierID">The id for the supplier</param>
+        /// <returns>A list of dates that the supplier is available</returns>
+        public List<DateTime> SupplierAvailabilityForNextThreeMonths(int supplierID)
+        {
+            List<DateTime> datesAvailable = new List<DateTime>();
+            // green
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+            //datesAvailable.Add(new Availability());
+
+            try
+            {
+                datesAvailable = _supplierAccessor.SelectSupplierAvailabilityForNextThreeMonths(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return datesAvailable;
+        }
+
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Retrieve supplier availability by SupplierID 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of AvailabilityVM objects</returns>
+        public List<AvailabilityVM> RetrieveSupplierAvailabilityBySupplierID(int supplierID)
+        {
+            List<AvailabilityVM> availabilities = new List<AvailabilityVM>();
+
+            try
+            {
+                availabilities = _supplierAccessor.SelectSupplierAvailabilityBySupplierID(supplierID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Retrieve supplier availability exceptions by SupplierID
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of Availability objects</returns>
+        public List<Availability> RetrieveSupplierAvailabilityExceptionBySupplierID(int supplierID)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            try
+            {
+                availabilities = _supplierAccessor.SelectSupplierAvailabilityExceptionBySupplierID(supplierID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Retrieves a supplier from the supplier table.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+
+        public Supplier RetrieveSupplierBySupplierID(int supplierID)
+        {
+            if (supplierID < 99999)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+            Supplier supplier = null;
+            try
+            {
+                supplier = _supplierAccessor.SelectSupplierBySupplierID(supplierID);
+                if (supplier is null || supplier.Name.Length == 0)
+                {
+                    throw new ApplicationException("Supplier not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve supplier.");
+            }
+
+            return supplier;
+        }
     }
 }

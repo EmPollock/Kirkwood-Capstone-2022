@@ -422,5 +422,31 @@ namespace LogicLayer
 
             return rowsAffected;
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select activities matching the given supplierID 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of activity objects for a Supplier</returns>
+        public List<Activity> RetrieveActivitiesBySupplierID(int supplierID)
+        {
+            List<Activity> activities = new List<Activity>();
+
+            try
+            {
+                activities = _activityAccessor.SelectActivitiesBySupplierID(supplierID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return activities;
+        }
     }
 }

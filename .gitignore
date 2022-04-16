@@ -67,6 +67,7 @@ ipch/
 *.opensdf
 *.sdf
 *.cachefile
+*.cache
 
 # Visual Studio profiler
 *.psess
@@ -192,3 +193,6 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+
+# Folder for images
+EventManager - With ModernUI/MVCPresentationWithIdentity/Content/Images/

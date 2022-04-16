@@ -27,6 +27,7 @@ namespace DataAccessFakes
         private List<Priority> _priorities = new List<Priority>();
         private List<TaskAssignmentVM> _taskAssignments = new List<TaskAssignmentVM>();
         private Dictionary<User, Role> _fakeUserRoles = new Dictionary<User, Role>();
+        private List<TaskAssignment> _fakeTaskAssignments = new List<TaskAssignment>();
 
         public TaskAccessorFakes()
         {
@@ -143,6 +144,35 @@ namespace DataAccessFakes
                 Name = "Tess Data"
             });
 
+            /// Jace Pettinger
+            /// Created: 2022/01/24
+            /// 
+            /// Description:
+            /// Creating a "fake" list of task assignments to use for testing purposes
+            /// </summary>
+            _fakeTaskAssignments.Add(new TaskAssignment() 
+            {
+                TaskAssignmentID = 999999,
+                DateAssigned = DateTime.Now,
+                TaskID = 999999,
+                UserID = 999999
+               // RoleID = 
+            });
+            _fakeTaskAssignments.Add(new TaskAssignment()
+            {
+                TaskAssignmentID = 999998,
+                DateAssigned = DateTime.Now,
+                TaskID = 999998,
+                UserID = 999999
+                // RoleID = 
+            });
+            _fakeTaskAssignments.Add(new TaskAssignment()
+            {
+                TaskAssignmentID = 999997,
+                DateAssigned = DateTime.Now,
+                TaskID = 999999
+                // RoleID = 
+            });
         }
 
         /// <summary>
@@ -156,19 +186,18 @@ namespace DataAccessFakes
         /// <returns>int rowsAffected</returns>
         public int InsertTasks(Tasks newTask, int numTotalVolunteers = 0)
         {
-            int rowsAffected = 0;
+            int taskID = 999995;
 
             try
             {
                 _fakeTasks.Add(new TasksVM()
                 {
-                    EventID = 999999,
+                    TaskID = taskID,
                     Name = "Clean",
                     Description = "Clean this room.",
                     DueDate = DateTime.Now,
                     Priority = 3
-                });
-                rowsAffected = 1;
+                });            
             }
             catch (Exception)
             {
@@ -176,7 +205,7 @@ namespace DataAccessFakes
                 throw;
             }
 
-            return rowsAffected;
+            return taskID;
         }
 
         /// <summary>
@@ -319,6 +348,76 @@ namespace DataAccessFakes
             }
 
             return result;
+        }
+
+        /// Jace Pettinger
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Adds a new task assignment into the fake task asiignment list with a fake task id
+        /// </summary>
+        /// <returns>List Tasks</returns>
+        public int InsertNewTaskAssignmentByTaskID(int taskID)
+        {
+            int taskAssignmentID = 999996;
+
+            _fakeTaskAssignments.Add(new TaskAssignment()
+            {
+                TaskAssignmentID = taskAssignmentID,
+                DateAssigned = DateTime.Now,
+                TaskID = taskID,
+                // RoleID = 
+            });
+            taskAssignmentID = 999996;
+
+            return taskAssignmentID;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Updates task assignment to add a volunteer
+        /// </summary>
+        /// <returns>List Tasks</returns>
+        public int UpdateTaskAssignmentWithUserID(int taskAssignmentID, int userID)
+        {
+            int rowsAffected = 0;
+
+            foreach (var taskAssignment in _fakeTaskAssignments)
+            {
+                if (taskAssignmentID == taskAssignment.TaskAssignmentID)
+                {
+                    taskAssignment.UserID = userID;
+                    rowsAffected++;
+                }
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/05
+        /// 
+        /// Description: Returns all the tasks based on eventID
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<TasksVM> SelectAllTasksByEventID(int eventID)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            foreach (var task in _fakeTasks)
+            {
+                if (task.EventID == eventID)
+                {
+                    tasks.Add(task);
+                }
+            }
+
+            return tasks;
         }
     }
 }

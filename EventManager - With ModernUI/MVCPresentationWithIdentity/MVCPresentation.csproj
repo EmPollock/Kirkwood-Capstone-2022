@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,6 +52,9 @@
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -171,9 +174,6 @@
     <Reference Include="Microsoft.Owin.Security.OAuth">
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -183,13 +183,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Event\EventCreateController.cs" />
     <Compile Include="Controllers\Event\EventListController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\Location\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\SupplierController.cs" />
-    <Compile Include="Controllers\VolunteerController.cs" />
+    <Compile Include="Controllers\Supplier\SupplierController.cs" />
+    <Compile Include="Controllers\Volunteer\VolunteerController.cs" />
+    <Compile Include="Controllers\Location\ParkingLotController.cs" />
+    <Compile Include="Controllers\Location\SublocationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -218,65 +221,48 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LocationDetailsViewModel.cs" />
     <Compile Include="Models\LocationListViewModel.cs" />
+    <Compile Include="Models\LocationScheduleViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Models\SupplierDetailsViewModel.cs" />
+    <Compile Include="Models\ParkingLotModel.cs" />
     <Compile Include="Models\SupplierListViewModel.cs" />
     <Compile Include="Models\VolunteerListViewModel.cs" />
+    <Compile Include="Models\SublocationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-grid.css" />
-    <Content Include="Content\bootstrap-grid.min.css" />
-    <Content Include="Content\bootstrap-grid.rtl.css" />
-    <Content Include="Content\bootstrap-grid.rtl.min.css" />
     <Content Include="Content\bootstrap-theme-lumen.css" />
-    <Content Include="Content\bootstrap-reboot.css" />
-    <Content Include="Content\bootstrap-reboot.min.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
     <Content Include="Content\bootstrap-theme-quartz.css" />
-    <Content Include="Content\bootstrap-utilities.css" />
-    <Content Include="Content\bootstrap-utilities.min.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap.rtl.css" />
-    <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.esm.js" />
-    <Content Include="Scripts\bootstrap.esm.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.esm.min.js.map" />
-    <Content Include="Scripts\bootstrap.esm.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
-    <Content Include="Content\bootstrap.rtl.min.css.map" />
-    <Content Include="Content\bootstrap.rtl.css.map" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
-    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
-    <Content Include="Content\bootstrap-utilities.min.css.map" />
-    <Content Include="Content\bootstrap-utilities.css.map" />
-    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
-    <Content Include="Content\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.css.map" />
-    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
-    <Content Include="Content\bootstrap-grid.rtl.css.map" />
-    <Content Include="Content\bootstrap-grid.min.css.map" />
-    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Content\fullcalendar.css" />
+    <Content Include="Content\fullcalendar.min.css" />
+    <Content Include="Content\fullcalendar.print.css" />
+    <Content Include="Content\fullcalendar.print.min.css" />
+    <Content Include="Content\Images\LocationImages\7263a839-3428-49f2-b26f-875d3811ef85.jpg" />
+    <Content Include="Content\Images\LocationImages\f43faecc-5d0f-4b4a-ba47-4c1d3ce56912.jpg" />
+    <Content Include="Content\Images\LocationImages\lincolnway-park-street-parking.jpg" />
+    <Content Include="Content\Images\LocationImages\lincolnway-park.jpg" />
+    <Content Include="Content\Images\LocationImages\test-parkinglot-1.jpg" />
+    <Content Include="Content\Images\LocationImages\test-parkinglot-2.jpg" />
+    <Content Include="Content\Images\LocationImages\test-parkinglot-3.jpg" />
+    <Content Include="Content\Images\LocationImages\the-hotel-at-kirkwood-parking.jpg" />
+    <Content Include="Content\Images\LocationImages\the-hotel-at-kirkwood.jpg" />
+    <Content Include="Content\media.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Views\Supplier\SupplierNav.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\fullcalendar.js" />
+    <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Scripts\gcal.js" />
+    <Content Include="Scripts\gcal.min.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -287,7 +273,100 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\lib\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-icons_2694e8_256x240.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="Scripts\lib\cupertino\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Scripts\lib\cupertino\jquery-ui.min.css" />
+    <Content Include="Scripts\lib\jquery-ui.min.js" />
+    <Content Include="Scripts\lib\jquery.min.js" />
+    <Content Include="Scripts\lib\moment.min.js" />
+    <Content Include="Scripts\locale-all.js" />
+    <Content Include="Scripts\locale\af.js" />
+    <Content Include="Scripts\locale\ar-dz.js" />
+    <Content Include="Scripts\locale\ar-kw.js" />
+    <Content Include="Scripts\locale\ar-ly.js" />
+    <Content Include="Scripts\locale\ar-ma.js" />
+    <Content Include="Scripts\locale\ar-sa.js" />
+    <Content Include="Scripts\locale\ar-tn.js" />
+    <Content Include="Scripts\locale\ar.js" />
+    <Content Include="Scripts\locale\bg.js" />
+    <Content Include="Scripts\locale\bs.js" />
+    <Content Include="Scripts\locale\ca.js" />
+    <Content Include="Scripts\locale\cs.js" />
+    <Content Include="Scripts\locale\da.js" />
+    <Content Include="Scripts\locale\de-at.js" />
+    <Content Include="Scripts\locale\de-ch.js" />
+    <Content Include="Scripts\locale\de.js" />
+    <Content Include="Scripts\locale\el.js" />
+    <Content Include="Scripts\locale\en-au.js" />
+    <Content Include="Scripts\locale\en-ca.js" />
+    <Content Include="Scripts\locale\en-gb.js" />
+    <Content Include="Scripts\locale\en-ie.js" />
+    <Content Include="Scripts\locale\en-nz.js" />
+    <Content Include="Scripts\locale\es-do.js" />
+    <Content Include="Scripts\locale\es-us.js" />
+    <Content Include="Scripts\locale\es.js" />
+    <Content Include="Scripts\locale\et.js" />
+    <Content Include="Scripts\locale\eu.js" />
+    <Content Include="Scripts\locale\fa.js" />
+    <Content Include="Scripts\locale\fi.js" />
+    <Content Include="Scripts\locale\fr-ca.js" />
+    <Content Include="Scripts\locale\fr-ch.js" />
+    <Content Include="Scripts\locale\fr.js" />
+    <Content Include="Scripts\locale\gl.js" />
+    <Content Include="Scripts\locale\he.js" />
+    <Content Include="Scripts\locale\hi.js" />
+    <Content Include="Scripts\locale\hr.js" />
+    <Content Include="Scripts\locale\hu.js" />
+    <Content Include="Scripts\locale\id.js" />
+    <Content Include="Scripts\locale\is.js" />
+    <Content Include="Scripts\locale\it.js" />
+    <Content Include="Scripts\locale\ja.js" />
+    <Content Include="Scripts\locale\ka.js" />
+    <Content Include="Scripts\locale\kk.js" />
+    <Content Include="Scripts\locale\ko.js" />
+    <Content Include="Scripts\locale\lb.js" />
+    <Content Include="Scripts\locale\lt.js" />
+    <Content Include="Scripts\locale\lv.js" />
+    <Content Include="Scripts\locale\mk.js" />
+    <Content Include="Scripts\locale\ms-my.js" />
+    <Content Include="Scripts\locale\ms.js" />
+    <Content Include="Scripts\locale\nb.js" />
+    <Content Include="Scripts\locale\nl-be.js" />
+    <Content Include="Scripts\locale\nl.js" />
+    <Content Include="Scripts\locale\nn.js" />
+    <Content Include="Scripts\locale\pl.js" />
+    <Content Include="Scripts\locale\pt-br.js" />
+    <Content Include="Scripts\locale\pt.js" />
+    <Content Include="Scripts\locale\ro.js" />
+    <Content Include="Scripts\locale\ru.js" />
+    <Content Include="Scripts\locale\sk.js" />
+    <Content Include="Scripts\locale\sl.js" />
+    <Content Include="Scripts\locale\sq.js" />
+    <Content Include="Scripts\locale\sr-cyrl.js" />
+    <Content Include="Scripts\locale\sr.js" />
+    <Content Include="Scripts\locale\sv.js" />
+    <Content Include="Scripts\locale\th.js" />
+    <Content Include="Scripts\locale\tr.js" />
+    <Content Include="Scripts\locale\uk.js" />
+    <Content Include="Scripts\locale\vi.js" />
+    <Content Include="Scripts\locale\zh-cn.js" />
+    <Content Include="Scripts\locale\zh-tw.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\sortEventTable.js" />
     <Content Include="Scripts\sortTable.js" />
     <Content Include="Web.config" />
@@ -329,8 +408,23 @@
     <Content Include="Views\Admin\Details.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Location\ViewLocations.cshtml" />
+    <Content Include="Views\Location\ViewLocationSchedule.cshtml" />
     <Content Include="Views\Supplier\ViewSuppliers.cshtml" />
     <Content Include="Views\Volunteer\ViewRequests.cshtml" />
+    <Content Include="Views\EventCreate\EventCreate.cshtml" />
+    <Content Include="Views\Supplier\ViewSupplierSchedule.cshtml" />
+    <Content Include="Views\Shared\_SupplierDetailsLayout.cshtml" />
+    <Content Include="Views\Location\LocationNav.cshtml" />
+    <Content Include="Views\Location\ViewLocationDetails.cshtml" />
+    <Content Include="Views\Location\LocationEdit.cshtml" />
+    <Content Include="Views\Supplier\ViewSupplierDetails.cshtml" />
+    <Content Include="Views\Event\EventNavBar.cshtml" />
+    <Content Include="Views\Volunteer\VolunteerNavBar.cshtml" />
+    <Content Include="Views\Supplier\ViewSupplierServices.cshtml" />
+    <Content Include="Views\Sublocation\Index.cshtml" />
+    <Content Include="Views\Sublocation\Edit.cshtml" />
+    <Content Include="Views\ParkingLot\Index.cshtml" />
+    <Content Include="Views\ParkingLot\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -968,6 +968,63 @@ namespace DataAccessFakes
 
 
         }
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/01
+        /// 
+        /// Description: returns fake event with the correct id
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public EventVM SelectEventByEventID(int eventID)
+        {
+            EventVM fakeEvent = null;
+
+            if (_fakeEvents.Exists(e => (e.EventID == eventID)))
+            {
+                fakeEvent = _fakeEvents.First(e => (e.EventID == eventID));
+            }
+
+            return fakeEvent;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/04/06
+        /// 
+        /// Description:
+        /// Fake method for testing if it returns a list that includes the search word
+        /// in the event name, description, or in the location name, city, or state
+        /// 
+        /// </summary>
+        /// <param name="search">Search criteria</param>
+        /// <returns>List of EventVMs that contain search criteria</returns>
+        public List<EventVM> SelectEventsForSearch(string search)
+        {
+            List<EventVM> events = new List<EventVM>();
+
+            search = search.ToLower();
+
+            foreach (EventVM eventV in _fakeEvents)
+            {
+                eventV.EventName = eventV.EventName.ToLower();
+                eventV.EventDescription = eventV.EventDescription.ToLower();
+                eventV.Location.Name = eventV.Location.Name.ToLower();
+                eventV.Location.City = eventV.Location.City.ToLower();
+                eventV.Location.State = eventV.Location.State.ToLower();
+
+                if (eventV.EventName.Contains(search) ||
+                    eventV.EventDescription.Contains(search) ||
+                    eventV.Location.Name.Contains(search) ||
+                    eventV.Location.City.Contains(search) ||
+                    eventV.Location.State.Contains(search))
+                {
+                    events.Add(eventV);
+                }
+            }
+
+            return events;
+        }
     }
 
 

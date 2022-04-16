@@ -63,9 +63,9 @@ namespace LogicLayer
         /// </summary>
         /// <param name="newtask"></param>
         /// <returns>bool result that returns true if successful</returns>
-        public bool AddTask(Tasks newtask, int numTotalVolunteers)
+        public int AddTask(Tasks newtask, int numTotalVolunteers)
         {
-            bool result = false;
+            int result;
 
             
             if(newtask.Name.Length >= 50)
@@ -95,7 +95,7 @@ namespace LogicLayer
 
             try
             {
-                result = (1 == _taskAccessor.InsertTasks(newtask, numTotalVolunteers));
+                result = _taskAccessor.InsertTasks(newtask, numTotalVolunteers);
             }
             catch (Exception)
             {
@@ -197,9 +197,13 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Method that retrieves all tasks for an event
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/31
+        /// removed default value for eventID
         /// </summary>
         /// <returns>list Tasks</returns>
-        public List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID = 100000)
+        public List<TasksVM> RetrieveAllActiveTasksByEventID(int eventID)
         {
             List<TasksVM> tasks = new List<TasksVM>();
 
@@ -267,6 +271,56 @@ namespace LogicLayer
             return result;
         }
 
+        /// Jace Pettinger
+        /// 2022/01/31
+        /// 
+        /// Description:
+        /// Method that adds a task assignment for a specified task
+        /// </summary>
+        /// <returns>the new task assignment id</returns>
+        public int AddTaskAssignment(int taskID)
+        {
+            int taskAssignmentID;
+
+            try
+            {
+                taskAssignmentID = _taskAccessor.InsertNewTaskAssignmentByTaskID(taskID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return taskAssignmentID;
+        }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// 2022/03/31
+        /// 
+        /// Description:
+        /// Method that adds a volunteer to a task assignment
+        /// </summary>
+        /// <returns>true or false if the update to taskAssignment was successful</returns>
+        public bool AddVolunteerToTaskAssignment(int taskAssignmentID, int userID)
+        {
+            bool result = false;
+
+            try
+            {
+                int rowsAffected = _taskAccessor.UpdateTaskAssignmentWithUserID(taskAssignmentID, userID);
+                result = rowsAffected == 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Mike Cahow
         /// Created: 2022/03/25
@@ -296,6 +350,32 @@ namespace LogicLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Returns all tasks tied to an event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<TasksVM> RetrieveAllTasksByEventID(int eventID)
+        {
+            List<TasksVM> tasks = new List<TasksVM>();
+
+            try
+            {
+                tasks = _taskAccessor.SelectAllTasksByEventID(eventID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return tasks;
         }
     }
 }

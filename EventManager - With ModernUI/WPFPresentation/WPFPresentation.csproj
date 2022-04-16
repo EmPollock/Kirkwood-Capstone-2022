@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -59,8 +60,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomControls\SpecificStartAndEndTimesComboBox.xaml.cs">
+      <DependentUpon>SpecificStartAndEndTimesComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\TimeComboBoxes.xaml.cs">
       <DependentUpon>TimeComboBoxes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Duplicate\pgDuplicateEvent.xaml.cs">
+      <DependentUpon>pgDuplicateEvent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Event\pgCreateActivity.xaml.cs">
       <DependentUpon>pgCreateActivity.xaml</DependentUpon>
@@ -155,6 +162,10 @@
     <Compile Include="Volunteer\pgViewVolunteerDetails.xaml.cs">
       <DependentUpon>pgViewVolunteerDetails.xaml</DependentUpon>
     </Compile>
+    <Page Include="CustomControls\SpecificStartAndEndTimesComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="Volunteer\pgViewVolunteerSchedule.xaml.cs">
       <DependentUpon>pgViewVolunteerSchedule.xaml</DependentUpon>
     </Compile>
@@ -162,6 +173,10 @@
       <DependentUpon>pgVolunteerFrame.xaml</DependentUpon>
     </Compile>
     <Page Include="CustomControls\TimeComboBoxes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Duplicate\pgDuplicateEvent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

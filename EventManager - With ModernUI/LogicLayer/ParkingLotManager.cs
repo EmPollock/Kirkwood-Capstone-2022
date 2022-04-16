@@ -70,7 +70,7 @@ namespace LogicLayer
                 throw new ApplicationException("The name of the parking lot is too long.");
             }
 
-            if (parkingLot.Description.Length > 3000)
+            if (parkingLot.Description != null && parkingLot.Description.Length > 3000)
             {
                 throw new ApplicationException("The description of the parking lot is too long.");
             }
@@ -94,6 +94,11 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Edits the selected Parking lot
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/04/15
+        /// 
+        /// Fixed a crash when passing a null description.
         /// </summary>
         /// <param name="lotID">ID of Parking lot being edited</param>
         /// <param name="oldParkingLot">Parking lot object before edit</param>
@@ -117,7 +122,7 @@ namespace LogicLayer
                 throw new ApplicationException("The name of the parking lot is too long.");
             }
 
-            if (newParkingLot.Description.Length > 3000)
+            if (newParkingLot.Description != null && newParkingLot.Description.Length > 3000)
             {
                 throw new ApplicationException("The description of the parking lot is too long.");
             }
@@ -204,6 +209,10 @@ namespace LogicLayer
         /// 
         /// Description:
         /// Retrieves a Parking lot VM based on Lot ID
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/04/13
+        /// Removed exception causing issues in UI.
         /// </summary>
         /// <param name="lotID">ID of the selected Parking Lot</param>
         /// <returns>Parking lot object of the same lotID</returns>
@@ -215,10 +224,10 @@ namespace LogicLayer
             {
                 requestedParkingLot = _parkingLotAccessor.SelectParkingLotByLotID(lotID);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new ApplicationException("Failed to retrieve parking lot.", ex);
             }
 
             return requestedParkingLot;

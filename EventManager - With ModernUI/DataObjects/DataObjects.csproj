@@ -71,6 +71,7 @@
     <Compile Include="VolunteerNeed.cs" />
     <Compile Include="VolunteerRequest.cs" />
     <Compile Include="VolunteerSkillSet.cs" />
+    <Compile Include="Zip.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

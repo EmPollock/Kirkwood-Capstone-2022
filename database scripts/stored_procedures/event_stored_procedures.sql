@@ -210,6 +210,12 @@ Updated: 2022/03/24
 
 Description: 
 Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_future_event_dates'
 GO
@@ -232,14 +238,15 @@ AS
 			[Location].[LocationEmail],			
             [Location].[LocationAddress1],		
             [Location].[LocationAddress2],		
-            [Location].[LocationCity],			
-            [Location].[LocationState],			
+            [ZIP].[City],			
+            [ZIP].[States],			
             [Location].[LocationZipCode],		
 			[Location].[LocationImagePath],		
 			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			Join [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 		ORDER BY [Event].[EventID] ASC
 		
@@ -270,6 +277,12 @@ Updated: 2022/03/24
 
 Description: 
 Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates**
 '
@@ -293,14 +306,15 @@ AS
 			[Location].[LocationEmail],			
             [Location].[LocationAddress1],		
             [Location].[LocationAddress2],		
-            [Location].[LocationCity],			
-            [Location].[LocationState],			
+            [ZIP].[City],			
+            [ZIP].[States],			
             [Location].[LocationZipCode],		
 			[Location].[LocationImagePath],		
 			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			Join [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] >= GETDATE()
 		ORDER BY [Event].[EventID] ASC
@@ -332,6 +346,12 @@ Updated: 2022/03/24
 
 Description: 
 Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates'
 GO
@@ -354,14 +374,15 @@ AS
 			[Location].[LocationEmail],			
             [Location].[LocationAddress1],		
             [Location].[LocationAddress2],		
-            [Location].[LocationCity],			
-            [Location].[LocationState],			
+            [ZIP].[City],			
+            [ZIP].[States],			
             [Location].[LocationZipCode],		
 			[Location].[LocationImagePath],		
 			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			Join [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] < GETDATE()
 		ORDER BY [Event].[EventID] ASC
@@ -394,7 +415,12 @@ Updated: 2022/03/24
 
 Description: 
 Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
 
+Description: 
+modified the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates_for_user'
 GO
@@ -420,8 +446,8 @@ AS
 			[Location].[LocationEmail],			
             [Location].[LocationAddress1],		
             [Location].[LocationAddress2],		
-            [Location].[LocationCity],			
-            [Location].[LocationState],			
+            [ZIP].[City],			
+            [ZIP].[States],	
             [Location].[LocationZipCode],		
 			[Location].[LocationImagePath],		
 			[Location].[LocationActive]
@@ -429,6 +455,7 @@ AS
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
 			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			Join [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 			AND [UserEvent].[EventID] = [Event].[EventID]
 			AND [EventDateID] >= GETDATE()
@@ -465,6 +492,12 @@ Updated: 2022/03/24
 
 Description: 
 Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates_for_user'
 GO
@@ -490,8 +523,8 @@ AS
 			[Location].[LocationEmail],			
             [Location].[LocationAddress1],		
             [Location].[LocationAddress2],		
-            [Location].[LocationCity],			
-            [Location].[LocationState],			
+            [ZIP].[City],			
+            [ZIP].[States],		
             [Location].[LocationZipCode],		
 			[Location].[LocationImagePath],		
 			[Location].[LocationActive]
@@ -499,6 +532,7 @@ AS
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
 			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			Join [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] < GETDATE()
 			AND [UserEvent].[EventID] = [Event].[EventID]
@@ -532,6 +566,12 @@ Updated: 2022/03/24
 
 Description: 
 Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_upcoming_dates_for_user'
 GO
@@ -557,8 +597,8 @@ AS
 			[Location].[LocationEmail],			
             [Location].[LocationAddress1],		
             [Location].[LocationAddress2],		
-            [Location].[LocationCity],			
-            [Location].[LocationState],			
+            [ZIP].[City],			
+            [ZIP].[States],		
             [Location].[LocationZipCode],		
 			[Location].[LocationImagePath],		
 			[Location].[LocationActive]			
@@ -566,6 +606,7 @@ AS
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
 			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			Join [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1			
 			AND [UserEvent].[EventID] = [Event].[EventID]
 		ORDER BY [UserEvent].[EventID] ASC
@@ -827,4 +868,97 @@ AS
 		
 	END	
 GO
+
+/***************************************************************
+Vinayak Deshpande
+Created: 2022/04/01
+
+Description:
+selects event by event id
+****************************************************************/
+print '' print '*** creating sp_select_event_by_event_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_by_event_id]
+(
+	@EventID [int]
+)
+AS
+	BEGIN
+		SELECT
+			[EventName],
+			[EventDescription],
+			[DateCreated],
+			[TotalBudget],
+			[LocationID]
+		FROM [dbo].[Event]
+		WHERE [EventID] = @EventID
+	END	
+GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/04/06
+Description:
+Selects the active events by the search query
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
+****************************************************************/
+print '' print '*** creating sp_select_active_events_by_search'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_by_search]
+(
+	@Search 	nvarchar(50)
+)
+AS
+	BEGIN
+		SELECT DISTINCT
+			[Event].[EventID],
+			[EventName],
+			[EventDescription],
+			[DateCreated],
+			[TotalBudget],
+			[Event].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+			[Location].[LocationAddress1],		
+			[Location].[LocationAddress2],		
+			[ZIP].[City],			
+            [ZIP].[States],		
+			[Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			Join [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
+		WHERE [Event].[Active] = 1
+			AND [EventDateID] >= GETDATE()
+			AND 
+				(
+				[EventName] LIKE '%'+@Search+'%'
+				OR
+				[EventDescription] LIKE '%'+@Search+'%'
+				OR
+				[LocationName] LIKE '%'+@Search+'%'
+				OR
+				[City] LIKE '%'+@Search+'%'
+				OR
+				[States] LIKE '%'+@Search+'%'
+				)
+			
+		ORDER BY [Event].[EventID] ASC
+		
+	END	
+GO
+
 

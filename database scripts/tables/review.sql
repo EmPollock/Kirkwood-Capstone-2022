@@ -91,7 +91,10 @@ INSERT INTO [dbo].[Review] (
 	(100000, "Location Review", 3, "Enjoyable place to visit"),
 	(100000, "Supplier Review", 5, "Amazing place!"),
 	(100000, "Supplier Review", 1, "Didn't like it."),
-	(100000, "Volunteer Review", 4, "Did a splendid job.")
+	(100000, "Volunteer Review", 4, "Did a splendid job."),
+	(100000, "Location Review", 5, "Had a blast"),
+	(100000, "Location Review", 5, "Awesome place"),
+	(100000, "Location Review", 5, "Awesome place")
 GO
 
 

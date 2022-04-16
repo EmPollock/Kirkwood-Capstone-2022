@@ -134,7 +134,7 @@ namespace DataAccessFakes
                 Review = "Could be better.",
                 DateCreated = DateTime.Now,
                 Active = true
-            }); 
+            });
 
             _fakeReviews.Add(new Reviews()
             {
@@ -292,7 +292,7 @@ namespace DataAccessFakes
             {
                 if (supplier.SupplierID == supplierID)
                 {
-                    if(_fakeImages.Count > _fakeSuppliers.IndexOf(supplier))
+                    if (_fakeImages.Count > _fakeSuppliers.IndexOf(supplier))
                     {
                         result = _fakeImages[_fakeSuppliers.IndexOf(supplier)];
                     }
@@ -334,9 +334,9 @@ namespace DataAccessFakes
         public List<string> SelectSupplierTagsBySupplierID(int supplierID)
         {
             List<string> result = new List<string>();
-            foreach(Supplier supplier in _fakeSuppliers)
+            foreach (Supplier supplier in _fakeSuppliers)
             {
-                if(supplier.SupplierID == supplierID)
+                if (supplier.SupplierID == supplierID)
                 {
                     result = supplier.Tags;
                 }
@@ -404,6 +404,209 @@ namespace DataAccessFakes
             }
 
             return availabilities;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Fake supplier availability for three months
+        /// 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>List of Date times supplier is available</returns>
+        public List<DateTime> SelectSupplierAvailabilityForNextThreeMonths(int supplierID)
+        {
+            List<DateTime> fakeDates = new List<DateTime>();
+
+            foreach (SupplierAvailabilityTableFake avails in _dbFake)
+            {
+                foreach (Availability avail in avails.Availabilities)
+                {
+                    if (avail.ForeignID == supplierID && avail.TimeStart != null)
+                    {
+                        fakeDates.Add((DateTime)avail.TimeStart);
+                    }
+                }
+            }
+
+            return fakeDates;
+        }
+        
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Select regular weekly availability records matching the given supplierID;
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of availability objects for a Supplier</returns>
+        public List<AvailabilityVM> SelectSupplierAvailabilityBySupplierID(int supplierID)
+        {
+            List<AvailabilityVM> availabilities = new List<AvailabilityVM>();
+
+            try
+            {
+                foreach (SupplierAvailabilityTableFake fake in _dbFake)
+                {
+                    if (!fake.IsException)
+                    {
+                        foreach (Availability a in fake.Availabilities)
+                        {
+                            if (a.ForeignID == supplierID)
+                            {
+                                switch (fake.Date.DayOfWeek)
+                                {
+                                    case DayOfWeek.Monday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = supplierID,
+                                            Monday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Tuesday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = supplierID,
+                                            Tuesday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Wednesday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = supplierID,
+                                            Wednesday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Thursday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = supplierID,
+                                            Thursday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Friday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = supplierID,
+                                            Monday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Saturday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = supplierID,
+                                            Monday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    case DayOfWeek.Sunday:
+                                        availabilities.Add(new AvailabilityVM
+                                        {
+                                            ForeignID = supplierID,
+                                            Monday = true,
+                                            TimeStart = a.TimeStart,
+                                            TimeEnd = a.TimeEnd
+                                        });
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/09
+        /// 
+        /// Description:
+        /// Select one-off availability exception records matching the given supplierID
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of availability objects for a Supplier</returns>
+        public List<Availability> SelectSupplierAvailabilityExceptionBySupplierID(int supplierID)
+        {
+            List<Availability> availabilities = new List<Availability>();
+
+            try
+            {
+                foreach (SupplierAvailabilityTableFake fake in _dbFake)
+                {
+                    if (fake.IsException)
+                    {
+                        foreach (Availability a in fake.Availabilities)
+                        {
+                            if (a.ForeignID == supplierID)
+                            {
+                                availabilities.Add(a);
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return availabilities;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Retrieves a supplier from the fake supplier list.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+        public Supplier SelectSupplierBySupplierID(int supplierID)
+        {
+            if (supplierID < 99999)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+            Supplier _supplier = new Supplier();
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    _supplier = supplier;
+                }
+            }
+            if (_supplier is null || _supplier.Name.Length == 0)
+            {
+                throw new ApplicationException("Supplier not found.");
+            }
+
+            return _supplier;
         }
     }
 }
