@@ -229,6 +229,7 @@
     <Compile Include="Models\SupplierDetailsViewModel.cs" />
     <Compile Include="Models\ParkingLotModel.cs" />
     <Compile Include="Models\SupplierListViewModel.cs" />
+    <Compile Include="Models\SupplierScheduleViewModel.cs" />
     <Compile Include="Models\VolunteerListViewModel.cs" />
     <Compile Include="Models\SublocationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

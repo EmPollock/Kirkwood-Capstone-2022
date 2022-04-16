@@ -245,57 +245,62 @@ else
 
 
 
-<body>
-    <dialog id="calDialog">
-        <header>
-            <h2 id="eventName"></h2>
-        </header>
-        <main>
-            <p id="description"></p>
-            <p id="start"></p>
-            <p id="end"></p>
-        </main>
-        <form method="dialog">
-            <button>OK</button>
-        </form>
-    </dialog>
-    <div id='calendar'></div><br />
-    <div class="table-responsive">
-        <table class="table table-hover table" id="availabilityTable" style="display: table;">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Sunday</th>
-                    <th scope="col">Monday</th>
-                    <th scope="col">Tuesday</th>
-                    <th scope="col">Wednesday</th>
-                    <th scope="col">Thursday</th>
-                    <th scope="col">Friday</th>
-                    <th scope="col">Saturday</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Start:</td>
-                    <td id="sundayStart"></td>
-                    <td id="mondayStart"></td>
-                    <td id="tuesdayStart"></td>
-                    <td id="wednesdayStart"></td>
-                    <td id="thursdayStart"></td>
-                    <td id="fridayStart"></td>
-                    <td id="saturdayStart"></td>
-                </tr>
-                <tr>
-                    <td>End:</td>
-                    <td id="sundayEnd"></td>
-                    <td id="mondayEnd"></td>
-                    <td id="tuesdayEnd"></td>
-                    <td id="wednesdayEnd"></td>
-                    <td id="thursdayEnd"></td>
-                    <td id="fridayEnd"></td>
-                    <td id="saturdayEnd"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div><br />
-</body>
+<div class="row">
+    <div class="col-md-3">
+        @Html.Partial("LocationNav", Model.Location.LocationID)
+    </div>
+    <div class="col-md-8 col-sm-12">
+        <dialog id="calDialog">
+            <header>
+                <h2 id="eventName"></h2>
+            </header>
+            <main>
+                <p id="description"></p>
+                <p id="start"></p>
+                <p id="end"></p>
+            </main>
+            <form method="dialog">
+                <button>OK</button>
+            </form>
+        </dialog>
+        <div id='calendar'></div><br />
+        <div class="table-responsive">
+            <table class="table table-hover table" id="availabilityTable" style="display: table;">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Sunday</th>
+                        <th scope="col">Monday</th>
+                        <th scope="col">Tuesday</th>
+                        <th scope="col">Wednesday</th>
+                        <th scope="col">Thursday</th>
+                        <th scope="col">Friday</th>
+                        <th scope="col">Saturday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Start:</td>
+                        <td id="sundayStart"></td>
+                        <td id="mondayStart"></td>
+                        <td id="tuesdayStart"></td>
+                        <td id="wednesdayStart"></td>
+                        <td id="thursdayStart"></td>
+                        <td id="fridayStart"></td>
+                        <td id="saturdayStart"></td>
+                    </tr>
+                    <tr>
+                        <td>End:</td>
+                        <td id="sundayEnd"></td>
+                        <td id="mondayEnd"></td>
+                        <td id="tuesdayEnd"></td>
+                        <td id="wednesdayEnd"></td>
+                        <td id="thursdayEnd"></td>
+                        <td id="fridayEnd"></td>
+                        <td id="saturdayEnd"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><br />
+    </div>
+</div>    

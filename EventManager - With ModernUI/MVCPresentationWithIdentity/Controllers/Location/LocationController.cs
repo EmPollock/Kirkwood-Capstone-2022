@@ -109,18 +109,17 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// </summary>
         /// <param name="page"></param>
         /// <returns>ActionResult</returns>
-        public ActionResult ViewLocationSchedule(Location location)
+        public ActionResult ViewLocationSchedule(int locationID = 0)
         {
             List<EventDateVM> eventDates = new List<EventDateVM>();
             //eventDates = _eventDateManager.RetrieveEventDatesByLocationID(location.LocationID);
             //_location = location;
-
-            if (location.LocationID == 0)
+            if (locationID == 0)
             {
-
                 return RedirectToAction("ViewLocations", "Location");
             }
-
+            Location location = new Location();
+            location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationSchedule.Location = location;
             GetAvailability(location.LocationID);
             return View("~/Views/Location/ViewLocationSchedule.cshtml", _locationSchedule);
@@ -202,8 +201,12 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// </summary>
         /// <param name="locationID"></param>
         /// <returns>ActionResult</returns>
-        public ActionResult ViewLocationDetails(int locationID)
+        public ActionResult ViewLocationDetails(int locationID = 0)
         {
+            if (locationID == 0)
+            {
+                return RedirectToAction("ViewLocations", "Location");
+            }
             Location location = null;
             LocationDetailsViewModel model = null;
             List<Reviews> locationReviews = null;
@@ -255,12 +258,16 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// <param name="locationID"></param>
         /// <returns>ActionResult, LocationEdit View</returns>
         [Authorize(Roles = "Administrator, Event Planner, Supplier")]
-        public ActionResult LocationEdit(int locationID)
+        public ActionResult LocationEdit(int locationID = 0)
         {
             Location location = null;
             LocationDetailsViewModel model = null;
             List<LocationImage> locationImages = null;
             List<string> locationTags = null;
+            if (locationID == 0)
+            {
+                return RedirectToAction("ViewLocations", "Location");
+            }
             try
             {
                 location = _locationManager.RetrieveLocationByLocationID(locationID);
@@ -293,8 +300,12 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// <param name="locationID"></param>
         /// <returns>ActionResult, ViewLocations View</returns>
         [Authorize(Roles = "Administrator, Event Planner, Supplier")]
-        public ActionResult DeleteLocation(int locationID)
+        public ActionResult DeleteLocation(int locationID = 0)
         {
+            if (locationID == 0)
+            {
+                return RedirectToAction("ViewLocations", "Location");
+            }
             if (ModelState.IsValid)
             {
                 try

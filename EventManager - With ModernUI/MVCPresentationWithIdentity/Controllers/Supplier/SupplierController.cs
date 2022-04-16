@@ -18,7 +18,7 @@ namespace MVCPresentationWithIdentity.Controllers
         ISupplierManager _supplierManager;
         IActivityManager _activityManager = null;
         IServiceManager _serviceManager = null;
-        SupplierDetailsViewModel _supplierDetails = new SupplierDetailsViewModel();
+        SupplierScheduleViewModel _supplierDetails = new SupplierScheduleViewModel();
         public int _pageSize = 10;
 
 
@@ -286,10 +286,10 @@ namespace MVCPresentationWithIdentity.Controllers
             {
                 return RedirectToAction("ViewSuppliers", "Supplier");
             }
-
+            SupplierDetailsViewModel _supplier = new SupplierDetailsViewModel();
             List<Service> services = new List<Service>();
             services = _serviceManager.RetrieveServicesBySupplierID(supplierID);
-            _supplierDetails.Supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+            _supplier.Supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
             List<ServiceVM> serviceVMs = new List<ServiceVM>();
             foreach (Service service in services)
             {
@@ -304,9 +304,9 @@ namespace MVCPresentationWithIdentity.Controllers
                 });
             }
 
-            _supplierDetails.Services = serviceVMs;
+            _supplier.Services = serviceVMs;
 
-            return View(_supplierDetails);
+            return View(_supplier);
         }
     }
 }
