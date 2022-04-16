@@ -243,5 +243,61 @@ namespace DataAccessLayer
 
             return volunteerAvailabilities;
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Selects a volunteer with a specific userID
+        /// </summary>
+        /// <returns>A Volunteer object</returns>
+        public Volunteer SelectVolunteerByUserID(int userID)
+        {
+            Volunteer volunteer = null;
+
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_volunteer_by_userID";
+            var cmd = new SqlCommand(cmdTxt, conn);
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        volunteer = new Volunteer()
+                        {
+                            UserID = reader.GetInt32(0),
+                            VolunteerID = reader.GetInt32(1),
+                            GivenName = reader.GetString(2),
+                            FamilyName = reader.GetString(3),
+                            State = reader.IsDBNull(4) ? "" : reader.GetString(4),
+                            City = reader.IsDBNull(5) ? "" : reader.GetString(5),
+                            Zip = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
+                            VolunteerType = reader.GetString(7)
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return volunteer;
+        }
     }
 }

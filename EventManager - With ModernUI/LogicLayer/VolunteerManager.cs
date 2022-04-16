@@ -134,5 +134,31 @@ namespace LogicLayer
 
             return volunteerAvailabilities;
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Retrieves a volunteer with a specific userID
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>A Volunteer Object</returns>
+        public Volunteer RetrieveVolunteerByUserID(int userID)
+        {
+            Volunteer volunteer = null;
+            try
+            {
+                volunteer = _volunteerAccessor.SelectVolunteerByUserID(userID);
+                if(volunteer == null)
+                {
+                    throw new ArgumentException();
+                }
+            } catch(Exception ex)
+            {
+                throw ex;
+            }
+            return volunteer;
+        }
     }
 }

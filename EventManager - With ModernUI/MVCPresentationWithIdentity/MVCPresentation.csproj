@@ -410,6 +410,7 @@
     <Content Include="Views\Location\ViewLocations.cshtml" />
     <Content Include="Views\Location\ViewLocationSchedule.cshtml" />
     <Content Include="Views\Supplier\ViewSuppliers.cshtml" />
+    <Content Include="Views\Volunteer\ViewRequests.cshtml" />
     <Content Include="Views\EventCreate\EventCreate.cshtml" />
     <Content Include="Views\Supplier\ViewSupplierSchedule.cshtml" />
     <Content Include="Views\Shared\_SupplierDetailsLayout.cshtml" />

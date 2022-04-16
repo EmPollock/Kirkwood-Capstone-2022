@@ -30,6 +30,7 @@ namespace MVCPresentationWithIdentity.Infrastructure
             kernel.Bind<IVolunteerManager>().To<VolunteerManager>();
             kernel.Bind<ILocationManager>().To<LocationManager>();
             kernel.Bind<ISupplierManager>().To<SupplierManager>();
+            kernel.Bind<IVolunteerRequestManager>().To<VolunteerRequestManager>();
             kernel.Bind<IActivityManager>().To<ActivityManager>();
             kernel.Bind<IEventDateManager>().To<EventDateManager>();
             kernel.Bind<IServiceManager>().To<ServiceManager>();

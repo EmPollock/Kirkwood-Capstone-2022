@@ -51,6 +51,7 @@
                     <li class="nav-item">
                         @*<a class="nav-link" href="">Nav-Bar 2</a>*@
                         @Html.ActionLink("Volunteers", "ViewVolunteers", "Volunteer", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                        @*@Html.ActionLink("Volunteers", "ViewRequests", "Volunteer", routeValues: null, htmlAttributes: new { @class = "nav-link" })*@
                     </li>
 
                     @*<li class="nav-item">
@@ -62,41 +63,41 @@
                         @Html.ActionLink("About", "About", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                     </li>
 
-                    <li class="nav-item">
-                        @Html.ActionLink("Contact", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-                    </li>
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <li>@Html.ActionLink("Administration", "Index", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
-                    }
-                </ul>
+                        <li class="nav-item">
+                            @Html.ActionLink("Contact", "Contact", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                        </li>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li>@Html.ActionLink("Administration", "Index", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
+                        }
+                    </ul>
 
-                <ul class="navbar-nav ms-auto">
-                    @Html.Partial("_LoginPartial")
-                </ul>
+                    <ul class="navbar-nav ms-auto">
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+        <main flex-shrink-0>
+            <div class="container">
+                @if (TempData["errorMessage"] != null)
+                {
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong class="text-white">Oh, no! There was an error.</strong>
+                        <p class="text-white">@TempData["message"]</p>
+                    </div>
+                }
+                @RenderBody()
 
             </div>
-        </div>
-    </nav>
-    <main flex-shrink-0>
-        <div class="container">
-            @if (TempData["errorMessage"] != null)
-            {
-                <div class="alert alert-dismissible alert-danger">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    <strong class="text-white">Oh, no! There was an error.</strong>
-                    <p class="text-white">@TempData["message"]</p>
-                </div>
-            }
-            @RenderBody()
-
-        </div>
-    </main>
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <span class="text-dark">Created by the Dev Team for the Software Development Capstone at Kirkwood Community College, 2022</span>
-        </div>
-    </footer>
+        </main>
+        <footer class="footer mt-auto py-3 bg-light">
+            <div class="container">
+                <span class="text-dark">Created by the Dev Team for the Software Development Capstone at Kirkwood Community College, 2022</span>
+            </div>
+        </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
