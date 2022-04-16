@@ -126,5 +126,63 @@ namespace LogicLayerTests
             // assert
             Assert.AreEqual(expected, actual);
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Test that returns the correct volunteer object
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveVolunteerByUserIDReturnsVolunteer()
+        {
+            // arrange
+            const int userID = 999999;
+            Volunteer expectedVolunteer = new Volunteer()
+            {
+                VolunteerID = 999999,
+                UserID = 999999,
+                GivenName = "Tess",
+                FamilyName = "Data",
+                Email = "tess@company.com",
+                State = "IA",
+                City = "Atkins",
+                Zip = 52206,
+                Active = true,
+                Rating = 5,
+                DateCreated = new DateTime(2022, 03, 05)
+            };
+            Volunteer actualVolunteer = null;
+
+            // act
+            actualVolunteer = _volunteerManager.RetrieveVolunteerByUserID(userID);
+
+            // assert
+            ReflectionHelper.AssertReflectiveEquals(expectedVolunteer, actualVolunteer);
+        }
+
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Test that fails because the user isn't a volunteer
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TestRetrieveVolunteerByUserIDFailsWithBadUserID()
+        {
+            // arrange
+            const int userID = 0;            
+            Volunteer actualVolunteer = null;
+
+            // act
+            actualVolunteer = _volunteerManager.RetrieveVolunteerByUserID(userID);
+
+            // assert           
+            // nothing to do here, error checking
+        }
     }
 }

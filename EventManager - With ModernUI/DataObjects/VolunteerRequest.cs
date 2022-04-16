@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace DataObjects
 {
@@ -42,6 +43,10 @@ namespace DataObjects
         public string TaskName { get; set; }
         public string StrVolunteerResponse { get; set; }
         public string StrEventResponse { get; set; }
+        public int EventID { get; set; }
+        [DisplayName("Event")]
+        public String EventName { get; set; }
+
 
         public VolunteerRequestViewModel()
         {

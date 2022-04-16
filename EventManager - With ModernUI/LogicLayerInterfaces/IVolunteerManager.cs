@@ -12,5 +12,6 @@ namespace LogicLayerInterfaces
         List<Volunteer> RetrieveAllVolunteers();
         List<Volunteer> RetrieveAllVolunteerReviews();
         List<Availability> RetrieveAvailabilityByVolunteerIDAndDate(int volunteerID, DateTime date);
+        Volunteer RetrieveVolunteerByUserID(int userID);
     }
 }

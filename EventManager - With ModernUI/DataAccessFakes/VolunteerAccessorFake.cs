@@ -42,7 +42,7 @@ namespace DataAccessFakes
                 Zip = 52206,
                 Active = true,
                 Rating = 5,
-                DateCreated = DateTime.Now
+                DateCreated = new DateTime(2022, 03, 05)
             });
             this._fakeVolunteers.Add(new Volunteer()
             {
@@ -287,6 +287,29 @@ namespace DataAccessFakes
             }
 
             return availabilities;
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Selects a fake volunteer object with a specific userID
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>A Volunteer object</returns>
+        public Volunteer SelectVolunteerByUserID(int userID)
+        {
+            Volunteer volunteer = null;
+            foreach(Volunteer v in _fakeVolunteers)
+            {
+                if(v.UserID == userID)
+                {
+                    volunteer = v;
+                    break;
+                }
+            }
+            return volunteer;
         }
     }
 }
