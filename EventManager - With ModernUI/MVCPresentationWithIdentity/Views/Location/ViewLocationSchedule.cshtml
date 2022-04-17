@@ -7,17 +7,7 @@
 @model MVCPresentationWithIdentity.Models.LocationScheduleViewModel
 @{
     ViewBag.Title = "Location Schedule";
-}
-
-@if (Model.Location.Name == null || Model.Location.Name == "")
-{
-    <h2 class="mt-4">Location's Schedule </h2>
-    <br />
-}
-else
-{
-    <h2 class="mt-4">@Model.Location.Name's Schedule </h2>
-    <br />
+    Layout = "~/Views/Shared/_SupplierDetailsLayout.cshtml";
 }
 
 
@@ -244,8 +234,23 @@ else
 </script>
 
 
-
+<hr>
 <div class="row">
+
+    <div class="d-flex flex-row justify-content-center">
+        @if (Model.Location.Name == null || Model.Location.Name == "")
+        {
+            <h2 class="mt-4">Location's Schedule </h2>
+        }
+        else
+        {
+            <h2 class="mt-4">@Model.Location.Name's Schedule </h2>
+        }
+
+    </div>
+
+    <hr />
+
     <div class="col-md-3">
         @Html.Partial("LocationNav", Model.Location.LocationID)
     </div>
