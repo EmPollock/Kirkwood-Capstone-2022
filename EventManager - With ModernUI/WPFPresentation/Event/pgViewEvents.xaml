@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:WPFPresentation"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="pgViewEvents" Loaded="Page_Loaded">
+      Title="pgViewEvents" Loaded="Page_Loaded"
+      >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -15,16 +16,15 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width=".05*"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width=".05*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock x:Name="txtBlkMyEvents" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" 
                    Style="{StaticResource TitleTextBlockStyle}">
             Events
         </TextBlock>
-
 
 
         <!--An example of an alternate way that would use an itemtemplate-->
@@ -66,8 +66,8 @@
 
         <DataGrid x:Name="datActiveEvents" Grid.Row="1" Grid.Column="1" SelectionMode="Single" IsReadOnly="True" 
                   ItemsSource="{Binding}" AutoGenerateColumns="False"   MouseDoubleClick="datActiveEvents_MouseDoubleClick" VerticalContentAlignment="Center" SelectionChanged="datActiveEvents_SelectionChanged">
-            
-            <DataGrid.Columns>                
+
+            <DataGrid.Columns >
                 <DataGridTextColumn  Header="Event Name" Binding="{Binding EventName}"/>
                 <DataGridTextColumn Width="*" Header="Description" Binding="{Binding EventDescription}"/>
                 <DataGridTextColumn  Header="Event Dates" Binding="{Binding FormatedDate}" >
@@ -78,9 +78,21 @@
                                 <Trigger Property="Text" Value="No dates selected yet.">
                                     <Setter Property="Background" Value="#FFCCCB"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
-
+                                    <Setter Property="Margin" Value="0,0,10,0"/>
+                                </Trigger>                                
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Location" Binding="{Binding FormatedLocation}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Style.Triggers >
+                                <Trigger Property="Text" Value="No location selected yet.">
+                                    <Setter Property="Background" Value="#FFCCCB"/>
+                                    <Setter Property="Margin" Value="0,0,10,0"/>
                                 </Trigger>
-                                
                             </Style.Triggers>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
