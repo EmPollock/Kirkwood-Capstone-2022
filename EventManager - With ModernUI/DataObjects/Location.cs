@@ -14,6 +14,13 @@ namespace DataObjects
     /// Description:
     /// Data object for a location
     /// 
+    /// 
+    /// Derrick Nagy
+    /// Updated: 2022/04/17
+    /// 
+    /// Description:
+    /// Added default constructor values
+    /// 
     /// </summary>
     public class Location
     {
@@ -57,5 +64,26 @@ namespace DataObjects
         public string ImagePath { get; set; }
         public int AverageRating { get; set; }
         public bool Active { get; set; }
+
+        public Location()
+        {
+            LocationID = 0;
+            UserID = null;
+            Name = null;
+            Description = null;
+            PricingInfo = null;
+            Phone = null;
+            Email = null;
+            Address1 = null;
+            Address2 = null;
+            City = null;
+            State = null;
+            ZipCode = null;
+            ImagePath = null;
+            AverageRating =  0;
+            Active = true;
+        }
     }
+
+    
 }
