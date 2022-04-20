@@ -10,7 +10,7 @@
 
 
 <div class="col w-100">
-    <div class="d-flex flex-row justify-content-center">
+    <div class="d-flex flex-row justify-content-between">
         @if (Request.IsAuthenticated)
         {
             if (User.IsInRole("Event Planner") || User.IsInRole("Administrator") || User.IsInRole("Supplier"))
@@ -30,6 +30,10 @@
                 @Html.ValidationMessage("", new { @class = "text-danger" })
                 <h2 class="mt-4">@Html.DisplayFor(model => model.Location.Name)</h2>
             }
+
+            @*<div class="d-flex">
+                <button class="mt-3 mb-3" onclick="@("window.location.href='" + @Url.Action("EditLocation", "Location", new { locationID = Model.Location.LocationID }) + "'");">Edit Location</button>
+            </div>*@
         }
     </div>
 

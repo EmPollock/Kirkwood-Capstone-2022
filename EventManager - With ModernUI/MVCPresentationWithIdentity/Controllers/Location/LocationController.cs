@@ -323,5 +323,60 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             return View();
 
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/17
+        /// 
+        /// Description:
+        /// Method that returns the view for Creating a Location
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [Authorize(Roles = "Administrator, Event Planner, Supplier")]
+        public ActionResult CreateLocation()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/18
+        /// 
+        /// Description:
+        /// Method that creates a new location listing
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public ActionResult CreateLocation(Location location)
+        {
+            LocationDetailsViewModel locationDetails = new LocationDetailsViewModel();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (_locationManager.CreateLocation(location.Name, location.Address1, location.City, location.State, location.ZipCode) == 1)
+                    {
+                        Location createdLocation = _locationManager.RetrieveLocationByNameAndAddress(location.Name, location.Address1);
+                        _locationManager.UpdateLocationBioByLocationID(createdLocation, location);
+                        return RedirectToAction("ViewLocationDetails", new { createdLocation.LocationID });
+                    }
+                    return View();
+                }
+                catch (Exception ex)
+                {
+                    if(ex.Message.Equals("The INSERT statement conflicted with the FOREIGN KEY constraint \"fk_ZIPCode_Location\". The conflict occurred in database \"tadpole_db\", table \"dbo.ZIP\", column 'ZIPCode'.\r\nThe statement has been terminated."))
+                    {
+                        ModelState.AddModelError("", "Invalid Zip Code");
+                        return View();
+                    }
+                    ModelState.AddModelError("", "Location already exists.");
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }
