@@ -89,6 +89,13 @@ namespace WPFPresentation
             //this._userManager = userManager;
             managerInitializer();
             this.mnuUser.Header = user.GivenName + " ▼";
+            btnHomeWhite.Visibility = Visibility.Hidden;
+            btnHomeYellow.Visibility = Visibility.Visible;
+            btnCreateEvents.Foreground = Brushes.White;
+            btnViewLocations.Foreground = Brushes.White;
+            btnViewSuppliers.Foreground = Brushes.White;
+            btnViewVolunteers.Foreground = Brushes.White;
+            btnViewAbout.Foreground = Brushes.White;
         }
 
         /// <summary>
@@ -131,7 +138,13 @@ namespace WPFPresentation
         {
             this._user = null;
             //MainWindow.User = null;
-
+            btnHomeWhite.Visibility = Visibility.Hidden;
+            btnHomeYellow.Visibility = Visibility.Visible;
+            btnCreateEvents.Foreground = Brushes.White;
+            btnViewLocations.Foreground = Brushes.White;
+            btnViewSuppliers.Foreground = Brushes.White;
+            btnViewVolunteers.Foreground = Brushes.White;
+            btnViewAbout.Foreground = Brushes.White;
             SplashScreen splash = new SplashScreen();
             splash.Show();
             this.Close();
@@ -201,7 +214,10 @@ namespace WPFPresentation
                         return;
                     }
                 }
-
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.Yellow;
+                
                 // no edit ongoing
                 this.MainFrame.NavigationService.Navigate(page);
             }
@@ -342,9 +358,84 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Buttons now light up the way that they should.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            if(this.MainFrame.NavigationService.CanGoBack)
+            if (MainFrame.Content.ToString().Contains("Event") || MainFrame.Content.ToString().Contains("Task") || MainFrame.Content.ToString().Contains("Activity"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnViewEvents.Foreground = Brushes.Yellow;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("Supplier"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.Yellow;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("Location") || MainFrame.Content.ToString().Contains("Parking"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.Yellow;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("Volunteer"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.Yellow;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("CreateEvent"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.Yellow;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("About"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.Yellow;
+            }
+            if (this.MainFrame.NavigationService.CanGoBack)
             {
                 this.btnBack.IsEnabled = true;
             }
@@ -445,5 +536,6 @@ namespace WPFPresentation
 
             this.MainFrame.NavigationService.Navigate(myEventsPage);
         }
+
     }
 }
