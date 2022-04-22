@@ -411,6 +411,7 @@
     <Content Include="Views\Location\ViewLocations.cshtml" />
     <Content Include="Views\Location\ViewLocationSchedule.cshtml" />
     <Content Include="Views\Supplier\ViewSuppliers.cshtml" />
+    <Content Include="Views\Volunteer\ViewRequests.cshtml" />
     <Content Include="Views\EventCreate\EventCreate.cshtml" />
     <Content Include="Views\Supplier\ViewSupplierSchedule.cshtml" />
     <Content Include="Views\Shared\_SupplierDetailsLayout.cshtml" />
@@ -420,10 +421,13 @@
     <Content Include="Views\Supplier\ViewSupplierDetails.cshtml" />
     <Content Include="Views\Event\EventNavBar.cshtml" />
     <Content Include="Views\Volunteer\VolunteerNavBar.cshtml" />
+    <Content Include="Views\Supplier\ViewSupplierServices.cshtml" />
     <Content Include="Views\Sublocation\Index.cshtml" />
     <Content Include="Views\Sublocation\Edit.cshtml" />
     <Content Include="Views\ParkingLot\Index.cshtml" />
     <Content Include="Views\ParkingLot\Edit.cshtml" />
+    <Content Include="Views\Location\CreateLocation.cshtml" />
+    <Content Include="Views\Event\ItineraryDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

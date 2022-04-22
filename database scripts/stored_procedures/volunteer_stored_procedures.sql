@@ -74,3 +74,38 @@ AS
 	END	
 GO
 */
+
+/***************************************************************
+Emma Pollock
+Created: 2022/04/07
+
+Description:
+Stored procedure to select a volunteer by their user ID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_select_volunteer_by_userID'
+GO
+CREATE PROCEDURE [dbo].[sp_select_volunteer_by_userID](
+	@UserID [int]
+)
+AS
+	BEGIN
+		SELECT 
+			[Volunteer].[UserID],
+			[Volunteer].[VolunteerID],
+			[Users].[GivenName],
+			[Users].[FamilyName],			
+			[Users].[UserState],		
+			[Users].[City],			
+			[Users].[Zip],
+			[VolunteerType].[RoleID]
+		FROM [Volunteer] 
+		JOIN [Users] ON [Volunteer].[UserID] = [Users].[UserID]
+		JOIN [VolunteerType] ON [Volunteer].[VolunteerID] = [VolunteerType].[VolunteerID]
+		WHERE [Volunteer].[UserID] = @UserID
+	END	
+GO

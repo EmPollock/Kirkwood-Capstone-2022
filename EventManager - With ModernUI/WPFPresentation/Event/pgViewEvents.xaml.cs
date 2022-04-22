@@ -417,8 +417,6 @@ namespace WPFPresentation
             }
         }
 
-        
-
         /// <summary>
         /// Vinayak Deshpande
         /// Created: 2022/03/30
@@ -432,7 +430,6 @@ namespace WPFPresentation
         {
             btnCopyEvent.Visibility = Visibility.Visible;
         }
-
 
         /// <summary>
         /// Vinayak Deshpande
@@ -478,11 +475,18 @@ namespace WPFPresentation
     /// Description:
     /// The Model View for the event view
     /// 
+    /// 
+    /// Derrick Nagy
+    /// Update: 2022/04/17
+    /// 
+    /// Description:
+    /// Added Formatted Location information
     /// </summary>
     internal class EventModelView : DataObjects.EventVM 
     {        
         public bool HasNoDate { get; set; }
         public string FormatedDate { get; set; }
+        public string FormatedLocation { get; set; }
 
         public EventModelView(DataObjects.EventVM eventVM)
         {
@@ -514,6 +518,15 @@ namespace WPFPresentation
                         FormatedDate += EventDates[i].EventDateID.ToString("MM/dd/yyyy") + "\n";
                     }
                 }
+            }
+
+            if(LocationID == null)
+            {
+                FormatedLocation = "No location selected yet.";
+            }
+            else
+            {
+                FormatedLocation = eventVM.Location.Name + ", " + eventVM.Location.City + ", " + eventVM.Location.State;
             }
         }
     }

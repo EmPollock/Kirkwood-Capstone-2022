@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DataObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using DataObjects;
 
 namespace MVCPresentationWithIdentity.Models
 {
@@ -11,5 +11,6 @@ namespace MVCPresentationWithIdentity.Models
         public Supplier Supplier { get; set; }
         public List<AvailabilityVM> Availability { get; set; }
         public List<Availability> AvailabilityException { get; set; }
+        public List<ServiceVM> Services { get; set; }
     }
 }

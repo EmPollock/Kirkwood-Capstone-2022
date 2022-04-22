@@ -109,18 +109,17 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// </summary>
         /// <param name="page"></param>
         /// <returns>ActionResult</returns>
-        public ActionResult ViewLocationSchedule(Location location)
+        public ActionResult ViewLocationSchedule(int locationID = 0)
         {
             List<EventDateVM> eventDates = new List<EventDateVM>();
             //eventDates = _eventDateManager.RetrieveEventDatesByLocationID(location.LocationID);
             //_location = location;
-
-            if (location.LocationID == 0)
+            if (locationID == 0)
             {
-
                 return RedirectToAction("ViewLocations", "Location");
             }
-
+            Location location = new Location();
+            location = _locationManager.RetrieveLocationByLocationID(locationID);
             _locationSchedule.Location = location;
             GetAvailability(location.LocationID);
             return View("~/Views/Location/ViewLocationSchedule.cshtml", _locationSchedule);
@@ -202,8 +201,12 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// </summary>
         /// <param name="locationID"></param>
         /// <returns>ActionResult</returns>
-        public ActionResult ViewLocationDetails(int locationID)
+        public ActionResult ViewLocationDetails(int locationID = 0)
         {
+            if (locationID == 0)
+            {
+                return RedirectToAction("ViewLocations", "Location");
+            }
             Location location = null;
             LocationDetailsViewModel model = null;
             List<Reviews> locationReviews = null;
@@ -255,12 +258,16 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// <param name="locationID"></param>
         /// <returns>ActionResult, LocationEdit View</returns>
         [Authorize(Roles = "Administrator, Event Planner, Supplier")]
-        public ActionResult LocationEdit(int locationID)
+        public ActionResult LocationEdit(int locationID = 0)
         {
             Location location = null;
             LocationDetailsViewModel model = null;
             List<LocationImage> locationImages = null;
             List<string> locationTags = null;
+            if (locationID == 0)
+            {
+                return RedirectToAction("ViewLocations", "Location");
+            }
             try
             {
                 location = _locationManager.RetrieveLocationByLocationID(locationID);
@@ -293,8 +300,12 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// <param name="locationID"></param>
         /// <returns>ActionResult, ViewLocations View</returns>
         [Authorize(Roles = "Administrator, Event Planner, Supplier")]
-        public ActionResult DeleteLocation(int locationID)
+        public ActionResult DeleteLocation(int locationID = 0)
         {
+            if (locationID == 0)
+            {
+                return RedirectToAction("ViewLocations", "Location");
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -311,6 +322,61 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             }
             return View();
 
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/17
+        /// 
+        /// Description:
+        /// Method that returns the view for Creating a Location
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [Authorize(Roles = "Administrator, Event Planner, Supplier")]
+        public ActionResult CreateLocation()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/18
+        /// 
+        /// Description:
+        /// Method that creates a new location listing
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public ActionResult CreateLocation(Location location)
+        {
+            LocationDetailsViewModel locationDetails = new LocationDetailsViewModel();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (_locationManager.CreateLocation(location.Name, location.Address1, location.City, location.State, location.ZipCode) == 1)
+                    {
+                        Location createdLocation = _locationManager.RetrieveLocationByNameAndAddress(location.Name, location.Address1);
+                        _locationManager.UpdateLocationBioByLocationID(createdLocation, location);
+                        return RedirectToAction("ViewLocationDetails", new { createdLocation.LocationID });
+                    }
+                    return View();
+                }
+                catch (Exception ex)
+                {
+                    if(ex.Message.Equals("The INSERT statement conflicted with the FOREIGN KEY constraint \"fk_ZIPCode_Location\". The conflict occurred in database \"tadpole_db\", table \"dbo.ZIP\", column 'ZIPCode'.\r\nThe statement has been terminated."))
+                    {
+                        ModelState.AddModelError("", "Invalid Zip Code");
+                        return View();
+                    }
+                    ModelState.AddModelError("", "Location already exists.");
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }

@@ -7,9 +7,8 @@ using DataAccessFakes;
 using Ninject.Web.Common;
 
 using DataObjects;
-using LogicLayer;
 using LogicLayerInterfaces;
-
+using LogicLayer;
 
 namespace MVCPresentationWithIdentity.Infrastructure
 {
@@ -31,8 +30,10 @@ namespace MVCPresentationWithIdentity.Infrastructure
             kernel.Bind<IVolunteerManager>().To<VolunteerManager>();
             kernel.Bind<ILocationManager>().To<LocationManager>();
             kernel.Bind<ISupplierManager>().To<SupplierManager>();
+            kernel.Bind<IVolunteerRequestManager>().To<VolunteerRequestManager>();
             kernel.Bind<IActivityManager>().To<ActivityManager>();
             kernel.Bind<IEventDateManager>().To<EventDateManager>();
+            kernel.Bind<IServiceManager>().To<ServiceManager>();
             kernel.Bind<ISublocationManager>().To<SublocationManager>();
             kernel.Bind<IParkingLotManager>().To<ParkingLotManager>();
 

@@ -104,5 +104,6 @@ INSERT INTO [dbo].[UserEvent] (
 	,(100002, 'Event Planner', 100006)
 	,(100002, 'Event Planner', 100007)
 	,(100000, 'Event Manager', 100009) -- Suprise Party, no date
+	,(100000, 'Event Manager', 100010) -- Pop up dance party, no date, no location
 
 GO

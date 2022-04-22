@@ -10,6 +10,7 @@ using WPFPresentation;
 using DataAccessInterfaces;
 using DataAccessFakes;
 using MVCPresentationWithIdentity.Models;
+using Microsoft.AspNet.Identity;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
@@ -22,6 +23,8 @@ namespace MVCPresentationWithIdentity.Controllers
     public class VolunteerController : Controller
     {
         IVolunteerManager _volunteerManager;
+        IVolunteerRequestManager _volunteerRequestManager;
+        IUserManager _userManager;
         public int _pageSize = 10;
 
         /// <summary>
@@ -32,9 +35,11 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Constructor that sets the _volunteerManager
         /// </summary>
         /// <param name="locationManager"></param>
-        public VolunteerController(IVolunteerManager volunteerManager)
+        public VolunteerController(IVolunteerManager volunteerManager, IVolunteerRequestManager volunteerRequestManager, IUserManager userManager)
         {
             _volunteerManager = volunteerManager;
+            _volunteerRequestManager = volunteerRequestManager;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -110,5 +115,74 @@ namespace MVCPresentationWithIdentity.Controllers
 
             return View(model);
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/30
+        /// 
+        /// Description:
+        ///     Sends user to a list of their incoming volunteer requests if they are logged in.
+        /// </summary>
+        /// 
+        /// <returns>ActionResult</returns>
+        [Authorize]
+        public ActionResult ViewRequests()
+        {          
+            IEnumerable<VolunteerRequestViewModel> requestViewModels;
+            string currentUserName = User.Identity.GetUserName();
+
+            try
+            {                
+                int userID = _userManager.RetrieveUserByEmail(currentUserName).UserID;
+                Volunteer volunteer = _volunteerManager.RetrieveVolunteerByUserID(userID);
+                requestViewModels = _volunteerRequestManager.RetrieveAllRequestsForVolunteerByVolunteerID(volunteer.VolunteerID);
+            }
+            catch (Exception ex)
+            {
+                TempData["errorMessage"] = ex.Message;
+                requestViewModels = new List<VolunteerRequestViewModel>();
+            }
+
+            return View(requestViewModels);
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        ///     Updates the volunteer approval for a volunteer request if they are logged in and their 
+        ///         volunteerID matches the incoming volunteerID
+        /// </summary>
+        /// 
+        /// <param name="id">requestID of the request to be updated</param>
+        /// <param name="approve">new volunteer approval value</param>
+        /// <param name="volunteerID">the volunteer's id</param>
+        /// <returns>ActionResult</returns>
+        public ActionResult Approve(int id, bool approve, int volunteerID)
+        {
+            string currentUserName = User.Identity.GetUserName();
+            IEnumerable<VolunteerRequestViewModel> requestViewModels;
+            try
+            {
+                int userID = _userManager.RetrieveUserByEmail(currentUserName).UserID;
+                Volunteer currentVolunteer = _volunteerManager.RetrieveVolunteerByUserID(userID);
+                VolunteerRequestViewModel oldRequest = _volunteerRequestManager.RetrieveRequestByRequestID(id);
+                VolunteerRequestViewModel newRequest = _volunteerRequestManager.RetrieveRequestByRequestID(id);
+                if (currentVolunteer.VolunteerID == volunteerID && oldRequest.VolunteerID == volunteerID)
+                {                    
+                    newRequest.VolunteerResponse = approve;
+
+                    bool success = _volunteerRequestManager.EditVolunteerRequest(oldRequest, newRequest);
+                }
+                requestViewModels = _volunteerRequestManager.RetrieveAllRequestsForVolunteerByVolunteerID(currentVolunteer.VolunteerID);
+            }
+            catch (Exception ex)
+            {
+                TempData["errorMessage"] = ex.Message;
+                requestViewModels = new List<VolunteerRequestViewModel>();
+            }
+            return View("ViewRequests", requestViewModels);
+        }
     }
-}
+}   
