@@ -350,6 +350,7 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         public ActionResult CreateLocation(Location location)
         {
             LocationDetailsViewModel locationDetails = new LocationDetailsViewModel();
+
             if (ModelState.IsValid)
             {
                 try
@@ -367,6 +368,11 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
                     if(ex.Message.Equals("The INSERT statement conflicted with the FOREIGN KEY constraint \"fk_ZIPCode_Location\". The conflict occurred in database \"tadpole_db\", table \"dbo.ZIP\", column 'ZIPCode'.\r\nThe statement has been terminated."))
                     {
                         ModelState.AddModelError("", "Invalid Zip Code");
+                        return View();
+                    }
+                    else if(ex.Message.Equals("Value cannot be null.\r\nParameter name: input"))
+                    {
+                        ModelState.AddModelError("", "Incorrect value");
                         return View();
                     }
                     ModelState.AddModelError("", "Location already exists.");
