@@ -430,5 +430,28 @@ namespace DataAccessFakes
 
             return allSupplierActivities;
         }
+
+        /// Mike Cahow
+        /// Created: 2022/04/08
+        /// 
+        /// Description:
+        /// Searches for the activity with the corresponding ID
+        /// </summary>
+        /// <param name="activityID"></param>
+        /// <returns>ActivityVM with corresponding activity ID</returns>
+        public ActivityVM SelectActivityByActivityID(int activityID)
+        {
+            ActivityVM result = null;
+
+            foreach (ActivityVM activity in _fakeActivites)
+            {
+                if (activity.ActivityID == activityID)
+                {
+                    result = activity;
+                }
+            }
+
+            return result;
+        }
     }
 }

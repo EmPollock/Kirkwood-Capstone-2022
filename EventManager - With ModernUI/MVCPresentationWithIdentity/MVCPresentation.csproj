@@ -427,6 +427,7 @@
     <Content Include="Views\ParkingLot\Index.cshtml" />
     <Content Include="Views\ParkingLot\Edit.cshtml" />
     <Content Include="Views\Location\CreateLocation.cshtml" />
+    <Content Include="Views\Event\ItineraryDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

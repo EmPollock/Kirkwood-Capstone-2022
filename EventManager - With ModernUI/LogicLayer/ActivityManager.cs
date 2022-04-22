@@ -448,5 +448,31 @@ namespace LogicLayer
 
             return activities;
         }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/04/08
+        /// 
+        /// Description:
+        /// Method that grabs an activity by the supplied ActivityID
+        /// </summary>
+        /// <param name="activityID"></param>
+        /// <returns></returns>
+        public ActivityVM RetrieveActivityVMByActivityID(int activityID)
+        {
+            ActivityVM result = new ActivityVM();
+
+            try
+            {
+                result = _activityAccessor.SelectActivityByActivityID(activityID);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
     }
 }
