@@ -100,7 +100,7 @@ namespace WPFPresentation
             _locations = _locationManager.RetrieveActiveLocations();
             _zips = _zipManager.RetrieveAllZIPCodes();
             InitializeComponent();
-
+            // ValidationHelpers.EditOngoing = true;
             // Looked up how to set the calendar to not display past dates
             // https://stackoverflow.com/questions/17401488/how-to-disable-past-days-in-calender-in-wpf/45780931
             datePickerEventDate.DisplayDateStart = DateTime.Today;
@@ -151,6 +151,7 @@ namespace WPFPresentation
             DataObjects.Location copyLocation = null;
             TasksVM copyTask = null;
             _zips = _zipManager.RetrieveAllZIPCodes();
+            // ValidationHelpers.EditOngoing = true;
             InitializeComponent();
 
             txtBoxEventName.Text = copyEventVM.EventName + " (copy)";
@@ -267,6 +268,13 @@ namespace WPFPresentation
         /// 2022/02/23
         /// Description:
         /// Added the TotalBudget field and validation to check that the string input is a decimal
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Added more information the screen during event creation
+        /// </summary>
         private void btnEventNext_Click(object sender, RoutedEventArgs e)
         {
             string value = txtBoxTotalBudget.Text;
@@ -303,7 +311,9 @@ namespace WPFPresentation
                     };
 
                     tabAddEventDate.IsEnabled = true;
+                    txtBlkAddEventDateTitle.Text = "Select Date(s) for Event: " + newEvent.EventName;
                     tabAddEventDate.Focus();
+                    btnEventNext.IsEnabled = false;
                 }
             }
             catch (Exception ex)
@@ -486,6 +496,12 @@ namespace WPFPresentation
         /// 2022/03/12
         /// Description:
         /// Changes to update hour controls to combo boxes
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Button text change to add another date if one has been added.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -537,8 +553,12 @@ namespace WPFPresentation
                     txtBlkCurrentEventDates.Visibility = Visibility.Visible;
 
                     // prepare form to add another date
+                    btnEventDateAdd.Content = "Add Another Date";
                     datePickerEventDate.SelectedDate = null;
                     datePickerEventDate.BlackoutDates.Add(new CalendarDateRange(dateTimeToAdd));
+                    DateTime startMinusMonth = newEventVM.EventDates.First().EventDateID.AddMonths(-1);
+                    datePickerEventDate.DisplayDateStart = startMinusMonth > DateTime.Now ? startMinusMonth : DateTime.Now;
+                    datePickerEventDate.DisplayDateEnd = newEventVM.EventDates.First().EventDateID.AddMonths(1);
                     ucStartTime.Reset();
                     ucEndTime.Reset();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
@@ -564,6 +584,11 @@ namespace WPFPresentation
         /// Desription:
         /// Added call to database to add the dates
         /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Added more information the screen during event creation
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -579,6 +604,8 @@ namespace WPFPresentation
                 if (result == MessageBoxResult.Yes)
                 {
                     tabsetAddEventLocation.IsEnabled = true;
+                    lblSetEventLocation.Text = "Select A Location for Event: " + newEvent.EventName;
+                    btnEventDateNext.IsEnabled = false;
                     tabsetAddEventLocation.Focus();
                 }
             }
@@ -598,7 +625,11 @@ namespace WPFPresentation
                     MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     tabsetAddEventLocation.IsEnabled = true;
+                    lblSetEventLocation.Text = "Select a Location for Event: " + newEvent.EventName;
+                    btnEventDateNext.IsEnabled = false;
+                    btnEventDateAdd.IsEnabled = false;
                     tabsetAddEventLocation.Focus();
+                    
 
                 }
                 catch (Exception ex)
@@ -649,6 +680,7 @@ namespace WPFPresentation
             {
                 System.Windows.MessageBox.Show("Event details added");
                 pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                // ValidationHelpers.EditOngoing = false;
                 this.NavigationService.Navigate(viewEventsPage);
             }
             else if (btnVolunteersNext.Content.Equals("Finish Duplication"))
@@ -701,6 +733,12 @@ namespace WPFPresentation
         /// Updated 2022/04/01
         /// Description: changed reference to eventid from retrieved object to 
         /// created newEvent object
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Added more information the screen during event creation
         /// </summary>
         private void btnEventLocationAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -726,6 +764,7 @@ namespace WPFPresentation
                 if (result == MessageBoxResult.Yes)
                 {
                     tabAddEventVolunteer.IsEnabled = true;
+                    txtBlkAddEventVolunteerTitle.Text = "Request Volunteers for Event: " + newEvent.EventName;
                     tabAddEventVolunteer.Focus();
                 }
             }
@@ -799,9 +838,10 @@ namespace WPFPresentation
 
                     MessageBox.Show("Event Location Added");
                     tabAddEventVolunteer.IsEnabled = true;
+                    txtBlkAddEventVolunteerTitle.Text = "Request Volunteers for Event: " + newEvent.EventName;
                     tabAddEventVolunteer.Focus();
                     // do not allow user to go back
-                    tabsetAddEventLocation.IsEnabled = false;
+                    btnEventLocationAdd.IsEnabled = false;
                 }
                 catch (Exception ex)
                 {
@@ -919,7 +959,7 @@ namespace WPFPresentation
             try
             {
                 int addedTasks = _taskManager.AddTask(genericTask, numTotalVolunteers);
-                if (addedTasks == 1)
+                if (addedTasks > 1)
                 {
                     MessageBox.Show("Volunteers have been requested.");
                     btnRequestVolunteers.Visibility = Visibility.Hidden;
@@ -996,25 +1036,25 @@ namespace WPFPresentation
             txtBoxLocationName.Text = "";
             txtBoxLocationName.IsReadOnly = false;
             txtBoxLocationName.Focus();
-            txtBoxLocationName.Background = Brushes.AliceBlue;
+            txtBoxLocationName.Background = Brushes.Beige;
             // lblStreet.Visibility = Visibility.Visible;
             // txtBoxStreet.Visibility = Visibility.Visible;
             txtBoxStreet.Text = "";
             txtBoxStreet.IsReadOnly = false;
-            txtBoxStreet.Background = Brushes.AliceBlue;
+            txtBoxStreet.Background = Brushes.Beige;
             // txtBoxCity.Visibility = Visibility.Visible;
             // lblCity.Visibility = Visibility.Visible;
             txtBoxZip.Text = "";
             txtBoxZip.IsReadOnly = false;
-            txtBoxZip.Background = Brushes.AliceBlue;
+            txtBoxZip.Background = Brushes.Beige;
             txtBoxCity.Text = "";
             txtBoxCity.IsReadOnly = true;
-            txtBoxCity.Background = Brushes.AliceBlue;
+            txtBoxCity.Background = Brushes.Beige;
             // cboState.Visibility = Visibility.Visible;
             // lblState.Visibility = Visibility.Visible;
             cboState.Text = "";
             cboState.IsReadOnly = true;
-            cboState.Background = Brushes.AliceBlue;
+            cboState.Background = Brushes.Beige;
             // txtBoxZip.Visibility = Visibility.Visible;
             // lblZip.Visibility = Visibility.Visible;
 

@@ -619,6 +619,11 @@ namespace DataAccessLayer
         /// Description:
         /// Added events that have no date
         /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/16
+        /// 
+        /// Description:
+        /// Added a null check for location userId
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>Event view models</returns>
@@ -665,7 +670,7 @@ namespace DataAccessLayer
                             Location = new Location()
                             {
                                 LocationID = reader.GetInt32(5),
-                                UserID = reader.GetInt32(7),
+                                UserID = reader.IsDBNull(7) ? null : (int?)reader.GetInt32(7),
                                 Name = reader.GetString(8),
                                 Description = reader.IsDBNull(9) ? null : reader.GetString(9),
                                 PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),

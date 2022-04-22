@@ -123,8 +123,8 @@
                             <uc:TimeComboBoxes x:Name="ucEndTime"/>
                         </StackPanel>
 
-                        <Button  Grid.Row="4" Grid.Column="0" x:Name="btnEventDateAdd" Margin="10" Content="Add Date" IsTabStop="False" Click="btnEventDateAdd_Click" HorizontalAlignment="Right"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="txtBlockEventAddValidationMessage" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="#FFFF4040" Visibility="Hidden" ></TextBlock>
+                        <Button  Grid.Row="4" Grid.Column="1" x:Name="btnEventDateAdd" Margin="10" Content="Add Date" IsTabStop="False" Click="btnEventDateAdd_Click" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="txtBlockEventAddValidationMessage" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="#FFFF4040" Visibility="Hidden" ></TextBlock>
 
                     </Grid>
 
@@ -195,7 +195,7 @@
 
                     </Grid.ColumnDefinitions>
                     
-                    <TextBlock x:Name="lblSetEventLocation" Grid.Row="0" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="170" Style="{StaticResource TitleTextBlockStyle}">Select Location</TextBlock>
+                    <TextBlock x:Name="lblSetEventLocation" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="Auto" Style="{StaticResource TitleTextBlockStyle}">Select Location</TextBlock>
                     <TextBlock x:Name="lblExistingLocations" Grid.Row="1" Margin="10,0,0,0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">Locations:</TextBlock>
                     <ComboBox x:Name="cboExistingLocations" Margin="40,0,40,0" VerticalAlignment="Center" HorizontalAlignment="Center" 
                               Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Width="200" SelectionChanged="cboExistingLocations_SelectionChanged" 
@@ -372,8 +372,8 @@
                     <Button x:Name="btnEventLocationAdd" Grid.Row="5"  Grid.Column="1" Margin="0,27,80,8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Next"  Height="32" Width="60" Grid.RowSpan="2" Click="btnEventLocationAdd_Click"/>
                     <Button x:Name="btnEventLocationCancel" Grid.Row="5"  Grid.Column="2"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="40,27,0,8" Content="Cancel" Height="32" Width="60" Grid.RowSpan="2" Click="btnEventCancel_Click"/>
                 </Grid>
-            </TabItem>          
-            
+            </TabItem>
+
             <TabItem x:Name="tabAddEventVolunteer" Header="Volunteers">
                 <Grid>
                     <Grid.RowDefinitions>
