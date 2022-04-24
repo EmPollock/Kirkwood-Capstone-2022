@@ -50,7 +50,6 @@ namespace MVCPresentationWithIdentity.Controllers
         /// <returns>EventList View</returns>
         public ActionResult EventList(List<EventVM> eventList)
         {
-
             if (eventList == null)
             {
                 try

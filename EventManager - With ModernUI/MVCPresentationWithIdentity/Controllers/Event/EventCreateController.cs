@@ -22,13 +22,29 @@ namespace MVCPresentationWithIdentity.Controllers.Event
             _userManager = userManger;
         }
 
-        // GET: EventCreate
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/21
+        /// 
+        /// Description:
+        /// Controller for getting the form to create an event
+        /// </summary>
+        /// <returns>View for the form</returns>
         public ViewResult EventCreate()
         {
 
             return View();
         }
 
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/21
+        /// 
+        /// Description:
+        /// Controller for posting the form to create an event
+        /// </summary>
+        /// <param name="eventVM"></param>
+        /// <returns>View to edit the rest of the form</returns>
         [HttpPost]
         public ActionResult CreateEvent(EventVM eventVM)
         {
@@ -48,11 +64,16 @@ namespace MVCPresentationWithIdentity.Controllers.Event
                 {
 
                     TempData["errorMessage"] = ex.Message;
+                    return View("EventCreate", _eventVM);
 
                 }
             }
 
-            return View("EventCreate", _eventVM);
+            
+            // should return to details page
+            // or page to add date, location, etc
+            return RedirectToAction("UserFutureEvents", "Event");
+
         }
 
     }
