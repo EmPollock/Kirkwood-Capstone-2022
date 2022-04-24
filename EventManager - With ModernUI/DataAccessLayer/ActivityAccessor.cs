@@ -616,5 +616,61 @@ namespace DataAccessLayer
 
             return result;
         }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/04/08
+        /// 
+        /// Description:
+        /// Grabbing a single activity by its ID
+        /// </summary>
+        /// <param name="activityID">ID of selected ID</param>
+        /// <returns>ActivityVM with corresponding ID</returns>
+        public ActivityVM SelectActivityByActivityID(int activityID)
+        {
+            ActivityVM result = null;
+
+            var conn = DBConnection.GetConnection();
+            string cmdTxt = "sp_select_activityVM_by_activityID";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@ActivityID", activityID);
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        result = new ActivityVM()
+                        {
+                            ActivityID = reader.GetInt32(0),
+                            ActivityName = reader.GetString(1),
+                            ActivityDescription = reader.GetString(2),
+                            PublicActivity = reader.GetBoolean(3),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            ActivityImageName = reader.IsDBNull(6) ? null : reader.GetString(6),
+                            SublocationID = reader.GetInt32(7),
+                            EventDateID = reader.GetDateTime(8),
+                            SublocationName = reader.GetString(9),
+                            EventID = reader.GetInt32(10)
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return result;
+        }
     }
 }

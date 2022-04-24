@@ -13,13 +13,13 @@
 }
 <div class="container mt-3">
     <div class="d-flex">
-        <nav class="col-sm-4 me-auto" aria-label="breadcrumb">
+        @*<nav class="col-sm-4 me-auto" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active">Events</li>
             </ol>
-        </nav>
+        </nav>*@
 
-        <div class="dropdown m-2">
+        <div class="dropdown me-3 ms-auto">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="FilterDropDown" data-bs-toggle="dropdown" aria-expanded="false">
                 Filters
             </button>
@@ -34,17 +34,18 @@
         </div>
         @Html.Hidden("user", loggedInUser)
 
-        @using (Html.BeginForm("EventList", "Event", FormMethod.Post, new { @class="col-md-2 mb-3 d-flex"})) {
+        @using (Html.BeginForm("EventList", "Event", FormMethod.Post, new { @class = "col-md-2 mb-3 d-flex" }))
+        {
 
             @Html.TextBox("search", null, new { @class = "form-control", placeholder = "Search" })
-            <button class="btn btn-secondary" type="submit" >
+            <button class="btn btn-secondary" type="submit">
                 <i class="bi bi-search"></i>
             </button>
-            }
+        }
 
         @*<form class=" col-md-2 m-3">
-            <input class=" form-control" type="text" placeholder="Search" aria-label="Search">
-        </form>*@
+                <input class=" form-control" type="text" placeholder="Search" aria-label="Search">
+            </form>*@
 
     </div>
 </div>
@@ -56,7 +57,73 @@
 
 @if (Model != null && Model.Count() > 0)
 {
-    <div class="row table-responsive-md mt-3">
+    <div class="row table-responsive-md mt-3 ">
+        <table class="table table-bordered table-responsive" id="eventListTable">
+            <thead>
+                <tr class="">
+                    <th>
+                        <div class="d-flex">
+                            <p class="text-start text-nowrap me-2">Name</p>
+                            <button onclick="sortEventTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex">
+                            <p class="text-start text-nowrap me-2">Description</p>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex">
+                            <p class="text-start text-nowrap me-2">Date(s)</p>
+                            <button onclick="sortEventTable(2)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="d-flex">
+                            <p class="text-start text-nowrap me-2">Location</p>
+                            <button onclick="sortEventTable(3)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                        </div>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @* <a href="@Url.Action("Details", "Event", item)">@item.EventName<i class="bi bi-box-arrow-up-right"></i> </a> *@
+                            <a href="#">@item.EventName<i class="bi bi-box-arrow-up-right"></i> </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventDescription)
+                        </td>
+
+                        <td>
+                            <ui>
+                                @foreach (var date in item.EventDates)
+                                {
+
+                                    <li> @Html.DisplayFor(modelItem => date.EventDateID)</li>
+                                }
+                            </ui>
+
+
+                        </td>
+                        <td>
+                            @if (item.LocationID != null)
+                            {
+                                <p>@Html.DisplayFor(modelItem => item.Location.Name)</p>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!--<div class="row table-responsive-md mt-3">
         <table class="table table-bordered" id="eventListTable">
 
             <thead>
@@ -77,11 +144,11 @@
                     <th>
                         <div class="d-flex">
                             <p class="text-start text-nowrap me-2">Description</p>
-                        </div>
+                        </div>-->
                         @*<div class="float-end">
-                    <i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i>
-                </div>*@
-                    </th>
+                                <i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i>
+                            </div>*@
+                    <!--</th>
                     <th>
                         <div class="d-flex ">
                             <p class="text-start text-nowrap me-2">Event Dates</p>
@@ -105,7 +172,7 @@
 
             </thead>
 
-            
+
             <tbody>
 
                 @foreach (var item in Model)
@@ -152,10 +219,11 @@
 
             </tbody>
 
-            
+
 
         </table>
-    </div>
+    </div>-->
+
 }
 else
 {

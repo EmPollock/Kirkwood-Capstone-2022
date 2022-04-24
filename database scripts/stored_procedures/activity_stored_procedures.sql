@@ -407,3 +407,44 @@ AS
 		WHERE [SupplierAttendance].[SupplierID] = @SupplierID
 	END
 GO
+
+/***************************************************************
+Mike Cahow
+Created: 2022/04/08
+
+Description:
+Stored PROCEDURE that allows selects the activity by its ID
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+
+print '' print '*** Creating sp_select_activityVM_by_activityID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_activityVM_by_activityID]
+(
+	@ActivityID		[int]
+)
+AS
+	BEGIN
+		
+			SELECT	[ActivityID]			
+					,[ActivityName]			
+					,[ActivityDescription]	
+					,[PublicActivity]		
+					,[StartTime]			
+					,[EndTime]				
+					,[ActivityImageName]	
+					,[Activity].[SublocationID]
+					,[EventDateID]		
+					,[Sublocation].[SublocationName]
+					,[Event].[EventID]
+			FROM	[dbo].[Activity]
+			JOIN	[Sublocation] ON [Sublocation].[SublocationID] = [Activity].[SublocationID]
+			JOIN	[Event] ON [Event].[EventID] = [Activity].[EventID]
+			WHERE	[ActivityID] = @ActivityID
+			
+	END
+GO			

@@ -19,5 +19,6 @@ namespace LogicLayerInterfaces
         List<ActivityVM> RetrieveActivitiesBySupplierIDAndDate(int supplierID, DateTime date);
         bool UpdateActivitySublocationByActivityID(int activityID, int? oldSublocationID, int? newSublocationID);
         List<Activity> RetrieveActivitiesBySupplierID(int supplierID);
+        ActivityVM RetrieveActivityVMByActivityID(int activityID);
     }
 }

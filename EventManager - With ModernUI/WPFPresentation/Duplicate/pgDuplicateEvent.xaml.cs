@@ -257,6 +257,7 @@ namespace WPFPresentation.Duplicate
             {
                 System.Windows.MessageBox.Show("Activity Duplication Complete.");
                 pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                // ValidationHelpers.EditOngoing = false;
                 this.NavigationService.Navigate(viewEventsPage);
             }
         }
@@ -280,6 +281,7 @@ namespace WPFPresentation.Duplicate
             if (result == MessageBoxResult.Yes)
             {
                 pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                // ValidationHelpers.EditOngoing = false;
                 this.NavigationService.Navigate(viewEventsPage);
             }
         }
@@ -311,6 +313,7 @@ namespace WPFPresentation.Duplicate
                 {
                     MessageBox.Show("This Event did not have any activites to duplicate." + "\n\n");
                     pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                    // ValidationHelpers.EditOngoing = false;
                     this.NavigationService.Navigate(viewEventsPage);
                 }
             }

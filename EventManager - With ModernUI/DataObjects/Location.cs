@@ -37,8 +37,8 @@ namespace DataObjects
         [DataType(DataType.MultilineText)]
         [Display(Name = "Pricing Information")]
         public string PricingInfo { get; set; }
-        [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
         [Display(Name = "Phone Number")]
         public string Phone { get; set; }
         [DataType(DataType.EmailAddress)]
