@@ -261,9 +261,6 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         public ActionResult LocationEdit(int locationID = 0)
         {
             Location location = null;
-            LocationDetailsViewModel model = null;
-            List<LocationImage> locationImages = null;
-            List<string> locationTags = null;
             if (locationID == 0)
             {
                 return RedirectToAction("ViewLocations", "Location");
@@ -271,23 +268,49 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             try
             {
                 location = _locationManager.RetrieveLocationByLocationID(locationID);
-                locationTags = _locationManager.RetrieveTagsByLocationID(locationID);
-                locationImages = _locationManager.RetrieveLocationImagesByLocationID(locationID);
-
-                model = new LocationDetailsViewModel()
-                {
-                    Location = location,
-                    LocationTags = locationTags,
-                    LocationImages = locationImages
-                };
-
-                ViewBag.Title = "Edit " + model.Location.Name;
+                ViewBag.Title = "Edit " + location.Name;
             }
             catch (Exception)
             {
                 ModelState.AddModelError("", "Location not found.");
             }
-            return View(model);
+            return View(location);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Returns a location from the details page in edit mode
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns>ActionResult, LocationEdit View</returns>
+        [HttpPost]
+        [Authorize(Roles = "Administrator, Event Planner, Supplier")]
+        public ActionResult LocationEdit(Location location)
+        {
+            if (location.LocationID == 0)
+            {
+                return RedirectToAction("ViewLocations", "Location");
+            }
+            try
+            {
+                Location oldLocation = _locationManager.RetrieveLocationByLocationID(location.LocationID);
+                if (_locationManager.UpdateLocationBioByLocationID(oldLocation, location) == 1)
+                {
+                    return RedirectToAction("ViewLocationDetails", new { locationID = location.LocationID });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Location could not be updated."); 
+                }
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Location could not be found.");
+            }
+            return View(location);
         }
 
         /// <summary>

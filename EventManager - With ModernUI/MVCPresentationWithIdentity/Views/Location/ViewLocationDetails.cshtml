@@ -62,24 +62,6 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-row">
-                <p>Tags:&nbsp;</p>
-                @if (Model.LocationTags.Count == 0)
-                {
-                    <p>None</p>
-                }
-                else
-                {
-                    for (int i = 0; i < Model.LocationTags.Count - 1; i++)
-                    {
-                        <p>
-
-                            @Model.LocationTags[i], &nbsp;
-                        </p>
-                    }
-                    <p>@Model.LocationTags[Model.LocationTags.Count - 1]</p>
-                }
-            </div>
 
             <div class="d-flex flex-row">
                 <p>Contact Info: &nbsp; @Html.DisplayFor(model => model.Location.Phone) &emsp; @Html.DisplayFor(model => model.Location.Email)</p>
@@ -89,43 +71,6 @@
                 <p>Address &nbsp; @Html.DisplayFor(model => model.Location.Address1) </p>
                 <p> @Html.DisplayFor(model => model.Location.Address2)</p>
             </div>
-
-            @if (Model.LocationImages.Count > 0)
-            {
-                <h4>Photos</h4>
-                <div id="carouselLocationImages" class="carousel slide col-6 offset-1" data-bs-ride="carousel" data-bs-interval="false">
-                    <div class="carousel-inner text-center bg-black">
-                        @{
-                            bool first = true;
-                            foreach (DataObjects.LocationImage image in Model.LocationImages)
-                            {
-                                if (first)
-                                {
-                                    first = false;
-                                    <div class="carousel-item active w-100">
-                                        <img src="~/content/images/LocationImages/@image.ImageName" style="height: 120px; width: auto; align-content: center; ">
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="carousel-item w-100">
-                                        <img src="~/content/images/LocationImages/@image.ImageName" style="height: 120px; width: auto; align-content: center; ">
-                                    </div>
-
-                                }
-                            }
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            }
 
 
 
@@ -323,6 +268,7 @@
             }
 
             <div class="d-flex flex-column">
+                <br />
                 <div>
                     <h4>Pricing</h4>
                 </div>
