@@ -20,6 +20,7 @@ namespace MVCPresentationWithIdentity.Controllers
         ISupplierManager _supplierManager;
         IActivityManager _activityManager = null;
         IUserManager _userManager;
+        IEmailProvider _emailProvider;
         SupplierScheduleViewModel _supplierSchedule = new SupplierScheduleViewModel();
         public int _pageSize = 10;
 
@@ -31,11 +32,12 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// Default constructor for the Supplier controller
         /// </summary>
-        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IUserManager userManager)
+        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IUserManager userManager, IEmailProvider emailProvider)
         {
             _supplierManager = supplierManager;
             _activityManager = activityManager;
             _userManager = userManager;
+            _emailProvider = emailProvider;
         }
 
         public PartialViewResult SupplierNav(int eventId)
@@ -356,6 +358,7 @@ namespace MVCPresentationWithIdentity.Controllers
                         userManager.AddToRole(user.Id, "Supplier");
                     }
                 }
+                _emailProvider.SendEmail("Supplier Application", "Your supplier request has been approved and added to the supplier listing.", supplier.Email);
             } catch(Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
@@ -369,6 +372,8 @@ namespace MVCPresentationWithIdentity.Controllers
             try
             {
                 _supplierManager.DisapproveSupplier(supplierID);
+                Supplier supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+                _emailProvider.SendEmail("Supplier Application", "Your supplier request has been denied. You can find the application in your user profile. Please review the information entered for accuracy and fix any mistakes.", supplier.Email);
             }
             catch (Exception ex)
             {
