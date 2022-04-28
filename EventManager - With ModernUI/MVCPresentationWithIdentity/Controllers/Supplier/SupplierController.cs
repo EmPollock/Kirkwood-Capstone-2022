@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using LogicLayer;
 using LogicLayerInterfaces;
 using DataObjects;
@@ -17,6 +19,7 @@ namespace MVCPresentationWithIdentity.Controllers
     {
         ISupplierManager _supplierManager;
         IActivityManager _activityManager = null;
+        IUserManager _userManager;
         SupplierScheduleViewModel _supplierSchedule = new SupplierScheduleViewModel();
         public int _pageSize = 10;
 
@@ -28,10 +31,11 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// Default constructor for the Supplier controller
         /// </summary>
-        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager)
+        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IUserManager userManager)
         {
             _supplierManager = supplierManager;
             _activityManager = activityManager;
+            _userManager = userManager;
         }
 
         public PartialViewResult SupplierNav(int eventId)
@@ -301,6 +305,76 @@ namespace MVCPresentationWithIdentity.Controllers
         public ActionResult EditSupplier(EditSupplierModel model)
         {
             return View();
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult ViewSupplierApplications(int page = 1)
+        {
+            List<Supplier> suppliers = new List<Supplier>();
+            SupplierListViewModel model;
+
+            try
+            {
+                suppliers = _supplierManager.RetrieveUnapprovedSuppliers();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            model = new SupplierListViewModel()
+            {
+                Suppliers = suppliers.OrderBy(x => x.SupplierID)
+                                              .Skip((page - 1) * _pageSize)
+                                              .Take(_pageSize),
+                PagingInfo = new PagingInfo()
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = _pageSize,
+                    TotalItems = suppliers.Count()
+                }
+            };
+            return View("ViewSupplierApplications", model);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Approve(int supplierID)
+        {
+            try
+            {
+                _supplierManager.ApproveSupplier(supplierID);
+                Supplier supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+
+                // This is messy, but there isn't much of a better way.
+                User desktopUser = _userManager.RetrieveUserByUserID(supplier.UserID);
+                if(desktopUser != null)
+                {
+                    _userManager.AddUserRole(supplier.UserID, "Supplier");
+                    var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                    ApplicationUser user = userManager.FindByEmail(desktopUser.EmailAddress);
+                    if(user != null)
+                    {
+                        userManager.AddToRole(user.Id, "Supplier");
+                    }
+                }
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return ViewSupplierApplications();
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Deny(int supplierID)
+        {
+            try
+            {
+                _supplierManager.DisapproveSupplier(supplierID);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return ViewSupplierApplications();
         }
     }
 }

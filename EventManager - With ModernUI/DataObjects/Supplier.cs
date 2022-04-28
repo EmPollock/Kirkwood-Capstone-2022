@@ -31,6 +31,7 @@ namespace DataObjects
         public int AverageRating { get; set; }
         public List<string> Tags { get; set; }
         public bool Active { get; set; }
+        public bool? Approved { get; set; }
     }
     /// <summary>
     /// Derrick Nagy

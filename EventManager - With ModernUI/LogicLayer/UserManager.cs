@@ -373,5 +373,20 @@ namespace LogicLayer
             }
             return result;
         }
+
+        public User RetrieveUserByUserID(int userID)
+        {
+            User result = null;
+
+            try
+            {
+                result = _userAccessor.SelectUserByUserID(userID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve user information.", ex);
+            }
+
+            return result;
+        }
     }
 }

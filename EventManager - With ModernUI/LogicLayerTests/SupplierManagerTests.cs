@@ -447,5 +447,229 @@ namespace LogicLayerTests
             // assert
             // nothing to assert
         }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Test to make sure that RetrieveUnapprovedSuppliers returns the correct list of suppliers.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveUnapprovedSuppliersReturnsCorrectList()
+        {
+            // arrange
+            List<Supplier> expected = new List<Supplier>();
+            List<Supplier> result;
+
+            expected.Add(new Supplier()
+            {
+                SupplierID = 100000,
+                UserID = 100000,
+                Name = "Test Supplier 1",
+                Description = "Description of Test Supplier 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testSupplier1@suppliers.com",
+                TypeID = "Vendor",
+                Address1 = "Test Supplier 1 Street",
+                Address2 = "Apt 1",
+                City = "Cedar Rapids",
+                State = "Iowa",
+                ZipCode = "52404",
+                Tags = new List<string>()
+                {
+                    "Test Tag 1",
+                    "Test Tag 2"
+                },
+                Active = true,
+                Approved = null
+
+            });
+
+            expected.Add(new Supplier()
+            {
+                SupplierID = 100003,
+                UserID = 100000,
+                Name = "Test Supplier 4",
+                Description = "Description of Test Supplier 4 goes here.",
+                Phone = "444-444-4444",
+                Email = "testSupplier4@suppliers.com",
+                TypeID = "Vendor",
+                Address1 = "Test Supplier 4 Street",
+                Address2 = "Apt 4",
+                City = "Iowa City",
+                State = "Iowa",
+                ZipCode = "52240",
+                Tags = new List<string>()
+                {
+                    "Test Tag 1",
+                    "Test Tag 2"
+                },
+                Active = true,
+                Approved = null
+            });
+
+            // act
+            result = _supplierManager.RetrieveUnapprovedSuppliers();
+
+            // assert
+            Assert.AreEqual(expected.Count, result.Count);
+            for(int i = 0; i < expected.Count; i++)
+            {
+                Assert.AreEqual(expected[i].Active, result[i].Active);
+                Assert.AreEqual(expected[i].Address1, result[i].Address1);
+                Assert.AreEqual(expected[i].Address2, result[i].Address2);
+                Assert.AreEqual(expected[i].Approved, result[i].Approved);
+                Assert.AreEqual(expected[i].AverageRating, result[i].AverageRating);
+                Assert.AreEqual(expected[i].City, result[i].City);
+                Assert.AreEqual(expected[i].Description, result[i].Description);
+                Assert.AreEqual(expected[i].Email, result[i].Email);
+                Assert.AreEqual(expected[i].Name, result[i].Name);
+                Assert.AreEqual(expected[i].Phone, result[i].Phone);
+                Assert.AreEqual(expected[i].State, result[i].State);
+                Assert.AreEqual(expected[i].SupplierID, result[i].SupplierID);
+                Assert.AreEqual(expected[i].TypeID, result[i].TypeID);
+                Assert.AreEqual(expected[i].UserID, result[i].UserID);
+                Assert.AreEqual(expected[i].ZipCode, result[i].ZipCode);
+            }
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Test to make sure that ApproveSupplier returns true
+        /// </summary>
+        [TestMethod]
+        public void TestApproveSupplierReturnsTrue()
+        {
+            // arrange
+            const bool expected = true;
+            const int supplierID = 100000;
+            bool result;
+
+            // act
+            result = _supplierManager.ApproveSupplier(supplierID);
+
+            // assert
+            Assert.AreEqual(expected, result);
+
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Test to make sure that ApproveSupplier returns false for a bad ID
+        /// </summary>
+        [TestMethod]
+        public void TestApproveSupplierReturnsFalseForBadID()
+        {
+            // arrange
+            const bool expected = false;
+            const int supplierID = 1;
+            bool result;
+
+            // act
+            result = _supplierManager.ApproveSupplier(supplierID);
+
+            // assert
+            Assert.AreEqual(expected, result);
+
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Test to make sure that DisapproveSupplier returns true
+        /// </summary>
+        [TestMethod]
+        public void TestDisapproveSupplierReturnsTrue()
+        {
+            // arrange
+            const bool expected = true;
+            const int supplierID = 100000;
+            bool result;
+
+            // act
+            result = _supplierManager.DisapproveSupplier(supplierID);
+
+            // assert
+            Assert.AreEqual(expected, result);
+
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Test to make sure that DisapproveSupplier returns false for a bad ID
+        /// </summary>
+        [TestMethod]
+        public void TestDisapproveSupplierReturnsFalseForBadID()
+        {
+            // arrange
+            const bool expected = false;
+            const int supplierID = 1;
+            bool result;
+
+            // act
+            result = _supplierManager.DisapproveSupplier(supplierID);
+
+            // assert
+            Assert.AreEqual(expected, result);
+
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Test to make sure that RequeueSupplier returns true
+        /// </summary>
+        [TestMethod]
+        public void TestRequeueSupplierReturnsTrue()
+        {
+            // arrange
+            const bool expected = true;
+            const int supplierID = 100000;
+            bool result;
+
+            // act
+            result = _supplierManager.RequeueSupplier(supplierID);
+
+            // assert
+            Assert.AreEqual(expected, result);
+
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Test to make sure that RequeueSupplier returns false for a bad ID
+        /// </summary>
+        [TestMethod]
+        public void TestRequeueSupplierReturnsFalseForBadID()
+        {
+            // arrange
+            const bool expected = false;
+            const int supplierID = 1;
+            bool result;
+
+            // act
+            result = _supplierManager.RequeueSupplier(supplierID);
+
+            // assert
+            Assert.AreEqual(expected, result);
+
+        }
     }
 }
