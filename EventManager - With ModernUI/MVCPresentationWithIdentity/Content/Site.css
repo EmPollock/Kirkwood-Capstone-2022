@@ -10,12 +10,12 @@
         display: flex;
     }
 
-        table td::before {
-            content: attr(label);
-            font-weight: bold;
-            width: 120px;
-            min-width: 120px;
-        }
+    table td::before {
+        content: attr(label);
+        font-weight: bold;
+        width: 120px;
+        min-width: 120px;
+    }
 }
 
 .bd-placeholder-img {

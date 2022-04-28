@@ -7,6 +7,7 @@ using LogicLayerInterfaces;
 using DataObjects;
 using Microsoft.AspNet.Identity;
 using MVCPresentationWithIdentity.Models;
+using System.Net;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
@@ -15,12 +16,14 @@ namespace MVCPresentationWithIdentity.Controllers
     {
         private IEventManager _eventManager;
         private IUserManager _userManager;
+        private IActivityManager _activityManager;
 
         private List<EventVM> eventList = null;
-        public EventController(IEventManager eventManager, IUserManager userManger)
+        public EventController(IEventManager eventManager, IUserManager userManger, IActivityManager activityManager)
         {
             _eventManager = eventManager;
             _userManager = userManger;
+            _activityManager = activityManager;
            
         }
 
@@ -47,7 +50,6 @@ namespace MVCPresentationWithIdentity.Controllers
         /// <returns>EventList View</returns>
         public ActionResult EventList(List<EventVM> eventList)
         {
-
             if (eventList == null)
             {
                 try
@@ -232,6 +234,34 @@ namespace MVCPresentationWithIdentity.Controllers
 
             return View("EventList", eventList);
         }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/04/10
+        /// 
+        /// Description:
+        /// ActionResult for clicking on Details button on
+        /// view all activities page
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ItineraryDetails(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            int activityID = (int)id;
+
+            ActivityVM activity = _activityManager.RetrieveActivityVMByActivityID(activityID);
+            if (activity == null)
+            {
+                return HttpNotFound();
+            }
+            return View(activity);
+        }
+
     }
 
 }
