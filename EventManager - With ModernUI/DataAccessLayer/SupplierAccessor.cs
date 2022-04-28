@@ -132,6 +132,15 @@ namespace DataAccessLayer
         /// Description:
         /// Function to take a supplier ID and get a list of reviews from the database
         /// </summary>
+        /// 
+        /// <update>
+        /// Emma Pollock 
+        /// Updated: 2022/04/22
+        /// 
+        /// Description:
+        /// Added UserID field
+        /// </update>
+        /// 
         /// <param name="supplierID">Supplier ID to use to search for reviews</param>
         /// <returns>A list of reviews for the supplier ID</returns>
         public List<Reviews> SelectSupplierReviewsBySupplierID(int supplierID)
@@ -159,20 +168,21 @@ namespace DataAccessLayer
                         result.Add(new Reviews()
                         {
                             ReviewID = reader.GetInt32(0),
-                            FullName = reader.GetString(1),
-                            ReviewType = reader.GetString(2),
-                            Rating = reader.GetInt32(3),
-                            Review = reader.GetString(4),
-                            DateCreated = reader.GetDateTime(5),
-                            Active = reader.GetBoolean(6),
+                            UserID = reader.GetInt32(1),
+                            FullName = reader.GetString(2),
+                            ReviewType = reader.GetString(3),
+                            Rating = reader.GetInt32(4),
+                            Review = reader.GetString(5),
+                            DateCreated = reader.GetDateTime(6),
+                            Active = reader.GetBoolean(7),
                             ForeignID = supplierID
                         });
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
             finally
             {
@@ -633,6 +643,131 @@ namespace DataAccessLayer
 
 
             return threeMonthAvailability;
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Inserts a review into the review table and a supplier review into the SupplierReview table
+        /// 
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns>rowsAffected</returns>
+        public int InsertSupplierReview(Reviews review)
+        {
+            int rowsAffected = 0;
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_insert_review";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters.Add("@ReviewType", SqlDbType.NVarChar, 20);
+            cmd.Parameters.Add("@Rating", SqlDbType.Int);
+            cmd.Parameters.Add("@Review", SqlDbType.NVarChar, 3000);
+            cmd.Parameters.Add("@DateCreated", SqlDbType.DateTime);
+
+            cmd.Parameters["@UserID"].Value = review.UserID;
+            cmd.Parameters["@ReviewType"].Value = review.ReviewType;
+            cmd.Parameters["@Rating"].Value = review.Rating;
+            cmd.Parameters["@Review"].Value = review.Review;
+            cmd.Parameters["@DateCreated"].Value = review.DateCreated;
+
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            // connection
+            conn = DBConnection.GetConnection();
+
+            int reviewID = 0; 
+            cmdTxt = "sp_select_review_id_by_review";
+            cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters.Add("@ReviewType", SqlDbType.NVarChar, 20);
+            cmd.Parameters.Add("@Rating", SqlDbType.Int);
+            cmd.Parameters.Add("@Review", SqlDbType.NVarChar, 3000);
+            cmd.Parameters.Add("@DateCreated", SqlDbType.DateTime);
+
+            cmd.Parameters["@UserID"].Value = review.UserID;
+            cmd.Parameters["@ReviewType"].Value = review.ReviewType;
+            cmd.Parameters["@Rating"].Value = review.Rating;
+            cmd.Parameters["@Review"].Value = review.Review;
+            cmd.Parameters["@DateCreated"].Value = review.DateCreated;
+
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        reviewID = reader.GetInt32(0);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+
+            // connection
+            conn = DBConnection.GetConnection();
+
+            cmdTxt = "sp_insert_supplier_review";
+            cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ReviewID", SqlDbType.Int);
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+
+            cmd.Parameters["@ReviewID"].Value = reviewID;
+            cmd.Parameters["@SupplierID"].Value = review.ForeignID;
+
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
         }
     }
 }

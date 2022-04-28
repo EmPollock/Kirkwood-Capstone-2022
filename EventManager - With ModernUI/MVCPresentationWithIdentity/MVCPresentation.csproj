@@ -226,6 +226,7 @@
     <Compile Include="Models\LocationScheduleViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Models\ReviewViewModel.cs" />
     <Compile Include="Models\SupplierDetailsViewModel.cs" />
     <Compile Include="Models\ParkingLotModel.cs" />
     <Compile Include="Models\SupplierListViewModel.cs" />
@@ -427,6 +428,8 @@
     <Content Include="Views\ParkingLot\Index.cshtml" />
     <Content Include="Views\ParkingLot\Edit.cshtml" />
     <Content Include="Views\Location\CreateLocation.cshtml" />
+    <Content Include="Views\Supplier\CreateReview.cshtml" />
+    <Content Include="Views\Location\CreateReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

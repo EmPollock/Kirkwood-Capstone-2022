@@ -25,6 +25,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Method which select all volunteer reviews by the passed in volunteerID
+        /// 
+        /// <update>
+        /// Emma Pollock
+        /// Updated: 2022/04/27
+        /// Added UserID field
+        /// </update>
         /// </summary>
         public List<Reviews> SelectVolunteerReviewsByVolunteerID(int volunteerID)
         {
@@ -65,11 +71,12 @@ namespace DataAccessLayer
                         volunteerReviews.Add(new Reviews()
                         {
                             ForeignID = volunteerID,
-                            ReviewID = reader.GetInt32(0),
-                            Rating = reader.GetInt32(1),
-                            FullName = reader.GetString(2),
-                            ReviewType = reader.GetString(3),
-                            Review = reader.IsDBNull(4) ? "" : reader.GetString(4),
+                            UserID = reader.GetInt32(0),
+                            ReviewID = reader.GetInt32(1),
+                            Rating = reader.GetInt32(2),
+                            FullName = reader.GetString(3),
+                            ReviewType = reader.GetString(4),
+                            Review = reader.IsDBNull(5) ? "" : reader.GetString(4),
                             DateCreated = DateTime.Parse(reader["DateCreated"].ToString())
                         });
                     }

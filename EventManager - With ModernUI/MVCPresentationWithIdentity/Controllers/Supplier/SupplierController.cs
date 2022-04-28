@@ -18,6 +18,7 @@ namespace MVCPresentationWithIdentity.Controllers
         ISupplierManager _supplierManager;
         IActivityManager _activityManager = null;
         IServiceManager _serviceManager = null;
+        IUserManager _userManger;
         SupplierScheduleViewModel _supplierDetails = new SupplierScheduleViewModel();
         public int _pageSize = 10;
 
@@ -28,12 +29,20 @@ namespace MVCPresentationWithIdentity.Controllers
         /// 
         /// Description:
         /// Default constructor for the Supplier controller
+        /// 
+        /// <update>
+        /// Emma Pollock
+        /// Updated: 2022/04/27
+        /// 
+        /// Added IUserManager
+        /// </update>
         /// </summary>
-        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager)
+        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager, IUserManager userManager)
         {
             _supplierManager = supplierManager;
             _activityManager = activityManager;
             _serviceManager = serviceManager;
+            _userManger = userManager;
         }
 
         public PartialViewResult SupplierNav(int eventId)
@@ -92,7 +101,7 @@ namespace MVCPresentationWithIdentity.Controllers
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    TempData["errorMessage"] = ex.Message;
                 }
             }
             return View(_model);
@@ -307,6 +316,53 @@ namespace MVCPresentationWithIdentity.Controllers
             _supplier.Services = serviceVMs;
 
             return View(_supplier);
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Moves user to the Create Review page
+        /// </summary>
+        /// <param name="supplierID"></param>
+        [Authorize(Roles = "Event Planner")]
+        [HttpGet]
+        public ViewResult CreateReview(int supplierID = 0)
+        {
+            if(supplierID == 0)
+            {
+                return View("ViewSuppliers", supplierID);
+            }
+            return View(new Reviews() { ForeignID = supplierID });
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Processes the review to be created and either returns a validation error or creates the review
+        /// </summary>
+        /// <param name="supplierID"></param>
+        [HttpPost]
+        public ActionResult CreateReview(int ForeignID, int Rating, String Review)
+        {
+            User user = _userManger.RetrieveUserByEmail(User.Identity.Name);
+            Reviews review = new Reviews() {ForeignID = ForeignID, UserID = user.UserID, Rating = Rating, Review = Review, ReviewType = "Supplier", DateCreated = DateTime.Now}; 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _supplierManager.CreateSupplierReview(review);
+                } catch(Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return View(review);
+                }
+                return RedirectToAction("ViewSuppliers", "Supplier", review.ForeignID);
+            }
+            return View(review);            
         }
     }
 }

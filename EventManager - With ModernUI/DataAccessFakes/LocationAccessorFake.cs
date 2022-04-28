@@ -710,5 +710,34 @@ namespace DataAccessFakes
             }
             return tags;
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Inserts a review into the list of fake reviews
+        /// 
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns>rowsAffected</returns>
+        public int InsertLocationReview(Reviews review)
+        {
+            int rowsAffected = 0;
+            foreach (var s in _fakeLocations)
+            {
+                if (s.LocationID == review.ForeignID)
+                {
+                    _fakeLocationReviews.Add(review);
+                    rowsAffected = 1;
+                    break;
+                }
+            }
+            if (rowsAffected == 0)
+            {
+                throw new ApplicationException("Invalid Location ID");
+            }
+            return rowsAffected;
+        }
     }
 }

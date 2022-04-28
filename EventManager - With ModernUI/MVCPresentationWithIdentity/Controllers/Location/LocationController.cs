@@ -24,6 +24,7 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
     {
         ILocationManager _locationManager = null;
         IEventDateManager _eventDateManager = null;
+        IUserManager _userManager;
         LocationScheduleViewModel _locationSchedule = new LocationScheduleViewModel();
 
         public int _pageSize = 10;
@@ -35,11 +36,20 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// Description:
         /// Constructor that sets the _locationManager
         /// </summary>
+        /// 
+        /// <update>
+        /// Emma Pollock
+        /// Updated: 2022/04/27
+        /// 
+        /// Added IUserManager
+        /// </update>
+        /// 
         /// <param name="locationManager"></param>
-        public LocationController(ILocationManager locationManager, IEventDateManager eventDateManager)
+        public LocationController(ILocationManager locationManager, IEventDateManager eventDateManager, IUserManager userManager)
         {
             _locationManager = locationManager;
             _eventDateManager = eventDateManager;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -377,6 +387,54 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             {
                 return View();
             }
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Moves user to the Create Review page
+        /// </summary>
+        /// <param name="locationID"></param>
+        [Authorize(Roles = "Event Planner")]
+        [HttpGet]
+        public ViewResult CreateReview(int locationID = 0)
+        {
+            if (locationID == 0)
+            {
+                return View("ViewLocations", locationID);
+            }
+            return View(new Reviews() { ForeignID = locationID });
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Processes the review to be created and either returns a validation error or creates the review
+        /// </summary>
+        /// <param name="supplierID"></param>
+        [HttpPost]
+        public ActionResult CreateReview(int ForeignID, int Rating, String Review)
+        {
+            User user = _userManager.RetrieveUserByEmail(User.Identity.Name);
+            Reviews review = new Reviews() { ForeignID = ForeignID, UserID = user.UserID, Rating = Rating, Review = Review, ReviewType = "Location", DateCreated = DateTime.Now };
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _locationManager.CreateLocationReview(review);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return View(review);
+                }
+                return RedirectToAction("ViewLocationDetails", "Location", review.ForeignID);
+            }
+            return View(review);
         }
     }
 }

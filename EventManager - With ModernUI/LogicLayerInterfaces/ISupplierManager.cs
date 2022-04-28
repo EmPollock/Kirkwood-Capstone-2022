@@ -12,6 +12,7 @@ namespace LogicLayerInterfaces
         List<Supplier> RetrieveActiveSuppliers();
 
         List<Reviews> RetrieveSupplierReviewsBySupplierID(int supplierID);
+        int CreateSupplierReview(Reviews review);
         List<string> RetrieveSupplierTagsBySupplierID(int supplierID);
         List<string> RetrieveSupplierImagesBySupplierID(int supplierID);
         List<Availability> RetrieveSupplierAvailabilityBySupplierIDAndDate(int supplierID, DateTime date);

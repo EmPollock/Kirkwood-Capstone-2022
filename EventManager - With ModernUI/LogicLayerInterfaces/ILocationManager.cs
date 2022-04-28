@@ -14,6 +14,7 @@ namespace LogicLayerInterfaces
         List<Location> RetrieveActiveLocations();
         Location RetrieveLocationByLocationID(int locationID);
         List<Reviews> RetrieveLocationReviews(int locationID);
+        int CreateLocationReview(Reviews review);
         List<LocationImage> RetrieveLocationImagesByLocationID(int locationID);
         int DeactivateLocationByLocationID(int locationID);
         int UpdateLocationBioByLocationID(Location oldLocation, Location newLocation);

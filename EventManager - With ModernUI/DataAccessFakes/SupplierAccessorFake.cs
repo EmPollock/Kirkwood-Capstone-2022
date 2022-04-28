@@ -608,5 +608,34 @@ namespace DataAccessFakes
 
             return _supplier;
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Inserts a review into the list of fake reviews
+        /// 
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns>rowsAffected</returns>
+        public int InsertSupplierReview(Reviews review)
+        {
+            int rowsAffected = 0;
+            foreach(var s in _fakeSuppliers)
+            {
+                if(s.SupplierID == review.ForeignID)
+                {
+                    _fakeReviews.Add(review);
+                    rowsAffected = 1;
+                    break;
+                }
+            }
+            if(rowsAffected == 0)
+            {
+                throw new ApplicationException("Invalid Supplier ID");
+            }
+            return rowsAffected;
+        }
     }
 }

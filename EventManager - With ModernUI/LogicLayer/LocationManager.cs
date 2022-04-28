@@ -441,5 +441,34 @@ namespace LogicLayer
             }
             return tags;
         }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Creates a location review in the database or throws an error if the review is invalid
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns>rows affected</returns>
+        public int CreateLocationReview(Reviews review)
+        {
+            try
+            {
+                if (review.Rating < 1 || review.Rating > 5)
+                {
+                    throw new ArgumentException("Rating must be between 1 and 5.");
+                }
+                else if (review.Review.Length > 3000)
+                {
+                    throw new ArgumentException("Please keep review under 3000 characters.");
+                }
+                return _locationAccessor.InsertLocationReview(review);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

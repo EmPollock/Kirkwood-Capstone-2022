@@ -12,6 +12,7 @@ namespace DataAccessInterfaces
         List<Supplier> SelectActiveSuppliers();
         Supplier SelectSupplierBySupplierID(int supplierID);
         List<Reviews> SelectSupplierReviewsBySupplierID(int supplierID);
+        int InsertSupplierReview(Reviews review);
         List<string> SelectSupplierTagsBySupplierID(int supplierID);
         List<string> SelectSupplierImagesBySupplierID(int supplierID);
         List<Availability> SelectSupplierAvailabilityBySupplierIDAndDate(int supplierID, DateTime date);
