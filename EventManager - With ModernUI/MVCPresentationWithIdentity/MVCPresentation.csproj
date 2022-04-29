@@ -197,6 +197,7 @@
     <Compile Include="Controllers\Event\EventCreateController.cs" />
     <Compile Include="Controllers\Event\EventListController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Event\TaskListController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Location\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -241,6 +242,8 @@
     <Compile Include="Models\ParkingLotModel.cs" />
     <Compile Include="Models\SupplierListViewModel.cs" />
     <Compile Include="Models\SupplierScheduleViewModel.cs" />
+    <Compile Include="Models\TaskListViewModel.cs" />
+    <Compile Include="Models\TaskViewModel.cs" />
     <Compile Include="Models\VolunteerListViewModel.cs" />
     <Compile Include="Models\SublocationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -440,6 +443,7 @@
     <Content Include="Views\ParkingLot\Edit.cshtml" />
     <Content Include="Views\Location\CreateLocation.cshtml" />
     <Content Include="Views\Event\ItineraryDetails.cshtml" />
+    <Content Include="Views\TaskList\EventTaskList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
