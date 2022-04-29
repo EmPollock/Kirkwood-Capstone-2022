@@ -22,5 +22,6 @@ namespace LogicLayerInterfaces
         bool ApproveSupplier(int supplierID);
         bool DisapproveSupplier(int supplierID);
         bool RequeueSupplier(int supplierID);
+        int CreateSupplier(Supplier supplier);
     }
 }

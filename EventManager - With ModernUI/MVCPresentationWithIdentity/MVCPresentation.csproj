@@ -440,8 +440,12 @@
     <Content Include="Views\ParkingLot\Edit.cshtml" />
     <Content Include="Views\Location\CreateLocation.cshtml" />
     <Content Include="Views\Event\ItineraryDetails.cshtml" />
+
     <Content Include="Views\Supplier\EditSupplier.cshtml" />
     <Content Include="Views\Supplier\ViewSupplierApplications.cshtml" />
+
+    <Content Include="Views\Supplier\CreateSupplier.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

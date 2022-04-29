@@ -10,20 +10,24 @@
 <meta charset="utf-8" />
 
 <div class="container">
-    <div class="d-flex flex-row">
-        <h2 class="mt-4">Suppliers</h2>
-    </div>
     @if (Request.IsAuthenticated)
     {
         if (User.IsInRole("Event Planner"))
         {
-            <div class="d-flex flex-row justify-content-end">
-                <button class="btn btn-outline-dark">Create Listing</button>
-            </div>
+             
+    <div class="d-flex flex-row justify-content-between mt-4" style="height: 40px;">
+        <h2>Suppliers</h2>
+        @Html.ActionLink("Create Supplier", "CreateSupplier", "Supplier", null, new { @class= "btn btn-outline-dark" })
+    </div>
         }
     }
-
-    <div class="row table-responsive-md">
+    else
+    {
+        <div class="d-flex flex-row justify-content-between">
+            <h2 class="pt-5">Suppliers</h2>
+        </div>
+    }
+    <div class="row table-responsive-md pt-3">
         <table class="table table-hover" id="ListTable">
             <thead>
                 <tr>

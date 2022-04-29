@@ -669,7 +669,40 @@ namespace LogicLayerTests
 
             // assert
             Assert.AreEqual(expected, result);
+        }
 
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Test to make sure CreateSupplier returns correct
+        /// row affected
+        /// </summary>
+        [TestMethod]
+        public void TestCreateSupplierRequestReturns1IfCreated()
+        {
+            // arrange
+            Supplier actual;
+            Supplier expected = new Supplier()
+            {
+                SupplierID = 100009,
+                Name = "Test Supplier 10",
+                Description = "Description of Test Supplier 10 goes here.",
+                Phone = "100-111-1111",
+                Email = "testSupplier10@suppliers.com",
+                Address1 = "Test Supplier 100th Street",
+                City = "Cedar Rapids",
+                State = "Iowa",
+                ZipCode = "52404",
+                Active = true
+
+            };
+            // act
+            _supplierManager.CreateSupplier(expected);
+            actual = _supplierManager.RetrieveActiveSuppliers().Single(x => x.SupplierID == expected.SupplierID);
+            // assert
+            Assert.AreEqual(expected, actual);
         }
     }
 }

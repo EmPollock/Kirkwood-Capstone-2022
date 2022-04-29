@@ -9,6 +9,62 @@ Description:
 File containing the stored procedures for suppliers
 ****************************************************************/
 
+
+/**************************************************************
+Logan Baccam
+created 2022/04/20
+Description:
+Stored procedure to insert a new supplier
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_insert_supplier ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_supplier]
+(
+	@UserID					[int]
+	,@SupplierName			[nvarchar](160)	
+	,@SupplierDescription	[nvarchar](3000)	
+	,@SupplierPhone			[nvarchar](15)	
+	,@SupplierEmail			[nvarchar](250)	
+	,@SupplierAddress1		[nvarchar](100)	
+	,@SupplierCity			[nvarchar](100)
+    ,@SupplierState			[nvarchar](100)
+	,@SupplierZipCode		[nvarchar](100)
+	
+)
+AS
+	BEGIN
+		INSERT INTO [dbo].[Supplier]
+		(
+		[UserID]
+		,[SupplierName]		
+		,[SupplierDescription]
+		,[SupplierPhone]		
+		,[SupplierEmail]	
+		,[SupplierAddress1]	
+		,[SupplierCity]		
+		,[SupplierState]		
+		,[SupplierZipCode]
+		)
+		VALUES
+		(
+		@UserID
+		,@SupplierName		
+		,@SupplierDescription
+		,@SupplierPhone		
+		,@SupplierEmail		
+		,@SupplierAddress1	
+		,@SupplierCity		
+		,@SupplierState		
+		,@SupplierZipCode
+		)		
+	END
+	GO
+
 /***************************************************************
 Kris Howell
 Created: 2022/01/27

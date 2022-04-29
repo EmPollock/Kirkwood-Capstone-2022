@@ -11,13 +11,15 @@ using DataObjects;
 using WPFPresentation;
 using DataAccessInterfaces;
 using DataAccessFakes;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 using MVCPresentationWithIdentity.Models;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
     public class SupplierController : Controller
     {
-        ISupplierManager _supplierManager;
+        ISupplierManager _supplierManager = null;
         IActivityManager _activityManager = null;
         IServiceManager _serviceManager = null;
         IUserManager _userManager;
@@ -34,6 +36,7 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Default constructor for the Supplier controller
         /// </summary>
         public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager, IUserManager userManager, IEmailProvider emailProvider)
+
         {
             _supplierManager = supplierManager;
             _activityManager = activityManager;
@@ -353,10 +356,10 @@ namespace MVCPresentationWithIdentity.Controllers
                 Supplier supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
 
                 // This is messy, but there isn't much of a better way.
-                User desktopUser = _userManager.RetrieveUserByUserID(supplier.UserID);
+                User desktopUser = _userManager.RetrieveUserByUserID(supplier.UserID ?? 0);
                 if(desktopUser != null)
                 {
-                    _userManager.AddUserRole(supplier.UserID, "Supplier");
+                    _userManager.AddUserRole(supplier.UserID ?? 0, "Supplier");
                     var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                     ApplicationUser user = userManager.FindByEmail(desktopUser.EmailAddress);
                     if(user != null)
@@ -386,6 +389,59 @@ namespace MVCPresentationWithIdentity.Controllers
                 ModelState.AddModelError("", ex.Message);
             }
             return ViewSupplierApplications();
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// For getting to the CreateSupplier page
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public ActionResult CreateSupplier()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Method for creating a new Supplier
+        /// <param name="_supplier"/>
+        /// </summary>
+        [Authorize]
+        [HttpPost]
+        public ActionResult CreateSupplier(Supplier supplier)
+        {
+            SupplierDetailsViewModel model = new SupplierDetailsViewModel();
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (supplier.UserID == null)
+                    {
+                        var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                        ApplicationUser user = userManager.FindById(User.Identity.GetUserId());
+                        supplier.UserID = user.UserID;
+                    }
+                    if (_supplierManager.CreateSupplier(supplier) == 1)
+                    {
+                        model.Supplier = _supplierManager.RetrieveUnapprovedSuppliers().Single(x => x.Name == supplier.Name && x.Description == supplier.Description);
+                        TempData["Message"] = "success";
+                        return RedirectToAction("ViewSupplierDetails", new { supplierID = model.Supplier.SupplierID });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "");
+                }
+            }
+            return View();
         }
     }
 }
