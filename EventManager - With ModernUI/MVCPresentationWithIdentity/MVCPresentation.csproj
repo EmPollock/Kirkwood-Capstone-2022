@@ -69,12 +69,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.8\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.8\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.8\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -182,7 +191,9 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Event\EventApiController.cs" />
     <Compile Include="Controllers\Event\EventCreateController.cs" />
     <Compile Include="Controllers\Event\EventListController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -220,6 +231,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DeveloperViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LocationDetailsViewModel.cs" />
     <Compile Include="Models\LocationListViewModel.cs" />
@@ -238,6 +250,16 @@
   <ItemGroup>
     <Content Include="Content\bootstrap-theme-lumen.css" />
     <Content Include="Content\bootstrap-theme-quartz.css" />
+    <Content Include="Content\Images\AustinTimmerman.jpg" />
+    <Content Include="Content\Images\chrepko.png" />
+    <Content Include="Content\Images\drnagy86.jpg" />
+    <Content Include="Content\Images\EmPollock.jpg" />
+    <Content Include="Content\Images\JacePettinger.jpg" />
+    <Content Include="Content\Images\k-howell.png" />
+    <Content Include="Content\Images\loganb7.png" />
+    <Content Include="Content\Images\MikeCahow.png" />
+    <Content Include="Content\Images\Neiftly.png" />
+    <Content Include="Content\Images\TechnolationWC.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -429,9 +451,14 @@
     <Content Include="Views\ParkingLot\Edit.cshtml" />
     <Content Include="Views\Location\CreateLocation.cshtml" />
     <Content Include="Views\Event\ItineraryDetails.cshtml" />
+    <Content Include="Views\Supplier\EditSupplier.cshtml" />
+    <Content Include="Views\Supplier\ViewSupplierApplications.cshtml" />
+    <Content Include="Views\Supplier\CreateSupplier.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\EventService\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

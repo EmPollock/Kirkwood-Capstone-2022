@@ -1,0 +1,124 @@
+﻿@model MVCPresentationWithIdentity.Models.EditSupplierModel
+
+@{
+    ViewBag.Title = Model.Name + " Edit";
+    Layout = "~/Views/Shared/_SupplierDetailsLayout.cshtml";
+}
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
+<div class="col w-100">
+    <div class="d-flex flex-row justify-content-center">
+        @Html.ValidationMessage("", new { @class = "text-danger" })
+        <h2 class="mt-4">@Html.DisplayFor(model => model.Name)</h2>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <form>
+                @Html.HiddenFor(m => m.Name)
+                @Html.HiddenFor(m => m.Active)
+                @Html.HiddenFor(m => m.Address1)
+                @Html.HiddenFor(m => m.Address2)
+                @Html.HiddenFor(m => m.City)
+                @Html.HiddenFor(m => m.State)
+                @Html.HiddenFor(m => m.Tags)
+                @Html.HiddenFor(m => m.SupplierID)
+                @Html.HiddenFor(m => m.UserID)
+                @Html.HiddenFor(m => m.Phone)
+                @Html.HiddenFor(m => m.ZipCode)
+                @Html.HiddenFor(m => m.Email)
+                @Html.HiddenFor(m => m.Description)
+                @Html.HiddenFor(m => m.AverageRating)
+                @Html.HiddenFor(m => m.TypeID)
+
+
+                <h4>Name:</h4>
+                @Html.TextBoxFor(m => m.NewName)
+
+                <h4>What kind of supplier are you?</h4>
+                @Html.DropDownListFor(m => m.NewTypeID, new SelectList(new List<String> { "Vendor", "Caterer" }))
+
+                <div class="d-flex flex-column justify-content-between">
+                    <div>
+                        <h4>Name:</h4>
+                        @Html.TextBoxFor(m => m.NewName)
+                        <div class="d-flex flex-row">
+                        </div>
+                        <h4>About you</h4>
+                        @Html.TextBoxFor(m => m.NewDescription)
+                    </div>
+                </div>
+
+                <div class="d-flex flex-row">
+                    <p>Tags:&nbsp;</p>
+                    @if (Model.Tags is null || Model.Tags.Count == 0)
+                    {
+                        <p>None</p>
+                    }
+                    else
+                    {
+                        for (int i = 0; i < Model.Tags.Count - 1; i++)
+                        {
+                            <p>
+
+                                @Model.Tags[i], &nbsp;
+                            </p>
+                        }
+                        <p>@Model.Tags[Model.Tags.Count - 1]</p>
+                    }
+                </div>
+                <button value="Add Tag"></button>
+
+                <div class="d-flex flex-row">
+                    <p>Contact Info: &nbsp; @Html.TextAreaFor(model => model.NewPhone) &emsp; @Html.TextAreaFor(model => model.NewEmail)</p>
+                </div>
+
+                <div class="d-flex flex-row">
+                    <p>Address &nbsp; @Html.TextAreaFor(model => model.NewAddress1) </p>
+                    <p> @Html.DisplayFor(model => model.NewAddress2)</p>
+                </div>
+                <h4>Photos</h4>
+                <div id="carouselLocationImages" class="carousel slide col-6 offset-1" data-bs-ride="carousel" data-bs-interval="false">
+                    <div class="carousel-inner text-center bg-black">
+                        @{
+                            bool first = true;
+                            foreach (string image in Model.Images)
+                            {
+                                if (first && image.Length > 1)
+                                {
+                                    first = false;
+                                    <div class="carousel-item active w-100">
+                                        <img src="~/content/images/LocationImages/@image" class="w-100" />
+                                    </div>
+                                }
+                                else if (!first && image.Length > 1)
+                                {
+                                    <div class="carousel-item w-100">
+                                        <img src="~/content/images/LocationImages/@image" class="w-100" />
+                                    </div>
+                                }
+                            }
+                            if (Model.Images.Count == 0)
+                            {
+                                <div class="carousel-item active w-100">
+                                    <img src="DummyImage.png" class="w-100" />
+                                </div>
+                            }
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <button value="Add image" />
+                <button value="Remove current image" />
+            </form>
+        </div>
+    </div>
+</div>

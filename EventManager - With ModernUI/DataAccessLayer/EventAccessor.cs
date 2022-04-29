@@ -1539,9 +1539,17 @@ namespace DataAccessLayer
         /// Created: 2022/04/01
         /// 
         /// Description: returns event using eventID
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/24
+        /// 
+        /// Description:
+        /// Fixed index error when returning the Location ID field
+        /// 
+        /// 
         /// </summary>
-        /// <param name="eventID"></param>
-        /// <returns></returns>
+        /// <param name="eventID">The event ID</param>
+        /// <returns>An event view model object</returns>
         public EventVM SelectEventByEventID(int eventID)
         {
             EventVM eventToGet = null;
@@ -1574,7 +1582,7 @@ namespace DataAccessLayer
                             EventDescription = reader.GetString(1),
                             EventCreatedDate = reader.GetDateTime(2),
                             TotalBudget = reader.GetDecimal(3),
-                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(5),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
                             Active = true
                         };
                     }

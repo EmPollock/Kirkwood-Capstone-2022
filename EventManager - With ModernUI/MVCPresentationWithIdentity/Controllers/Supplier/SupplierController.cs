@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using LogicLayer;
 using LogicLayerInterfaces;
 using DataObjects;
 using WPFPresentation;
 using DataAccessInterfaces;
 using DataAccessFakes;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 using MVCPresentationWithIdentity.Models;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
     public class SupplierController : Controller
     {
-        ISupplierManager _supplierManager;
+        ISupplierManager _supplierManager = null;
         IActivityManager _activityManager = null;
         IServiceManager _serviceManager = null;
-        SupplierScheduleViewModel _supplierDetails = new SupplierScheduleViewModel();
+        IUserManager _userManager;
+        IEmailProvider _emailProvider;
+        SupplierScheduleViewModel _supplierSchedule = new SupplierScheduleViewModel();
         public int _pageSize = 10;
 
 
@@ -29,11 +35,14 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// Default constructor for the Supplier controller
         /// </summary>
-        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager)
+        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager, IUserManager userManager, IEmailProvider emailProvider)
+
         {
             _supplierManager = supplierManager;
             _activityManager = activityManager;
             _serviceManager = serviceManager;
+            _userManager = userManager;
+            _emailProvider = emailProvider;
         }
 
         public PartialViewResult SupplierNav(int eventId)
@@ -126,10 +135,10 @@ namespace MVCPresentationWithIdentity.Controllers
             Supplier supplier = new Supplier();
             supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
 
-            _supplierDetails.Supplier = supplier;
-            GetAvailability(_supplierDetails.Supplier.SupplierID);
+            _supplierSchedule.Supplier = supplier;
+            GetAvailability(_supplierSchedule.Supplier.SupplierID);
 
-            return View("~/Views/Supplier/ViewSupplierSchedule.cshtml", _supplierDetails);
+            return View("~/Views/Supplier/ViewSupplierSchedule.cshtml", _supplierSchedule);
         }
 
         /// <summary>
@@ -198,8 +207,8 @@ namespace MVCPresentationWithIdentity.Controllers
                 availabilityException = _supplierManager.RetrieveSupplierAvailabilityExceptionBySupplierID(supplierID);
             }
 
-            _supplierDetails.Availability = availability;
-            _supplierDetails.AvailabilityException = availabilityException;
+            _supplierSchedule.Availability = availability;
+            _supplierSchedule.AvailabilityException = availabilityException;
         }
         /// <summary>
         /// Logan Baccam
@@ -267,7 +276,7 @@ namespace MVCPresentationWithIdentity.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Location not found.");
+                ModelState.AddModelError("", "Supplier not found.");
             }
             return View(model);
         }
@@ -307,6 +316,132 @@ namespace MVCPresentationWithIdentity.Controllers
             _supplier.Services = serviceVMs;
 
             return View(_supplier);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult ViewSupplierApplications(int page = 1)
+        {
+            List<Supplier> suppliers = new List<Supplier>();
+            SupplierListViewModel model;
+
+            try
+            {
+                suppliers = _supplierManager.RetrieveUnapprovedSuppliers();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            model = new SupplierListViewModel()
+            {
+                Suppliers = suppliers.OrderBy(x => x.SupplierID)
+                                              .Skip((page - 1) * _pageSize)
+                                              .Take(_pageSize),
+                PagingInfo = new PagingInfo()
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = _pageSize,
+                    TotalItems = suppliers.Count()
+                }
+            };
+            return View("ViewSupplierApplications", model);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Approve(int supplierID)
+        {
+            try
+            {
+                _supplierManager.ApproveSupplier(supplierID);
+                Supplier supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+
+                // This is messy, but there isn't much of a better way.
+                User desktopUser = _userManager.RetrieveUserByUserID(supplier.UserID ?? 0);
+                if(desktopUser != null)
+                {
+                    _userManager.AddUserRole(supplier.UserID ?? 0, "Supplier");
+                    var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                    ApplicationUser user = userManager.FindByEmail(desktopUser.EmailAddress);
+                    if(user != null)
+                    {
+                        userManager.AddToRole(user.Id, "Supplier");
+                    }
+                }
+                _emailProvider.SendEmail("Supplier Application", "Your supplier request has been approved and added to the supplier listing.", supplier.Email);
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return ViewSupplierApplications();
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Deny(int supplierID)
+        {
+            try
+            {
+                _supplierManager.DisapproveSupplier(supplierID);
+                Supplier supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+                _emailProvider.SendEmail("Supplier Application", "Your supplier request has been denied. You can find the application in your user profile. Please review the information entered for accuracy and fix any mistakes.", supplier.Email);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return ViewSupplierApplications();
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// For getting to the CreateSupplier page
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public ActionResult CreateSupplier()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Method for creating a new Supplier
+        /// <param name="_supplier"/>
+        /// </summary>
+        [Authorize]
+        [HttpPost]
+        public ActionResult CreateSupplier(Supplier supplier)
+        {
+            SupplierDetailsViewModel model = new SupplierDetailsViewModel();
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (supplier.UserID == null)
+                    {
+                        var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                        ApplicationUser user = userManager.FindById(User.Identity.GetUserId());
+                        supplier.UserID = user.UserID;
+                    }
+                    if (_supplierManager.CreateSupplier(supplier) == 1)
+                    {
+                        model.Supplier = _supplierManager.RetrieveUnapprovedSuppliers().Single(x => x.Name == supplier.Name && x.Description == supplier.Description);
+                        TempData["Message"] = "success";
+                        return RedirectToAction("ViewSupplierDetails", new { supplierID = model.Supplier.SupplierID });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "");
+                }
+            }
+            return View();
         }
     }
 }
