@@ -10,5 +10,9 @@ namespace LogicLayerInterfaces
     public interface IServiceManager
     {
         List<Service> RetrieveServicesBySupplierID(int supplierID);
+        Service RetrieveServiceByServiceID(int serviceID);
+        bool EditService(Service oldService, Service newService);
+        bool CreateService(Service service);
+        bool DeleteService(int serviceID);
     }
 }

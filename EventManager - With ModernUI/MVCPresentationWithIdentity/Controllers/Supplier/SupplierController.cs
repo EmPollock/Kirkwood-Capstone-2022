@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using LogicLayer;
@@ -273,7 +274,8 @@ namespace MVCPresentationWithIdentity.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Supplier not found.");
+                ModelState.AddModelError("", "Supplier not found. Please refresh the page and try again.");
+                return this.ViewSuppliers();
             }
             return View(model);
         }
@@ -292,28 +294,43 @@ namespace MVCPresentationWithIdentity.Controllers
             {
                 return RedirectToAction("ViewSuppliers", "Supplier");
             }
-            SupplierDetailsViewModel _supplier = new SupplierDetailsViewModel();
+            SupplierServicesViewModel model = new SupplierServicesViewModel();
             List<Service> services = new List<Service>();
-            services = _serviceManager.RetrieveServicesBySupplierID(supplierID);
-            _supplier.Supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
-            List<ServiceVM> serviceVMs = new List<ServiceVM>();
-            foreach (Service service in services)
+            model.CanEdit = false;
+            try
             {
-                serviceVMs.Add(new ServiceVM()
+                services = _serviceManager.RetrieveServicesBySupplierID(supplierID);
+                model.Supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+                List<ServiceVM> serviceVMs = new List<ServiceVM>();
+                foreach (Service service in services)
                 {
-                    ServiceID = service.ServiceID,
-                    SupplierID = service.SupplierID,
-                    ServiceName = service.ServiceName,
-                    Price = service.Price,
-                    Description = service.Description,
-                    ServiceImagePath = service.ServiceImagePath
-                });
+                    serviceVMs.Add(new ServiceVM()
+                    {
+                        ServiceID = service.ServiceID,
+                        SupplierID = service.SupplierID,
+                        ServiceName = service.ServiceName,
+                        Price = service.Price,
+                        Description = service.Description,
+                        ServiceImagePath = service.ServiceImagePath
+                    });
+                }
+                model.Services = serviceVMs;
+                var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                ApplicationUser applicationUser = userManager.FindById(User.Identity.GetUserId());
+                if (applicationUser != null && applicationUser.UserID == model.Supplier.UserID)
+                {
+                    model.CanEdit = true;
+                }
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
             }
+            
 
-            _supplier.Services = serviceVMs;
 
-            return View(_supplier);
+            return View("ViewSupplierServices", model);
         }
+
 
         [Authorize(Roles = "Administrator")]
         public ActionResult ViewSupplierApplications(int page = 1)
@@ -386,6 +403,136 @@ namespace MVCPresentationWithIdentity.Controllers
                 ModelState.AddModelError("", ex.Message);
             }
             return ViewSupplierApplications();
+        }
+
+
+        [HttpGet]
+        public ActionResult EditSupplierService(int supplierID, int serviceID)
+        {
+            SupplierServiceEditModel model = new SupplierServiceEditModel();
+            try
+            {
+                Service service = _serviceManager.RetrieveServiceByServiceID(serviceID);
+                model = new SupplierServiceEditModel()
+                {
+                    Description = service.Description,
+                    NewDescription = service.Description,
+                    ServiceName = service.ServiceName,
+                    NewName = service.ServiceName,
+                    Price = service.Price,
+                    NewPrice = service.Price,
+                    ServiceID = serviceID,
+                    ServiceImagePath = service.ServiceImagePath,
+                    SupplierID = service.SupplierID
+                };
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return View(model); 
+        }
+
+        [HttpGet]
+        public ActionResult CreateSupplierService(int supplierID)
+        {
+            SupplierServiceEditModel model = new SupplierServiceEditModel();
+            try
+            {
+                model = new SupplierServiceEditModel()
+                {
+                    Description = "",
+                    NewDescription = "",
+                    ServiceName = "",
+                    NewName = "",
+                    Price = 0.0m,
+                    NewPrice = 0.0m,
+                    ServiceID = -1,
+                    ServiceImagePath = "",
+                    SupplierID = supplierID
+                };
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return View("EditSupplierService", model);
+        }
+
+        [HttpPost]
+        public ActionResult EditSupplierService(SupplierServiceEditModel model)
+        {
+            if(ModelState.IsValid)
+            {
+
+                try
+                {
+                    string newImageName = model.ServiceImagePath;
+                    if (model.NewImage != null)
+                    {
+                        string uuid = Guid.NewGuid().ToString();
+                        model.NewImage.SaveAs(Server.MapPath("~/Content/Images/LocationImages/") + uuid + Path.GetExtension(model.NewImage.FileName));
+                        newImageName = uuid + Path.GetExtension(model.NewImage.FileName);
+                    }
+                    Service newService = new Service()
+                    {
+                        Description = model.NewDescription,
+                        Price = model.NewPrice,
+                        ServiceID = model.ServiceID,
+                        SupplierID = model.SupplierID,
+                        ServiceImagePath = newImageName,
+                        ServiceName = model.NewName
+                    };
+                    if (model.ServiceID == -1)
+                    {
+                        if(_serviceManager.CreateService(newService))
+                        {
+                            return RedirectToAction("ViewSupplierServices", new { supplierID = model.SupplierID });
+                        } else
+                        {
+                            ModelState.AddModelError("", "Failed to create service.");
+                        }
+                    }
+                    else
+                    {
+                        Service oldService = new Service()
+                        {
+                            Description = model.Description,
+                            Price = model.Price,
+                            ServiceID = model.ServiceID,
+                            ServiceImagePath = model.ServiceImagePath,
+                            ServiceName = model.ServiceName,
+                            SupplierID = model.SupplierID
+                        };
+                        if (_serviceManager.EditService(oldService, newService))
+                        {
+                            return RedirectToAction("ViewSupplierServices", new { supplierID = model.SupplierID });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Failed to update service.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteService(int serviceID, int supplierID)
+        {
+            try
+            {
+                bool result = _serviceManager.DeleteService(serviceID);
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message); 
+                return this.ViewSupplierServices(supplierID);
+            }
+            return RedirectToAction("ViewSupplierServices", new { supplierID = supplierID });
         }
     }
 }

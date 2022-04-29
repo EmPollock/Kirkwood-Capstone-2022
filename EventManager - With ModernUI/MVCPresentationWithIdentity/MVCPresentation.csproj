@@ -241,6 +241,7 @@
     <Compile Include="Models\ParkingLotModel.cs" />
     <Compile Include="Models\SupplierListViewModel.cs" />
     <Compile Include="Models\SupplierScheduleViewModel.cs" />
+    <Compile Include="Models\SupplierServiceEditModel.cs" />
     <Compile Include="Models\VolunteerListViewModel.cs" />
     <Compile Include="Models\SublocationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -442,6 +443,7 @@
     <Content Include="Views\Event\ItineraryDetails.cshtml" />
     <Content Include="Views\Supplier\EditSupplier.cshtml" />
     <Content Include="Views\Supplier\ViewSupplierApplications.cshtml" />
+    <Content Include="Views\Supplier\EditSupplierService.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
