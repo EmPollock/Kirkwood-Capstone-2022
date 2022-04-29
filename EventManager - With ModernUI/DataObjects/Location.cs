@@ -37,10 +37,12 @@ namespace DataObjects
         [DataType(DataType.MultilineText)]
         [Display(Name = "Pricing Information")]
         public string PricingInfo { get; set; }
-        [DataType(DataType.PhoneNumber)]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
         [Display(Name = "Phone Number")]
         public string Phone { get; set; }
         [DataType(DataType.EmailAddress)]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
         [Display(Name = "Email Address")]
         public string Email { get; set; }
         [Required]

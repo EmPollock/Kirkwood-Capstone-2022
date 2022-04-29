@@ -76,13 +76,14 @@ CREATE TABLE [dbo].[Supplier] (
 	,[SupplierDescription]	[nvarchar](3000)			NULL
 	,[SupplierPhone]		[nvarchar](15)				NOT NULL
 	,[SupplierEmail]		[nvarchar](250)				NOT NULL
-	,[SupplierTypeID]		[nvarchar](10)				NOT NULL
+	,[SupplierTypeID]		[nvarchar](10)				NULL
 	,[SupplierAddress1]		[nvarchar](100)				NOT NULL
 	,[SupplierAddress2]		[nvarchar](100)				NULL
 	,[SupplierCity]			[nvarchar](100)				NOT NULL
 	,[SupplierState]		[nvarchar](100)				NOT NULL
 	,[SupplierZipCode]		[nvarchar](100)				NOT NULL
 	,[Active]				[bit]						NOT NULL DEFAULT 1
+	,[Approved]				[bit]						NULL
 	
 
 	CONSTRAINT [pk_SupplierID] PRIMARY KEY([SupplierID])
@@ -90,7 +91,6 @@ CREATE TABLE [dbo].[Supplier] (
 		REFERENCES [SupplierType]([SupplierTypeID])
 	,CONSTRAINT [fk_UserID] FOREIGN KEY([UserID])
 		REFERENCES [Users]([UserID])
-	,CONSTRAINT [ak_SupplierEmail] UNIQUE([SupplierEmail])
 	,CONSTRAINT [ak_SupplierAddress] UNIQUE([SupplierAddress1],[SupplierAddress2])
 )
 GO
@@ -123,10 +123,11 @@ INSERT INTO [dbo].[Supplier] (
 	,[SupplierCity]
 	,[SupplierState]
 	,[SupplierZipCode]
+	,[Approved]
 )VALUES 
-	(100000, "McSupplier", "I'm liking it.", "999-999-9999", "mcsupplier@suppliers.com", "Vendor", "123 McSupplier Lane", null, "Cedar Rapids", "Iowa", "52404")
-	,(100000, "Supplier King", "Supply it your way.", "888-888-8888", "supplierking@suppliers.com", "Vendor", "456 Supplier King Blvd", null, "Iowa City", "Iowa", "52240")
-	,(100003, "Marco's Grilled Cheese", "Iowa City's Finest Food carts, and now also a restaurant", "123-456-7894", "marcosgrilledcheese@gmail.com", "Catering", "17 N Linn St", null, "Iowa City", "Iowa", "52245")
+	(100000, "McSupplier", "I'm liking it.", "999-999-9999", "mcsupplier@suppliers.com", "Vendor", "123 McSupplier Lane", null, "Cedar Rapids", "Iowa", "52404", 1)
+	,(100000, "Supplier King", "Supply it your way.", "888-888-8888", "supplierking@suppliers.com", "Vendor", "456 Supplier King Blvd", null, "Iowa City", "Iowa", "52240", null)
+	,(100003, "Marco's Grilled Cheese", "Iowa City's Finest Food carts, and now also a restaurant", "123-456-7894", "marcosgrilledcheese@gmail.com", "Catering", "17 N Linn St", null, "Iowa City", "Iowa", "52245", null)
 	
 	
 GO

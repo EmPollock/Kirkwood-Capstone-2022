@@ -258,6 +258,12 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Selects roles of a user using a user's ID
+        /// 
+        /// Christopher Repko
+        /// Updated: 2022/04/27
+        /// 
+        /// Description:
+        /// Changed stored procedures. Apparently we were never reading from the correct table in the first place.
         /// </summary>
         /// <param name="userID">int ID to identify user</param>
         /// <returns>A list of strings representing roles</returns>
@@ -268,7 +274,7 @@ namespace DataAccessLayer
             var conn = DBConnection.GetConnection();
 
             // next, we need command text.
-            var cmdText = "sp_select_user_roles_from_event_users_table";
+            var cmdText = "sp_select_user_roles";
 
             // we create a command object;
             var cmd = new SqlCommand(cmdText, conn);
@@ -347,6 +353,73 @@ namespace DataAccessLayer
 
             // The parameters need their values to be set.
             cmd.Parameters["@Email"].Value = email;
+
+            // Now that we have the command set up, we can execute the command.
+            // Always use a try block because the connection is unsafe.
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // execute appropriately and capture the results.
+                var reader = cmd.ExecuteReader();
+
+                // Process results
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        User currUser = new User();
+                        currUser.UserID = reader.GetInt32(0);
+                        currUser.GivenName = reader.GetString(1);
+                        currUser.FamilyName = reader.GetString(2);
+                        currUser.EmailAddress = reader.GetString(3);
+                        currUser.State = reader.GetString(4);
+                        currUser.City = reader.GetString(5);
+                        currUser.Zip = reader.GetInt32(6);
+                        currUser.Active = reader.GetBoolean(7);
+
+                        user = currUser;
+                    }
+                }
+                else
+                {
+                    throw new ApplicationException("User not found.");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return user;
+        }
+
+        public User SelectUserByUserID(int userID)
+        {
+            User user = null;
+
+            var conn = DBConnection.GetConnection();
+
+            // next, we need command text.
+            var cmdText = "sp_select_user_by_userID";
+
+            // we create a command object;
+            var cmd = new SqlCommand(cmdText, conn);
+
+            // load arguments to the command.
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // We need to add parameters to the command's parameter collection
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+
+            // The parameters need their values to be set.
+            cmd.Parameters["@UserID"].Value = userID;
 
             // Now that we have the command set up, we can execute the command.
             // Always use a try block because the connection is unsafe.

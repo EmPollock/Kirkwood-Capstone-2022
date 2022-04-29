@@ -103,7 +103,7 @@ REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 :: FILES WHICH REQUIRE:  location.sql
 ::  availability.sql
 ::  tables/parking_lot.sql
-:: 
+::  event.sql
 :: ************************
 :: FILES WHICH REQUIRE:  supplier.sql
 ::  service.sql

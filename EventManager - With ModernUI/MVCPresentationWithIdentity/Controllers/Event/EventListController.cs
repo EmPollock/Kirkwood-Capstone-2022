@@ -17,14 +17,17 @@ namespace MVCPresentationWithIdentity.Controllers
         private IEventManager _eventManager;
         private IUserManager _userManager;
         private IActivityManager _activityManager;
+        private ILocationManager _locationManager;
+        private IEventDateManager _eventDateManager;
 
         private List<EventVM> eventList = null;
-        public EventController(IEventManager eventManager, IUserManager userManger, IActivityManager activityManager)
+        public EventController(IEventManager eventManager, IUserManager userManger, IActivityManager activityManager, ILocationManager locationManager, IEventDateManager eventDateManager)
         {
             _eventManager = eventManager;
             _userManager = userManger;
             _activityManager = activityManager;
-           
+            _locationManager = locationManager;
+            _eventDateManager = eventDateManager;
         }
 
         /// <summary>
@@ -50,7 +53,6 @@ namespace MVCPresentationWithIdentity.Controllers
         /// <returns>EventList View</returns>
         public ActionResult EventList(List<EventVM> eventList)
         {
-
             if (eventList == null)
             {
                 try
@@ -261,6 +263,37 @@ namespace MVCPresentationWithIdentity.Controllers
                 return HttpNotFound();
             }
             return View(activity);
+        }
+
+        /// <summary>
+        /// Kris Howell
+        /// Created: 2022/04/21
+        /// 
+        /// Description:
+        /// Displays event details page
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public ActionResult Details(int eventId)
+        {
+            EventVM model = null;
+
+            try
+            {
+                model = _eventManager.RetrieveEventByEventID(eventId);
+                if (model.LocationID != null)
+                {
+                    model.Location = _locationManager.RetrieveLocationByLocationID((int)model.LocationID);
+                }
+
+                model.EventDates = _eventDateManager.RetrieveEventDatesByEventID(model.EventID);
+            }
+            catch (Exception ex)
+            {
+                TempData["errorMessage"] = ex.Message;
+            }
+
+            return View(model);
         }
 
     }

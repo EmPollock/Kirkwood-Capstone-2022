@@ -284,10 +284,138 @@ namespace LogicLayer
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to retrieve supplier.");
+                throw new ApplicationException("Failed to retrieve supplier.", ex);
             }
 
             return supplier;
+        }
+
+        public List<Supplier> RetrieveUnapprovedSuppliers()
+        {
+            List<Supplier> result = null;
+            try
+            {
+                result = _supplierAccessor.SelectUnapprovedSuppliers();
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve pending supplier requests.", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2020/04/27
+        /// 
+        /// Description:
+        /// Wrapper method to pass through a command to approve a supplier
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>true if one record was affected, otherwise false</returns>
+        public bool ApproveSupplier(int supplierID)
+        {
+            bool result = false;
+            try
+            {
+                result = 1 == this._supplierAccessor.ApproveSupplier(supplierID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to approve application. Please try again later.", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2020/04/27
+        /// 
+        /// Description:
+        /// Wrapper method to pass through a command to disapprove a supplier
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>true if one record was affected, otherwise false</returns>
+        public bool DisapproveSupplier(int supplierID)
+        {
+            bool result = false;
+            try
+            {
+                result = 1 == this._supplierAccessor.DisapproveSupplier(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to deny application. Please try again later.", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2020/04/27
+        /// 
+        /// Description:
+        /// Wrapper method to pass through a command to requeue a supplier application
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>true if one record was affected, otherwise false</returns>
+        public bool RequeueSupplier(int supplierID)
+        {
+            bool result = false;
+            try
+            {
+                result = 1 == this._supplierAccessor.RequeueSupplier(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An exception occurred while processing your request. Please try again later.", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Inserts a new requested supplier
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+        public int CreateSupplier(Supplier supplier)
+        {
+            if (supplier.Name.Length > 160 || supplier.Name.Length < 1) 
+            {
+                throw new ApplicationException("Name must be bewtween 1-160 characters.");
+            }
+            if (supplier.Description != null && supplier.Description.Length > 3000) 
+            {
+                throw new ApplicationException("Description cannot exceed 3000 characters");
+            }
+            if (supplier.Email.Length > 100 || supplier.Email.Length < 1) 
+            {
+                throw new ApplicationException("Email must be bewtween 1-100 characters.");
+            }
+            if (supplier.Phone.Length > 15 || supplier.Phone.Length < 1) 
+            {
+                throw new ApplicationException("Invalid phone number.");
+            }
+            if (supplier.Address1.Length > 100 || supplier.Address1.Length < 1) 
+            {
+                throw new ApplicationException("Invalid address.");
+            }
+            if (supplier.ZipCode.Length > 160 || supplier.ZipCode.Length < 1) 
+            {
+                throw new ApplicationException("Invalid zip code.");
+            }
+            int rows = 0;
+            try
+            {
+                rows = _supplierAccessor.InsertSupplier(supplier);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException("Unable to create supplier. " + e.Message);
+            }
+            return rows;
         }
     }
 }
