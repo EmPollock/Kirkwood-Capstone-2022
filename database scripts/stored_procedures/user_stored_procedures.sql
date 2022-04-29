@@ -247,3 +247,48 @@ AS
 			@RoleID = [RoleID]
 	END
 GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/04/27
+
+Description: 
+Stored procedure to retrieve a user by userID.
+****************************************************************/
+
+print '' print '*** creating sp_select_user_by_userID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_by_userID]
+(
+	@UserID				[int]
+)
+AS
+	BEGIN
+		SELECT 	[UserID], [GivenName], [FamilyName], [Email], [UserState],
+			[City], [Zip], [Active]
+		FROM 	[Users]
+		WHERE 	@UserID = [UserID]
+	END
+GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/04/27
+
+Description:
+Stored procedure to select the roles that a user has in the UserRole table.
+****************************************************************/
+print '' print '*** creating sp_select_user_roles'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_roles]
+(
+	@UserID 	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[UserRole].[RoleID]
+		FROM [dbo].[UserRole]
+		WHERE [UserRole].[UserID] = @UserID
+	END	
+GO

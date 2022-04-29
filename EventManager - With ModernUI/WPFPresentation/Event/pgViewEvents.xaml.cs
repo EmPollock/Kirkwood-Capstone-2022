@@ -60,7 +60,6 @@ namespace WPFPresentation
             _eventManager = managerProvider.EventManager;
 
             _sublocationManager = managerProvider.SublocationManager;
-
             InitializeComponent();
 
             // hide if no user

@@ -96,6 +96,7 @@ namespace WPFPresentation
             btnViewSuppliers.Foreground = Brushes.White;
             btnViewVolunteers.Foreground = Brushes.White;
             btnViewAbout.Foreground = Brushes.White;
+            staLoginMsg.Text = "Welcome " + _user.GivenName + " " + _user.FamilyName + "...";
         }
 
         /// <summary>
@@ -160,7 +161,9 @@ namespace WPFPresentation
         /// </summary>
         private void mnuLogOut_Click(object sender, RoutedEventArgs e)
         {
+            staLoginMsg.Text = "Please Log in to Continue...";
             this.updateUIForLogout();
+
         }
 
         /// <summary>
@@ -369,6 +372,7 @@ namespace WPFPresentation
         /// <param name="e"></param>
         private void MainFrame_Navigated(object sender, NavigationEventArgs e)
         {
+            
             if (MainFrame.Content.ToString().Contains("Event") || MainFrame.Content.ToString().Contains("Task") || MainFrame.Content.ToString().Contains("Activity"))
             {
                 btnHomeWhite.Visibility = Visibility.Visible;
@@ -379,6 +383,7 @@ namespace WPFPresentation
                 btnViewSuppliers.Foreground = Brushes.White;
                 btnViewVolunteers.Foreground = Brushes.White;
                 btnViewAbout.Foreground = Brushes.White;
+                staCurrentPageMsg.Text = "View Events";
             }
             if (MainFrame.Content.ToString().Contains("Supplier"))
             {
@@ -390,6 +395,7 @@ namespace WPFPresentation
                 btnViewSuppliers.Foreground = Brushes.Yellow;
                 btnViewVolunteers.Foreground = Brushes.White;
                 btnViewAbout.Foreground = Brushes.White;
+                staCurrentPageMsg.Text = "Suppliers";
             }
             if (MainFrame.Content.ToString().Contains("Location") || MainFrame.Content.ToString().Contains("Parking"))
             {
@@ -401,6 +407,7 @@ namespace WPFPresentation
                 btnViewSuppliers.Foreground = Brushes.White;
                 btnViewVolunteers.Foreground = Brushes.White;
                 btnViewAbout.Foreground = Brushes.White;
+                staCurrentPageMsg.Text = "Locations";
             }
             if (MainFrame.Content.ToString().Contains("Volunteer"))
             {
@@ -412,6 +419,7 @@ namespace WPFPresentation
                 btnViewSuppliers.Foreground = Brushes.White;
                 btnViewVolunteers.Foreground = Brushes.Yellow;
                 btnViewAbout.Foreground = Brushes.White;
+                staCurrentPageMsg.Text = "Volunteers";
             }
             if (MainFrame.Content.ToString().Contains("CreateEvent"))
             {
@@ -423,6 +431,7 @@ namespace WPFPresentation
                 btnViewSuppliers.Foreground = Brushes.White;
                 btnViewVolunteers.Foreground = Brushes.White;
                 btnViewAbout.Foreground = Brushes.White;
+                staCurrentPageMsg.Text = "Event Creation";
             }
             if (MainFrame.Content.ToString().Contains("About"))
             {
@@ -434,6 +443,7 @@ namespace WPFPresentation
                 btnViewSuppliers.Foreground = Brushes.White;
                 btnViewVolunteers.Foreground = Brushes.White;
                 btnViewAbout.Foreground = Brushes.Yellow;
+                staCurrentPageMsg.Text = "About";
             }
             if (this.MainFrame.NavigationService.CanGoBack)
             {
@@ -525,17 +535,17 @@ namespace WPFPresentation
         {
             Page myEventsPage;
 
-            if (_user == null)
-            {
-               myEventsPage = new pgViewEvents(_managerProvider);
-            }
-            else
+
+            myEventsPage = new pgViewEvents(_managerProvider);
+
+            /*else
             {
                 myEventsPage = new pgViewEvents(_user, _managerProvider);
-            }
+             */
 
             this.MainFrame.NavigationService.Navigate(myEventsPage);
         }
 
+        
     }
 }

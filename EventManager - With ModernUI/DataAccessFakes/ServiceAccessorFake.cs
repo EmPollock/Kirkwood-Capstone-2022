@@ -59,6 +59,78 @@ namespace DataAccessFakes
         }
 
         /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// Method to delete a service from the fakes
+        /// </summary>
+        /// <param name="serviceID"></param>
+        /// <returns></returns>
+        public int DeleteService(int serviceID)
+        {
+            int result = 0;
+            foreach(Service service in _fakeServices)
+            {
+                if(service.ServiceID == serviceID)
+                {
+                    // No need to actually remove it. We just care about getting the return.
+                    result++;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Method to insert a service into the fakes
+        /// </summary>
+        /// <param name="newService"></param>
+        /// <returns>rows affected</returns>
+        public int InsertService(Service newService)
+        {
+            int result = 0;
+            bool duplicate = false;
+            foreach(Service service in _fakeServices)
+            {
+                if(service.ServiceID == newService.ServiceID)
+                {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if(!duplicate)
+            {
+                _fakeServices.Add(newService);
+                result++;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Selects a service matching a passed serviceID
+        /// </summary>
+        /// <param name="serviceID">ID to match</param>
+        /// <returns>The matching service</returns>
+        public Service SelectServiceByServiceID(int serviceID)
+        {
+            Service result = null;
+            foreach(Service service in _fakeServices)
+            {
+                if(service.ServiceID == serviceID)
+                {
+                    result = service;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Austin Timmerman
         /// Created: 2022/03/02
         /// 
@@ -87,6 +159,33 @@ namespace DataAccessFakes
             }
 
             return services;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Updates a service in the fakes
+        /// </summary>
+        /// <param name="oldService"></param>
+        /// <param name="newService"></param>
+        /// <returns>rows affected</returns>
+        public int UpdateService(Service oldService, Service newService)
+        {
+            int result = 0;
+            for(int i = 0; i< _fakeServices.Count(); i++)
+            {
+                Service service = _fakeServices[i];
+                if(oldService.ServiceID == service.ServiceID && oldService.Price == service.Price &&
+                    oldService.ServiceImagePath.Equals(service.ServiceImagePath) && 
+                    oldService.ServiceName.Equals(service.ServiceName) && oldService.SupplierID == service.SupplierID)
+                {
+                    _fakeServices[i] = newService;
+                    result++;
+                }
+            }
+            return result;
         }
     }
 }

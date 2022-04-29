@@ -261,6 +261,7 @@ namespace DataAccessLayer
                          */
                         result.Add(new Activity()
                         {
+                            SublocationID = sublocationID,
                             ActivityID = reader.GetInt32(0),
                             ActivityName = reader.GetString(1),
                             PublicActivity = reader.GetBoolean(2),
@@ -268,6 +269,8 @@ namespace DataAccessLayer
                             EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
                             EventDateID = DateTime.Parse(reader["EventDateID"].ToString())
                         });
+                        result.Last().StartTime = new DateTime(result.Last().EventDateID.Year, result.Last().EventDateID.Month, result.Last().EventDateID.Day, result.Last().StartTime.Hour, result.Last().StartTime.Minute, result.Last().StartTime.Second);
+                        result.Last().EndTime = new DateTime(result.Last().EventDateID.Year, result.Last().EventDateID.Month, result.Last().EventDateID.Day, result.Last().EndTime.Hour, result.Last().EndTime.Minute, result.Last().EndTime.Second);
                     }
                 }
             }

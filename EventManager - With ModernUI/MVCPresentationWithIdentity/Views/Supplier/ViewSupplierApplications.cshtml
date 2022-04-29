@@ -10,24 +10,11 @@
 <meta charset="utf-8" />
 
 <div class="container">
-    @if (Request.IsAuthenticated)
-    {
-        if (User.IsInRole("Event Planner"))
-        {
-             
-    <div class="d-flex flex-row justify-content-between mt-4" style="height: 40px;">
-        <h2>Suppliers</h2>
-        @Html.ActionLink("Create Supplier", "CreateSupplier", "Supplier", null, new { @class= "btn btn-outline-dark" })
+    <div class="d-flex flex-row">
+        <h2 class="mt-4">Supplier Applications</h2>
     </div>
-        }
-    }
-    else
-    {
-        <div class="d-flex flex-row justify-content-between">
-            <h2 class="pt-5">Suppliers</h2>
-        </div>
-    }
-    <div class="row table-responsive-md pt-3">
+
+    <div class="row table-responsive-md">
         <table class="table table-hover" id="ListTable">
             <thead>
                 <tr>
@@ -71,14 +58,6 @@
                             </button>
                         </div>
                     </th>
-                    <th scope="col" class="d-none d-sm-table-cell">
-                        <div class="d-flex ">
-                            <p class="text-start text-nowrap me-2">Rating</p>
-                            <button onclick="sortTable(5)" class="btn btn-sm btn-outline-dark ms-auto">
-                                <i class="bi bi-arrow-down-up"></i>
-                            </button>
-                        </div>
-                    </th>
                 </tr>
             </thead>
 
@@ -98,57 +77,6 @@
                     <td class="d-none d-sm-table-cell">
                         @Html.DisplayFor(modelItem => supplier.State)
                     </td>
-
-
-                    <td class="d-none d-sm-table-cell">
-                        <div class="d-flex flex-row">
-                            @switch (supplier.AverageRating)
-                            {
-                                case 0:
-                                    break;
-                                case 1:
-                                    <div class="text-center">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                    break;
-                                case 2:
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star"></i>
-                                    <i class="bi bi-star"></i>
-                                    <i class="bi bi-star"></i>
-                                    break;
-                                case 3:
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star"></i>
-                                    <i class="bi bi-star"></i>
-                                    break;
-                                case 4:
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star"></i>
-                                    break;
-                                case 5:
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    break;
-                            }
-
-                        </div>
-
-                    </td>
-
                 </tr>
             }
         </table>
@@ -156,6 +84,5 @@
         <div class="pagination justify-content-center">
             @Html.PageLinks(Model.PagingInfo, x => Url.Action("ViewSuppliers", new { page = x }))
         </div>
-
     </div>
 </div>
