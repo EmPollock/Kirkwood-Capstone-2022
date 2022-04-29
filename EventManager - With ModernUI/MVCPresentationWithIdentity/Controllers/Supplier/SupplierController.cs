@@ -102,7 +102,7 @@ namespace MVCPresentationWithIdentity.Controllers
                     throw ex;
                 }
             }
-            return View(_model);
+            return View("ViewSuppliers", _model);
         }
 
         /// <summary>
