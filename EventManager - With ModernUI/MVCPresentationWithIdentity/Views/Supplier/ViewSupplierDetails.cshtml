@@ -17,11 +17,10 @@
             if (User.IsInRole("Event Planner"))
             {
                 <div class="offset-8 d-flex flex-row mt-4">
-                    @Html.ActionLink("Edit", null, null, new { @class = "btn btn-outline-dark" })
+                    @Html.ActionLink("Edit", "EditSupplier", "Supplier", new { supplierId = Model.Supplier.SupplierID }, new { @class = "btn btn-outline-dark" })
                 </div>
             }
         }
-
     </div>
 
     <hr />
@@ -306,10 +305,28 @@
                     </div>
                 }
             }
+            @if (Model.Supplier.Approved == true)
+            {
+                <div class="offset-4 pt-4">
+                    <button class="mt-4 btn btn-outline-dark">Get Directions</button>
+                </div>
+            } else if(Model.Supplier.Approved == null)
+            {
+                if (Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("Administrator"))
+                    {
+                        <div class="row">
 
-            <div class="offset-4 pt-4">
-                <button class="mt-4 btn btn-outline-dark">Get Directions</button>
-            </div>
+                            <div class="d-flex">
+                                @Html.ActionLink("Approve Application", "Approve", new { supplierID = Model.Supplier.SupplierID }, new { @class = "btn btn-primary me-2" })
+                                @Html.ActionLink("Deny Application", "Deny", new { supplierID = Model.Supplier.SupplierID }, new { @class = "btn btn-danger me-2" })
+                            </div>
+
+                        </div>
+                    }
+                }
+            }
         </div>
     </div>
 </div>

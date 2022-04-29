@@ -55,7 +55,9 @@ namespace DataAccessFakes
                     "Test Tag 1",
                     "Test Tag 2"
                 },
-                Active = true
+                Active = true,
+                Approved = null
+                
             });
 
             _fakeSuppliers.Add(new Supplier()
@@ -77,7 +79,8 @@ namespace DataAccessFakes
                     "Test Tag 1",
                     "Test Tag 2"
                 },
-                Active = true
+                Active = true,
+                Approved = true
             });
 
             _fakeSuppliers.Add(new Supplier()
@@ -99,7 +102,8 @@ namespace DataAccessFakes
                     "Test Tag 1",
                     "Test Tag 2"
                 },
-                Active = true
+                Active = true,
+                Approved = true
             });
 
             _fakeSuppliers.Add(new Supplier()
@@ -121,7 +125,8 @@ namespace DataAccessFakes
                     "Test Tag 1",
                     "Test Tag 2"
                 },
-                Active = true
+                Active = true,
+                Approved = null
             });
 
             _fakeReviews.Add(new Reviews()
@@ -607,6 +612,96 @@ namespace DataAccessFakes
             }
 
             return _supplier;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/26
+        /// 
+        /// Description:
+        /// Retrieves all unapproved suppliers from the fakes.
+        /// </summary>
+        /// <returns>List of all unapproved suppliers</returns>
+        public List<Supplier> SelectUnapprovedSuppliers()
+        {
+            List<Supplier> result = new List<Supplier>();
+            foreach(Supplier supplier in _fakeSuppliers)
+            {
+                if(supplier.Approved == null)
+                {
+                    result.Add(supplier);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Changes a supplier's approval status to "approved"
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int ApproveSupplier(int supplierID)
+        {
+            int result = 0;
+            foreach(Supplier supplier in _fakeSuppliers)
+            {
+                if(supplier.SupplierID == supplierID)
+                {
+                    supplier.Approved = true;
+                    result++;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Changes a supplier's approval status to "disapproved"
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int DisapproveSupplier(int supplierID)
+        {
+            int result = 0;
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    supplier.Approved = false;
+                    result++;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Marks a supplier as needing to be reviewed again.
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int RequeueSupplier(int supplierID)
+        {
+            int result = 0;
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    supplier.Approved = null;
+                    result++;
+                }
+            }
+            return result;
         }
     }
 }

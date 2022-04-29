@@ -61,7 +61,8 @@ namespace DataAccessLayer
                             City = reader.GetString(9),
                             State = reader.GetString(10),
                             ZipCode = reader.GetString(11),
-                            Active = true
+                            Active = true,
+                            Approved = true
                         });
                     }
                 }
@@ -498,15 +499,17 @@ namespace DataAccessLayer
                         supplier = new Supplier()
                         {
                             SupplierID = reader.GetInt32(0),
-                            Name = reader.GetString(1),
-                            Description = reader.GetString(2),
-                            Phone = reader.GetString(3),
-                            Email = reader.GetString(4),
-                            TypeID = reader.GetString(5),
-                            Address1 = reader.GetString(6),
-                            City = reader.GetString(7),
-                            State = reader.GetString(8),
-                            Active = true
+                            UserID = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Description = reader.GetString(3),
+                            Phone = reader.GetString(4),
+                            Email = reader.GetString(5),
+                            TypeID = reader.GetString(6),
+                            Address1 = reader.GetString(7),
+                            City = reader.GetString(8),
+                            State = reader.GetString(9),
+                            Active = true,
+                            Approved = reader.IsDBNull(10) ? (bool?)null : reader.GetBoolean(10)
                         };
                     }
                 }
@@ -633,6 +636,175 @@ namespace DataAccessLayer
 
 
             return threeMonthAvailability;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Function to retrieve a list of unapproved suppliers. 
+        /// </summary>
+        /// <returns>A list of unapproved suppliers</returns>
+        public List<Supplier> SelectUnapprovedSuppliers()
+        {
+            List<Supplier> suppliers = new List<Supplier>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_unapproved_suppliers";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        suppliers.Add(new Supplier()
+                        {
+                            SupplierID = reader.GetInt32(0),
+                            UserID = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Description = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Phone = reader.GetString(4),
+                            Email = reader.GetString(5),
+                            TypeID = reader.GetString(6),
+                            Address1 = reader.GetString(7),
+                            Address2 = reader.IsDBNull(8) ? null : reader.GetString(8),
+                            City = reader.GetString(9),
+                            State = reader.GetString(10),
+                            ZipCode = reader.GetString(11),
+                            Active = true,
+                            Approved = null
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return suppliers;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Marks a supplier as being approved
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int ApproveSupplier(int supplierID)
+        {
+            int result = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_approve_supplier";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Marks a supplier as being disapproved
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int DisapproveSupplier(int supplierID)
+        {
+            int result = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_disapprove_supplier";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Marks a supplier as needing adminstrator review again.
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int RequeueSupplier(int supplierID)
+        {
+            int result = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_requeue_supplier_application";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
         }
     }
 }

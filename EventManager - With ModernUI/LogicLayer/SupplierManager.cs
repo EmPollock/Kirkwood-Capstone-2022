@@ -284,10 +284,91 @@ namespace LogicLayer
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to retrieve supplier.");
+                throw new ApplicationException("Failed to retrieve supplier.", ex);
             }
 
             return supplier;
+        }
+
+        public List<Supplier> RetrieveUnapprovedSuppliers()
+        {
+            List<Supplier> result = null;
+            try
+            {
+                result = _supplierAccessor.SelectUnapprovedSuppliers();
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve pending supplier requests.", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2020/04/27
+        /// 
+        /// Description:
+        /// Wrapper method to pass through a command to approve a supplier
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>true if one record was affected, otherwise false</returns>
+        public bool ApproveSupplier(int supplierID)
+        {
+            bool result = false;
+            try
+            {
+                result = 1 == this._supplierAccessor.ApproveSupplier(supplierID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to approve application. Please try again later.", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2020/04/27
+        /// 
+        /// Description:
+        /// Wrapper method to pass through a command to disapprove a supplier
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>true if one record was affected, otherwise false</returns>
+        public bool DisapproveSupplier(int supplierID)
+        {
+            bool result = false;
+            try
+            {
+                result = 1 == this._supplierAccessor.DisapproveSupplier(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to deny application. Please try again later.", ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2020/04/27
+        /// 
+        /// Description:
+        /// Wrapper method to pass through a command to requeue a supplier application
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>true if one record was affected, otherwise false</returns>
+        public bool RequeueSupplier(int supplierID)
+        {
+            bool result = false;
+            try
+            {
+                result = 1 == this._supplierAccessor.RequeueSupplier(supplierID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An exception occurred while processing your request. Please try again later.", ex);
+            }
+            return result;
         }
     }
 }
