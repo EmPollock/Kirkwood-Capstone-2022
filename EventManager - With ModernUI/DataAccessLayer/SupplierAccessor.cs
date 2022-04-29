@@ -510,6 +510,7 @@ namespace DataAccessLayer
                             State = reader.GetString(9),
                             Active = true,
                             Approved = reader.IsDBNull(10) ? (bool?)null : reader.GetBoolean(10)
+
                         };
                     }
                 }
