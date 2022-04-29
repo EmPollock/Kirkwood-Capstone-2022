@@ -720,5 +720,75 @@ namespace LogicLayerTests
             // assert
             // exception checking, nothing to do
         }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/07
+        /// 
+        /// Description:
+        /// Test that passes if RetrieveActivitiesBySupplierID returns a correct
+        /// list of activities for the given supplier.
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivitiesBySupplierIDRetrievesCorrectAmount()
+        {
+            //arrange
+            const int supplierID = 100000;
+            int actualCount;
+            int expectedCount = 2;
+
+            // act
+            actualCount = _activityManager.RetrieveActivitiesBySupplierID(supplierID).Count;
+
+            // assert
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/04/08
+        /// 
+        /// Description:
+        /// Test returns with correct Activity for an ActivityID
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivityVMByActivityIDReturnsCorrectActivity()
+        {
+            // arrange
+            const int activityID = 1000000;
+            ActivityVM activity;
+            string expectedName = "Test Activity 1";
+            string expectedDescripiton = "The description of activity 1";
+
+            // act
+            activity = _activityManager.RetrieveActivityVMByActivityID(activityID);
+
+            // assert
+            Assert.AreEqual(expectedName, activity.ActivityName);
+            Assert.AreEqual(expectedDescripiton, activity.ActivityDescription);
+
+        }
+
+        /// <summary>
+        /// Mike Cahow
+        /// Created: 2022/04/08
+        /// 
+        /// Description:
+        /// Test returns null if no activity has corresponding activity ID
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveActivityVMByActivityIDReturnsNullOnBadActivityID()
+        {
+            // arrange
+            const int activityID = 99999999;
+            ActivityVM result;
+
+            // act
+            result = _activityManager.RetrieveActivityVMByActivityID(activityID);
+
+            // assert
+            Assert.IsNull(result);
+
+        }
     }
 }

@@ -18,6 +18,7 @@ using DataObjects;
 using DataAccessFakes;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using WPFPresentation.Duplicate;
 
 namespace WPFPresentation
 {
@@ -29,14 +30,17 @@ namespace WPFPresentation
         ILocationManager _locationManager = null;
         ISublocationManager _sublocationManager = null;
         ITaskManager _taskManager = null;
+        IVolunteerNeedManager _needManager = null;
+        IZipManager _zipManager = null;
 
         ManagerProvider _managerProvider = null;
         DataObjects.Event newEvent = null;
-
+        List<DataObjects.Location> _locations = null;
         User _user = null;
+        List<Zip> _zips = null;
 
         EventVM newEventVM = new EventVM();
-
+        EventVM copyEventVM = new EventVM();
 
         /// <summary>
         /// Derrick Nagy
@@ -66,6 +70,19 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Update:
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/31
+        /// 
+        /// Description: defaulted sldr to 0 instead of 25 since max value is 10
+        /// 
+        /// Update
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/13
+        /// 
+        /// Description: 
+        /// Added functionality for setting up the locations drop down selection
         /// </summary>
         /// <param name="user"></param>
         /// <param name="managerProvider"></param>
@@ -76,22 +93,143 @@ namespace WPFPresentation
             _eventDateManager = managerProvider.EventDateManager;
             _locationManager = managerProvider.LocationManager;
             _taskManager = managerProvider.TaskManager;
-
+            _needManager = managerProvider.NeedManager;
+            _zipManager = managerProvider.ZipManager;
             _sublocationManager = managerProvider.SublocationManager;
             _user = user;
-
+            _locations = _locationManager.RetrieveActiveLocations();
+            _zips = _zipManager.RetrieveAllZIPCodes();
             InitializeComponent();
-
+            // ValidationHelpers.EditOngoing = true;
             // Looked up how to set the calendar to not display past dates
             // https://stackoverflow.com/questions/17401488/how-to-disable-past-days-in-calender-in-wpf/45780931
             datePickerEventDate.DisplayDateStart = DateTime.Today;
-            sldrNumVolunteers.Value = 25;
-
+            sldrNumVolunteers.Value = 0;
+            cboExistingLocations.ItemsSource = _locations;
             //disable tabs that should not be viewed
             tabAddEventDate.IsEnabled = false;
             tabsetAddEventLocation.IsEnabled = false;
             tabAddEventVolunteer.IsEnabled = false;
 
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/03/30
+        /// 
+        /// Description: Alternate Constructor for the pgCreateEvent that takes an event
+        /// object so that it can be duplicated into a new object to make a repeat
+        /// event. fills all the values for description and budget as well as location and
+        /// volunteer needs, but leaves the dates blank. name defaults to old name + (copy) 
+        /// to prevent locations not being added. Also leaves name editable so that it can be
+        /// changed.
+        /// 
+        /// 
+        /// Update
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/13
+        /// 
+        /// Description: 
+        /// Added functionality for the dropdown locations menu when duplicating an event
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="managerProvider"></param>
+        /// <param name="eventVM"></param>
+        internal pgCreateEvent(User user, ManagerProvider managerProvider, EventVM eventVM)
+        {
+            _managerProvider = managerProvider;
+            _eventManager = managerProvider.EventManager;
+            _eventDateManager = managerProvider.EventDateManager;
+            _locationManager = managerProvider.LocationManager;
+            _taskManager = managerProvider.TaskManager;
+            _needManager = managerProvider.NeedManager;
+            _zipManager = managerProvider.ZipManager;
+            _sublocationManager = managerProvider.SublocationManager;
+            _user = user;
+            copyEventVM = eventVM;
+            VolunteerNeed copyNeed = null;
+            DataObjects.Location copyLocation = null;
+            TasksVM copyTask = null;
+            _zips = _zipManager.RetrieveAllZIPCodes();
+            // ValidationHelpers.EditOngoing = true;
+            InitializeComponent();
+
+            txtBoxEventName.Text = copyEventVM.EventName + " (copy)";
+            txtBoxEventDescription.Text = copyEventVM.EventDescription;
+            txtBoxEventDescription.IsReadOnly = true;
+            txtBoxTotalBudget.Text = copyEventVM.TotalBudget.ToString();
+            txtBoxTotalBudget.IsReadOnly = true;
+            try
+            {
+                copyLocation = _locationManager.RetrieveLocationByLocationID((int)copyEventVM.LocationID);
+                if (copyLocation != null)
+                {
+                    _locations = new List<DataObjects.Location>();
+                    _locations.Add(copyLocation);
+                    cboExistingLocations.ItemsSource = _locations;
+                    cboExistingLocations.Text = copyLocation.Name;
+                    txtBoxLocationName.Text = copyLocation.Name;
+                    txtBoxLocationName.IsReadOnly = true;
+                    txtBoxStreet.Text = copyLocation.Address1;
+                    txtBoxStreet.IsReadOnly = true;
+                    txtBoxCity.Text = copyLocation.City;
+                    txtBoxCity.IsReadOnly = true;
+                    cboState.Text = copyLocation.State;
+                    cboState.IsReadOnly = true;
+                    txtBoxZip.Text = copyLocation.ZipCode;
+                    txtBoxZip.IsReadOnly = true;
+
+                }
+                else
+                {
+                    _locations = _locationManager.RetrieveActiveLocations();
+                    cboExistingLocations.ItemsSource = _locations;
+                    txtBoxLocationName.Text = "";
+                    txtBoxLocationName.IsReadOnly = true;
+                    txtBoxStreet.Text = "";
+                    txtBoxStreet.IsReadOnly = true;
+                    txtBoxCity.Text = "";
+                    txtBoxCity.IsReadOnly = true;
+                    cboState.Text = "";
+                    cboState.IsReadOnly = true;
+                    txtBoxZip.Text = "";
+                    txtBoxZip.IsReadOnly = true;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("This Event did not have a Location originally!");
+            }
+            
+            
+            
+
+            // Looked up how to set the calendar to not display past dates
+            // https://stackoverflow.com/questions/17401488/how-to-disable-past-days-in-calender-in-wpf/45780931
+            sldrNumVolunteers.Value = 5;
+            foreach (var task in _taskManager.RetrieveAllActiveTasksByEventID(copyEventVM.EventID))
+            {
+                if (task.Name.Equals("General Help"))
+                {
+                    copyTask = task;
+                }
+            }
+            if (copyTask != null)
+            {
+                copyNeed = _needManager.RetrieveVolunteerNeedByTaskID(copyTask.TaskID);
+                chkBxNeedVolunteers.IsChecked = true;
+                sldrNumVolunteers.Value = copyNeed.NumTotalVolunteers;
+            }
+            datePickerEventDate.DisplayDateStart = DateTime.Today;
+            
+            btnEventNext.Content = "Duplicate Event";
+            btnVolunteersNext.Content = "Finish Duplication";
+            //disable tabs that should not be viewed
+            tabAddEventDate.IsEnabled = false;
+            tabsetAddEventLocation.IsEnabled = false;
+            tabAddEventVolunteer.IsEnabled = false;
         }
 
         /// <summary>
@@ -130,6 +268,13 @@ namespace WPFPresentation
         /// 2022/02/23
         /// Description:
         /// Added the TotalBudget field and validation to check that the string input is a decimal
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Added more information the screen during event creation
+        /// </summary>
         private void btnEventNext_Click(object sender, RoutedEventArgs e)
         {
             string value = txtBoxTotalBudget.Text;
@@ -166,7 +311,9 @@ namespace WPFPresentation
                     };
 
                     tabAddEventDate.IsEnabled = true;
+                    txtBlkAddEventDateTitle.Text = "Select Date(s) for Event: " + newEvent.EventName;
                     tabAddEventDate.Focus();
+                    btnEventNext.IsEnabled = false;
                 }
             }
             catch (Exception ex)
@@ -349,6 +496,12 @@ namespace WPFPresentation
         /// 2022/03/12
         /// Description:
         /// Changes to update hour controls to combo boxes
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Button text change to add another date if one has been added.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -400,8 +553,12 @@ namespace WPFPresentation
                     txtBlkCurrentEventDates.Visibility = Visibility.Visible;
 
                     // prepare form to add another date
+                    btnEventDateAdd.Content = "Add Another Date";
                     datePickerEventDate.SelectedDate = null;
                     datePickerEventDate.BlackoutDates.Add(new CalendarDateRange(dateTimeToAdd));
+                    DateTime startMinusMonth = newEventVM.EventDates.First().EventDateID.AddMonths(-1);
+                    datePickerEventDate.DisplayDateStart = startMinusMonth > DateTime.Now ? startMinusMonth : DateTime.Now;
+                    datePickerEventDate.DisplayDateEnd = newEventVM.EventDates.First().EventDateID.AddMonths(1);
                     ucStartTime.Reset();
                     ucEndTime.Reset();
                     txtBlockEventAddValidationMessage.Visibility = Visibility.Hidden;
@@ -427,6 +584,11 @@ namespace WPFPresentation
         /// Desription:
         /// Added call to database to add the dates
         /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Added more information the screen during event creation
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -442,6 +604,8 @@ namespace WPFPresentation
                 if (result == MessageBoxResult.Yes)
                 {
                     tabsetAddEventLocation.IsEnabled = true;
+                    lblSetEventLocation.Text = "Select A Location for Event: " + newEvent.EventName;
+                    btnEventDateNext.IsEnabled = false;
                     tabsetAddEventLocation.Focus();
                 }
             }
@@ -461,7 +625,11 @@ namespace WPFPresentation
                     MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     tabsetAddEventLocation.IsEnabled = true;
+                    lblSetEventLocation.Text = "Select a Location for Event: " + newEvent.EventName;
+                    btnEventDateNext.IsEnabled = false;
+                    btnEventDateAdd.IsEnabled = false;
                     tabsetAddEventLocation.Focus();
+                    
 
                 }
                 catch (Exception ex)
@@ -482,7 +650,6 @@ namespace WPFPresentation
         {
             txtBlkNumVolunteers.Visibility = Visibility.Visible;
             dcPnlNumVolunteers.Visibility = Visibility.Visible;
-            sldrNumVolunteers.Value = 0;
             btnRequestVolunteers.Visibility = Visibility.Visible;
 
         }
@@ -498,14 +665,49 @@ namespace WPFPresentation
         /// Updated: 2022/02/25
         /// 
         /// Description: Added sublocation manager to navigated page.
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/01
+        /// 
+        /// Description: Added duplication functionality.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnVolunteersNext_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Event details added");
-            pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
-            this.NavigationService.Navigate(viewEventsPage);
+            
+            if (btnVolunteersNext.Content.Equals("Finish"))
+            {
+                System.Windows.MessageBox.Show("Event details added");
+                pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                // ValidationHelpers.EditOngoing = false;
+                this.NavigationService.Navigate(viewEventsPage);
+            }
+            else if (btnVolunteersNext.Content.Equals("Finish Duplication"))
+            {
+                MessageBoxResult result;
+                var message = "Would You like to Duplicate Tasks?";
+                var caption = "Finished Duplicating";
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+
+               result =  MessageBox.Show(message, caption, buttons,
+                     MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.No)
+                {
+                    System.Windows.MessageBox.Show("Event Duplication Complete.");
+                    pgViewEvents viewEventsPage = new pgViewEvents(_user, _managerProvider);
+                    this.NavigationService.Navigate(viewEventsPage);
+                }
+                if (result == MessageBoxResult.Yes)
+                {
+                    
+                    pgDuplicateEvent duplicateEventPage = new pgDuplicateEvent(copyEventVM, newEvent, _managerProvider, _user);
+                    this.NavigationService.Navigate(duplicateEventPage);
+                    
+                }
+            }
+            
         }
 
         /// <summary>
@@ -526,6 +728,17 @@ namespace WPFPresentation
         /// Made it optional to add a location
         /// Added validation
         /// 
+        /// 
+        /// Vinayk Deshpande
+        /// Updated 2022/04/01
+        /// Description: changed reference to eventid from retrieved object to 
+        /// created newEvent object
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Added more information the screen during event creation
         /// </summary>
         private void btnEventLocationAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -536,10 +749,10 @@ namespace WPFPresentation
             string locationName = txtBoxLocationName.Text; // added variable for repeated code -jp
             string locationStreet = txtBoxStreet.Text; // added variable for repeated code -jp
             string locationCity = txtBoxCity.Text; // added variable for repeated code -jp
-            object locationState = cboState.SelectedItem; // added variable for repeated code -jp
+            string locationState = cboState.Text; // added variable for repeated code -jp
             string locationZip = txtBoxZip.Text; // added variable for repeated code -jp
 
-            if (locationName == "" && locationStreet == "" && locationCity == "" && locationState == null && locationZip == "")
+            if (locationName == "" && locationStreet == "" && locationCity == "" && locationState == "" && locationZip == "")
             {
                 //MessageBox.Show("Please enter a value for all location fields.");
                 //txtBoxLocationName.Focus();
@@ -551,6 +764,7 @@ namespace WPFPresentation
                 if (result == MessageBoxResult.Yes)
                 {
                     tabAddEventVolunteer.IsEnabled = true;
+                    txtBlkAddEventVolunteerTitle.Text = "Request Volunteers for Event: " + newEvent.EventName;
                     tabAddEventVolunteer.Focus();
                 }
             }
@@ -593,10 +807,10 @@ namespace WPFPresentation
                     eventLocation = _locationManager.RetrieveLocationByNameAndAddress(locationName, locationStreet);
                     if (eventLocation is null || eventLocation.LocationID == 0)
                     {
-                        _locationManager.CreateLocation(locationName, locationStreet, locationCity, ((ComboBoxItem)locationState).Tag.ToString(), locationZip);
+                        _locationManager.CreateLocation(locationName, locationStreet, locationCity, locationState, locationZip);
                         eventLocation = _locationManager.RetrieveLocationByNameAndAddress(locationName, locationStreet);
-                        DataObjects.EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription/*txtBoxEventDescription.Text*/);
-                        _eventManager.UpdateEventLocationByEventID(eventObj.EventID, null, eventLocation.LocationID);
+                        // DataObjects.EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription/*txtBoxEventDescription.Text*/);
+                        _eventManager.UpdateEventLocationByEventID(newEvent.EventID, null, eventLocation.LocationID);
                         locationName = "";
                         locationStreet = "";
                         locationCity = "";
@@ -607,14 +821,14 @@ namespace WPFPresentation
                     {
                         //int? eventLocationID = null; if the event location is not null that means there is a locationID
                         int newEventLocationID = eventLocation.LocationID;
-                        EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription /*txtBoxEventDescription.Text*/);
+                        // EventVM eventObj = _eventManager.RetrieveEventByEventNameAndDescription(eventName/*txtBoxEventName.Text*/, eventDescription /*txtBoxEventDescription.Text*/);
                         int? oldEventLocationID = null; // added
 
-                        if (eventObj.LocationID != null)
+                        if (newEvent.LocationID != null)
                         {
-                            oldEventLocationID = eventObj/*.Location*/.LocationID;
+                            oldEventLocationID = newEvent/*.Location*/.LocationID;
                         }
-                        _eventManager.UpdateEventLocationByEventID(eventObj.EventID, oldEventLocationID /*eventLocationID*/, newEventLocationID /*eventLocation.LocationID*/);
+                        _eventManager.UpdateEventLocationByEventID(newEvent.EventID, oldEventLocationID /*eventLocationID*/, newEventLocationID /*eventLocation.LocationID*/);
                         //locationName = ""; // cannot add multiple locations, this step is not needed 
                         //locationStreet = "";
                         //locationCity = "";
@@ -624,9 +838,10 @@ namespace WPFPresentation
 
                     MessageBox.Show("Event Location Added");
                     tabAddEventVolunteer.IsEnabled = true;
+                    txtBlkAddEventVolunteerTitle.Text = "Request Volunteers for Event: " + newEvent.EventName;
                     tabAddEventVolunteer.Focus();
                     // do not allow user to go back
-                    tabsetAddEventLocation.IsEnabled = false;
+                    btnEventLocationAdd.IsEnabled = false;
                 }
                 catch (Exception ex)
                 {
@@ -704,6 +919,11 @@ namespace WPFPresentation
         /// Description:
         /// Handled errors that occur for events with no dates
         /// 
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/03/31
+        /// 
+        /// Description: removed setting the sldr to 0 by default
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -738,7 +958,8 @@ namespace WPFPresentation
             };
             try
             {
-                if (_taskManager.AddTask(genericTask, numTotalVolunteers))
+                int addedTasks = _taskManager.AddTask(genericTask, numTotalVolunteers);
+                if (addedTasks > 1)
                 {
                     MessageBox.Show("Volunteers have been requested.");
                     btnRequestVolunteers.Visibility = Visibility.Hidden;
@@ -754,9 +975,124 @@ namespace WPFPresentation
                 MessageBox.Show(ex.Message);
             }
 
+        }
 
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/13
+        /// 
+        /// Description: 
+        /// Added functionality for selecting a pre existing location from a drop down menu
+        /// it then populates the old system which is hidden and runs like it used to.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cboExistingLocations_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DataObjects.Location tempLoc = (DataObjects.Location)cboExistingLocations.SelectedItem;
+            if (tempLoc != null)
+            {
+                txtBoxLocationName.Text = tempLoc.Name;
+                txtBoxLocationName.IsReadOnly = true;
+                // txtBoxLocationName.Visibility = Visibility.Hidden;
+                // lblName.Visibility = Visibility.Hidden;
+                txtBoxStreet.Text = tempLoc.Address1;
+                txtBoxStreet.IsReadOnly = true;
+                // txtBoxStreet.Visibility = Visibility.Hidden;
+                // lblStreet.Visibility = Visibility.Hidden;
+                txtBoxZip.Text = tempLoc.ZipCode;
+                txtBoxZip.IsReadOnly = true;
+                txtBoxCity.Text = tempLoc.City;
+                txtBoxCity.IsReadOnly = true;
+                // txtBoxCity.Visibility = Visibility.Hidden;
+                // lblCity.Visibility = Visibility.Hidden;
+                cboState.Text = tempLoc.State;
+                cboState.IsReadOnly = true;
+                // cboState.Visibility = Visibility.Hidden;
+                // lblState.Visibility = Visibility.Hidden;
+                
+                // txtBoxZip.Visibility = Visibility.Hidden;
+                // lblZip.Visibility = Visibility.Hidden;
+            }
+            
+        }
 
+        /// <summary>
+        /// 
+        /// Vinayak Deshpande
+        /// Created: 2022/04/13
+        /// 
+        /// Description: 
+        /// Shows the old location set up if you want to add a custom location
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAddCustomLocation_Click(object sender, RoutedEventArgs e)
+        {
+            cboExistingLocations.Text = "Custom Location";
+            // txtBoxLocationName.Visibility = Visibility.Visible;
+            // lblName.Visibility = Visibility.Visible;
+            txtBoxLocationName.Text = "";
+            txtBoxLocationName.IsReadOnly = false;
+            txtBoxLocationName.Focus();
+            txtBoxLocationName.Background = Brushes.Beige;
+            // lblStreet.Visibility = Visibility.Visible;
+            // txtBoxStreet.Visibility = Visibility.Visible;
+            txtBoxStreet.Text = "";
+            txtBoxStreet.IsReadOnly = false;
+            txtBoxStreet.Background = Brushes.Beige;
+            // txtBoxCity.Visibility = Visibility.Visible;
+            // lblCity.Visibility = Visibility.Visible;
+            txtBoxZip.Text = "";
+            txtBoxZip.IsReadOnly = false;
+            txtBoxZip.Background = Brushes.Beige;
+            txtBoxCity.Text = "";
+            txtBoxCity.IsReadOnly = true;
+            txtBoxCity.Background = Brushes.Beige;
+            // cboState.Visibility = Visibility.Visible;
+            // lblState.Visibility = Visibility.Visible;
+            cboState.Text = "";
+            cboState.IsReadOnly = true;
+            cboState.Background = Brushes.Beige;
+            // txtBoxZip.Visibility = Visibility.Visible;
+            // lblZip.Visibility = Visibility.Visible;
 
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/13
+        /// 
+        /// Description:
+        /// Autofills city and state when entering zip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtBoxZip_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtBoxZip.Text.Length == 5)
+            {
+                bool isZip = false;
+                string tempZip = txtBoxZip.Text;
+                isZip = _zips.Exists(z => z.ZIPCode == tempZip);
+                if (isZip)
+                {
+
+                }
+                
+                txtBoxCity.Text = isZip ? _zips.Find(z => z.ZIPCode == tempZip).City : "" ;
+                cboState.Text = isZip ? _zips.Find(z => z.ZIPCode == tempZip).State : "";
+
+                
+                
+
+            }
+            if (txtBoxZip.Text.Length <= 4 || txtBoxZip.Text.Length >= 6)
+            {
+                txtBoxCity.Text = "";
+                cboState.Text = "";
+            }
         }
     }
 }

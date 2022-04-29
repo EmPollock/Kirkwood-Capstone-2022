@@ -10,46 +10,12 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
             <RowDefinition Height="60"/>
             <RowDefinition />
+            <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Row="0" Grid.RowSpan="3" >
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Button x:Name="btnEventDetails" Grid.Row="0" HorizontalAlignment="Center" Padding="34 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White" Click="btnEventDetails_Click">Event Details</Button>
-            <Button x:Name="btnTasks" Grid.Row="1" HorizontalAlignment="Center" Padding="60 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White" Click="btnTasks_Click" >Tasks</Button>
-            <Button x:Name="btnItinerary" Grid.Row="2" HorizontalAlignment="Center" Padding="48 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="#FFFFFF99" Click="btnItinerary_Click">Itinerary</Button>
-            <Button x:Name="btnBudget" Grid.Row="3" HorizontalAlignment="Center" Padding="52 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Budget</Button>
-            <Button x:Name="btnAdvertising" Grid.Row="4" HorizontalAlignment="Center" Padding="39 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Advertising</Button>
-            <Button x:Name="btnAfterEventReport" Grid.Row="5" HorizontalAlignment="Center" Padding="17 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">After Event Report</Button>
-            <Button x:Name="btnFiles" Grid.Row="6" HorizontalAlignment="Center" Padding="63 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Files</Button>
-            <Button x:Name="btnInvitations" Grid.Row="7" HorizontalAlignment="Center" Padding="43 20" FontSize="15"
-                    Background="#FF4388CC" Foreground="White">Invitations</Button>
-        </Grid>
-
-        <Label x:Name="lblActivityEventName" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24">Add Activity</Label>
-        <Grid Grid.Row="2" Grid.Column="1">
+        <Label x:Name="lblActivityEventName" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24">Add Activity</Label>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition/>
@@ -66,7 +32,6 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
-                <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center">Event:</Label>
             <TextBox x:Name="txtEvent" Grid.Column="1" Grid.Row="0" Height="20" Margin="10 0 100 0" IsReadOnly="True" 
@@ -107,9 +72,9 @@
             <Label Grid.Column="0" Grid.Row="9" HorizontalContentAlignment="Right" VerticalContentAlignment="Center">Upload Image:</Label>
             <Button x:Name="btnImageUpload" Grid.Column="1" Grid.Row="9" Click="btnImageUpload_Click" Margin="10 0 0 0"
                     HorizontalAlignment="Left" VerticalAlignment="Center">Choose file...</Button>
-
-            <Button x:Name="btnSave" Grid.Column="1" Grid.Row="11" Margin="10" Click="btnSave_Click">Save</Button>
-            <Button x:Name="btnCancel" Grid.Column="1" Grid.Row="11" Margin="70 10 10 10" Click="btnCancel_Click">Cancel</Button>
         </Grid>
+
+        <Button x:Name="btnSave" Grid.Row="2" Margin="110 10 10 10" Click="btnSave_Click">Save</Button>
+        <Button x:Name="btnCancel" Grid.Row="2" Margin="180 10 10 10" Click="btnCancel_Click">Cancel</Button>
     </Grid>
 </Page>

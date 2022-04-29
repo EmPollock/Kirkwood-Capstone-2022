@@ -18,6 +18,7 @@ namespace LogicLayerInterfaces
         string HashSha256(string source);
 
         User RetrieveUserByEmail(string email);
+        User RetrieveUserByUserID(int userID);
 
         List<String> RetrieveUserRolesByUserID(int UserID);
 

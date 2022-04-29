@@ -89,6 +89,13 @@ namespace WPFPresentation
             //this._userManager = userManager;
             managerInitializer();
             this.mnuUser.Header = user.GivenName + " ▼";
+            btnHomeWhite.Visibility = Visibility.Hidden;
+            btnHomeYellow.Visibility = Visibility.Visible;
+            btnCreateEvents.Foreground = Brushes.White;
+            btnViewLocations.Foreground = Brushes.White;
+            btnViewSuppliers.Foreground = Brushes.White;
+            btnViewVolunteers.Foreground = Brushes.White;
+            btnViewAbout.Foreground = Brushes.White;
         }
 
         /// <summary>
@@ -131,7 +138,13 @@ namespace WPFPresentation
         {
             this._user = null;
             //MainWindow.User = null;
-
+            btnHomeWhite.Visibility = Visibility.Hidden;
+            btnHomeYellow.Visibility = Visibility.Visible;
+            btnCreateEvents.Foreground = Brushes.White;
+            btnViewLocations.Foreground = Brushes.White;
+            btnViewSuppliers.Foreground = Brushes.White;
+            btnViewVolunteers.Foreground = Brushes.White;
+            btnViewAbout.Foreground = Brushes.White;
             SplashScreen splash = new SplashScreen();
             splash.Show();
             this.Close();
@@ -185,8 +198,27 @@ namespace WPFPresentation
             }
             else
             {
-                //Page page = new pgCreateEvent(User);
                 Page page = new pgCreateEvent(_user, _managerProvider);
+                if (ValidationHelpers.EditOngoing)
+                {
+                    MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return;
+                    }
+                    else // yes, discard changes
+                    {
+                        ValidationHelpers.EditOngoing = false;
+                        
+                        this.MainFrame.NavigationService.Navigate(page);
+                        return;
+                    }
+                }
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.Yellow;
+                
+                // no edit ongoing
                 this.MainFrame.NavigationService.Navigate(page);
             }
         }
@@ -224,9 +256,25 @@ namespace WPFPresentation
         {
             if (_user != null)
             {
-                //pgViewEvents pgViewEvents = new pgViewEvents(User);
-                pgViewEvents pgViewEvents = new pgViewEvents(_user, _managerProvider);
-                this.MainFrame.NavigationService.Navigate(pgViewEvents);
+                Page page = new pgViewEvents(_user, _managerProvider);
+                if (ValidationHelpers.EditOngoing)
+                {
+                    MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return;
+                    }
+                    else // yes, discard changes
+                    {
+                        ValidationHelpers.EditOngoing = false;
+
+                        this.MainFrame.NavigationService.Navigate(page);
+                        return;
+                    }
+                }
+
+                // no edit ongoing
+                this.MainFrame.NavigationService.Navigate(page);
             }
             else
             {
@@ -239,6 +287,23 @@ namespace WPFPresentation
         private void btnViewVolunteers_Click(object sender, RoutedEventArgs e)
         {
             Page page = new pgViewAllVolunteers(_managerProvider);
+            if (ValidationHelpers.EditOngoing)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else // yes, discard changes
+                {
+                    ValidationHelpers.EditOngoing = false;
+
+                    this.MainFrame.NavigationService.Navigate(page);
+                    return;
+                }
+            }
+
+            // no edit ongoing
             this.MainFrame.NavigationService.Navigate(page);
         }
 
@@ -249,6 +314,12 @@ namespace WPFPresentation
         /// Description:
         /// Click event for the back button. Navigates to the previous screen and handles button enabling.
         /// 
+        /// Kris Howell
+        /// Updated: 2022/03/31
+        /// 
+        /// Description:
+        /// Discard changes warning if EditOngoing flag is raised when clicking back
+        /// Lowers EditOngoing flag if changes are discarded
         /// </summary>
         /// <param name="sender">The back button</param>
         /// <param name="e">Arguments passed as part of the event</param>
@@ -256,10 +327,30 @@ namespace WPFPresentation
         {
             if(this.MainFrame.NavigationService.CanGoBack)
             {
-                this.MainFrame.GoBack();
-                if(!this.MainFrame.NavigationService.CanGoBack)
+                if (ValidationHelpers.EditOngoing)
                 {
-                    this.btnBack.IsEnabled = false;
+                    MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return;
+                    }
+                    else // yes, discard changes
+                    {
+                        ValidationHelpers.EditOngoing = false;
+                        this.MainFrame.GoBack();
+                        if (!this.MainFrame.NavigationService.CanGoBack)
+                        {
+                            this.btnBack.IsEnabled = false;
+                        }
+                    }
+                }
+                else
+                {
+                    this.MainFrame.GoBack();
+                    if (!this.MainFrame.NavigationService.CanGoBack)
+                    {
+                        this.btnBack.IsEnabled = false;
+                    }
                 }
             } else
             {
@@ -267,9 +358,84 @@ namespace WPFPresentation
             }
         }
 
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Buttons now light up the way that they should.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            if(this.MainFrame.NavigationService.CanGoBack)
+            if (MainFrame.Content.ToString().Contains("Event") || MainFrame.Content.ToString().Contains("Task") || MainFrame.Content.ToString().Contains("Activity"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnViewEvents.Foreground = Brushes.Yellow;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("Supplier"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.Yellow;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("Location") || MainFrame.Content.ToString().Contains("Parking"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.Yellow;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("Volunteer"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.Yellow;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("CreateEvent"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.Yellow;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.White;
+            }
+            if (MainFrame.Content.ToString().Contains("About"))
+            {
+                btnHomeWhite.Visibility = Visibility.Visible;
+                btnHomeYellow.Visibility = Visibility.Hidden;
+                btnCreateEvents.Foreground = Brushes.White;
+                btnViewEvents.Foreground = Brushes.White;
+                btnViewLocations.Foreground = Brushes.White;
+                btnViewSuppliers.Foreground = Brushes.White;
+                btnViewVolunteers.Foreground = Brushes.White;
+                btnViewAbout.Foreground = Brushes.Yellow;
+            }
+            if (this.MainFrame.NavigationService.CanGoBack)
             {
                 this.btnBack.IsEnabled = true;
             }
@@ -290,13 +456,86 @@ namespace WPFPresentation
         private void btnViewLocations_Click(object sender, RoutedEventArgs e)
         {
             var page = new pgViewLocations(_managerProvider, _user);
+            if (ValidationHelpers.EditOngoing)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else // yes, discard changes
+                {
+                    ValidationHelpers.EditOngoing = false;
+
+                    this.MainFrame.NavigationService.Navigate(page);
+                    return;
+                }
+            }
+
+            // no edit ongoing
             this.MainFrame.NavigationService.Navigate(page);
         }
 
+        /// <summary>
+        /// Original author and creation date missing.
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Added user to page constructor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnViewSuppliers_Click(object sender, RoutedEventArgs e)
         {
-            var page = new pgViewSuppliers(_managerProvider);
+            var page = new pgViewSuppliers(_managerProvider, _user);
+            if (ValidationHelpers.EditOngoing)
+            {
+                MessageBoxResult result = MessageBox.Show("This will discard changes. Continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                }
+                else // yes, discard changes
+                {
+                    ValidationHelpers.EditOngoing = false;
+
+                    this.MainFrame.NavigationService.Navigate(page);
+                    return;
+                }
+            }
+
+            // no edit ongoing
             this.MainFrame.NavigationService.Navigate(page);
         }
+
+       /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/3/20
+        /// 
+        /// Description:
+        /// Click event for the home button. Navigates to my events.
+        /// 
+        /// </summary>
+        /// <param name="sender">The back button</param>
+        /// <param name="e">Arguments passed as part of the event</param>
+        private void btnHome_Click(object sender, RoutedEventArgs e)
+        {
+            Page myEventsPage;
+
+            if (_user == null)
+            {
+               myEventsPage = new pgViewEvents(_managerProvider);
+            }
+            else
+            {
+                myEventsPage = new pgViewEvents(_user, _managerProvider);
+            }
+
+            this.MainFrame.NavigationService.Navigate(myEventsPage);
+        }
+
     }
 }

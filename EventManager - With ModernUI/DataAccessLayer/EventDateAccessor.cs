@@ -281,6 +281,9 @@ namespace DataAccessLayer
                             EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
                             Active = true
                         });
+
+                        eventDatesForLocation.Last().StartTime = new DateTime(eventDatesForLocation.Last().EventDateID.Year, eventDatesForLocation.Last().EventDateID.Month, eventDatesForLocation.Last().EventDateID.Day, eventDatesForLocation.Last().StartTime.Hour, eventDatesForLocation.Last().StartTime.Minute, eventDatesForLocation.Last().StartTime.Second);
+                        eventDatesForLocation.Last().EndTime = new DateTime(eventDatesForLocation.Last().EventDateID.Year, eventDatesForLocation.Last().EventDateID.Month, eventDatesForLocation.Last().EventDateID.Day, eventDatesForLocation.Last().EndTime.Hour, eventDatesForLocation.Last().EndTime.Minute, eventDatesForLocation.Last().EndTime.Second);
                     }
                 }
             }
@@ -294,6 +297,67 @@ namespace DataAccessLayer
             }
 
             return eventDatesForLocation;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/01
+        /// 
+        /// Description:
+        /// Accessor method for selecting event dates by userID and date
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="eventDate"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
+        public List<EventDateVM> SelectEventDateByUserIDAndDate(int userID, DateTime eventDate)
+        {
+            List<EventDateVM> eventDates = new List<EventDateVM>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_event_date_by_userID_and_date";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+
+            cmd.Parameters["@UserID"].Value = userID;
+
+            cmd.Parameters.Add("@EventDate", SqlDbType.Date);
+
+            cmd.Parameters["@EventDate"].Value = eventDate.Date;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventDates.Add(new EventDateVM()
+                        {
+                            EventName = reader.GetString(0),
+                            EventID = reader.GetInt32(1),
+                            StartTime = DateTime.ParseExact(reader["StartTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EndTime = DateTime.ParseExact(reader["EndTime"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            EventDateID = eventDate,
+                            Active = true
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return eventDates;
         }
     }
 }

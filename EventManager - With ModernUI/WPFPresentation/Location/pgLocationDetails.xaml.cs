@@ -26,6 +26,12 @@ namespace WPFPresentation.Location
     /// Description:
     /// Pulled from old pgViewLocationDetails page while separating functions
     /// into separate pages
+    /// 
+    /// Vinayak Deshpande
+    /// Updated: 2022/04/15
+    /// 
+    /// Description:
+    /// Added more managers to assist in removing events and activities and sublocations on deactivation
     /// </summary>
     public partial class pgLocationDetails : Page
     {
@@ -35,6 +41,9 @@ namespace WPFPresentation.Location
         DataObjects.Location _location;
         List<Reviews> _locationReviews;
         List<LocationImage> _locationImages;
+        IEventManager _eventManager;
+        IActivityManager _activityManager;
+        ISublocationManager _sublocationManager;
         Uri _src;
         int _imageNumber = 0;
 
@@ -46,6 +55,9 @@ namespace WPFPresentation.Location
             _locationManager = managerProvider.LocationManager;
             _locationReviews = _locationManager.RetrieveLocationReviews(location.LocationID);
             _locationImages = _locationManager.RetrieveLocationImagesByLocationID(location.LocationID);
+            _eventManager = managerProvider.EventManager;
+            _activityManager = managerProvider.ActivityManager;
+            _sublocationManager = managerProvider.SublocationManager;
             InitializeComponent();
             AppData.DataPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\" + @"Images\LocationImages";
         }
@@ -391,6 +403,14 @@ namespace WPFPresentation.Location
         /// 
         /// Description:
         /// Added _user to the page being called 
+        /// 
+        /// Vinayak Deshpande
+        /// Updated: 2022/04/15
+        /// 
+        /// Description:
+        /// Added logic for deactivating associated sublocations
+        /// and for the unbooking events and related activiites from a deactivated
+        /// location and sublocation.
         /// </summary>
         /// <param name="e"></param>
         /// <param name="sender"></param>
@@ -408,6 +428,29 @@ namespace WPFPresentation.Location
                     int rowsAffected = _locationManager.DeactivateLocationByLocationID(_location.LocationID);
                     if (rowsAffected == 1)
                     {
+                        MessageBox.Show("Location: " + _location.Name + " Deactivated");
+                        List<Sublocation> sublocations = _sublocationManager.RetrieveSublocationsByLocationID(_location.LocationID);
+                        foreach (var sub in sublocations)
+                        {
+                            _sublocationManager.DeactivateSublocationBySublocationID(sub.SublocationID);
+                            MessageBox.Show("Sublocation: " + sub.SublocationName + " Deactivated");
+                        }
+                        List<EventVM> allEvents = _eventManager.RetreieveActiveEvents();
+                        foreach (var ev in allEvents)
+                        {
+                            if (ev.LocationID == _location.LocationID)
+                            {
+                                _eventManager.UpdateEventLocationByEventID(ev.EventID, _location.LocationID, null);
+                                MessageBox.Show("Event: " + ev.EventName + " Unbooked");
+                                List<Activity> activities = _activityManager.RetrieveActivitiesByEventID(ev.EventID);
+                                foreach (var act in activities)
+                                {
+                                    _activityManager.UpdateActivitySublocationByActivityID(act.ActivityID, act.SublocationID, null);
+                                    MessageBox.Show("Activity: " + act.ActivityName + " Unbooked");
+                                }
+                            }
+                            
+                        }
                         pgViewLocations viewLocations = new pgViewLocations(_managerProvider, _user);
                         this.NavigationService.Navigate(viewLocations);
                     }

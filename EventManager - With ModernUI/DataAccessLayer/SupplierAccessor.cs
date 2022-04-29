@@ -61,7 +61,8 @@ namespace DataAccessLayer
                             City = reader.GetString(9),
                             State = reader.GetString(10),
                             ZipCode = reader.GetString(11),
-                            Active = true
+                            Active = true,
+                            Approved = true
                         });
                     }
                 }
@@ -235,6 +236,13 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Select regular weekly availability records matching the given supplierID and date.
+        /// 
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Added exception
+        /// 
         /// </summary>
         /// <param name="supplierID"></param>
         /// <param name="date"></param>
@@ -270,9 +278,9 @@ namespace DataAccessLayer
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
             finally
             {
@@ -346,6 +354,457 @@ namespace DataAccessLayer
             }
 
             return supplierAvailabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select availability records matching the given supplierID 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of availability objects for a Supplier</returns>
+        public List<AvailabilityVM> SelectSupplierAvailabilityBySupplierID(int supplierID)
+        {
+            List<AvailabilityVM> supplierAvailabilities = new List<AvailabilityVM>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_by_supplierID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        supplierAvailabilities.Add(new AvailabilityVM()
+                        {
+                            ForeignID = supplierID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            Sunday = reader.GetBoolean(3),
+                            Monday = reader.GetBoolean(4),
+                            Tuesday = reader.GetBoolean(5),
+                            Wednesday = reader.GetBoolean(6),
+                            Thursday = reader.GetBoolean(7),
+                            Friday = reader.GetBoolean(8),
+                            Saturday = reader.GetBoolean(9)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return supplierAvailabilities;
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/11
+        /// 
+        /// Description:
+        /// Select availability exception records matching the given supplierID
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A list of availability objects for a Supplier</returns>
+        public List<Availability> SelectSupplierAvailabilityExceptionBySupplierID(int supplierID)
+        {
+            List<Availability> supplierAvailabilities = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_exception_by_supplierID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        supplierAvailabilities.Add(new Availability()
+                        {
+                            ForeignID = supplierID,
+                            AvailabilityID = reader.GetInt32(0),
+                            DateID = reader.GetDateTime(1),
+                            TimeStart = reader.IsDBNull(2) ? DateTime.MinValue : DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = reader.IsDBNull(3) ? DateTime.MinValue : DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture)
+                        });
+                        if(supplierAvailabilities.Last().TimeStart == DateTime.MinValue && supplierAvailabilities.Last().TimeEnd == DateTime.MinValue)
+                        {
+                            supplierAvailabilities.Last().TimeStart = null;
+                            supplierAvailabilities.Last().TimeEnd = null;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return supplierAvailabilities;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Selects a supplier from the supplier table.
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+        public Supplier SelectSupplierBySupplierID(int supplierID)
+        {
+            Supplier supplier = null;
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_supplier_by_supplierID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        supplier = new Supplier()
+                        {
+                            SupplierID = reader.GetInt32(0),
+                            UserID = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Description = reader.GetString(3),
+                            Phone = reader.GetString(4),
+                            Email = reader.GetString(5),
+                            TypeID = reader.GetString(6),
+                            Address1 = reader.GetString(7),
+                            City = reader.GetString(8),
+                            State = reader.GetString(9),
+                            Active = true,
+                            Approved = reader.IsDBNull(10) ? (bool?)null : reader.GetBoolean(10)
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return supplier;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Accessor that returns a list of dates that the supplier has available for the next three months
+        /// 
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns></returns>
+        public List<DateTime> SelectSupplierAvailabilityForNextThreeMonths(int supplierID)
+        {
+            List<DateTime> threeMonthAvailability = new List<DateTime>();
+            List<Availability> weeklyAvailability = new List<Availability>();
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_availability_by_supplierID";
+
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        weeklyAvailability.Add(new Availability()
+                        {
+                            ForeignID = supplierID,
+                            AvailabilityID = reader.GetInt32(0),
+                            TimeStart = DateTime.ParseExact(reader["TimeStart"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            TimeEnd = DateTime.ParseExact(reader["TimeEnd"].ToString(), "HH:mm:ss", CultureInfo.InvariantCulture),
+                            Sunday = reader.GetBoolean(3),
+                            Monday = reader.GetBoolean(4),
+                            Tuesday = reader.GetBoolean(5),
+                            Wednesday = reader.GetBoolean(6),
+                            Thursday = reader.GetBoolean(7),
+                            Friday = reader.GetBoolean(8),
+                            Saturday = reader.GetBoolean(9)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            foreach (Availability availability in weeklyAvailability)
+            {
+                DateTime timeStart = (DateTime)availability.TimeStart;
+                // get about 13 weeks of dates, drop any that happen before or after
+                for (int i = 0; i < 92; i += 7)
+                {
+                    int currentDayOfWeek = (int)DateTime.Now.DayOfWeek;
+
+                    if (availability.Sunday)
+                    {
+                        // target day - current day
+                        int diff = 0 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Monday)
+                    {
+                        int diff = 1 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Tuesday)
+                    {
+                        int diff = 2 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Wednesday)
+                    {
+                        int diff = 3 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Thursday)
+                    {
+                        int diff = 4 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Friday)
+                    {
+                        int diff = 5 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                    if (availability.Saturday)
+                    {
+                        int diff = 6 - currentDayOfWeek;
+                        DateTime date = DateTime.Today.AddDays(diff + i);
+                        threeMonthAvailability.Add(date);
+                    }
+                }
+            }
+
+            // remove unwanted dates
+
+
+            return threeMonthAvailability;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Function to retrieve a list of unapproved suppliers. 
+        /// </summary>
+        /// <returns>A list of unapproved suppliers</returns>
+        public List<Supplier> SelectUnapprovedSuppliers()
+        {
+            List<Supplier> suppliers = new List<Supplier>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_unapproved_suppliers";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        suppliers.Add(new Supplier()
+                        {
+                            SupplierID = reader.GetInt32(0),
+                            UserID = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Description = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Phone = reader.GetString(4),
+                            Email = reader.GetString(5),
+                            TypeID = reader.GetString(6),
+                            Address1 = reader.GetString(7),
+                            Address2 = reader.IsDBNull(8) ? null : reader.GetString(8),
+                            City = reader.GetString(9),
+                            State = reader.GetString(10),
+                            ZipCode = reader.GetString(11),
+                            Active = true,
+                            Approved = null
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return suppliers;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Marks a supplier as being approved
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int ApproveSupplier(int supplierID)
+        {
+            int result = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_approve_supplier";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Marks a supplier as being disapproved
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int DisapproveSupplier(int supplierID)
+        {
+            int result = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_disapprove_supplier";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Marks a supplier as needing adminstrator review again.
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int RequeueSupplier(int supplierID)
+        {
+            int result = 0;
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_requeue_supplier_application";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@SupplierID", SqlDbType.Int);
+            cmd.Parameters["@SupplierID"].Value = supplierID;
+
+            try
+            {
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
         }
     }
 }

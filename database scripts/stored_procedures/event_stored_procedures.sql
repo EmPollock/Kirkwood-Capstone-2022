@@ -204,6 +204,25 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
+****************************************************************
+Derrick Nagy
+Updated: 2022/04/17
+
+Description: 
+Changed join on location and zip tables to left outer join to include events that do not have a location
+
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_future_event_dates'
 GO
@@ -216,10 +235,25 @@ AS
 			[EventDescription],
 			[DateCreated],
 			[TotalBudget],
-			[LocationID],
-			[EventDate].[EventDateID]
+			[Location].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [ZIP].[City],			
+            [ZIP].[States],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			LEFT OUTER JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			LEFT OUTER JOIN [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 		ORDER BY [Event].[EventID] ASC
 		
@@ -244,22 +278,57 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
+****************************************************************
+Derrick Nagy
+Updated: 2022/04/17
+
+Description: 
+Changed join on location and zip tables to left outer join to include events that do not have a location
+
 ****************************************************************/
-print '' print '*** creating sp_select_active_events_for_upcoming_dates'
+print '' print '*** creating sp_select_active_events_for_upcoming_dates**
+'
 GO
 CREATE PROCEDURE [dbo].[sp_select_active_events_for_upcoming_dates]
 AS
 	BEGIN
-		SELECT 
+		SELECT DISTINCT
 			[Event].[EventID],
 			[EventName],
 			[EventDescription],
 			[DateCreated],
 			[TotalBudget],
-			[LocationID],
-			[EventDate].[EventDateID]
+			[Event].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [ZIP].[City],			
+            [ZIP].[States],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			LEFT OUTER JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			LEFT OUTER JOIN [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] >= GETDATE()
 		ORDER BY [Event].[EventID] ASC
@@ -285,6 +354,25 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
+****************************************************************
+Derrick Nagy
+Updated: 2022/04/17
+
+Description: 
+Changed join on location and zip tables to left outer join to include events that do not have a location
+
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates'
 GO
@@ -297,10 +385,25 @@ AS
 			[EventDescription],
 			[DateCreated],
 			[TotalBudget],
-			[LocationID],
-			[EventDate].[EventDateID]
+			[Location].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [ZIP].[City],			
+            [ZIP].[States],			
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			LEFT OUTER JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			LEFT OUTER JOIN [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] < GETDATE()
 		ORDER BY [Event].[EventID] ASC
@@ -327,6 +430,24 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
+****************************************************************
+Derrick Nagy
+Updated: 2022/04/17
+
+Description: 
+Changed join on location and zip tables to left outer join to include events that do not have a location
 
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_upcoming_dates_for_user'
@@ -343,11 +464,26 @@ AS
 			[Event].[EventDescription],
 			[Event].[DateCreated],
 			[Event].[TotalBudget],
-			[Event].[LocationID],
-			[EventDate].[EventDateID]
+			[Event].[LocationID], -- 5
+			[EventDate].[EventDateID], -- 6
+			[Location].[UserID], -- 7
+			[Location].[LocationName], -- 8
+			[Location].[LocationDescription], -- 9
+			[Location].[LocationPricingText], --10
+			[Location].[LocationPhone], -- 11
+			[Location].[LocationEmail], --12
+            [Location].[LocationAddress1], --13
+            [Location].[LocationAddress2], -- 14
+            [ZIP].[City], --15
+            [ZIP].[States], --16
+            [Location].[LocationZipCode], -- 17
+			[Location].[LocationImagePath], --18
+			[Location].[LocationActive] -- 19
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+			LEFT OUTER JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			LEFT OUTER JOIN [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 			AND [UserEvent].[EventID] = [Event].[EventID]
 			AND [EventDateID] >= GETDATE()
@@ -378,6 +514,25 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
+****************************************************************
+Derrick Nagy
+Updated: 2022/04/17
+
+Description: 
+Changed join on location and zip tables to left outer join to include events that do not have a location
+
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_dates_for_user'
 GO
@@ -394,10 +549,25 @@ AS
 			[Event].[DateCreated],
 			[Event].[TotalBudget],
 			[Event].[LocationID],
-			[EventDate].[EventDateID]
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [ZIP].[City],			
+            [ZIP].[States],		
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+			LEFT OUTER JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			LEFT OUTER JOIN [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1
 			AND [EventDateID] < GETDATE()
 			AND [UserEvent].[EventID] = [Event].[EventID]
@@ -425,6 +595,25 @@ Updated: 2022/02/22
 
 Description: 
 Added TotalBudget field
+****************************************************************
+Derrick Nagy
+Updated: 2022/03/24
+
+Description: 
+Added Location information
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
+****************************************************************
+Derrick Nagy
+Updated: 2022/04/17
+
+Description: 
+Changed join on location and zip tables to left outer join to include events that do not have a location
+
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_for_past_and_upcoming_dates_for_user'
 GO
@@ -441,10 +630,25 @@ AS
 			[Event].[DateCreated],
 			[Event].[TotalBudget],
 			[Event].[LocationID],
-			[EventDate].[EventDateID]			
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+            [Location].[LocationAddress1],		
+            [Location].[LocationAddress2],		
+            [ZIP].[City],			
+            [ZIP].[States],		
+            [Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]			
 		FROM [dbo].[Event]
 			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
 			JOIN [dbo].[UserEvent] ON [UserEvent].[UserID] = @UserID
+			LEFT OUTER JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			LEFT OUTER JOIN [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
 		WHERE [Event].[Active] = 1			
 			AND [UserEvent].[EventID] = [Event].[EventID]
 		ORDER BY [UserEvent].[EventID] ASC
@@ -632,10 +836,55 @@ GO
 
 /***************************************************************
 Derrick Nagy
-Created: 2022/03/26
+Created: 2022/02/22
 
 Description:
+Stored procedure to select the roles that a user has for an event
+**************************************************************
+
+Updated: 
+
+Description: 
+
+****************************************************************/
+	print '' print '*** creating sp_select_event_planners_for_event**'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_planners_for_event]
+(
+	@EventID	[int]
+)
+AS
+	BEGIN
+		SELECT 
+			[Users].[UserID],
+			[GivenName],
+			[FamilyName],
+			[Email], 
+			[UserState],
+			[City],
+			[Zip],
+			[Active]
+		FROM Users
+		Join 
+		UserEvent
+		ON [UserEvent].[RoleID] = 'Event Planner' 
+			AND  [UserEvent].[EventID] = @EventID
+			AND [Users].[UserID] = [UserEvent].[UserID]
+	END	
+GO	
+	
+/***************************************************************
+Derrick Nagy
+Created: 2022/03/26
+Description:
 Selects all the events for a user that do no have dates
+****************************************************************
+Derrick Nagy
+Updated: 2022/04/17
+
+Description: 
+Changed join on location and zip tables to left outer join to include events that do not have a location
+
 ****************************************************************/
 print '' print '*** creating sp_select_active_events_with_no_dates_for_user'
 GO
@@ -645,27 +894,134 @@ CREATE PROCEDURE [dbo].[sp_select_active_events_with_no_dates_for_user]
 )
 AS
 	BEGIN
+	
 		SELECT
 			[Event].[EventID],
 			[Event].[EventName],
 			[Event].[EventDescription],
 			[Event].[DateCreated],
 			[Event].[TotalBudget],
-			[Event].[LocationID]
-		
+			[Event].[LocationID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+			[Location].[LocationAddress1],		
+			[Location].[LocationAddress2],		
+			[ZIP].[City],			
+			[ZIP].[States],		
+			[Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]		
 		FROM [Event]
 			JOIN [UserEvent] ON [UserEvent].EventID = [Event].EventID
-		WHERE [UserEvent].UserID = @UserID
+			LEFT OUTER JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			LEFT OUTER JOIN [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
+		WHERE [UserEvent].UserID = @UserID		
 		AND [Event].[Active] = 1
 		AND [Event].[EventID] 
 			NOT IN (
 				SELECT EventID 
 				FROM [EventDate]
 				WHERE [EventID] = [Event].[EventID]
-			)
-	
+			)	
 		ORDER BY [Event].[EventID] ASC
 		
 	END	
 GO
+
+/***************************************************************
+Vinayak Deshpande
+Created: 2022/04/01
+
+Description:
+selects event by event id
+****************************************************************/
+print '' print '*** creating sp_select_event_by_event_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_event_by_event_id]
+(
+	@EventID [int]
+)
+AS
+	BEGIN
+		SELECT
+			[EventName],
+			[EventDescription],
+			[DateCreated],
+			[TotalBudget],
+			[LocationID]
+		FROM [dbo].[Event]
+		WHERE [EventID] = @EventID
+	END	
+GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/04/06
+Description:
+Selects the active events by the search query
+****************************************************************
+Vinayak Deshpande
+Updated: 2022/04/13
+
+Description: 
+modified the city and state parts
+****************************************************************/
+print '' print '*** creating sp_select_active_events_by_search'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_events_by_search]
+(
+	@Search 	nvarchar(50)
+)
+AS
+	BEGIN
+		SELECT DISTINCT
+			[Event].[EventID],
+			[EventName],
+			[EventDescription],
+			[DateCreated],
+			[TotalBudget],
+			[Event].[LocationID],
+			[EventDate].[EventDateID],
+			[Location].[UserID],				
+			[Location].[LocationName],			
+			[Location].[LocationDescription],	
+			[Location].[LocationPricingText],	
+			[Location].[LocationPhone],		
+			[Location].[LocationEmail],			
+			[Location].[LocationAddress1],		
+			[Location].[LocationAddress2],		
+			[ZIP].[City],			
+            [ZIP].[States],		
+			[Location].[LocationZipCode],		
+			[Location].[LocationImagePath],		
+			[Location].[LocationActive]
+		FROM [dbo].[Event]
+			JOIN [dbo].[EventDate] ON [EventDate].[EventID] = [Event].[EventID]
+			JOIN [dbo].[Location] ON [Location].[LocationID] = [Event].[LocationID]
+			Join [dbo].[ZIP] ON [Location].[LocationZipCode] = [ZIP].[ZIPCode]
+		WHERE [Event].[Active] = 1
+			AND [EventDateID] >= GETDATE()
+			AND 
+				(
+				[EventName] LIKE '%'+@Search+'%'
+				OR
+				[EventDescription] LIKE '%'+@Search+'%'
+				OR
+				[LocationName] LIKE '%'+@Search+'%'
+				OR
+				[City] LIKE '%'+@Search+'%'
+				OR
+				[States] LIKE '%'+@Search+'%'
+				)
+			
+		ORDER BY [Event].[EventID] ASC
+		
+	END	
+GO
+
 

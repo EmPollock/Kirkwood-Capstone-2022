@@ -37,10 +37,11 @@ Created: 2022/01/26
 Description:
 Inserting Test Data Into The  Volunteer Requests Table
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Emma Pollock
+Updated: 2022/04/14
 
 Description: 
+	Added more test data for other cases
 ****************************************************************/
 
 print '' print '*** adding test data for Volunteer Requests Table ***'
@@ -48,5 +49,8 @@ GO
 Insert Into [dbo].[VolunteerRequest] (
 	[VolunteerID], [TaskID], [VolunteerResponse], [EventResponse])
 	Values
-		(100000, 100000, 1, 1)
+		(100000, 100000, 1, 1),
+		(100000, 100001, NULL, 1),
+		(100000, 100002, 0, 1)
+		
 GO

@@ -186,5 +186,31 @@ namespace LogicLayer
             return eventDatesForLocation;
         }
 
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/03/31
+        /// 
+        /// Description:
+        /// Method for selecting event dates by userID and eventDtae
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="eventDate"></param>
+        /// <returns>A list of EventDateVM data objects</returns>
+        public List<EventDateVM> RetrieveEventDatesByUserIDAndDate(int userID, DateTime eventDate)
+        {
+            List<EventDateVM> eventDates = new List<EventDateVM>();
+
+            try
+            {
+                eventDates = _eventDateAccessor.SelectEventDateByUserIDAndDate(userID, eventDate);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return eventDates;
+        }
     }
 }

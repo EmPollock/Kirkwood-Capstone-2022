@@ -45,11 +45,11 @@ namespace DataAccessLayer
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
             cmd.Parameters.Add("@TotalBudget", SqlDbType.Money);
-            
+
             cmd.Parameters["@EventName"].Value = eventName;
             cmd.Parameters["@EventDescription"].Value = eventDescription;
             cmd.Parameters["@TotalBudget"].Value = totalBudget;
-            
+
 
             try
             {
@@ -116,7 +116,7 @@ namespace DataAccessLayer
                             TotalBudget = reader.GetDecimal(4),
                             LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
                             Active = true
-                        }); 
+                        });
                     }
                 }
             }
@@ -290,10 +290,23 @@ namespace DataAccessLayer
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of upcoming dates with location and event planners
+        /// 
+        /// Derrick Nagy
+        /// Update: 2022/04/17
+        /// 
+        /// Description:
+        /// Updated the fields that the location objects retrieves data from.
+        /// Added null checking.
+        /// 
         /// </summary>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectEventsUpcomingDates()
-        {            
+        {
             List<EventVM> eventListRef = new List<EventVM>();
 
             var conn = DBConnection.GetConnection();
@@ -327,7 +340,24 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = reader.IsDBNull(5) ? new Location() : new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.IsDBNull(7) ? null : (int?)reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
 
                     }
@@ -337,9 +367,33 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
 
+            return eventListRef;
+
+        }
+
+        private List<EventVM> getManagersForEvents(List<EventVM> eventListRef)
+        {
+            foreach (var item in eventListRef)
+            {
+                try
+                {
+                    item.EventManagers = SelectEventPlannersForEvent(item.EventID);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            return eventListRef;
         }
 
         /// <summary>
@@ -360,6 +414,17 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Updated to include TotalBudget field
+        /// Derrick Nagy
+        /// Updated: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of upcoming and past dates with location and event managers
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Null checking for location objects
         /// 
         /// </summary>
         /// <returns>Event view models</returns>
@@ -398,7 +463,24 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = reader.IsDBNull(5) ? new Location() : new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.IsDBNull(7) ? null : (int?)reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
 
                     }
@@ -408,8 +490,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
         }
 
         /// <summary>
@@ -430,6 +519,19 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Updated to include TotalBudget field
+
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of past dates with location and event managers
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Null checking for location objects
+        /// 
         /// 
         /// </summary>
         /// <returns>Event view models</returns>
@@ -468,7 +570,24 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = reader.IsDBNull(5) ? new Location() : new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.IsDBNull(7) ? null : (int?)reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
 
                     }
@@ -478,8 +597,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
         }
 
         /// <summary>
@@ -500,6 +626,11 @@ namespace DataAccessLayer
         /// 
         /// Description:
         /// Updated to include TotalBudget field
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of upcoming dates for a user with location and event managers
         /// 
         /// Derrick Nagy
         /// Created: 2022/03/26
@@ -507,12 +638,20 @@ namespace DataAccessLayer
         /// Description:
         /// Added events that have no date
         /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Null checking for location objects
+        /// 
+        /// 
         /// </summary>
         /// <param name="userID"></param>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectUserEventsForUpcomingDates(int userID)
         {
             List<EventVM> eventListRef = new List<EventVM>();
+            List<EventVM> eventListRefNoDates = new List<EventVM>();
 
             var conn = DBConnection.GetConnection();
             string cmdText = "sp_select_active_events_for_upcoming_dates_for_user";
@@ -548,7 +687,24 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = reader.IsDBNull(5) ? new Location() : new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.IsDBNull(7) ? null : (int?)reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
                     }
                 }
@@ -578,7 +734,7 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        eventListRef.Add(new EventVM()
+                        eventListRefNoDates.Add(new EventVM()
                         {
                             EventID = reader.GetInt32(0),
                             EventName = reader.GetString(1),
@@ -589,14 +745,30 @@ namespace DataAccessLayer
                             EventDates = new List<EventDate>()
                                     {
                                         new EventDate()
-                                        {                                            
+                                        {
                                             EventDateID = DateTime.MinValue,
                                             EventID = reader.GetInt32(0),
                                             Active = true
-
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = reader.IsDBNull(5) ? new Location() : new Location()
+                            {
+                                LocationID = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
+                                UserID = reader.IsDBNull(6) ? null : (int?)reader.GetInt32(6),
+                                Name = reader.IsDBNull(7) ? null : reader.GetString(7),
+                                Description = reader.IsDBNull(8) ? null : reader.GetString(8),
+                                PricingInfo = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                Phone = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Email = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Address1 = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address2 = reader.IsDBNull(13) ? null : reader.GetString(13),
+                                City = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                State = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                ZipCode = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ImagePath = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                Active = true
+                            }
                         });
                     }
                 }
@@ -609,7 +781,15 @@ namespace DataAccessLayer
             {
                 conn.Close();
             }
-            return eventDateVMHelper(eventListRef);
+
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRefNoDates = eventDateWithNoDatesVMHelper(eventListRefNoDates);
+
+            eventListRef.AddRange(eventListRefNoDates);
+
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
 
 
         }
@@ -633,8 +813,21 @@ namespace DataAccessLayer
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of past dates for a user with location and event managers
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Null checking for location objects
+        /// 
+        /// 
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="userID">User ID</param>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectUserEventsForPastDates(int userID)
         {
@@ -674,8 +867,26 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = reader.IsDBNull(5) ? new Location() : new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.IsDBNull(7) ? null : (int?)reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
+
                     }
                 }
             }
@@ -683,8 +894,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
         }
 
         /// <summary>
@@ -706,8 +924,21 @@ namespace DataAccessLayer
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Select list of past and upcoming dates for a user with location and event managers
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Null checking for location objects
+        /// 
+        /// 
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="userID">User ID</param>
         /// <returns>Event view models</returns>
         public List<EventVM> SelectUserEventsForPastAndUpcomingDates(int userID)
         {
@@ -747,8 +978,26 @@ namespace DataAccessLayer
                                             Active = true
                                         }
                                     },
-                            Active = true
+                            Active = true,
+                            Location = reader.IsDBNull(5) ? new Location() : new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.IsDBNull(7) ? null : (int?)reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
                         });
+
                     }
                 }
             }
@@ -756,8 +1005,15 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
-            return eventDateVMHelper(eventListRef);
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
 
         }
 
@@ -783,21 +1039,23 @@ namespace DataAccessLayer
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@EventID", eventID);
-            if(oldLocationID is null)
+            if (oldLocationID is null)
             {
                 cmd.Parameters.Add("@OldLocationID", SqlDbType.Int);
                 cmd.Parameters["@OldLocationID"].Value = DBNull.Value;
-            } else
+            }
+            else
             {
                 cmd.Parameters.Add("@OldLocationID", SqlDbType.Int);
                 cmd.Parameters["@OldLocationID"].Value = oldLocationID;
             }
-            if(newLocationID is null)
+            if (newLocationID is null)
             {
 
                 cmd.Parameters.Add("@LocationID", SqlDbType.Int);
                 cmd.Parameters["@LocationID"].Value = DBNull.Value;
-            } else
+            }
+            else
             {
                 cmd.Parameters.Add("@LocationID", SqlDbType.Int);
                 cmd.Parameters["@LocationID"].Value = newLocationID;
@@ -815,7 +1073,7 @@ namespace DataAccessLayer
 
 
             return rowsAffected;
-        
+
 
         }
 
@@ -838,6 +1096,19 @@ namespace DataAccessLayer
         /// Description:
         /// Updated to include TotalBudget field
         /// 
+        /// Derrick Nagy
+        /// Created: 2022/03/24
+        /// 
+        /// Description:
+        /// Updated to include location information
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Null checking for location objects
+        /// 
+        /// 
         /// </summary>
         /// <param name="eventListRef">Takes an eventvm list</param>
         /// <returns>A list of Events with no duplicate EventIDs and all the EventDates in a list in the Event object</returns>
@@ -859,7 +1130,24 @@ namespace DataAccessLayer
                         EventCreatedDate = item.EventCreatedDate,
                         TotalBudget = item.TotalBudget,
                         LocationID = item.LocationID,
-                        EventDates = new List<EventDate>()
+                        EventDates = new List<EventDate>(),
+                        Location = (item.LocationID == null) ? new Location() : new Location()
+                        {
+                            LocationID = (int)item.LocationID,
+                            UserID = item.Location.UserID,
+                            Name = item.Location.Name,
+                            Description = item.Location.Description,
+                            PricingInfo = item.Location.PricingInfo,
+                            Phone = item.Location.Phone,
+                            Email = item.Location.Email,
+                            Address1 = item.Location.Address1,
+                            Address2 = item.Location.Address2,
+                            City = item.Location.City,
+                            State = item.Location.State,
+                            ZipCode = item.Location.ZipCode,
+                            ImagePath = item.Location.ImagePath,
+                            Active = item.Location.Active
+                        }
                     });
                 }
             }
@@ -893,6 +1181,89 @@ namespace DataAccessLayer
 
         /// <summary>
         /// Derrick Nagy
+        /// Created: 2022/02/07
+        /// 
+        /// Description:
+        /// Removes duplicates and adds the dates to the appropriate event
+        /// These events have no dates
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Null checking for location objects
+        /// 
+        /// 
+        /// </summary>
+        /// <param name="eventListRef">Takes an eventvm list</param>
+        /// <returns>A list of Events with no duplicate EventIDs and all the EventDates in a list in the Event object</returns>
+        private List<EventVM> eventDateWithNoDatesVMHelper(List<EventVM> eventListRef)
+        {
+            List<EventVM> eventList = new List<EventVM>();
+            List<EventDate> allDates = new List<EventDate>();
+            if (eventListRef.Count > 0)
+            {
+                foreach (EventVM item in eventListRef)
+                {
+                    allDates.Add(item.EventDates[0]);
+
+                    eventList.Add(new EventVM()
+                    {
+                        EventID = item.EventID,
+                        EventName = item.EventName,
+                        EventDescription = item.EventDescription,
+                        EventCreatedDate = item.EventCreatedDate,
+                        TotalBudget = item.TotalBudget,
+                        LocationID = item.LocationID,
+                        EventDates = new List<EventDate>(),
+                        Location = (item.LocationID == null) ? new Location() : new Location()
+                        {
+                            LocationID = (int)item.LocationID,
+                            UserID = item.Location.UserID,
+                            Name = item.Location.Name,
+                            Description = item.Location.Description,
+                            PricingInfo = item.Location.PricingInfo,
+                            Phone = item.Location.Phone,
+                            Email = item.Location.Email,
+                            Address1 = item.Location.Address1,
+                            Address2 = item.Location.Address2,
+                            City = item.Location.City,
+                            State = item.Location.State,
+                            ZipCode = item.Location.ZipCode,
+                            ImagePath = item.Location.ImagePath,
+                            Active = item.Location.Active
+                        }
+                    });
+                }
+            }
+
+            //remove duplicates
+            List<EventVM> noDuplicates = eventList.GroupBy(e => e.EventID).Select(e => e.First()).ToList();
+
+            foreach (EventVM item in eventList)
+            {
+                for (int i = 0; i < allDates.Count; i++)
+                {
+
+                    if (item.EventID == allDates[i].EventID && allDates[i].EventDateID != DateTime.MinValue)
+                    {
+                        item.EventDates.Add(allDates[i]);
+                    }
+                }
+            }
+
+            // take out no dates
+            List<EventVM> noDates = noDuplicates.FindAll(e => e.EventDates.Count == 0);
+            List<EventVM> eventsWithDates = noDuplicates.FindAll(e => e.EventDates.Count > 0);
+
+
+            noDates.AddRange(eventsWithDates);
+
+            return noDates;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
         /// Created: 2022/02/18
         /// 
         /// Description:
@@ -916,7 +1287,7 @@ namespace DataAccessLayer
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.Add("@EventName", SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);            
+            cmd.Parameters.Add("@EventDescription", SqlDbType.NVarChar, 1000);
             cmd.Parameters.Add("@TotalBudget", SqlDbType.Money);
             cmd.Parameters.Add("@UserID", SqlDbType.Int);
 
@@ -1007,6 +1378,225 @@ namespace DataAccessLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/03/24
+        /// 
+        /// Description:
+        /// Returns Users with the event Manager role for an event
+        /// 
+        /// </summary>
+        /// <param name="eventID">The Event ID</param>
+        /// <returns>List of event managers</returns>
+        public List<User> SelectEventPlannersForEvent(int eventID)
+        {
+            List<User> users = new List<User>();
+
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_event_planners_for_event";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+            cmd.Parameters["@EventId"].Value = eventID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        users.Add(new User()
+                        {
+                            UserID = reader.GetInt32(0),
+                            GivenName = reader.GetString(1),
+                            FamilyName = reader.GetString(2),
+                            EmailAddress = reader.GetString(3),
+                            State = reader.GetString(4),
+                            City = reader.GetString(5),
+                            Zip = reader.GetInt32(6),
+                            Active = reader.GetBoolean(7)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return users;
+        }
+
+        /// <summary>
+        /// Derrick Nagy
+        /// 2022/04/06
+        /// 
+        /// Description:
+        /// Returns a list that includes the search word
+        /// in the event name, description, or in the location name, city, or state
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/17
+        /// 
+        /// Description:
+        /// Null checking for location objects
+        /// 
+        /// 
+        /// </summary>
+        /// <param name="search">Search criteria</param>
+        /// <returns>List of EventVMs that contain search criteria</returns>
+        public List<EventVM> SelectEventsForSearch(string search)
+        {
+            List<EventVM> eventListRef = new List<EventVM>();
+
+            var conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_events_by_search";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@Search", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@Search"].Value = search;
+
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventListRef.Add(new EventVM()
+                        {
+                            EventID = reader.GetInt32(0),
+                            EventName = reader.GetString(1),
+                            EventDescription = reader.GetString(2),
+                            EventCreatedDate = reader.GetDateTime(3),
+                            TotalBudget = reader.GetDecimal(4),
+                            LocationID = reader.IsDBNull(5) ? null : (int?)reader.GetInt32(5),
+                            EventDates = new List<EventDate>()
+                                    {
+                                        new EventDate()
+                                        {
+                                            EventDateID = reader.GetDateTime(6),
+                                            EventID = reader.GetInt32(0),
+                                            Active = true
+                                        }
+                                    },
+                            Active = true,
+                            Location = reader.IsDBNull(5) ? new Location() : new Location()
+                            {
+                                LocationID = reader.GetInt32(5),
+                                UserID = reader.IsDBNull(7) ? null : (int?)reader.GetInt32(7),
+                                Name = reader.GetString(8),
+                                Description = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                PricingInfo = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                Phone = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Email = reader.IsDBNull(12) ? null : reader.GetString(12),
+                                Address1 = reader.GetString(13),
+                                Address2 = reader.IsDBNull(14) ? null : reader.GetString(14),
+                                City = reader.IsDBNull(15) ? null : reader.GetString(15),
+                                State = reader.IsDBNull(16) ? null : reader.GetString(16),
+                                ZipCode = reader.IsDBNull(17) ? null : reader.GetString(17),
+                                ImagePath = reader.IsDBNull(18) ? null : reader.GetString(18),
+                                Active = reader.GetBoolean(19)
+                            }
+                        });
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            eventListRef = eventDateVMHelper(eventListRef);
+            eventListRef = getManagersForEvents(eventListRef);
+
+            return eventListRef;
+        }
+
+        /// <summary>
+        /// Vinayak Deshpande
+        /// Created: 2022/04/01
+        /// 
+        /// Description: returns event using eventID
+        /// 
+        /// Derrick Nagy
+        /// Updated: 2022/04/24
+        /// 
+        /// Description:
+        /// Fixed index error when returning the Location ID field
+        /// 
+        /// 
+        /// </summary>
+        /// <param name="eventID">The event ID</param>
+        /// <returns>An event view model object</returns>
+        public EventVM SelectEventByEventID(int eventID)
+        {
+            EventVM eventToGet = null;
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_select_event_by_event_id";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EventID", SqlDbType.Int);
+
+            cmd.Parameters["@EventID"].Value = eventID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        eventToGet = new EventVM()
+                        {
+                            EventID = eventID,
+                            EventName = reader.GetString(0),
+                            EventDescription = reader.GetString(1),
+                            EventCreatedDate = reader.GetDateTime(2),
+                            TotalBudget = reader.GetDecimal(3),
+                            LocationID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4),
+                            Active = true
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return eventToGet;
         }
     }
 }

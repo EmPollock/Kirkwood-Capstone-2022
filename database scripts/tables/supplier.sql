@@ -32,6 +32,13 @@ Created: 2022/01/27
  
 Description:
 Test records for supplier type table
+***************************************************************
+ Derrick Nagy
+ Updated: 2022/04/05
+
+ Description: 
+ Added test records:
+	("Catering", "Supplier that will offer catering services")
 ****************************************************************/
 print '' print '*** test records for SupplierType table ***'
 GO
@@ -39,7 +46,9 @@ INSERT INTO [dbo].[SupplierType] (
 	[SupplierTypeID]
 	,[Description]
 )VALUES 
-	("Vendor", "Supplier looking to set up at an event and sell their goods/services")
+	("Vendor", "Supplier looking to set up at an event and sell their goods/services"),
+	("Catering", "Supplier that will offer catering services")
+	
 GO
 
 
@@ -74,6 +83,7 @@ CREATE TABLE [dbo].[Supplier] (
 	,[SupplierState]		[nvarchar](100)				NOT NULL
 	,[SupplierZipCode]		[nvarchar](100)				NOT NULL
 	,[Active]				[bit]						NOT NULL DEFAULT 1
+	,[Approved]				[bit]						NULL
 	
 
 	CONSTRAINT [pk_SupplierID] PRIMARY KEY([SupplierID])
@@ -114,9 +124,13 @@ INSERT INTO [dbo].[Supplier] (
 	,[SupplierCity]
 	,[SupplierState]
 	,[SupplierZipCode]
+	,[Approved]
 )VALUES 
-	(100000, "McSupplier", "I'm liking it.", "999-999-9999", "mcsupplier@suppliers.com", "Vendor", "123 McSupplier Lane", null, "Cedar Rapids", "Iowa", "52404")
-	,(100000, "Supplier King", "Supply it your way.", "888-888-8888", "supplierking@suppliers.com", "Vendor", "456 Supplier King Blvd", null, "Iowa City", "Iowa", "52240")
+	(100000, "McSupplier", "I'm liking it.", "999-999-9999", "mcsupplier@suppliers.com", "Vendor", "123 McSupplier Lane", null, "Cedar Rapids", "Iowa", "52404", 1)
+	,(100000, "Supplier King", "Supply it your way.", "888-888-8888", "supplierking@suppliers.com", "Vendor", "456 Supplier King Blvd", null, "Iowa City", "Iowa", "52240", null)
+	,(100003, "Marco's Grilled Cheese", "Iowa City's Finest Food carts, and now also a restaurant", "123-456-7894", "marcosgrilledcheese@gmail.com", "Catering", "17 N Linn St", null, "Iowa City", "Iowa", "52245", null)
+	
+	
 GO
 
 /***************************************************************

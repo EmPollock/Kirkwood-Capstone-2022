@@ -490,6 +490,69 @@ namespace LogicLayerTests
             // Nothing to do here
             Assert.AreEqual(expected, result);
         }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Tests RemoveRole returns false for bad user ID
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveUserByUserIDRetrievesUser()
+        {
+            // Arrange
+            const int UserID = 999997;
+            User expected = new User()
+            {
+                UserID = 999997,
+                EmailAddress = "duplicate@company.com",
+                GivenName = "Tess",
+                FamilyName = "Data",
+                State = "IA",
+                City = "Cedar Rapids",
+                Zip = 12345,
+                Roles = new List<String>(),
+                Active = true
+            };
+            User result;
+            // Act
+            result = userManager.RetrieveUserByUserID(UserID);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected.FamilyName, result.FamilyName);
+            Assert.AreEqual(expected.GivenName, result.GivenName);
+            Assert.AreEqual(expected.State, result.State);
+            Assert.AreEqual(expected.UserDescription, result.UserDescription);
+            Assert.AreEqual(expected.UserID, result.UserID);
+            Assert.AreEqual(expected.UserPhoto, result.UserPhoto);
+            Assert.AreEqual(expected.Zip, result.Zip);
+        }
+
+        /// <summary>
+        /// Christopher Repko 
+        /// Created: 2022/03/25
+        /// 
+        /// Description:
+        /// Tests RemoveRole returns false for bad user ID
+        /// 
+        /// </summary>
+        [TestMethod]
+        public void TestRetrieveUserByUserIDReturnsNullForBadID()
+        {
+            // Arrange
+            User expected = null;
+            const int userID = 0;
+            User result;
+            // Act
+            result = userManager.RetrieveUserByUserID(userID);
+
+            // Assert
+            // Nothing to do here
+            Assert.AreEqual(expected, result);
+        }
     }
     
 }

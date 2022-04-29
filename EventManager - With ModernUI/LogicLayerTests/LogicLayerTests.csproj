@@ -60,6 +60,7 @@
     <Compile Include="SublocationManagerTests.cs" />
     <Compile Include="EntranceManagerTests.cs" />
     <Compile Include="ParkingLotManagerTests.cs" />
+    <Compile Include="ZipManagerTests.cs" />
     <Compile Include="UserImageManagerTests.cs" />
     <Compile Include="VolunteerNeedManagerTests.cs" />
     <Compile Include="UserManagerTests.cs" />

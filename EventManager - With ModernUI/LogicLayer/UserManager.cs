@@ -54,6 +54,7 @@ namespace LogicLayer
             }
             return result;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -88,6 +89,7 @@ namespace LogicLayer
 
             return result;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -135,6 +137,7 @@ namespace LogicLayer
             }
             return roles;
         }
+
         /// <summary>
         /// 
         /// Christopher Repko
@@ -218,7 +221,6 @@ namespace LogicLayer
 
             return result;
         }
-
 
         /// <summary>
         /// Ramiro Pena
@@ -369,6 +371,21 @@ namespace LogicLayer
             {
                 throw new ApplicationException("Failed to remove role", ex);
             }
+            return result;
+        }
+
+        public User RetrieveUserByUserID(int userID)
+        {
+            User result = null;
+
+            try
+            {
+                result = _userAccessor.SelectUserByUserID(userID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve user information.", ex);
+            }
+
             return result;
         }
     }

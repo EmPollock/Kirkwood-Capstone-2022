@@ -120,7 +120,7 @@ namespace WPFPresentation
         {
             if(datVolunteers.SelectedItem != null)
             {
-                pgViewVolunteerDetails page = new pgViewVolunteerDetails((Volunteer)datVolunteers.SelectedItem, _managerProvider);
+                pgVolunteerFrame page = new pgVolunteerFrame((Volunteer)datVolunteers.SelectedItem, _managerProvider);
                 NavigationService.Navigate(page);
             }
         }

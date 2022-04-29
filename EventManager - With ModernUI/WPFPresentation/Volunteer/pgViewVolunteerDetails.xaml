@@ -9,25 +9,8 @@
       Title="pgViewVolunteerDetails">
 
     <Grid>
-        <Grid.ColumnDefinitions >
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70" />
-                <RowDefinition Height="70" />
-                <RowDefinition Height="70" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Button x:Name="btnVolunteerDetails" Grid.Row="0" Content="Details" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btnVolunteerDetails_Click"/>
-            <Button x:Name="btnVolunteerSchedule" Grid.Row="1" Content="Schedule" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Button x:Name="btnVolunteerSupplies" Grid.Row="2" Content="Supplies" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed"/>
-
-        </Grid>
-
-        <ScrollViewer x:Name="scrVolunteerDetails" Grid.Column="1" Visibility="Visible">
-            <Grid Grid.Column="1">
+        <ScrollViewer x:Name="scrVolunteerDetails" Visibility="Visible">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="20"/>

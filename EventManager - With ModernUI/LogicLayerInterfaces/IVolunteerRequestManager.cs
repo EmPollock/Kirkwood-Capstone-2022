@@ -17,5 +17,8 @@ namespace LogicLayerInterfaces
     public interface IVolunteerRequestManager
     {
         List<VolunteerRequestViewModel> RetrieveVolunteerRequests(int eventID);
+        List<VolunteerRequestViewModel> RetrieveAllRequestsForVolunteerByVolunteerID(int volunteerID);
+        bool EditVolunteerRequest(VolunteerRequestViewModel oldVolunteerRequest, VolunteerRequestViewModel newVolunteerRequest);
+        VolunteerRequestViewModel RetrieveRequestByRequestID(int requestID);
     }
 }

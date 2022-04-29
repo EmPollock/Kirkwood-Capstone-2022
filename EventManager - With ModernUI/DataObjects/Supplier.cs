@@ -28,7 +28,21 @@ namespace DataObjects
         public string City { get; set; }
         public string State { get; set; }
         public string ZipCode { get; set; }
+        public int AverageRating { get; set; }
         public List<string> Tags { get; set; }
         public bool Active { get; set; }
+        public bool? Approved { get; set; }
+    }
+    /// <summary>
+    /// Derrick Nagy
+    /// Created: 2022/04/05
+    /// 
+    /// Description:
+    /// Create SupplierVM with their availablity for three months
+    /// </summary>
+    public class SupplierVM : Supplier
+    {
+        public List<DateTime> ThreeMonthAvailability { get; set; }
+
     }
 }

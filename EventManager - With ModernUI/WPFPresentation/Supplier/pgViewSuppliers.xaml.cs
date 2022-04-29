@@ -23,6 +23,7 @@ namespace WPFPresentation
     {
         ISupplierManager _supplierManager = null;
         ManagerProvider _managerProvider = null;
+        User _user = null;
 
         /// <summary>
         /// Kris Howell
@@ -37,11 +38,19 @@ namespace WPFPresentation
         /// 
         /// Description:
         /// Added the ManagerProvider instance variable and modified page parameters
+        /// 
+        /// Update:
+        /// Derrick Nagy
+        /// Created: 2022/04/05
+        /// 
+        /// Description:
+        /// Added current logged in user
         /// </summary>
-        internal pgViewSuppliers(ManagerProvider managerProvider)
+        internal pgViewSuppliers(ManagerProvider managerProvider, User user)
         {
             _managerProvider = managerProvider;
             _supplierManager = managerProvider.SupplierManager;
+            _user = user;
 
             InitializeComponent();
         }
@@ -71,7 +80,7 @@ namespace WPFPresentation
             {
                 DataObjects.Supplier supplier = (DataObjects.Supplier)this.datSuppliersList.SelectedItem;
 
-                Page page = new Supplier.pgViewSupplierListing(supplier, _managerProvider);
+                Page page = new Supplier.pgViewSupplierListing(supplier, _managerProvider, _user);
                 this.NavigationService.Navigate(page);
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +13,16 @@ namespace DataObjects
     /// 
     /// Description:
     /// Class for event date
+    /// 
+    /// Derrick Nagy
+    /// Update: 2022/03/24
+    /// 
+    /// Description:
+    /// Added display format
     /// </summary>
     public class EventDate
     {
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime EventDateID { get; set; }
         public int EventID { get; set; }
         public DateTime StartTime { get; set; }

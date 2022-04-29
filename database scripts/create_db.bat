@@ -3,6 +3,7 @@ ECHO off
 
 sqlcmd -S localhost -E -i drop_and_create_db.sql
 sqlcmd -S localhost -E -i tables/user.sql
+sqlcmd -S localhost -E -i tables/zip.sql
 sqlcmd -S localhost -E -i tables/location.sql
 sqlcmd -S localhost -E -i tables/event.sql
 sqlcmd -S localhost -E -i tables/event_date.sql
@@ -50,6 +51,7 @@ sqlcmd -S localhost -E -i stored_procedures/user_image_stored_procedures.sql
 :: added 2022-03-02
 sqlcmd -S localhost -E -i stored_procedures/parking_lot_stored_procedures.sql
 sqlcmd -S localhost -E -i stored_procedures/volunteer_need_stored_procedures.sql
+sqlcmd -S localhost -E -i stored_procedures/zipcode_stored_procedures.sql
 
 rem list depenecies after this line:
 rem task.sql requires event.sql, user.sql, and role.sql
@@ -78,6 +80,9 @@ REM PROPOSED CHANGED FOR TRACKING DEPENDENCES
 ::	event_date.sql
 ::  user_event.sql
 ::
+:: ************************
+:: FILES WHICH REQUIRE: zip.sql
+::	location.sql
 :: ************************
 :: FILES WHICH REQUIRE:  user.sql
 :: 	supplier.sql

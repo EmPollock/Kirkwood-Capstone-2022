@@ -401,14 +401,12 @@ GO
 / Created: 2022/03/25
 / 
 / Description: Creating Stored Procedure for deleting task by taskID
-/
 ***************************************************************
 / <Updater Name>
 / Updated: yyyy/mm/dd
 /
 / Description: 
 ****************************************************************/
-
 print '' print '*** creating sp_delete_task_by_taskID...'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_task_by_taskID]
@@ -423,5 +421,95 @@ AS
 		
 		RETURN 		@@ROWCOUNT
 	
+	END
+GO
+
+/***************************************************************
+/ Jace Pettinger
+/ Created: 2022/03/25
+/ 
+/ Description: Stored proceduring for creating a task assignment
+/ and returning the new task assignment id
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+print '' print '*** sp_insert_new_taskAssignment_by_taskID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_new_taskAssignment_by_taskID]
+(
+	@taskID			[int]
+)
+AS
+	BEGIN
+		INSERT INTO	[dbo].[TaskAssignment]
+				([TaskID])
+			VALUES
+				(@taskID)
+			SELECT  SCOPE_IDENTITY()
+	END
+GO
+
+/***************************************************************
+/ Jace Pettinger
+/ Created: 2022/03/31
+/ 
+/ Description: Stored Procedure for adding a volunteer to a 
+/ task assignment
+/
+***************************************************************
+/ <Updater Name>
+/ Updated: yyyy/mm/dd
+/
+/ Description: 
+****************************************************************/
+
+print '' print'*** creating sp_update_task_assignment_with_userID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_task_assignment_with_userID]
+(
+	@TaskAssignmentID		[int],
+	@UserID					[int]
+)
+AS
+	BEGIN
+		
+		UPDATE	[TaskAssignment]
+		SET		[UserID] 				= @UserID
+		WHERE	[TaskAssignmentID]		= @TaskAssignmentID
+		
+	END
+GO
+
+/***************************************************************
+/ Vinayak Deshpande
+/ Created: 2022/04/05
+/ 
+/ Description: Creating Stored Procedure for selecting all tasks by
+/					the eventID
+/
+***************************************************************/
+
+
+print '' print '*** creating sp_select_tasks_by_eventID...'
+GO
+CREATE PROCEDURE [dbo].[sp_select_tasks_by_eventID]
+(
+	@EventID			[int]
+)
+AS
+	BEGIN
+	
+		SELECT	[TaskID], [Name], [Task].[Description], [DueDate],
+				[Task].[Priority], [Priority].[Description], 
+				[Event].[EventName], [Task].[Active]
+		FROM	[dbo].[Task] JOIN [dbo].[Priority]
+					ON [Task].[Priority] = [Priority].[PriorityID]
+				JOIN [dbo].[Event]
+					ON [Task].[EventID] = [Event].[EventID]
+		WHERE	[Task].[EventID] = @EventID
 	END
 GO
