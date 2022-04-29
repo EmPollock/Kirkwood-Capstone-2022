@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MVCPresentationWithIdentity.Models.EntranceModel>
+
+@{
+    ViewBag.Title = "Tadpole";
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EntranceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+@foreach (var item in Model) 
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EntranceName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EntranceEdit", new { locationID=item.LocationID, entranceID=item.EntranceID }, new { @class = "btn btn-secondary" })
+        </td>
+        <td>
+            @using (Html.BeginForm("EntranceDelete", "Location", FormMethod.Post))
+            {
+                @Html.Hidden("locationID", item.LocationID);
+                @Html.Hidden("entranceID", item.EntranceID);
+                <input type="submit" value="Delete" class="btn btn-secondary" onclick="return confirm('Are you sure you want to remove this entrance?');"/>
+            }
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    @Html.ActionLink("Create New", "EntranceCreate", new { locationID = Model.FirstOrDefault().LocationID }, new { @class = "btn btn-secondary" })
+</p>

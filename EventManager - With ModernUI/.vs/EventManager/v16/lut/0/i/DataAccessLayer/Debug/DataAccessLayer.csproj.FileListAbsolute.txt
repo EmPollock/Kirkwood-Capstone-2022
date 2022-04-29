@@ -1,5 +1,0 @@
-C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\DataAccessLayer\bin\Debug\DataAccessLayer.dll
-C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\DataAccessLayer\Debug\DataAccessLayer.csproj.AssemblyReference.cache
-C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\DataAccessLayer\Debug\DataAccessLayer.csproj.CoreCompileInputs.cache
-C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\DataAccessLayer\Debug\DataAccessLayer.csproj.CopyComplete
-C:\Users\alain\OneDrive\Desktop\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\DataAccessLayer\Debug\DataAccessLayer.dll
