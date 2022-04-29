@@ -6,8 +6,6 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Edit Service</h4>
-    <hr />
     @Html.ValidationMessage("", new { @class = "text-danger" })
     @using (Html.BeginForm("EditSupplierService", "Supplier", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {

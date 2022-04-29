@@ -331,7 +331,15 @@ namespace MVCPresentationWithIdentity.Controllers
             return View("ViewSupplierServices", model);
         }
 
-
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler to view supplier applications awaiting approval
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Administrator")]
         public ActionResult ViewSupplierApplications(int page = 1)
         {
@@ -361,6 +369,15 @@ namespace MVCPresentationWithIdentity.Controllers
             return View("ViewSupplierApplications", model);
         }
 
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler for approving supplier requests. 
+        /// </summary>
+        /// <param name="supplierID">ID of supplier being approved</param>
+        /// <returns></returns>
         [Authorize(Roles = "Administrator")]
         public ActionResult Approve(int supplierID)
         {
@@ -389,6 +406,15 @@ namespace MVCPresentationWithIdentity.Controllers
             return ViewSupplierApplications();
         }
 
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler for denying supplier requests
+        /// </summary>
+        /// <param name="supplierID">ID of supplier being denied</param>
+        /// <returns></returns>
         [Authorize(Roles = "Administrator")]
         public ActionResult Deny(int supplierID)
         {
@@ -405,7 +431,16 @@ namespace MVCPresentationWithIdentity.Controllers
             return ViewSupplierApplications();
         }
 
-
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler for supplier service editting
+        /// </summary>
+        /// <param name="supplierID">ID of supplier containing the service</param>
+        /// <param name="serviceID">ID of service.</param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult EditSupplierService(int supplierID, int serviceID)
         {
@@ -432,6 +467,15 @@ namespace MVCPresentationWithIdentity.Controllers
             return View(model); 
         }
 
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler for supplier service creation
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult CreateSupplierService(int supplierID)
         {
@@ -458,6 +502,15 @@ namespace MVCPresentationWithIdentity.Controllers
             return View("EditSupplierService", model);
         }
 
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// post handler for supplier service editting
+        /// </summary>
+        /// <param name="model">model containing edit/create data</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult EditSupplierService(SupplierServiceEditModel model)
         {
@@ -521,6 +574,16 @@ namespace MVCPresentationWithIdentity.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Post handler for supplier service Deletion
+        /// </summary>
+        /// <param name="serviceID">Id of service to delete</param>
+        /// <param name="supplierID">ID of supplier to return to</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult DeleteService(int serviceID, int supplierID)
         {

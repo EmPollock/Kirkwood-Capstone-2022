@@ -18,6 +18,15 @@ namespace DataAccessLayer
     /// </summary>
     public class ServiceAccessor : IServiceAccessor
     {
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Function to delete a service from the database
+        /// </summary>
+        /// <param name="serviceID">ID of service to delete</param>
+        /// <returns>rows affected</returns>
         public int DeleteService(int serviceID)
         {
             int result = 0;
