@@ -56,25 +56,6 @@
             </div>
 
             <div class="d-flex flex-row">
-                <p>Tags:&nbsp;</p>
-                @if (Model.SupplierTags is null || Model.SupplierTags.Count == 0)
-                {
-                    <p>None</p>
-                }
-                else
-                {
-                    for (int i = 0; i < Model.SupplierTags.Count - 1; i++)
-                    {
-                        <p>
-
-                            @Model.SupplierTags[i], &nbsp;
-                        </p>
-                    }
-                    <p>@Model.SupplierTags[Model.SupplierTags.Count - 1]</p>
-                }
-            </div>
-
-            <div class="d-flex flex-row">
                 <p>Contact Info: &nbsp; @Html.DisplayFor(model => model.Supplier.Phone) &emsp; @Html.DisplayFor(model => model.Supplier.Email)</p>
             </div>
 
@@ -83,41 +64,6 @@
                 <p> @Html.DisplayFor(model => model.Supplier.Address2)</p>
             </div>
 
-            @if (Model.SupplierImages.Count > 0)
-            {
-                <h4>Photos</h4>
-                <div id="carouselLocationImages" class="carousel slide col-6 offset-1" data-bs-ride="carousel" data-bs-interval="false">
-                    <div class="carousel-inner text-center bg-black">
-                        @{
-                            bool first = true;
-                            foreach (string image in Model.SupplierImages)
-                            {
-                                if (first && image.Length > 1)
-                                {
-                                    first = false;
-                                    <div class="carousel-item active w-100">
-                                        <img src="~/content/images/LocationImages/@image" class="w-100" />
-                                    </div>
-                                }
-                                else if (!first && image.Length > 1)
-                                {
-                                    <div class="carousel-item w-100">
-                                        <img src="~/content/images/LocationImages/@image" class="w-100" />
-                                    </div>
-                                }
-                            }
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselLocationImages" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            }
 
             <div class="pt-4">
                 <h4>Reviews</h4>

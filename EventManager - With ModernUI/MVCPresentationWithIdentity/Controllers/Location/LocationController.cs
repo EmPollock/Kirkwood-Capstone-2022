@@ -24,7 +24,10 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
     {
         ILocationManager _locationManager = null;
         IEventDateManager _eventDateManager = null;
+        IEventManager _eventManager = new EventManager();
         LocationScheduleViewModel _locationSchedule = new LocationScheduleViewModel();
+        ISublocationManager _sublocationManager = new SublocationManager();
+        IActivityManager _activityManager = new ActivityManager();
 
         public int _pageSize = 10;
 
@@ -156,6 +159,43 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
                 eventDates = _eventDateManager.RetrieveEventDatesByLocationID(locationID);
             }
             return new JsonResult { Data = eventDates, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/24
+        /// 
+        /// Description:
+        /// For getting events by the sublocation id passed to it
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>JsonResult</returns>
+        public JsonResult GetSublocationEvents(string id)
+        {
+            int locationID;
+            try
+            {
+                locationID = int.Parse(id);
+            }
+            catch (Exception)
+            {
+
+                locationID = 0;
+            }
+
+            List<Sublocation> sublocations = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
+            List<Activity> activities = new List<Activity>();
+
+            foreach(Sublocation sublocation in sublocations)
+            {
+                List<Activity> activities1 = _activityManager.RetrieveActivitiesBySublocationID(sublocation.SublocationID);
+                foreach(Activity activity in activities1)
+                {
+                    activities.Add(activity);
+                }                
+            }
+            
+            return new JsonResult { Data = activities, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
         /// <summary>
@@ -406,6 +446,33 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             {
                 return View();
             }
+        }
+
+        public JsonResult DeleteEventOrActivity(string eventID, string eventType, string locationID)
+        {
+            try
+            {
+                int id = int.Parse(eventID);
+                int locID = int.Parse(locationID);
+                if (eventType.Equals("Event"))
+                {
+                    _eventManager.UpdateEventLocationByEventID(id, locID, null);
+                    //_eventDatesForLocation.Remove(selectedEventDateVM);  
+                }
+                else
+                {
+                    _activityManager.UpdateActivitySublocationByActivityID(id, locID, null);
+                    //_activitiesForSublocation.Remove(selectedActivity);
+                }
+                //_eventManager.UpdateEventLocationByEventID(id, locID, null);
+            }
+            catch (Exception)
+            {
+
+                return new JsonResult {JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            
+            return new JsonResult { Data = "Success", JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }
 }
