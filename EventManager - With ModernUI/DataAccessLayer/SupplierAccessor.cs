@@ -55,7 +55,7 @@ namespace DataAccessLayer
                             Description = reader.IsDBNull(3) ? null : reader.GetString(3),
                             Phone = reader.GetString(4),
                             Email = reader.GetString(5),
-                            TypeID = reader.GetString(6),
+                            TypeID = reader.IsDBNull(6) ? null : reader.GetString(6),
                             Address1 = reader.GetString(7),
                             Address2 = reader.IsDBNull(8) ? null : reader.GetString(8),
                             City = reader.GetString(9),
@@ -504,12 +504,13 @@ namespace DataAccessLayer
                             Description = reader.GetString(3),
                             Phone = reader.GetString(4),
                             Email = reader.GetString(5),
-                            TypeID = reader.GetString(6),
+                            TypeID = reader.IsDBNull(6) ? null : reader.GetString(6),
                             Address1 = reader.GetString(7),
                             City = reader.GetString(8),
                             State = reader.GetString(9),
                             Active = true,
                             Approved = reader.IsDBNull(10) ? (bool?)null : reader.GetBoolean(10)
+
                         };
                     }
                 }
@@ -672,7 +673,7 @@ namespace DataAccessLayer
                             Description = reader.IsDBNull(3) ? null : reader.GetString(3),
                             Phone = reader.GetString(4),
                             Email = reader.GetString(5),
-                            TypeID = reader.GetString(6),
+                            TypeID = reader.IsDBNull(6) ? null : reader.GetString(6),
                             Address1 = reader.GetString(7),
                             Address2 = reader.IsDBNull(8) ? null : reader.GetString(8),
                             City = reader.GetString(9),
@@ -684,7 +685,7 @@ namespace DataAccessLayer
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -732,6 +733,48 @@ namespace DataAccessLayer
 
             return result;
         }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/20
+        /// 
+        /// Description:
+        /// Accessor that returns inserts a new requested supplier
+        /// 
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns>rows affected</returns>
+        public int InsertSupplier(Supplier supplier)
+        {
+            int rows = 0;
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_insert_supplier";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@UserID", supplier.UserID);
+            cmd.Parameters.AddWithValue("@SupplierName", supplier.Name);
+            cmd.Parameters.AddWithValue("@SupplierDescription", supplier.Description);
+            cmd.Parameters.AddWithValue("@SupplierPhone", supplier.Phone);
+            cmd.Parameters.AddWithValue("@SupplierEmail", supplier.Email);
+            //cmd.Parameters.AddWithValue("@SupplierTypeID", supplier.TypeID);
+            cmd.Parameters.AddWithValue("@SupplierAddress1", supplier.Address1);
+            cmd.Parameters.AddWithValue("@SupplierCity", supplier.City);
+            cmd.Parameters.AddWithValue("@SupplierState", supplier.State);
+            cmd.Parameters.AddWithValue("@SupplierZipCode", supplier.ZipCode);
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+            return rows;
+        }
+            
 
         /// <summary>
         /// Christopher Repko

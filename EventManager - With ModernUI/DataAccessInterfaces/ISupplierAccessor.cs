@@ -21,10 +21,9 @@ namespace DataAccessInterfaces
         List<DateTime> SelectSupplierAvailabilityForNextThreeMonths(int supplierID);
         List<AvailabilityVM> SelectSupplierAvailabilityBySupplierID(int supplierID);
         List<Availability> SelectSupplierAvailabilityExceptionBySupplierID(int supplierID);
-
         int ApproveSupplier(int supplierID);
         int DisapproveSupplier(int supplierID);
         int RequeueSupplier(int supplierID);
-
+        int InsertSupplier(Supplier supplier);
     }
 }
