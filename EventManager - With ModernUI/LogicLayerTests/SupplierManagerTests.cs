@@ -489,7 +489,7 @@ namespace LogicLayerTests
             expected.Add(new Supplier()
             {
                 SupplierID = 100003,
-                UserID = 100000,
+                UserID = 100001,
                 Name = "Test Supplier 4",
                 Description = "Description of Test Supplier 4 goes here.",
                 Phone = "444-444-4444",
@@ -670,6 +670,121 @@ namespace LogicLayerTests
             // assert
             Assert.AreEqual(expected, result);
 
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Test that makes sure RetrieveSuppliersByUserID returns the correct list.
+        /// </summary>
+
+        [TestMethod]
+        public void TestRetrieveSuppliersByUserIDReturnsCorrectList()
+        {
+            // arrange
+            List<Supplier> expected = new List<Supplier>();
+            List<Supplier> result;
+
+            expected.Add(new Supplier()
+            {
+                SupplierID = 100000,
+                UserID = 100000,
+                Name = "Test Supplier 1",
+                Description = "Description of Test Supplier 1 goes here.",
+                Phone = "111-111-1111",
+                Email = "testSupplier1@suppliers.com",
+                TypeID = "Vendor",
+                Address1 = "Test Supplier 1 Street",
+                Address2 = "Apt 1",
+                City = "Cedar Rapids",
+                State = "Iowa",
+                ZipCode = "52404",
+                Tags = new List<string>()
+                {
+                    "Test Tag 1",
+                    "Test Tag 2"
+                },
+                Active = true,
+                Approved = null
+
+            });
+
+            expected.Add(new Supplier()
+            {
+                SupplierID = 100001,
+                UserID = 100000,
+                Name = "Test Supplier 2",
+                Description = "Description of Test Supplier 2 goes here.",
+                Phone = "222-222-2222",
+                Email = "testSupplier2@suppliers.com",
+                TypeID = "Vendor",
+                Address1 = "Test Supplier 2 Street",
+                Address2 = "Apt 2",
+                City = "Iowa City",
+                State = "Iowa",
+                ZipCode = "52240",
+                Tags = new List<string>()
+                {
+                    "Test Tag 1",
+                    "Test Tag 2"
+                },
+                Active = true,
+                Approved = true
+            });
+
+            const int userID = 100000;
+
+
+            // act
+            result = _supplierManager.RetrieveSuppliersByUserID(userID);
+
+            // assert
+            Assert.AreEqual(expected.Count, result.Count);
+            for (int i = 0; i < expected.Count; i++)
+            {
+                Assert.AreEqual(expected[i].Active, result[i].Active);
+                Assert.AreEqual(expected[i].Address1, result[i].Address1);
+                Assert.AreEqual(expected[i].Address2, result[i].Address2);
+                Assert.AreEqual(expected[i].Approved, result[i].Approved);
+                Assert.AreEqual(expected[i].AverageRating, result[i].AverageRating);
+                Assert.AreEqual(expected[i].City, result[i].City);
+                Assert.AreEqual(expected[i].Description, result[i].Description);
+                Assert.AreEqual(expected[i].Email, result[i].Email);
+                Assert.AreEqual(expected[i].Name, result[i].Name);
+                Assert.AreEqual(expected[i].Phone, result[i].Phone);
+                Assert.AreEqual(expected[i].State, result[i].State);
+                Assert.AreEqual(expected[i].SupplierID, result[i].SupplierID);
+                Assert.AreEqual(expected[i].TypeID, result[i].TypeID);
+                Assert.AreEqual(expected[i].UserID, result[i].UserID);
+                Assert.AreEqual(expected[i].ZipCode, result[i].ZipCode);
+            }
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Test that makes sure RetrieveSuppliersByUserID returns an empty list for a bad ID.
+        /// </summary>
+
+        [TestMethod]
+        public void TestRetrieveSuppliersByUserIDReturnsEmptyList()
+        {
+            // arrange
+            List<Supplier> expected = new List<Supplier>();
+            List<Supplier> result;
+
+           
+
+            const int userID = 100003230;
+            // act
+            result = _supplierManager.RetrieveSuppliersByUserID(userID);
+
+            // assert
+            Assert.AreEqual(expected.Count, result.Count);
         }
     }
 }

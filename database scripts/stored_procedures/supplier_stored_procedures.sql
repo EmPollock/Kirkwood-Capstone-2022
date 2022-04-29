@@ -239,3 +239,36 @@ AS
 		RETURN @@ROWCOUNT
 	END	
 GO
+
+/***************************************************************
+Christopher Repko
+Created: 2022/04/29
+
+Description:
+Stored procedure to select all suppliers belonging to a single user.
+****************************************************************/
+print '' print '*** creating sp_select_suppliers_by_userID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_suppliers_by_userID](
+	@UserID [int]
+)
+AS
+	BEGIN
+		SELECT 
+			[SupplierID]
+			,[UserID]
+			,[SupplierName]
+			,[SupplierDescription]
+			,[SupplierPhone]
+			,[SupplierEmail]
+			,[SupplierTypeID]
+			,[SupplierAddress1]
+			,[SupplierAddress2]
+			,[SupplierCity]
+			,[SupplierState]
+			,[SupplierZipCode]
+			,[Approved]
+		FROM [dbo].[Supplier]
+		WHERE [UserID] = @UserID
+	END	
+GO

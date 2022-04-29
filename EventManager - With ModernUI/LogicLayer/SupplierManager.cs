@@ -370,5 +370,18 @@ namespace LogicLayer
             }
             return result;
         }
+
+        public List<Supplier> RetrieveSuppliersByUserID(int userID)
+        {
+            List<Supplier> result = new List<Supplier>();
+            try
+            {
+                result = _supplierAccessor.SelectSuppliersByUserID(userID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve list of suppliers.", ex);
+            }
+            return result;
+        }
     }
 }

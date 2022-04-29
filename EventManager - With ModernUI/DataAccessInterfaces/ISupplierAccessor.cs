@@ -11,6 +11,7 @@ namespace DataAccessInterfaces
     {
         List<Supplier> SelectActiveSuppliers();
         List<Supplier> SelectUnapprovedSuppliers();
+        List<Supplier> SelectSuppliersByUserID(int userID);
         Supplier SelectSupplierBySupplierID(int supplierID);
         List<Reviews> SelectSupplierReviewsBySupplierID(int supplierID);
         List<string> SelectSupplierTagsBySupplierID(int supplierID);

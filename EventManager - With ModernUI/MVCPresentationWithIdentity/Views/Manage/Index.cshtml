@@ -95,5 +95,10 @@
             <dd>@Html.ActionLink("View incoming volunteer requests", "ViewRequests", "Volunteer", routeValues: null, htmlAttributes: new { @class = "nav-link" })</dd>
 
         }
+        @if(User.IsInRole("Supplier"))
+        {
+            <dt>Supplier Links:</dt>
+            <dd>@Html.ActionLink("View your supplier listings", "ViewUserSuppliers", "Supplier", routeValues: new { userId = user.UserID }, htmlAttributes: new { @class = "nav-link" })</dd>
+        }
     </dl>
 </div>

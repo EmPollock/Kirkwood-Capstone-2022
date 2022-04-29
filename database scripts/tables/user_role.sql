@@ -61,6 +61,7 @@ INSERT INTO [dbo].[UserRole] (
 )
 	VALUES 
 	(100000, 'Event Planner')
+	(100000, 'Supplier')
 	,(100001, 'Event Planner')
 	,(100001, 'Event Manager')
 	,(100002, 'Attendee')
