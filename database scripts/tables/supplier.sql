@@ -76,7 +76,7 @@ CREATE TABLE [dbo].[Supplier] (
 	,[SupplierDescription]	[nvarchar](3000)			NULL
 	,[SupplierPhone]		[nvarchar](15)				NOT NULL
 	,[SupplierEmail]		[nvarchar](250)				NOT NULL
-	,[SupplierTypeID]		[nvarchar](10)				NOT NULL
+	,[SupplierTypeID]		[nvarchar](10)				NULL
 	,[SupplierAddress1]		[nvarchar](100)				NOT NULL
 	,[SupplierAddress2]		[nvarchar](100)				NULL
 	,[SupplierCity]			[nvarchar](100)				NOT NULL
@@ -90,7 +90,6 @@ CREATE TABLE [dbo].[Supplier] (
 		REFERENCES [SupplierType]([SupplierTypeID])
 	,CONSTRAINT [fk_UserID] FOREIGN KEY([UserID])
 		REFERENCES [Users]([UserID])
-	,CONSTRAINT [ak_SupplierEmail] UNIQUE([SupplierEmail])
 	,CONSTRAINT [ak_SupplierAddress] UNIQUE([SupplierAddress1],[SupplierAddress2])
 )
 GO

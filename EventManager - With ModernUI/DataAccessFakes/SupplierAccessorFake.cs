@@ -124,7 +124,22 @@ namespace DataAccessFakes
                 Active = true
             });
 
-            _fakeReviews.Add(new Reviews()
+            _fakeSuppliers.Add(new Supplier()
+            {
+                SupplierID = 100004,
+                UserID = 100000,
+                Name = "Test Supplier 5",
+                Description = "Description of Test Supplier 5 goes here.",
+                Phone = "555-444-4444",
+                Email = "testSupplier5@suppliers.com",
+                Address1 = "Test Supplier 6 Street",
+                Address2 = "Apt 7",
+                City = "Iowa City",
+                State = "Iowa",
+                ZipCode = "52240"
+            });
+
+                _fakeReviews.Add(new Reviews()
             {
                 ForeignID = 100000,
                 ReviewID = 100000,
@@ -608,5 +623,23 @@ namespace DataAccessFakes
 
             return _supplier;
         }
-    }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Inserts a fake supplier with no userID for supplier request
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns>row affected</returns>
+        public int InsertSupplier(Supplier supplier)
+        {
+            int rows = 0;
+            _fakeSuppliers.Add(supplier);
+            rows += 1;
+
+            return rows;
+        }
+        }
 }

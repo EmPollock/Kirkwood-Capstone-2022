@@ -9,13 +9,16 @@ using DataObjects;
 using WPFPresentation;
 using DataAccessInterfaces;
 using DataAccessFakes;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 using MVCPresentationWithIdentity.Models;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
     public class SupplierController : Controller
     {
-        ISupplierManager _supplierManager;
+        ISupplierManager _supplierManager = null;
+        IUserManager _userManager = null;
         IActivityManager _activityManager = null;
         IServiceManager _serviceManager = null;
         SupplierScheduleViewModel _supplierDetails = new SupplierScheduleViewModel();
@@ -29,11 +32,12 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// Default constructor for the Supplier controller
         /// </summary>
-        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager)
+        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager, IUserManager userManager)
         {
             _supplierManager = supplierManager;
             _activityManager = activityManager;
             _serviceManager = serviceManager;
+            _userManager = userManager;
         }
 
         public PartialViewResult SupplierNav(int eventId)
@@ -307,6 +311,60 @@ namespace MVCPresentationWithIdentity.Controllers
             _supplier.Services = serviceVMs;
 
             return View(_supplier);
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// For getting to the CreateSupplier page
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public ActionResult CreateSupplier()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Method for creating a new Supplier
+        /// <param name="_supplier"/>
+        /// </summary>
+        [Authorize]
+        [HttpPost]
+        public ActionResult CreateSupplier(Supplier supplier)
+        {
+            SupplierDetailsViewModel model = new SupplierDetailsViewModel();
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (supplier.UserID == null)
+                    {
+                        var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                        ApplicationUser user = userManager.FindById(User.Identity.GetUserId());
+                        supplier.UserID = user.UserID;
+                    }
+                    if (_supplierManager.CreateSupplier(supplier) == 1)
+                    {
+
+                        model.Supplier = _supplierManager.RetrieveActiveSuppliers().Single(x => x.Name == supplier.Name && x.Description == supplier.Description);
+                        TempData["Message"] = "success";
+                        return RedirectToAction("ViewSupplierDetails", new { supplierID = model.Supplier.SupplierID });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "");
+                }
+            }
+            return View();
         }
     }
 }

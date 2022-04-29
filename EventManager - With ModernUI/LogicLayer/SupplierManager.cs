@@ -289,5 +289,52 @@ namespace LogicLayer
 
             return supplier;
         }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Inserts a new requested supplier
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns>A supplier with the given supplierId</returns>
+        public int CreateSupplier(Supplier supplier)
+        {
+            if (supplier.Name.Length > 160 || supplier.Name.Length < 1) 
+            {
+                throw new ApplicationException("Name must be bewtween 1-160 characters.");
+            }
+            if (supplier.Description != null && supplier.Description.Length > 3000) 
+            {
+                throw new ApplicationException("Description cannot exceed 3000 characters");
+            }
+            if (supplier.Email.Length > 100 || supplier.Email.Length < 1) 
+            {
+                throw new ApplicationException("Email must be bewtween 1-100 characters.");
+            }
+            if (supplier.Phone.Length > 15 || supplier.Phone.Length < 1) 
+            {
+                throw new ApplicationException("Invalid phone number.");
+            }
+            if (supplier.Address1.Length > 100 || supplier.Address1.Length < 1) 
+            {
+                throw new ApplicationException("Invalid address.");
+            }
+            if (supplier.ZipCode.Length > 160 || supplier.ZipCode.Length < 1) 
+            {
+                throw new ApplicationException("Invalid zip code.");
+            }
+            int rows = 0;
+            try
+            {
+                rows = _supplierAccessor.InsertSupplier(supplier);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException("Unable to create supplier. " + e.Message);
+            }
+            return rows;
+        }
     }
 }

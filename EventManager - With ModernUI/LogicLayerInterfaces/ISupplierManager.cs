@@ -19,5 +19,6 @@ namespace LogicLayerInterfaces
         List<AvailabilityVM> RetrieveSupplierAvailabilityBySupplierID(int supplierID);
         List<Availability> RetrieveSupplierAvailabilityExceptionBySupplierID(int supplierID);
         Supplier RetrieveSupplierBySupplierID(int supplierID);
+        int CreateSupplier(Supplier supplier);
     }
 }
