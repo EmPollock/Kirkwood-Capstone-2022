@@ -4,6 +4,7 @@ using MVCPresentationWithIdentity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -59,19 +60,24 @@ namespace MVCPresentationWithIdentity.Controllers.Event
         /// <param name="eventID"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public ActionResult EventTaskList(int eventID, int page = 1)
+        public ActionResult EventTaskList(int? eventID, int page = 1)
         {
-            
+
             
             List<TasksVM> tasks = new List<TasksVM>();
             TaskListViewModel model = new TaskListViewModel();
             
             if (taskViewModels == null)
             {
+                
                 taskViewModels = new List<TaskViewModel>();
                 try
                 {
-                    tasks = _taskManager.RetrieveAllTasksByEventID(eventID);
+                    if (!eventID.HasValue)
+                    {
+                        throw new Exception();
+                    }
+                    tasks = _taskManager.RetrieveAllTasksByEventID((int)eventID);
                     foreach (var task in tasks)
                     {
                         TaskViewModel taskViewModel = new TaskViewModel();
@@ -79,7 +85,7 @@ namespace MVCPresentationWithIdentity.Controllers.Event
                         taskViewModel.TaskAssignments = _taskManager.RetrieveTaskAssignmentsByTaskID(task.TaskID);
                         taskViewModels.Add(taskViewModel);
                     }
-                    
+
                     model = new TaskListViewModel
                     {
                         Tasks = taskViewModels
@@ -91,7 +97,8 @@ namespace MVCPresentationWithIdentity.Controllers.Event
                             ItemsPerPage = _pageSize,
                             TotalItems = taskViewModels.Count()
                         },
-                        EventName = _eventManager.RetrieveEventByEventID(eventID).EventName
+                        EventName = _eventManager.RetrieveEventByEventID((int)eventID).EventName,
+                        EventID = (int)eventID
                     };
                 }
                 catch (Exception ex)

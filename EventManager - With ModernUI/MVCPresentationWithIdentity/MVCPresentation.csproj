@@ -230,6 +230,10 @@
     <Compile Include="Migrations\202203251633000_Odds and ends.Designer.cs">
       <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202204292245564_EmptyMigration.cs" />
+    <Compile Include="Migrations\202204292245564_EmptyMigration.Designer.cs">
+      <DependentUpon>202204292245564_EmptyMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\EntranceModel.cs" />
@@ -491,6 +495,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202203251633000_Odds and ends.resx">
       <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204292245564_EmptyMigration.resx">
+      <DependentUpon>202204292245564_EmptyMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

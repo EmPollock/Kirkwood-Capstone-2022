@@ -11,5 +11,6 @@ namespace MVCPresentationWithIdentity.Models
         public IEnumerable<TaskViewModel> Tasks { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public string EventName { get; set; }
+        public int EventID { get; set; }
     }
 }
