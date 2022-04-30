@@ -39,7 +39,8 @@ AS
 			[Users].[UserState],		
 			[Users].[City],			
 			[Users].[Zip],
-			[VolunteerType].[RoleID]
+			[VolunteerType].[RoleID],
+			[Users].[Email]
 		FROM [Volunteer] 
 		JOIN [Users] ON [Volunteer].[UserID] = [Users].[UserID]
 		JOIN [VolunteerType] ON [Volunteer].[VolunteerID] = [VolunteerType].[VolunteerID]
@@ -102,7 +103,8 @@ AS
 			[Users].[UserState],		
 			[Users].[City],			
 			[Users].[Zip],
-			[VolunteerType].[RoleID]
+			[VolunteerType].[RoleID],
+			[Users].[Email]
 		FROM [Volunteer] 
 		JOIN [Users] ON [Volunteer].[UserID] = [Users].[UserID]
 		JOIN [VolunteerType] ON [Volunteer].[VolunteerID] = [VolunteerType].[VolunteerID]

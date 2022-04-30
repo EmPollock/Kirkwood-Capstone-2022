@@ -41,7 +41,7 @@
             @foreach (DataObjects.Volunteer volunteer in Model.Volunteers)
             {
                 <tr>
-                    <td><a href="#">@volunteer.GivenName @volunteer.FamilyName <i class="bi bi-box-arrow-up-right"></i></a></td>
+                    <td><a href="@Url.Action("VolunteerDetails", new { id=volunteer.UserID })">@volunteer.GivenName @volunteer.FamilyName <i class="bi bi-box-arrow-up-right"></i></a></td>
                     <td>@volunteer.VolunteerType</td>
                     <td class="d-none d-sm-table-cell">
                         <div class="d-flex flex-row">
