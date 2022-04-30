@@ -25,6 +25,7 @@ namespace MVCPresentationWithIdentity.Controllers
         IVolunteerManager _volunteerManager;
         IVolunteerRequestManager _volunteerRequestManager;
         IUserManager _userManager;
+        IVolunteerReviewManager _volunteerReviewManager;
         public int _pageSize = 10;
 
         /// <summary>
@@ -34,12 +35,21 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// Constructor that sets the _volunteerManager
         /// </summary>
+        /// 
+        /// <update>
+        /// Emma Pollock
+        /// Updated: 2022/04/28
+        /// 
+        /// Added IVolunteerReviewManager
+        /// </update>
+        /// 
         /// <param name="locationManager"></param>
-        public VolunteerController(IVolunteerManager volunteerManager, IVolunteerRequestManager volunteerRequestManager, IUserManager userManager)
+        public VolunteerController(IVolunteerManager volunteerManager, IVolunteerRequestManager volunteerRequestManager, IUserManager userManager, IVolunteerReviewManager volunteerReviewManager)
         {
             _volunteerManager = volunteerManager;
             _volunteerRequestManager = volunteerRequestManager;
             _userManager = userManager;
+            _volunteerReviewManager = volunteerReviewManager;
         }
 
         /// <summary>
@@ -183,6 +193,57 @@ namespace MVCPresentationWithIdentity.Controllers
                 requestViewModels = new List<VolunteerRequestViewModel>();
             }
             return View("ViewRequests", requestViewModels);
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Moves user to the Create Review page
+        /// </summary>
+        /// <param name="volunteerID"></param>
+        [Authorize(Roles = "Event Planner")]
+        [HttpGet]
+        public ViewResult CreateReview(int volunteerID = 0)
+        {
+            if (volunteerID == 0)
+            {
+                return View("ViewVolunteers", volunteerID);
+            }
+            return View(new Reviews() { ForeignID = volunteerID });
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Processes the review to be created and either returns a validation error or creates the review
+        /// </summary>
+        /// 
+        /// <param name="ForeignID"></param>
+        /// <param name="Rating"></param>
+        /// <param name="Review"></param>
+        [HttpPost]
+        public ActionResult CreateReview(int ForeignID, int Rating, String Review)
+        {
+            User user = _userManager.RetrieveUserByEmail(User.Identity.Name);
+            Reviews review = new Reviews() { ForeignID = ForeignID, UserID = user.UserID, Rating = Rating, Review = Review, ReviewType = "Volunteer", DateCreated = DateTime.Now };
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _volunteerReviewManager.CreateVolunteerReview(review);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                    return View(review);
+                }
+                return RedirectToAction("ViewVolunteers", "Volunteer", review.ForeignID);
+            }
+            return View(review);
         }
     }
 }   

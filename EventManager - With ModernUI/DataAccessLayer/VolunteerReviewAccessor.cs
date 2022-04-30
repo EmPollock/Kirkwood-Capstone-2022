@@ -95,6 +95,131 @@ namespace DataAccessLayer
 
             return volunteerReviews;
         }
-    
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Inserts a review into the review table and a volunteer review into the VolunteerReview table
+        /// 
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns>rowsAffected</returns>
+        public int InsertVolunteerReview(Reviews review)
+        {
+            int rowsAffected = 0;
+
+            // connection
+            var conn = DBConnection.GetConnection();
+
+            string cmdTxt = "sp_insert_review";
+            var cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters.Add("@ReviewType", SqlDbType.NVarChar, 20);
+            cmd.Parameters.Add("@Rating", SqlDbType.Int);
+            cmd.Parameters.Add("@Review", SqlDbType.NVarChar, 3000);
+            cmd.Parameters.Add("@DateCreated", SqlDbType.DateTime);
+
+            cmd.Parameters["@UserID"].Value = review.UserID;
+            cmd.Parameters["@ReviewType"].Value = review.ReviewType;
+            cmd.Parameters["@Rating"].Value = review.Rating;
+            cmd.Parameters["@Review"].Value = review.Review;
+            cmd.Parameters["@DateCreated"].Value = review.DateCreated;
+
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            // connection
+            conn = DBConnection.GetConnection();
+
+            int reviewID = 0;
+            cmdTxt = "sp_select_review_id_by_review";
+            cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters.Add("@ReviewType", SqlDbType.NVarChar, 20);
+            cmd.Parameters.Add("@Rating", SqlDbType.Int);
+            cmd.Parameters.Add("@Review", SqlDbType.NVarChar, 3000);
+            cmd.Parameters.Add("@DateCreated", SqlDbType.DateTime);
+
+            cmd.Parameters["@UserID"].Value = review.UserID;
+            cmd.Parameters["@ReviewType"].Value = review.ReviewType;
+            cmd.Parameters["@Rating"].Value = review.Rating;
+            cmd.Parameters["@Review"].Value = review.Review;
+            cmd.Parameters["@DateCreated"].Value = review.DateCreated;
+
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        reviewID = reader.GetInt32(0);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+
+            // connection
+            conn = DBConnection.GetConnection();
+
+            cmdTxt = "sp_insert_volunteer_review";
+            cmd = new SqlCommand(cmdTxt, conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ReviewID", SqlDbType.Int);
+            cmd.Parameters.Add("@VolunteerID", SqlDbType.Int);
+
+            cmd.Parameters["@ReviewID"].Value = reviewID;
+            cmd.Parameters["@VolunteerID"].Value = review.ForeignID;
+
+
+            try
+            {
+                conn.Open();
+                rowsAffected = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return rowsAffected;
+        }
+
     }
 }

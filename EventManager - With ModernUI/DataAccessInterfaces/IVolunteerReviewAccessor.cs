@@ -10,5 +10,6 @@ namespace DataAccessInterfaces
     public interface IVolunteerReviewAccessor
     {
         List<Reviews> SelectVolunteerReviewsByVolunteerID(int volunteerID);
+        int InsertVolunteerReview(Reviews review);
     }
 }

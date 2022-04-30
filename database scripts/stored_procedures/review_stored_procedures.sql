@@ -226,6 +226,41 @@ GO
 
 /***************************************************************
 Emma Pollock
+Created: 2022/04/28
+
+Description:
+Stored procedure to insert a volunteer review into the 
+	VolunteerReview table.
+**************************************************************
+<Updater Name>
+Updated: yyyy/mm/dd
+
+Description: 
+****************************************************************/
+print '' print '*** creating sp_insert_volunteer_review'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_volunteer_review]
+(
+	@ReviewID 		[int]
+	,@VolunteerID 	[int]
+)
+AS
+	BEGIN				
+		INSERT INTO [dbo].[LocationReview]
+		(
+			[ReviewID]
+			,[VolunteerID]
+		)
+		VALUES
+		(
+			@ReviewID
+			,@VolunteerID
+		)
+	END
+GO
+
+/***************************************************************
+Emma Pollock
 Created: 2022/04/22
 
 Description:

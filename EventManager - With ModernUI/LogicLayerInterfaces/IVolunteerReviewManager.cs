@@ -10,5 +10,6 @@ namespace LogicLayerInterfaces
     public interface IVolunteerReviewManager
     {
         List<Reviews> RetrieveVolunteerReviewsByVolunteerID(int volunteerID);
+        int CreateVolunteerReview(Reviews review);
     }
 }

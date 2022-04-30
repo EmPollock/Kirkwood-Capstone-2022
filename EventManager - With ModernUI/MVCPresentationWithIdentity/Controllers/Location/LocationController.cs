@@ -444,7 +444,10 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         /// Description:
         /// Processes the review to be created and either returns a validation error or creates the review
         /// </summary>
-        /// <param name="supplierID"></param>
+        /// 
+        /// <param name="ForeignID"></param>
+        /// <param name="Rating"></param>
+        /// <param name="Review"></param>
         [HttpPost]
         public ActionResult CreateReview(int ForeignID, int Rating, String Review)
         {

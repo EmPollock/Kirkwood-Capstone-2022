@@ -443,6 +443,7 @@
     <Content Include="Views\Supplier\CreateReview.cshtml" />
     <Content Include="Views\Location\CreateReview.cshtml" />
     <Content Include="Views\Event\ItineraryDetails.cshtml" />
+    <Content Include="Views\Volunteer\CreateReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

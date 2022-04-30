@@ -18,7 +18,7 @@ namespace DataAccessFakes
     public class VolunteerReviewAccessorFake : IVolunteerReviewAccessor
     {
         private List<Reviews> _fakeVolunteerReviews = new List<Reviews>();
-
+        private VolunteerAccessorFake _fakeVolunteerAccessor = new VolunteerAccessorFake();
         /// <summary>
         /// Austin Timmerman
         /// Created: 2022/03/10
@@ -83,6 +83,36 @@ namespace DataAccessFakes
             }
 
             return volunteerReviews;
+        }
+
+        /// <summary>
+        /// Emma Pollock
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Inserts a review into the list of fake reviews
+        /// 
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns>rowsAffected</returns>
+        public int InsertVolunteerReview(Reviews review)
+        {
+            int rowsAffected = 0;
+            List<Volunteer> fakeVolunteers = _fakeVolunteerAccessor.SelectAllVolunteers();
+            foreach (var volunteer in fakeVolunteers)
+            {
+                if (volunteer.VolunteerID == review.ForeignID)
+                {
+                    _fakeVolunteerReviews.Add(review);
+                    rowsAffected = 1;
+                    break;
+                }
+            }
+            if (rowsAffected == 0)
+            {
+                throw new ApplicationException("Invalid Volunteer ID");
+            }
+            return rowsAffected;
         }
     }
 }
