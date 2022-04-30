@@ -106,7 +106,8 @@ namespace DataAccessLayer
                             State = reader.IsDBNull(4) ? "" : reader.GetString(4),
                             City = reader.IsDBNull(5) ? "" : reader.GetString(5),
                             Zip = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
-                            VolunteerType = reader.GetString(7)
+                            VolunteerType = reader.GetString(7),
+                            Email = reader.GetString(8)
                         });
                     }
                 }
@@ -283,7 +284,8 @@ namespace DataAccessLayer
                             State = reader.IsDBNull(4) ? "" : reader.GetString(4),
                             City = reader.IsDBNull(5) ? "" : reader.GetString(5),
                             Zip = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
-                            VolunteerType = reader.GetString(7)
+                            VolunteerType = reader.GetString(7),
+                            Email = reader.GetString(8)
                         };
                     }
                 }
