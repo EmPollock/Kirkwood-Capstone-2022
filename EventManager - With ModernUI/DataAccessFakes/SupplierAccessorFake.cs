@@ -55,7 +55,9 @@ namespace DataAccessFakes
                     "Test Tag 1",
                     "Test Tag 2"
                 },
-                Active = true
+                Active = true,
+                Approved = null
+
             });
 
             _fakeSuppliers.Add(new Supplier()
@@ -77,7 +79,8 @@ namespace DataAccessFakes
                     "Test Tag 1",
                     "Test Tag 2"
                 },
-                Active = true
+                Active = true,
+                Approved = true
             });
 
             _fakeSuppliers.Add(new Supplier()
@@ -99,7 +102,8 @@ namespace DataAccessFakes
                     "Test Tag 1",
                     "Test Tag 2"
                 },
-                Active = true
+                Active = true,
+                Approved = true
             });
 
             _fakeSuppliers.Add(new Supplier()
@@ -121,7 +125,23 @@ namespace DataAccessFakes
                     "Test Tag 1",
                     "Test Tag 2"
                 },
-                Active = true
+                Active = true,
+                Approved = null
+            });
+
+            _fakeSuppliers.Add(new Supplier()
+            {
+                SupplierID = 100004,
+                UserID = 100000,
+                Name = "Test Supplier 5",
+                Description = "Description of Test Supplier 5 goes here.",
+                Phone = "555-444-4444",
+                Email = "testSupplier5@suppliers.com",
+                Address1 = "Test Supplier 6 Street",
+                Address2 = "Apt 7",
+                City = "Iowa City",
+                State = "Iowa",
+                ZipCode = "52240"
             });
 
             _fakeReviews.Add(new Reviews()
@@ -433,7 +453,7 @@ namespace DataAccessFakes
 
             return fakeDates;
         }
-        
+
         /// Austin Timmerman
         /// Created: 2022/04/09
         /// 
@@ -525,7 +545,7 @@ namespace DataAccessFakes
                                         break;
                                 }
                             }
-                            
+
                         }
                     }
                 }
@@ -636,6 +656,111 @@ namespace DataAccessFakes
                 throw new ApplicationException("Invalid Supplier ID");
             }
             return rowsAffected;
+        /// Christopher Repko
+        /// Created: 2022/04/26
+        /// 
+        /// Description:
+        /// Retrieves all unapproved suppliers from the fakes.
+        /// </summary>
+        /// <returns>List of all unapproved suppliers</returns>
+        public List<Supplier> SelectUnapprovedSuppliers()
+        {
+            List<Supplier> result = new List<Supplier>();
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.Approved == null)
+                {
+                    result.Add(supplier);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Changes a supplier's approval status to "approved"
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int ApproveSupplier(int supplierID)
+        {
+            int result = 0;
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    supplier.Approved = true;
+                    result++;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Changes a supplier's approval status to "disapproved"
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int DisapproveSupplier(int supplierID)
+        {
+            int result = 0;
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    supplier.Approved = false;
+                    result++;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/27
+        /// 
+        /// Description:
+        /// Marks a supplier as needing to be reviewed again.
+        /// </summary>
+        /// <param name="supplierID">ID of supplier</param>
+        /// <returns>the number of records affected</returns>
+        public int RequeueSupplier(int supplierID)
+        {
+            int result = 0;
+            foreach (Supplier supplier in _fakeSuppliers)
+            {
+                if (supplier.SupplierID == supplierID)
+                {
+                    supplier.Approved = null;
+                    result++;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/04
+        /// 
+        /// Description:
+        /// Inserts a fake supplier with no userID for supplier request
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns>row affected</returns>
+        public int InsertSupplier(Supplier supplier)
+        {
+            int rows = 0;
+            _fakeSuppliers.Add(supplier);
+            rows += 1;
+
+            return rows;
         }
     }
 }

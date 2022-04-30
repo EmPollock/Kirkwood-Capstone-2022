@@ -10,7 +10,7 @@ namespace LogicLayerInterfaces
     public interface ISupplierManager
     {
         List<Supplier> RetrieveActiveSuppliers();
-
+        List<Supplier> RetrieveUnapprovedSuppliers();
         List<Reviews> RetrieveSupplierReviewsBySupplierID(int supplierID);
         int CreateSupplierReview(Reviews review);
         List<string> RetrieveSupplierTagsBySupplierID(int supplierID);
@@ -20,5 +20,9 @@ namespace LogicLayerInterfaces
         List<AvailabilityVM> RetrieveSupplierAvailabilityBySupplierID(int supplierID);
         List<Availability> RetrieveSupplierAvailabilityExceptionBySupplierID(int supplierID);
         Supplier RetrieveSupplierBySupplierID(int supplierID);
+        bool ApproveSupplier(int supplierID);
+        bool DisapproveSupplier(int supplierID);
+        bool RequeueSupplier(int supplierID);
+        int CreateSupplier(Supplier supplier);
     }
 }

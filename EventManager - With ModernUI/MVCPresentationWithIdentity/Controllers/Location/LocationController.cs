@@ -25,7 +25,11 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
         ILocationManager _locationManager = null;
         IEventDateManager _eventDateManager = null;
         IUserManager _userManager;
+        IEventManager _eventManager = new EventManager();
+        EntranceManager _entranceManager = new EntranceManager();
         LocationScheduleViewModel _locationSchedule = new LocationScheduleViewModel();
+        ISublocationManager _sublocationManager = new SublocationManager();
+        IActivityManager _activityManager = new ActivityManager();
 
         public int _pageSize = 10;
 
@@ -166,6 +170,43 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
                 eventDates = _eventDateManager.RetrieveEventDatesByLocationID(locationID);
             }
             return new JsonResult { Data = eventDates, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+
+        /// <summary>
+        /// Austin Timmerman
+        /// Created: 2022/04/24
+        /// 
+        /// Description:
+        /// For getting events by the sublocation id passed to it
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>JsonResult</returns>
+        public JsonResult GetSublocationEvents(string id)
+        {
+            int locationID;
+            try
+            {
+                locationID = int.Parse(id);
+            }
+            catch (Exception)
+            {
+
+                locationID = 0;
+            }
+
+            List<Sublocation> sublocations = _sublocationManager.RetrieveSublocationsByLocationID(locationID);
+            List<Activity> activities = new List<Activity>();
+
+            foreach(Sublocation sublocation in sublocations)
+            {
+                List<Activity> activities1 = _activityManager.RetrieveActivitiesBySublocationID(sublocation.SublocationID);
+                foreach(Activity activity in activities1)
+                {
+                    activities.Add(activity);
+                }                
+            }
+            
+            return new JsonResult { Data = activities, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
         /// <summary>
@@ -418,6 +459,197 @@ namespace MVCPresentationWithIdentity.Controllers.Locations
             }
         }
 
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022-04-11
+        /// 
+        /// Description:
+        /// Displays all entrances for a specific location
+        /// </summary>
+        /// <param name="locationID"></param>
+        // GET: Location/EntranceIndex
+        public ActionResult EntranceIndex(int locationID)
+        {
+            List<EntranceModel> model = new List<EntranceModel>();
+            List<Entrance> entrances = _entranceManager.RetrieveEntranceByLocationID(locationID);
+            if (entrances.Count() == 0)
+            {
+                entrances.Add(new Entrance()
+                {
+                    LocationID = locationID,
+                    EntranceID = -1,
+                    EntranceName = "",
+                    Description = ""
+                });
+            }
+            else
+            {
+                foreach (var entrance in entrances)
+                {
+                    model.Add(new EntranceModel()
+                    {
+                        LocationID = locationID,
+                        EntranceID = entrance.EntranceID,
+                        EntranceName = entrance.EntranceName,
+                        Description = entrance.Description
+                    });
+                }
+            }
+            return View(model);
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022-04-11
+        /// 
+        /// Description:
+        /// Redirects to EntranceEdit if a user clicks on the "create" buttons
+        /// </summary>
+        /// <param name="locationID"></param>
+        // GET: Location/EntranceCreate
+        public ActionResult EntranceCreate(int locationID)
+        {
+            ViewBag.Name = "Create Entrance";
+            EditEntranceModel model = new EditEntranceModel()
+            {
+                LocationID = locationID,
+                EntranceID = -1,
+                OldEntranceName = "",
+                OldDescription = "",
+                EntranceName = "",
+                Description = ""
+            };
+            return View("EntranceEdit", model);
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022-04-11
+        /// 
+        /// Description:
+        /// Displays proper labels depending on create or edit mode
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="entranceID"></param>
+        // GET: Location/EntranceEdit
+        public ActionResult EntranceEdit(int locationID, int entranceID)
+        {
+            ViewBag.Name = "Edit Entrance";
+            Entrance entrance = _entranceManager.RetrieveEntranceByLocationID(locationID).FirstOrDefault(x => x.EntranceID == entranceID);
+            EditEntranceModel model = new EditEntranceModel()
+            {
+                LocationID = locationID,
+                EntranceID = entranceID,
+                OldEntranceName = entrance.EntranceName,
+                OldDescription = entrance.Description,
+                EntranceName = entrance.EntranceName,
+                Description = entrance.Description
+            };
+            return View(model);
+        }
+
+        /// <summary>
+        /// Alaina Gilson
+        /// Created: 2022-04-11
+        /// 
+        /// Description:
+        /// POST method to allow user to edit a current entrance or create a new one
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult EntranceEdit(EditEntranceModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (_entranceManager.RetrieveEntranceByLocationID(model.LocationID).Where(e => e.EntranceID == model.EntranceID).Count() != 0)
+                    {
+                        Entrance oldEntrance = new Entrance()
+                        {
+                            LocationID = model.LocationID,
+                            EntranceID = model.EntranceID,
+                            EntranceName = model.OldEntranceName,
+                            Description = model.OldDescription
+                        };
+                        Entrance newEntrance = new Entrance()
+                        {
+                            LocationID = model.LocationID,
+                            EntranceID = model.EntranceID,
+                            EntranceName = model.EntranceName,
+                            Description = model.Description
+                        };
+
+                        _entranceManager.UpdateEntrance(oldEntrance, newEntrance);
+                    }
+                    else
+                    {
+                        _entranceManager.CreateEntrance(model.LocationID, model.EntranceName, model.Description);
+                    }
+
+                    return RedirectToAction("EntranceIndex", new { locationID = model.LocationID });
+                }
+                catch (Exception ex)
+                {
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        /// <summary>
+        /// Alaina Gilson 
+        /// Created: 2022-04-11
+        /// 
+        /// Description: 
+        /// Allows "deleting" of an entrance
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="entranceID"></param>
+        [HttpPost]
+        public ActionResult EntranceDelete(int locationID, int entranceID)
+        {
+            Entrance entrance = _entranceManager.RetrieveEntranceByLocationID(locationID).FirstOrDefault(x => x.EntranceID == entranceID);
+
+            if (entrance != null)
+            {
+                _entranceManager.RemoveEntranceByEntranceID(entranceID);
+            }
+
+            return RedirectToAction("EntranceIndex", new { locationID = locationID });
+        }
+
+        public JsonResult DeleteEventOrActivity(string eventID, string eventType, string locationID)
+        {
+            try
+            {
+                int id = int.Parse(eventID);
+                int locID = int.Parse(locationID);
+                if (eventType.Equals("Event"))
+                {
+                    _eventManager.UpdateEventLocationByEventID(id, locID, null);
+                    //_eventDatesForLocation.Remove(selectedEventDateVM);  
+                }
+                else
+                {
+                    _activityManager.UpdateActivitySublocationByActivityID(id, locID, null);
+                    //_activitiesForSublocation.Remove(selectedActivity);
+                }
+                //_eventManager.UpdateEventLocationByEventID(id, locID, null);
+            }
+            catch (Exception)
+            {
+
+                return new JsonResult {JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            
+            return new JsonResult { Data = "Success", JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+        
         /// <summary>
         /// Emma Pollock
         /// Created: 2022/04/27
