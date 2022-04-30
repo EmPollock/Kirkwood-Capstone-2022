@@ -1,4 +1,4 @@
-﻿@model MVCPresentationWithIdentity.Models.SupplierDetailsViewModel
+﻿@model MVCPresentationWithIdentity.Models.SupplierServicesViewModel
 
 @{
     ViewBag.Title = "Supplier Services";
@@ -39,6 +39,15 @@
         @Html.Partial("SupplierNav", Model.Supplier.SupplierID)
     </div>
     <div class="col-md-8 col-sm-12">
+        @if (Request.IsAuthenticated)
+        {
+            if (Model.CanEdit)
+            {
+                <div class="d-flex justify-content-end">
+                    @Html.ActionLink("Add Service", "CreateSupplierService", new { supplierID = Model.Supplier.SupplierID }, new { @class = "btn btn-primary" })
+                </div>
+            }
+        }
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -46,6 +55,13 @@
                     <th scope="col">Service Name</th>
                     <th scope="col">Price</th>
                     <th scope="col">Description</th>
+                    @if (Request.IsAuthenticated)
+                    {
+                        if (Model.CanEdit)
+                        {
+                            <th></th>
+                        }
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -64,6 +80,22 @@
                         <td>@service.ServiceName</td>
                         <td>$@service.Price</td>
                         <td>@service.Description</td>
+                        @if (Request.IsAuthenticated)
+                        {
+                            if (Model.CanEdit)
+                            {
+                                <td>
+                                    @Html.ActionLink("Edit", "EditSupplierService", new { supplierID = Model.Supplier.SupplierID, serviceID = service.ServiceID }, new { @class = "btn btn-primary" })
+                                    @using (Html.BeginForm("DeleteService", "Supplier"))
+                                    {
+                                        @Html.Hidden("serviceID", service.ServiceID)
+                                        @Html.Hidden("supplierID", Model.Supplier.SupplierID)
+                                        <input type="submit" class="btn btn-danger" value="Delete"/>
+                                    }
+                                </td>
+
+                            }
+                        }
                     </tr>
                 }
             </tbody>

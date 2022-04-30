@@ -92,63 +92,63 @@
                 {
                     <tr>
                         <td>
-                            @* <a href="@Url.Action("Details", "Event", item)">@item.EventName<i class="bi bi-box-arrow-up-right"></i> </a> *@
-                            <a href="#">@item.EventName<i class="bi bi-box-arrow-up-right"></i> </a>
+                            <a href="@Url.Action("Details", "Event", new { eventId = item.EventID })">@item.EventName<i class="bi bi-box-arrow-up-right"></i> </a>
+                            @*<a href="#">@item.EventName<i class="bi bi-box-arrow-up-right"></i> </a>*@
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EventDescription)
-                        </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EventDescription)
+                            </td>
 
-                        <td>
-                            <ui>
-                                @foreach (var date in item.EventDates)
+                            <td>
+                                <ul>
+                                    @foreach (var date in item.EventDates)
+                                    {
+
+                                        <li> @Html.DisplayFor(modelItem => date.EventDateID)</li>
+                                    }
+                                </ul>
+
+
+                            </td>
+                            <td>
+                                @if (item.LocationID != null)
                                 {
-
-                                    <li> @Html.DisplayFor(modelItem => date.EventDateID)</li>
+                                    <p>@Html.DisplayFor(modelItem => item.Location.Name)</p>
                                 }
-                            </ui>
+                            </td>
 
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-                        </td>
-                        <td>
-                            @if (item.LocationID != null)
-                            {
-                                <p>@Html.DisplayFor(modelItem => item.Location.Name)</p>
-                            }
-                        </td>
+        <!--<div class="row table-responsive-md mt-3">
+            <table class="table table-bordered" id="eventListTable">
 
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                <thead>
 
-    <!--<div class="row table-responsive-md mt-3">
-        <table class="table table-bordered" id="eventListTable">
-
-            <thead>
-
-                <tr class="bg-light">
-                    <th>
-                        <div class="d-flex">
-                            <p class="text-start text-nowrap me-2">Name</p>
-                            <button onclick="sortEventTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="d-flex">
-                            <p class="text-start text-nowrap me-2">Organizer</p>
-                            <button onclick="sortEventTable(1)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="d-flex">
-                            <p class="text-start text-nowrap me-2">Description</p>
-                        </div>-->
-                        @*<div class="float-end">
-                                <i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i>
-                            </div>*@
-                    <!--</th>
+                    <tr class="bg-light">
+                        <th>
+                            <div class="d-flex">
+                                <p class="text-start text-nowrap me-2">Name</p>
+                                <button onclick="sortEventTable(0)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex">
+                                <p class="text-start text-nowrap me-2">Organizer</p>
+                                <button onclick="sortEventTable(1)" class="btn btn-sm btn-outline-dark ms-auto"><i class="bi bi-arrow-down-up"></i></button>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex">
+                                <p class="text-start text-nowrap me-2">Description</p>
+                            </div>-->
+                            @*<div class="float-end">
+                                    <i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i>
+                                </div>*@
+                            <!--</th>
                     <th>
                         <div class="d-flex ">
                             <p class="text-start text-nowrap me-2">Event Dates</p>
@@ -207,7 +207,7 @@
                         </td>
 
                         <td>
-                            @Html.ActionLink("Details", "Details", null, new { id = item.EventID, @class = "btn btn-sm btn-outline-info m-1" })
+                            @Html.ActionLink("Details", "Details", "Event", new { eventId = item.EventID, @class = "btn btn-sm btn-outline-info m-1" })
 
                         </td>
                         <td>
@@ -223,10 +223,9 @@
 
         </table>
     </div>-->
-
-}
-else
-{
-    <p class="m-2 me-auto text-info">No events found for this search.</p>
-}
+                            }
+                            else
+                            {
+                            <p class="m-2 me-auto text-info">No events found for this search.</p>
+                            }
 

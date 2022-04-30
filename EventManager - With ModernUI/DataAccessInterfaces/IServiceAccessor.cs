@@ -10,5 +10,9 @@ namespace DataAccessInterfaces
     public interface IServiceAccessor
     {
         List<Service> SelectServicesBySupplierID(int supplierID);
+        Service SelectServiceByServiceID(int serviceID);
+        int UpdateService(Service oldService, Service newService);
+        int InsertService(Service newService);
+        int DeleteService(int serviceID);
     }
 }

@@ -36,10 +36,13 @@ namespace MVCPresentationWithIdentity.Infrastructure
             kernel.Bind<IServiceManager>().To<ServiceManager>();
             kernel.Bind<ISublocationManager>().To<SublocationManager>();
             kernel.Bind<IParkingLotManager>().To<ParkingLotManager>();
+            //kernel.Bind<IEmailProvider>().To<EmailProvider>();
+            kernel.Bind<ITaskManager>().To<TaskManager>();
 
 
             // fake
             //kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().WithConstructorArgument("eventAccessor", new EventAccessorFake());
+            kernel.Bind<IEmailProvider>().To<EmailProviderFake>();
         }
 
         public object GetService(Type serviceType)

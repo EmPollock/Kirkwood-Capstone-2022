@@ -3,22 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using LogicLayer;
 using LogicLayerInterfaces;
 using DataObjects;
 using WPFPresentation;
 using DataAccessInterfaces;
 using DataAccessFakes;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 using MVCPresentationWithIdentity.Models;
 
 namespace MVCPresentationWithIdentity.Controllers
 {
     public class SupplierController : Controller
     {
-        ISupplierManager _supplierManager;
+        ISupplierManager _supplierManager = null;
         IActivityManager _activityManager = null;
         IServiceManager _serviceManager = null;
-        SupplierScheduleViewModel _supplierDetails = new SupplierScheduleViewModel();
+        IUserManager _userManager;
+        IEmailProvider _emailProvider;
+        SupplierScheduleViewModel _supplierSchedule = new SupplierScheduleViewModel();
         public int _pageSize = 10;
 
 
@@ -29,11 +36,14 @@ namespace MVCPresentationWithIdentity.Controllers
         /// Description:
         /// Default constructor for the Supplier controller
         /// </summary>
-        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager)
+        public SupplierController(ISupplierManager supplierManager, IActivityManager activityManager, IServiceManager serviceManager, IUserManager userManager, IEmailProvider emailProvider)
+
         {
             _supplierManager = supplierManager;
             _activityManager = activityManager;
             _serviceManager = serviceManager;
+            _userManager = userManager;
+            _emailProvider = emailProvider;
         }
 
         public PartialViewResult SupplierNav(int eventId)
@@ -95,7 +105,7 @@ namespace MVCPresentationWithIdentity.Controllers
                     throw ex;
                 }
             }
-            return View(_model);
+            return View("ViewSuppliers", _model);
         }
 
         /// <summary>
@@ -126,10 +136,10 @@ namespace MVCPresentationWithIdentity.Controllers
             Supplier supplier = new Supplier();
             supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
 
-            _supplierDetails.Supplier = supplier;
-            GetAvailability(_supplierDetails.Supplier.SupplierID);
+            _supplierSchedule.Supplier = supplier;
+            GetAvailability(_supplierSchedule.Supplier.SupplierID);
 
-            return View("~/Views/Supplier/ViewSupplierSchedule.cshtml", _supplierDetails);
+            return View("~/Views/Supplier/ViewSupplierSchedule.cshtml", _supplierSchedule);
         }
 
         /// <summary>
@@ -198,8 +208,8 @@ namespace MVCPresentationWithIdentity.Controllers
                 availabilityException = _supplierManager.RetrieveSupplierAvailabilityExceptionBySupplierID(supplierID);
             }
 
-            _supplierDetails.Availability = availability;
-            _supplierDetails.AvailabilityException = availabilityException;
+            _supplierSchedule.Availability = availability;
+            _supplierSchedule.AvailabilityException = availabilityException;
         }
         /// <summary>
         /// Logan Baccam
@@ -267,7 +277,8 @@ namespace MVCPresentationWithIdentity.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Location not found.");
+                ModelState.AddModelError("", "Supplier not found. Please refresh the page and try again.");
+                return this.ViewSuppliers();
             }
             return View(model);
         }
@@ -286,27 +297,360 @@ namespace MVCPresentationWithIdentity.Controllers
             {
                 return RedirectToAction("ViewSuppliers", "Supplier");
             }
-            SupplierDetailsViewModel _supplier = new SupplierDetailsViewModel();
+            SupplierServicesViewModel model = new SupplierServicesViewModel();
             List<Service> services = new List<Service>();
-            services = _serviceManager.RetrieveServicesBySupplierID(supplierID);
-            _supplier.Supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
-            List<ServiceVM> serviceVMs = new List<ServiceVM>();
-            foreach (Service service in services)
+            model.CanEdit = false;
+            try
             {
-                serviceVMs.Add(new ServiceVM()
+                services = _serviceManager.RetrieveServicesBySupplierID(supplierID);
+                model.Supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+                List<ServiceVM> serviceVMs = new List<ServiceVM>();
+                foreach (Service service in services)
                 {
-                    ServiceID = service.ServiceID,
-                    SupplierID = service.SupplierID,
-                    ServiceName = service.ServiceName,
-                    Price = service.Price,
-                    Description = service.Description,
-                    ServiceImagePath = service.ServiceImagePath
-                });
+                    serviceVMs.Add(new ServiceVM()
+                    {
+                        ServiceID = service.ServiceID,
+                        SupplierID = service.SupplierID,
+                        ServiceName = service.ServiceName,
+                        Price = service.Price,
+                        Description = service.Description,
+                        ServiceImagePath = service.ServiceImagePath
+                    });
+                }
+                model.Services = serviceVMs;
+                var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                ApplicationUser applicationUser = userManager.FindById(User.Identity.GetUserId());
+                if (applicationUser != null && applicationUser.UserID == model.Supplier.UserID)
+                {
+                    model.CanEdit = true;
+                }
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
             }
+            
 
-            _supplier.Services = serviceVMs;
 
-            return View(_supplier);
+            return View("ViewSupplierServices", model);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler to view supplier applications awaiting approval
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrator")]
+        public ActionResult ViewSupplierApplications(int page = 1)
+        {
+            List<Supplier> suppliers = new List<Supplier>();
+            SupplierListViewModel model;
+
+            try
+            {
+                suppliers = _supplierManager.RetrieveUnapprovedSuppliers();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            model = new SupplierListViewModel()
+            {
+                Suppliers = suppliers.OrderBy(x => x.SupplierID)
+                                              .Skip((page - 1) * _pageSize)
+                                              .Take(_pageSize),
+                PagingInfo = new PagingInfo()
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = _pageSize,
+                    TotalItems = suppliers.Count()
+                }
+            };
+            return View("ViewSupplierApplications", model);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler for approving supplier requests. 
+        /// </summary>
+        /// <param name="supplierID">ID of supplier being approved</param>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Approve(int supplierID)
+        {
+            try
+            {
+                _supplierManager.ApproveSupplier(supplierID);
+                Supplier supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+
+                // This is messy, but there isn't much of a better way.
+                User desktopUser = _userManager.RetrieveUserByUserID(supplier.UserID ?? 0);
+                if(desktopUser != null)
+                {
+                    _userManager.AddUserRole(supplier.UserID ?? 0, "Supplier");
+                    var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                    ApplicationUser user = userManager.FindByEmail(desktopUser.EmailAddress);
+                    if(user != null)
+                    {
+                        userManager.AddToRole(user.Id, "Supplier");
+                    }
+                }
+                _emailProvider.SendEmail("Supplier Application", "Your supplier request has been approved and added to the supplier listing.", supplier.Email);
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return ViewSupplierApplications();
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler for denying supplier requests
+        /// </summary>
+        /// <param name="supplierID">ID of supplier being denied</param>
+        /// <returns></returns>
+        [Authorize(Roles = "Administrator")]
+        public ActionResult Deny(int supplierID)
+        {
+            try
+            {
+                _supplierManager.DisapproveSupplier(supplierID);
+                Supplier supplier = _supplierManager.RetrieveSupplierBySupplierID(supplierID);
+                _emailProvider.SendEmail("Supplier Application", "Your supplier request has been denied. You can find the application in your user profile. Please review the information entered for accuracy and fix any mistakes.", supplier.Email);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return ViewSupplierApplications();
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// For getting to the CreateSupplier page
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        public ActionResult CreateSupplier()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Logan Baccam
+        /// Created: 2022/04/22
+        /// 
+        /// Description:
+        /// Method for creating a new Supplier
+        /// <param name="_supplier"/>
+        /// </summary>
+        [Authorize]
+        [HttpPost]
+        public ActionResult CreateSupplier(Supplier supplier)
+        {
+            SupplierDetailsViewModel model = new SupplierDetailsViewModel();
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (supplier.UserID == null)
+                    {
+                        var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                        ApplicationUser user = userManager.FindById(User.Identity.GetUserId());
+                        supplier.UserID = user.UserID;
+                    }
+                    if (_supplierManager.CreateSupplier(supplier) == 1)
+                    {
+                        model.Supplier = _supplierManager.RetrieveUnapprovedSuppliers().Single(x => x.Name == supplier.Name && x.Description == supplier.Description);
+                        TempData["Message"] = "success";
+                        return RedirectToAction("ViewSupplierDetails", new { supplierID = model.Supplier.SupplierID });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
+            }
+            return View(model);
+        }
+
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler for supplier service editting
+        /// </summary>
+        /// <param name="supplierID">ID of supplier containing the service</param>
+        /// <param name="serviceID">ID of service.</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult EditSupplierService(int supplierID, int serviceID)
+        {
+            SupplierServiceEditModel model = new SupplierServiceEditModel();
+            try
+            {
+                Service service = _serviceManager.RetrieveServiceByServiceID(serviceID);
+                model = new SupplierServiceEditModel()
+                {
+                    Description = service.Description,
+                    NewDescription = service.Description,
+                    ServiceName = service.ServiceName,
+                    NewName = service.ServiceName,
+                    Price = service.Price,
+                    NewPrice = service.Price,
+                    ServiceID = serviceID,
+                    ServiceImagePath = service.ServiceImagePath,
+                    SupplierID = service.SupplierID
+                };
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return View(model); 
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Get handler for supplier service creation
+        /// </summary>
+        /// <param name="supplierID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult CreateSupplierService(int supplierID)
+        {
+            SupplierServiceEditModel model = new SupplierServiceEditModel();
+            try
+            {
+                model = new SupplierServiceEditModel()
+                {
+                    Description = "",
+                    NewDescription = "",
+                    ServiceName = "",
+                    NewName = "",
+                    Price = 0.0m,
+                    NewPrice = 0.0m,
+                    ServiceID = -1,
+                    ServiceImagePath = "",
+                    SupplierID = supplierID
+                };
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            return View("EditSupplierService", model);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// post handler for supplier service editting
+        /// </summary>
+        /// <param name="model">model containing edit/create data</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult EditSupplierService(SupplierServiceEditModel model)
+        {
+            if(ModelState.IsValid)
+            {
+
+                try
+                {
+                    string newImageName = model.ServiceImagePath;
+                    if (model.NewImage != null)
+                    {
+                        string uuid = Guid.NewGuid().ToString();
+                        model.NewImage.SaveAs(Server.MapPath("~/Content/Images/LocationImages/") + uuid + Path.GetExtension(model.NewImage.FileName));
+                        newImageName = uuid + Path.GetExtension(model.NewImage.FileName);
+                    }
+                    Service newService = new Service()
+                    {
+                        Description = model.NewDescription,
+                        Price = model.NewPrice,
+                        ServiceID = model.ServiceID,
+                        SupplierID = model.SupplierID,
+                        ServiceImagePath = newImageName,
+                        ServiceName = model.NewName
+                    };
+                    if (model.ServiceID == -1)
+                    {
+                        if (_serviceManager.CreateService(newService))
+                        {
+                            return RedirectToAction("ViewSupplierServices", new { supplierID = model.SupplierID });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Failed to create service.");
+                        }
+                    }
+                    else
+                    {
+                        Service oldService = new Service()
+                        {
+                            Description = model.Description,
+                            Price = model.Price,
+                            ServiceID = model.ServiceID,
+                            ServiceImagePath = model.ServiceImagePath,
+                            ServiceName = model.ServiceName,
+                            SupplierID = model.SupplierID
+                        };
+                        if (_serviceManager.EditService(oldService, newService))
+                        {
+                            return RedirectToAction("ViewSupplierServices", new { supplierID = model.SupplierID });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Failed to update service.");
+                        }
+                    }
+                } catch(Exception ex) {
+
+                    ModelState.AddModelError("", ex.Message);
+                }
+            }
+            return View(model);
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Post handler for supplier service Deletion
+        /// </summary>
+        /// <param name="serviceID">Id of service to delete</param>
+        /// <param name="supplierID">ID of supplier to return to</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DeleteService(int serviceID, int supplierID)
+        {
+            try
+            {
+                bool result = _serviceManager.DeleteService(serviceID);
+            } catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message); 
+                return this.ViewSupplierServices(supplierID);
+            }
+            return RedirectToAction("ViewSupplierServices", new { supplierID = supplierID });
         }
     }
 }

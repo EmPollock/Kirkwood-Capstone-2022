@@ -36,5 +36,9 @@ namespace MVCPresentationWithIdentity.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<DataObjects.Location> Locations { get; set; }
+
+        public System.Data.Entity.DbSet<DataObjects.Entrance> Entrances { get; set; }
     }
 }

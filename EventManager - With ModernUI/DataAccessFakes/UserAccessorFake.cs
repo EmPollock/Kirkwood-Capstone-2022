@@ -257,6 +257,19 @@ namespace DataAccessFakes
             return user;
         }
 
+        public User SelectUserByUserID(int userID)
+        {
+            User result = null;
+            foreach(User user in fakeUsers)
+            {
+                if(user.UserID == userID)
+                {
+                    result = user;
+                }
+            }
+            return result;
+        }
+
         /// <summary>
         /// 
         /// Christopher Repko (Based on Jim Glasgow's in-class examples)
