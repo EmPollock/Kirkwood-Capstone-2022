@@ -235,9 +235,9 @@
     <Compile Include="Migrations\202204292245564_EmptyMigration.Designer.cs">
       <DependentUpon>202204292245564_EmptyMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202205010214349_add.cs" />
-    <Compile Include="Migrations\202205010214349_add.Designer.cs">
-      <DependentUpon>202205010214349_add.cs</DependentUpon>
+    <Compile Include="Migrations\202205010229349_not sure.cs" />
+    <Compile Include="Migrations\202205010229349_not sure.Designer.cs">
+      <DependentUpon>202205010229349_not sure.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -504,8 +504,8 @@
     <EmbeddedResource Include="Migrations\202204292245564_EmptyMigration.resx">
       <DependentUpon>202204292245564_EmptyMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205010214349_add.resx">
-      <DependentUpon>202205010214349_add.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202205010229349_not sure.resx">
+      <DependentUpon>202205010229349_not sure.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

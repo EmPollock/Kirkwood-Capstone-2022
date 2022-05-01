@@ -58,7 +58,6 @@ namespace MVCPresentationWithIdentity.Controllers.Volunteer
                 catch (Exception ex)
                 {
                     // good, not a volunteer already
-
                     Availability availability = new Availability()
                     {
                         DateID = DateTime.Now,
