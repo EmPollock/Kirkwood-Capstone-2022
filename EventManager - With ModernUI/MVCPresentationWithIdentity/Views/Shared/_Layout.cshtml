@@ -48,15 +48,20 @@
                         @Html.ActionLink("Locations", "ViewLocations", "Location", routeValues: null, htmlAttributes: new { @class = "nav-link" })
                     </li>
 
-                    <li class="nav-item">
-                        @*<a class="nav-link" href="">Nav-Bar 2</a>*@
-                        @Html.ActionLink("Volunteers", "ViewVolunteers", "Volunteer", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-                        @*@Html.ActionLink("Volunteers", "ViewRequests", "Volunteer", routeValues: null, htmlAttributes: new { @class = "nav-link" })*@
-                    </li>
 
-                    @*<li class="nav-item">
-            @Html.ActionLink("Create", "EventCreate", "EventCreate", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-        </li>*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Volunteers
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropDown">
+                            @Html.ActionLink("Apply To Volunteer", "VolunteerApplication", "VolunteerApplication", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                            @Html.ActionLink("View Volunteers", "ViewVolunteers", "Volunteer", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })
+                        </ul>
+                        </li>
+
+                        @*<li class="nav-item">
+                @Html.ActionLink("Create", "EventCreate", "EventCreate", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+            </li>*@
 
                     <li class="nav-item">
                         @*<a class="nav-link" href="">Nav-bar 3</a>*@
@@ -94,7 +99,15 @@
                     <div class="alert alert-dismissible alert-danger">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         <strong class="text-white">Oh, no! There was an error.</strong>
-                        <p class="text-white">@TempData["message"]</p>
+                        <p class="text-white">@TempData["errorMessage"]</p>
+                    </div>
+                }
+                @if (TempData["successMessage"] != null)
+                {
+                    <div class="alert alert-dismissible alert-success">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong class="text-white">Good news!</strong>
+                        <p class="text-white">@TempData["successMessage"]</p>
                     </div>
                 }
                 @RenderBody()

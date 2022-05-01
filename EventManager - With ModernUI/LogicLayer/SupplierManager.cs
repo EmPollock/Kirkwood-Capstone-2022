@@ -410,27 +410,27 @@ namespace LogicLayer
         /// <returns>A supplier with the given supplierId</returns>
         public int CreateSupplier(Supplier supplier)
         {
-            if (supplier.Name.Length > 160 || supplier.Name.Length < 1) 
+            if (supplier.Name.Length > 160 || supplier.Name.Length < 1)
             {
                 throw new ApplicationException("Name must be bewtween 1-160 characters.");
             }
-            if (supplier.Description != null && supplier.Description.Length > 3000) 
+            if (supplier.Description != null && supplier.Description.Length > 3000)
             {
                 throw new ApplicationException("Description cannot exceed 3000 characters");
             }
-            if (supplier.Email.Length > 100 || supplier.Email.Length < 1) 
+            if (supplier.Email.Length > 100 || supplier.Email.Length < 1)
             {
                 throw new ApplicationException("Email must be bewtween 1-100 characters.");
             }
-            if (supplier.Phone.Length > 15 || supplier.Phone.Length < 1) 
+            if (supplier.Phone.Length > 15 || supplier.Phone.Length < 1)
             {
                 throw new ApplicationException("Invalid phone number.");
             }
-            if (supplier.Address1.Length > 100 || supplier.Address1.Length < 1) 
+            if (supplier.Address1.Length > 100 || supplier.Address1.Length < 1)
             {
                 throw new ApplicationException("Invalid address.");
             }
-            if (supplier.ZipCode.Length > 160 || supplier.ZipCode.Length < 1) 
+            if (supplier.ZipCode.Length > 160 || supplier.ZipCode.Length < 1)
             {
                 throw new ApplicationException("Invalid zip code.");
             }
@@ -444,6 +444,28 @@ namespace LogicLayer
                 throw new ApplicationException("Unable to create supplier. " + e.Message);
             }
             return rows;
+        }
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Function to retrieve a list of suppliers related to a specific user.
+        /// </summary>
+        /// <param name="userID">ID of user to look up.</param>
+        /// <returns>A list of suppliers related to a specific user.</returns>
+        public List<Supplier> RetrieveSuppliersByUserID(int userID)
+        {
+            List<Supplier> result = new List<Supplier>();
+            try
+            {
+                result = _supplierAccessor.SelectSuppliersByUserID(userID);
+            } catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve list of suppliers.", ex);
+            }
+            return result;
         }
     }
 }

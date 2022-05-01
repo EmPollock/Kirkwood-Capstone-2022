@@ -66,6 +66,7 @@
     <Compile Include="TaskManager.cs" />
     <Compile Include="UserImageManager.cs" />
     <Compile Include="UserManager.cs" />
+    <Compile Include="VolunteerApplicationsManager.cs" />
     <Compile Include="VolunteerManager.cs" />
     <Compile Include="VolunteerNeedManager.cs" />
     <Compile Include="VolunteerRequestManager.cs" />

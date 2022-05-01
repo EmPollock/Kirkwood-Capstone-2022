@@ -56,6 +56,7 @@
     <Compile Include="UserAccessorFake.cs" />
     <Compile Include="UserImageAccessorFake.cs" />
     <Compile Include="VolunteerAccessorFake.cs" />
+    <Compile Include="VolunteerApplicationsAccessorFake.cs" />
     <Compile Include="VolunteerNeedAccessorFake.cs" />
     <Compile Include="VolunteerRequestAccessorFake.cs" />
     <Compile Include="VolunteerReviewAccessorFake.cs" />

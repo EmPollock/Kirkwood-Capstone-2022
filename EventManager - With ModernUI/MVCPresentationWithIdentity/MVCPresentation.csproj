@@ -202,6 +202,7 @@
     <Compile Include="Controllers\Location\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Supplier\SupplierController.cs" />
+    <Compile Include="Controllers\Volunteer\VolunteerApplicationController.cs" />
     <Compile Include="Controllers\Volunteer\VolunteerController.cs" />
     <Compile Include="Controllers\Location\ParkingLotController.cs" />
     <Compile Include="Controllers\Location\SublocationController.cs" />
@@ -229,6 +230,14 @@
     <Compile Include="Migrations\202203251633000_Odds and ends.cs" />
     <Compile Include="Migrations\202203251633000_Odds and ends.Designer.cs">
       <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202204292245564_EmptyMigration.cs" />
+    <Compile Include="Migrations\202204292245564_EmptyMigration.Designer.cs">
+      <DependentUpon>202204292245564_EmptyMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205010229349_not sure.cs" />
+    <Compile Include="Migrations\202205010229349_not sure.Designer.cs">
+      <DependentUpon>202205010229349_not sure.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -464,6 +473,7 @@
     <Content Include="Views\Location\CreateReview.cshtml" />
     <Content Include="Views\Event\ItineraryDetails.cshtml" />
     <Content Include="Views\Volunteer\CreateReview.cshtml" />
+    <Content Include="Views\VolunteerApplication\VolunteerApplication.cshtml" />
     <Content Include="Views\Supplier\EditSupplier.cshtml" />
     <Content Include="Views\Supplier\ViewSupplierApplications.cshtml" />
     <Content Include="Views\Supplier\CreateSupplier.cshtml" />
@@ -473,7 +483,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\EventService\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -495,6 +504,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202203251633000_Odds and ends.resx">
       <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204292245564_EmptyMigration.resx">
+      <DependentUpon>202204292245564_EmptyMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205010229349_not sure.resx">
+      <DependentUpon>202205010229349_not sure.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

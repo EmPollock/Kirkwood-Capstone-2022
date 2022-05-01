@@ -652,9 +652,9 @@ namespace MVCPresentationWithIdentity.Controllers
             try
             {
                 bool result = _serviceManager.DeleteService(serviceID);
-            } catch(Exception ex)
+            } catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message); 
+                ModelState.AddModelError("", ex.Message);
                 return this.ViewSupplierServices(supplierID);
             }
             return RedirectToAction("ViewSupplierServices", new { supplierID = supplierID });
@@ -707,7 +707,66 @@ namespace MVCPresentationWithIdentity.Controllers
                 }
                 return RedirectToAction("ViewSuppliers", "Supplier", review.ForeignID);
             }
-            return View(review);            
+            return View(review);    
+        }
+
+        /// <summary>        
+        /// Christopher Repko
+        /// Created: 2022/04/28
+        /// 
+        /// Description
+        /// Get handler for ViewUserSuppliers view
+        /// </summary>
+        /// <param name="userID">ID of user to use for lookup</param>
+        /// <param name="page">what page of results to show.</param>
+        /// <returns>The ViewSuppliers view with the suppliers related to a specific user loaded.</returns>
+        [HttpGet]
+        public ActionResult ViewUserSuppliers(int userID, int page=1)
+        {
+            List<Supplier> _suppliers = new List<Supplier>();
+            List<Reviews> _supplierReviews = new List<Reviews>();
+            SupplierListViewModel _model = null;
+
+            if (_suppliers is null || _suppliers.Count == 0)
+            {
+                try
+                {
+                    _suppliers = _supplierManager.RetrieveSuppliersByUserID(userID);
+                    foreach (Supplier supplier in _suppliers)
+                    {
+                        int avg = 0;
+                        int total = 0;
+                        _supplierReviews = _supplierManager.RetrieveSupplierReviewsBySupplierID(supplier.SupplierID);
+                        if (_supplierReviews.Count != 0)
+                        {
+                            foreach (Reviews review in _supplierReviews)
+                            {
+                                avg += review.Rating;
+                                total++;
+                            }
+                            int sum = avg / total;
+                            supplier.AverageRating = sum;
+                        }
+                    }
+                    _model = new SupplierListViewModel()
+                    {
+                        Suppliers = _suppliers.OrderBy(x => x.SupplierID)
+                                              .Skip((page - 1) * _pageSize)
+                                              .Take(_pageSize),
+                        PagingInfo = new PagingInfo()
+                        {
+                            CurrentPage = page,
+                            ItemsPerPage = _pageSize,
+                            TotalItems = _suppliers.Count()
+                        }
+                    };
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return View("ViewSuppliers", _model);
         }
     }
 }

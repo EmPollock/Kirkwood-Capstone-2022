@@ -24,21 +24,25 @@ Created: 2022/01/25
 Description:
 Volunteers table
 **************************************************************
-<Updater Name>
-Updated: yyyy/mm/dd
+Derrick Nagy
+Updated: 2022/04/27
 
-Description: 
+Description:
+Added approved field
+ 
 ****************************************************************/
 
 print '' print '*** creating Volunteers table'
 CREATE TABLE [dbo].[Volunteer] (
 	[VolunteerID]		[int] IDENTITY(100000,1)	NOT NULL
-	,[UserID]			[int] 						NOT NULL
+	,[UserID]			[int] 						NOT NULL 
 	,[Active]			[bit]						NOT NULL DEFAULT 1
+	,[Approved]			[bit]						NOT NULL DEFAULT 0
 
 	CONSTRAINT [pk_VolunteerID] PRIMARY KEY([VolunteerID]),
 	CONSTRAINT [fk_Volunteer_UserID] FOREIGN KEY([UserID])
-		REFERENCES [Users]([UserID])
+		REFERENCES [Users]([UserID]),
+	CONSTRAINT [con_UserID] UNIQUE([UserID])
 )
 GO
 
@@ -54,27 +58,34 @@ GO
  Updated: 2022/04/08
 
  Description: Added user volunteer test data
+***************************************************************
+ Derrick Nagy
+ Updated: 2022/04/28
+
+ Description: Added user approval(set to true for all users in this insert)
 ****************************************************************/
 print '' print '*** test records for Volunteers table'
 GO
 INSERT INTO [dbo].[Volunteer] (
 	[UserID],
-	[Active]	
+	[Active],
+	[Approved]
 )VALUES 
-	(100000, 1)
-	,(100001, 1)
-	,(100002, 1)
-	,(100003, 1)
-	,(100004, 1)
-	,(100005, 1)
-	,(100006, 1)
-	,(100007, 1)
-	,(100008, 1)
-	,(100009, 1)
-	,(100010, 1)
-	,(100011, 1)
-	,(100012, 1)
-	,(100013, 1)
+	(100000, 1, 1)
+	,(100001, 1, 1)
+	,(100002, 1, 1)
+	,(100003, 1, 1)
+	,(100004, 1, 1)
+	,(100005, 1, 1)
+	,(100006, 1, 1)
+	,(100007, 1, 1)
+	,(100008, 1, 1)
+	,(100009, 1, 1)
+	,(100010, 1, 1)
+	,(100011, 1, 1)
+	,(100012, 1, 1)
+	,(100013, 1, 1)
+
 GO
 
 
@@ -250,4 +261,6 @@ INSERT INTO [dbo].[VolunteerType] (
 	,(100011, "Open Volunteer")
 	,(100012, "Open Volunteer")
 	,(100013, "Open Volunteer")
+
+	
 GO

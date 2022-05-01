@@ -86,7 +86,7 @@ namespace DataAccessFakes
             _fakeSuppliers.Add(new Supplier()
             {
                 SupplierID = 100002,
-                UserID = 100000,
+                UserID = 100001,
                 Name = "Test Supplier 3",
                 Description = "Description of Test Supplier 3 goes here.",
                 Phone = "333-333-3333",
@@ -109,7 +109,7 @@ namespace DataAccessFakes
             _fakeSuppliers.Add(new Supplier()
             {
                 SupplierID = 100003,
-                UserID = 100000,
+                UserID = 100001,
                 Name = "Test Supplier 4",
                 Description = "Description of Test Supplier 4 goes here.",
                 Phone = "444-444-4444",
@@ -763,6 +763,27 @@ namespace DataAccessFakes
             rows += 1;
 
             return rows;
+        }
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Grabs a list of all suppliers with a given userID.
+        /// </summary>
+        /// <param name="userID">UserID to be searched for.</param>
+        /// <returns>a list of all suppliers with a given userID</returns>
+        public List<Supplier> SelectSuppliersByUserID(int userID)
+        {
+            List<Supplier> result = new List<Supplier>();
+            foreach(Supplier supplier in _fakeSuppliers)
+            {
+                if(supplier.UserID == userID)
+                {
+                    result.Add(supplier);
+                }
+            }
+            return result;
         }
     }
 }

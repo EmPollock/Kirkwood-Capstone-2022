@@ -10,7 +10,9 @@
     @*<div class="mt-4 p-5 bg-secondary text-white rounded">*@
     <div class="mt-3 p-4 w-auto bg-secondary text-dark rounded ">
         <h1>Tadpole Events</h1>
-        <p>Your events, your community, growing into a frog or something.</p>
+        <p>Your events, your community, growing together.</p>
+        <span class="col-sm-2">@Html.ActionLink("Apply To Volunteer For Events", "VolunteerApplication", "VolunteerApplication", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })</span>
+
     </div>
     <div class="row table-responsive-md mt-3 ">
         <table class="table table-bordered table-responsive" id="eventListTable">
