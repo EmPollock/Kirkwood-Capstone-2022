@@ -2,7 +2,7 @@
 
 <div class="d-none d-md-flex flex-column">
     @Html.ActionLink("Details", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
-    @Html.ActionLink("Tasks", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
+    @Html.ActionLink("Tasks", "EventTaskList", "TaskList", new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
     @Html.ActionLink("Itenerary", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
     @Html.ActionLink("Budget", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })
     @Html.ActionLink("Advertising", null, null, new { eventID = Model }, new { @class = "btn btn-block btn-secondary btn-lg" })

@@ -184,5 +184,55 @@ namespace MVCPresentationWithIdentity.Controllers
             }
             return View("ViewRequests", requestViewModels);
         }
+
+        /// <summary>
+        /// Jace Pettinger
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Action result for viewing a specific volunteer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>ActionResult</returns>
+        public ActionResult VolunteerDetails(string id)
+        {
+            if (id == null || id == "")
+            {
+                return RedirectToAction("ViewVolunteers");
+            }
+            List<Volunteer> volunteers = new List<Volunteer>();
+            List<Volunteer> volunteerReviews = new List<Volunteer>();
+            Volunteer selectedVolunteer = null;
+            try
+            {
+                int volunteerID = int.Parse(id);
+                volunteers = _volunteerManager.RetrieveAllVolunteers();
+                volunteerReviews = _volunteerManager.RetrieveAllVolunteerReviews();
+                foreach (var volunteer in volunteers)
+                {
+                    if (volunteer.UserID == volunteerID)
+                    {
+                        selectedVolunteer = volunteer;
+                    }
+                }
+                if (selectedVolunteer == null)
+                {
+                    return RedirectToAction("ViewVolunteers");
+                }
+                foreach (var review in volunteerReviews)
+                {
+                    if (review.VolunteerID == selectedVolunteer.VolunteerID)
+                    {
+                        selectedVolunteer.Rating = review.Rating;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // don't crash, just go back
+                return RedirectToAction("ViewVolunteers");
+            }
+                return View(selectedVolunteer);
+        }
     }
 }   

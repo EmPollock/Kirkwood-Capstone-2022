@@ -38,5 +38,8 @@ namespace MVCPresentationWithIdentity.Models
         }
 
         public System.Data.Entity.DbSet<DataObjects.Availability> Availabilities { get; set; }
+        public System.Data.Entity.DbSet<DataObjects.Location> Locations { get; set; }
+
+        public System.Data.Entity.DbSet<DataObjects.Entrance> Entrances { get; set; }
     }
 }

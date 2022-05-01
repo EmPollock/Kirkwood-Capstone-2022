@@ -29,11 +29,49 @@
                 $.each(event, function (i, v) {
                     events.push({
                         title: v.EventName,
+                        id: v.EventID,
+                        extendedProps: {
+                            type: 'Event',
+                            locID: v.LocationID
+                        },
+                        backgroundColor: '#75caeb',
+                        //textColor: '#000',
+                        color: '#ff9132',
                         start: moment(v.StartTime).format(),
                         end: moment(v.EndTime).format()
                     });
                 })
-                GenerateCalendar(events);
+
+
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetSublocationEvents", new { id = Model.Location.LocationID })',
+                    success: function (event) {
+                        $.each(event, function (i, v) {
+                            events.push({
+                            title: v.ActivityName,
+                            id: v.ActivityID,
+                            extendedProps: {
+                                type: 'Activity',
+                                locID: v.SublocationID
+                            },
+                            start: moment(v.StartTime).format(),
+                            end: moment(v.EndTime).format(),
+                                backgroundColor: '#38bb3c',
+                                //textColor: '#000',
+                                color: '#ff9132'
+                        });
+                    })
+                    GenerateCalendar(events);
+                    },
+                    error: function (error) {
+                        alert('Could not load sublocations events.');
+                    }
+                });
+
+
+
             },
             error: function (error) {
                 alert('Could not load locations events.');
@@ -76,6 +114,9 @@
                     var dialog = document.getElementById('calDialog');
 
                     document.getElementById('eventName').innerHTML = e.event.title;
+                    document.getElementById('eventID').innerHTML = e.event.id;
+                    document.getElementById('eventType').innerHTML = e.event.extendedProps.type;
+                    document.getElementById('locID').innerHTML = e.event.extendedProps.locID;
                     document.getElementById('start').innerHTML = 'Starts: ' + moment(e.event.start).format("LLL");
                     document.getElementById('end').innerHTML = 'Ends: ' + moment(e.event.end).format("LLL");
 
@@ -231,6 +272,21 @@
         };
     });
 
+    function DeleteEvent(event, eventType, locationID) {
+        
+        $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("DeleteEventOrActivity")',
+                    data: {eventID: event, eventType: eventType, locationID: locationID},
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function (error) {
+                        alert('Could not delete. Please try again later.');
+                    }
+                });
+    };
+
 </script>
 
 
@@ -258,6 +314,10 @@
         <dialog id="calDialog">
             <header>
                 <h2 id="eventName"></h2>
+                <hidden id="eventID" hidden></hidden>
+                <hidden id="eventType" hidden></hidden>
+                <hidden id="locID" hidden></hidden>
+                <button onclick="DeleteEvent(document.getElementById('eventID').innerHTML, document.getElementById('eventType').innerHTML, document.getElementById('locID').innerHTML)">Delete</button>
             </header>
             <main>
                 <p id="description"></p>

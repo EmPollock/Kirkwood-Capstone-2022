@@ -197,6 +197,7 @@
     <Compile Include="Controllers\Event\EventCreateController.cs" />
     <Compile Include="Controllers\Event\EventListController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Event\TaskListController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Location\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -233,9 +234,14 @@
     <Compile Include="Migrations\202204272209056_bring up to data.cs" />
     <Compile Include="Migrations\202204272209056_bring up to data.Designer.cs">
       <DependentUpon>202204272209056_bring up to data.cs</DependentUpon>
+    <Compile Include="Migrations\202204292245564_EmptyMigration.cs" />
+    <Compile Include="Migrations\202204292245564_EmptyMigration.Designer.cs">
+      <DependentUpon>202204292245564_EmptyMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EntranceModel.cs" />
+    <Compile Include="Models\DeveloperViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LocationDetailsViewModel.cs" />
     <Compile Include="Models\LocationListViewModel.cs" />
@@ -246,6 +252,9 @@
     <Compile Include="Models\ParkingLotModel.cs" />
     <Compile Include="Models\SupplierListViewModel.cs" />
     <Compile Include="Models\SupplierScheduleViewModel.cs" />
+    <Compile Include="Models\SupplierServiceEditModel.cs" />
+    <Compile Include="Models\TaskListViewModel.cs" />
+    <Compile Include="Models\TaskViewModel.cs" />
     <Compile Include="Models\VolunteerListViewModel.cs" />
     <Compile Include="Models\SublocationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -254,6 +263,16 @@
   <ItemGroup>
     <Content Include="Content\bootstrap-theme-lumen.css" />
     <Content Include="Content\bootstrap-theme-quartz.css" />
+    <Content Include="Content\Images\AustinTimmerman.jpg" />
+    <Content Include="Content\Images\chrepko.png" />
+    <Content Include="Content\Images\drnagy86.jpg" />
+    <Content Include="Content\Images\EmPollock.jpg" />
+    <Content Include="Content\Images\JacePettinger.jpg" />
+    <Content Include="Content\Images\k-howell.png" />
+    <Content Include="Content\Images\loganb7.png" />
+    <Content Include="Content\Images\MikeCahow.png" />
+    <Content Include="Content\Images\Neiftly.png" />
+    <Content Include="Content\Images\TechnolationWC.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -425,6 +444,10 @@
     <Content Include="Views\Volunteer\ViewVolunteers.cshtml" />
     <Content Include="Views\Admin\Details.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Location\Details.cshtml" />
+    <Content Include="Views\Location\EntranceIndex.cshtml" />
+    <Content Include="Views\Location\EntranceEdit.cshtml" />
+    <Content Include="Views\Location\EntranceCreate.cshtml" />
     <Content Include="Views\Location\ViewLocations.cshtml" />
     <Content Include="Views\Location\ViewLocationSchedule.cshtml" />
     <Content Include="Views\Supplier\ViewSuppliers.cshtml" />
@@ -446,6 +469,12 @@
     <Content Include="Views\Location\CreateLocation.cshtml" />
     <Content Include="Views\Event\ItineraryDetails.cshtml" />
     <Content Include="Views\VolunteerApplication\VolunteerApplication.cshtml" />
+    <Content Include="Views\Supplier\EditSupplier.cshtml" />
+    <Content Include="Views\Supplier\ViewSupplierApplications.cshtml" />
+    <Content Include="Views\Supplier\CreateSupplier.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
+    <Content Include="Views\Supplier\EditSupplierService.cshtml" />
+    <Content Include="Views\TaskList\EventTaskList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -473,6 +502,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202204272209056_bring up to data.resx">
       <DependentUpon>202204272209056_bring up to data.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202204292245564_EmptyMigration.resx">
+      <DependentUpon>202204292245564_EmptyMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

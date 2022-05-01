@@ -73,9 +73,17 @@
                     </li>
                     @if (User.IsInRole("Administrator"))
                     {
-                        <li>@Html.ActionLink("Administration", "Index", "Admin", routeValues: null, htmlAttributes: new { @class = "nav-link" })</li>
-                    }
-                </ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administration
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li>@Html.ActionLink("User Administration", "Index", "Admin", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Supplier Applications", "ViewSupplierApplications", "Supplier", routeValues: null, htmlAttributes: new { @class = "dropdown-item" })</li>
+                            </ul>
+                        </li>
+                     }
+                    </ul>
 
                     <ul class="navbar-nav ms-auto">
                         @Html.Partial("_LoginPartial")
