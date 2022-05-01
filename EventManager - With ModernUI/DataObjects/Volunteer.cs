@@ -13,6 +13,12 @@ namespace DataObjects
     /// Description:
     /// The volunteer data object (which is very similar to the user data object and may need to be changed
     /// with some discussions)
+    /// 
+    /// Derrick Nagy
+    /// Created: 2022/04/28
+    /// 
+    /// Description:
+    /// Added approved field
     /// </summary>
     public class Volunteer
     {
@@ -31,6 +37,7 @@ namespace DataObjects
         public int Rating { get; set; }
         public bool Active { get; set; }
         public DateTime DateCreated { get; set; }
+        public bool Approved { get; set; }
     }
 
     //public class VolunteerVM : Volunteer

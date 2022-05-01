@@ -36,10 +36,12 @@ namespace MVCPresentationWithIdentity.Infrastructure
             kernel.Bind<IServiceManager>().To<ServiceManager>();
             kernel.Bind<ISublocationManager>().To<SublocationManager>();
             kernel.Bind<IParkingLotManager>().To<ParkingLotManager>();
-
+            kernel.Bind<IVolunteerApplicationsManager>().To<VolunteerApplicationsManager>();
 
             // fake
             //kernel.Bind<IEventManager>().To<LogicLayer.EventManager>().WithConstructorArgument("eventAccessor", new EventAccessorFake());
+            //kernel.Bind<IVolunteerApplicationsManager>().To<VolunteerApplicationsManager>().WithConstructorArgument("volunteerApplicationsAccessor", new VolunteerApplicationsAccessorFake());
+
         }
 
         public object GetService(Type serviceType)

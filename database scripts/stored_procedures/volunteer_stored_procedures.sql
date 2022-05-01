@@ -109,3 +109,85 @@ AS
 		WHERE [Volunteer].[UserID] = @UserID
 	END	
 GO
+
+
+/***************************************************************
+Derrick Nagy
+Created: 2022/04/28
+
+Description:
+Stored procedure that creates a new volunteer record for a user,
+sets approval to false, creates a new availability record,
+and associates it with the volunteer id for the user
+****************************************************************/
+print '' print '*** creating sp_insert_volunteer_application'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_volunteer_application](
+	@UserID 		[int]
+	,@TimeStart		[time]
+	,@TimeEnd		[time]
+	,@Sunday		[bit]
+	,@Monday		[bit]
+	,@Tuesday		[bit]
+	,@Wednesday		[bit]
+	,@Thursday		[bit]
+	,@Friday		[bit]
+	,@Saturday		[bit]
+)
+AS
+	BEGIN -- SP
+		BEGIN TRAN
+			BEGIN TRY
+			
+				DECLARE @VolunteerID 	[INT]
+				DECLARE @AvailabilityID [INT]
+			
+				INSERT INTO [dbo].[Volunteer] (
+					[UserID],
+					[Approved]
+				)VALUES
+					(@UserID, 0 )
+				
+				-- get last inserted id
+				SET @VolunteerID = SCOPE_IDENTITY()
+				
+				-- insert into availability
+				INSERT INTO [dbo].[Availability] (
+					[TimeStart],
+					[TimeEnd],
+					[Sunday],
+					[Monday],
+					[Tuesday],
+					[Wednesday],
+					[Thursday],
+					[Friday],
+					[Saturday]
+				)VALUES
+					(@TimeStart, @TimeEnd, @Sunday, @Monday, @Tuesday, @Wednesday, @Thursday, @Friday, @Saturday)
+					
+
+				-- get last inserted id
+				SET @AvailabilityID = SCOPE_IDENTITY()
+					
+				INSERT INTO [dbo].[VolunteerAvailability] (	
+					[VolunteerID],
+					[AvailabilityID]
+				)VALUES 
+					(@VolunteerID, @AvailabilityID)
+					
+				
+				-- insert into volunteer type table default "Open Volunteer"
+				INSERT INTO [dbo].[VolunteerType] (
+					[VolunteerID],
+					[RoleID]
+				)VALUES 
+					(@VolunteerID, "Open Volunteer")
+					
+				COMMIT TRANSACTION
+			
+			END TRY
+			BEGIN CATCH
+				ROLLBACK TRANSACTION
+			END CATCH
+	END	-- SP
+GO

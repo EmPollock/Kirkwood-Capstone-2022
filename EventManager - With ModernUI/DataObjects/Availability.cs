@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,13 @@ namespace DataObjects
         public int ForeignID { get; set; }
         public int AvailabilityID { get; set; }
         public DateTime? DateID { get; set; }
+
+        [Display(Name = "Start Time")]
+        [DataType(DataType.Time)]
         public DateTime? TimeStart { get; set; }
+
+        [Display(Name = "End Time")]
+        [DataType(DataType.Time)]
         public DateTime? TimeEnd { get; set; }
         public bool Sunday { get; set; }
         public bool Monday { get; set; }

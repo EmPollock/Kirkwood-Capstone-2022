@@ -36,5 +36,7 @@ namespace MVCPresentationWithIdentity.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<DataObjects.Availability> Availabilities { get; set; }
     }
 }

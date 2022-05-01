@@ -201,6 +201,7 @@
     <Compile Include="Controllers\Location\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Supplier\SupplierController.cs" />
+    <Compile Include="Controllers\Volunteer\VolunteerApplicationController.cs" />
     <Compile Include="Controllers\Volunteer\VolunteerController.cs" />
     <Compile Include="Controllers\Location\ParkingLotController.cs" />
     <Compile Include="Controllers\Location\SublocationController.cs" />
@@ -228,6 +229,10 @@
     <Compile Include="Migrations\202203251633000_Odds and ends.cs" />
     <Compile Include="Migrations\202203251633000_Odds and ends.Designer.cs">
       <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202204272209056_bring up to data.cs" />
+    <Compile Include="Migrations\202204272209056_bring up to data.Designer.cs">
+      <DependentUpon>202204272209056_bring up to data.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -440,10 +445,10 @@
     <Content Include="Views\ParkingLot\Edit.cshtml" />
     <Content Include="Views\Location\CreateLocation.cshtml" />
     <Content Include="Views\Event\ItineraryDetails.cshtml" />
+    <Content Include="Views\VolunteerApplication\VolunteerApplication.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\EventService\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -465,6 +470,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202203251633000_Odds and ends.resx">
       <DependentUpon>202203251633000_Odds and ends.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204272209056_bring up to data.resx">
+      <DependentUpon>202204272209056_bring up to data.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

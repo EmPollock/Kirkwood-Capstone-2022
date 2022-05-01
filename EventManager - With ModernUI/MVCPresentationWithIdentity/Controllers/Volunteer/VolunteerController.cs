@@ -67,8 +67,8 @@ namespace MVCPresentationWithIdentity.Controllers
         /// <returns>ActionResult</returns>
         public ActionResult ViewVolunteers(int page = 1)
         {
-            List<Volunteer> volunteers = new List<Volunteer>();
-            List<Volunteer> volunteerReviews = new List<Volunteer>();
+            List<DataObjects.Volunteer> volunteers = new List<DataObjects.Volunteer>();
+            List<DataObjects.Volunteer> volunteerReviews = new List<DataObjects.Volunteer>();
             VolunteerListViewModel model = null;
             try
             {
@@ -134,7 +134,7 @@ namespace MVCPresentationWithIdentity.Controllers
             try
             {                
                 int userID = _userManager.RetrieveUserByEmail(currentUserName).UserID;
-                Volunteer volunteer = _volunteerManager.RetrieveVolunteerByUserID(userID);
+                DataObjects.Volunteer volunteer = _volunteerManager.RetrieveVolunteerByUserID(userID);
                 requestViewModels = _volunteerRequestManager.RetrieveAllRequestsForVolunteerByVolunteerID(volunteer.VolunteerID);
             }
             catch (Exception ex)
@@ -166,7 +166,7 @@ namespace MVCPresentationWithIdentity.Controllers
             try
             {
                 int userID = _userManager.RetrieveUserByEmail(currentUserName).UserID;
-                Volunteer currentVolunteer = _volunteerManager.RetrieveVolunteerByUserID(userID);
+                DataObjects.Volunteer currentVolunteer = _volunteerManager.RetrieveVolunteerByUserID(userID);
                 VolunteerRequestViewModel oldRequest = _volunteerRequestManager.RetrieveRequestByRequestID(id);
                 VolunteerRequestViewModel newRequest = _volunteerRequestManager.RetrieveRequestByRequestID(id);
                 if (currentVolunteer.VolunteerID == volunteerID && oldRequest.VolunteerID == volunteerID)

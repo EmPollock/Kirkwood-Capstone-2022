@@ -54,6 +54,7 @@
     <Compile Include="ITaskAccessor.cs" />
     <Compile Include="IUserImageAccessor.cs" />
     <Compile Include="IVolunteerAccessor.cs" />
+    <Compile Include="IVolunteerApplicationsAccessor.cs" />
     <Compile Include="IVolunteerNeedAccessor.cs" />
     <Compile Include="IVolunteerRequestAccessor.cs" />
     <Compile Include="IVolunteerReviewAccessor.cs" />
