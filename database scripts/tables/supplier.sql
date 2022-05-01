@@ -108,6 +108,12 @@ Updated: 2022/02/18
 Description:
 Added City, State, and ZipCode fields
 Added new test supplier
+****************************************************************
+Derrick 
+Updated: 2022/05/01
+
+Description:
+Changed approval on Marco's Grilled Cheese to approved
 ****************************************************************/
 print '' print '*** test records for Supplier table ***'
 GO
@@ -126,8 +132,8 @@ INSERT INTO [dbo].[Supplier] (
 	,[Approved]
 )VALUES 
 	(100000, "McSupplier", "I'm liking it.", "999-999-9999", "mcsupplier@suppliers.com", "Vendor", "123 McSupplier Lane", null, "Cedar Rapids", "Iowa", "52404", 1)
-	,(100000, "Supplier King", "Supply it your way.", "888-888-8888", "supplierking@suppliers.com", "Vendor", "456 Supplier King Blvd", null, "Iowa City", "Iowa", "52240", null)
-	,(100003, "Marco's Grilled Cheese", "Iowa City's Finest Food carts, and now also a restaurant", "123-456-7894", "marcosgrilledcheese@gmail.com", "Catering", "17 N Linn St", null, "Iowa City", "Iowa", "52245", null)
+	,(100000, "Supplier King", "Supply it your way.", "888-888-8888", "supplierking@suppliers.com", "Vendor", "456 Supplier King Blvd", null, "Iowa City", "Iowa", "52240", NULL)
+	,(100003, "Marco's Grilled Cheese", "Iowa City's Finest Food carts, and now also a restaurant", "123-456-7894", "marcosgrilledcheese@gmail.com", "Catering", "17 N Linn St", null, "Iowa City", "Iowa", "52245", 1)
 	
 	
 GO

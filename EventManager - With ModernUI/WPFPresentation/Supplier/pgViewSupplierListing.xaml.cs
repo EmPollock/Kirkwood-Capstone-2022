@@ -81,6 +81,14 @@ namespace WPFPresentation.Supplier
         /// 
         /// Description:
         /// Page loaded event. Loads data into all elements that need it.
+        /// 
+        /// Derrick Nagy
+        /// Created: 2022/05/01
+        /// 
+        /// Description:
+        /// Commented out name change because long names don't fit in button. 
+        /// 
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -89,8 +97,8 @@ namespace WPFPresentation.Supplier
             this.lblName.Content = _supplier.Name;
             this.lblType.Content = _supplier.TypeID;
             this.txtAbout.Text = _supplier.Description;
-            this.btnSupplierPricing.Content = _supplier.Name + "'s Pricing";
-            this.btnSupplierSchedule.Content = _supplier.Name + "'s Schedule";
+            //this.btnSupplierPricing.Content = _supplier.Name + "'s Pricing";
+            //this.btnSupplierSchedule.Content = _supplier.Name + "'s Schedule";
             this.btnSupplierDetails.Background = new SolidColorBrush(Colors.Gray);
             this.txtSupplierSchedule.Text = _supplier.Name + "'s Schedule";
 
@@ -532,7 +540,6 @@ namespace WPFPresentation.Supplier
             this.Cursor = Cursors.Arrow;
         }
 
-
         /// <summary>
         /// Created?
         /// Unknown original author and date
@@ -662,7 +669,6 @@ namespace WPFPresentation.Supplier
             }
         }
 
-
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/04/05
@@ -786,7 +792,6 @@ namespace WPFPresentation.Supplier
             }
         }
 
-
         /// <summary>
         /// Derrick Nagy
         /// Created: 2022/04/05
@@ -795,6 +800,12 @@ namespace WPFPresentation.Supplier
         /// Validates form and creates a message to be sent to supplier.
         /// Sends message.
         /// If errors, informs user
+        /// 
+        /// Derrick Nagy
+        /// Created: 2022/05/01
+        /// 
+        /// Description:        
+        /// Added validation check to make sure a date is selected
         /// 
         /// </summary>
         /// <param name="sender"></param>
@@ -814,6 +825,16 @@ namespace WPFPresentation.Supplier
             {
                 isValidForm = false;
                 errorMessage += "Please select at least one service";
+            }
+            else if (chckBoxOnlyForEvents.IsChecked == true)
+            {
+                isValidForm = cmboEventDates.SelectedItem != null;
+                errorMessage += "Please select a date";
+            }
+            else if (chckBoxOnlyForEvents.IsChecked == false)
+            {
+                isValidForm = datePickerRequestDate.SelectedDate != null;
+                errorMessage += "Please select a date";
             }
             else
             {
