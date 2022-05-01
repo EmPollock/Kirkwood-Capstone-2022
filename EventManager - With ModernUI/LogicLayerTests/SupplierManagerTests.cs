@@ -514,7 +514,7 @@ namespace LogicLayerTests
 
             // assert
             Assert.AreEqual(expected.Count, result.Count);
-            for(int i = 0; i < expected.Count; i++)
+            for (int i = 0; i < expected.Count; i++)
             {
                 Assert.AreEqual(expected[i].Active, result[i].Active);
                 Assert.AreEqual(expected[i].Address1, result[i].Address1);

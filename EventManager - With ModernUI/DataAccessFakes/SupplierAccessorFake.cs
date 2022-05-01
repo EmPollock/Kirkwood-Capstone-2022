@@ -642,20 +642,22 @@ namespace DataAccessFakes
         public int InsertSupplierReview(Reviews review)
         {
             int rowsAffected = 0;
-            foreach(var s in _fakeSuppliers)
+            foreach (var s in _fakeSuppliers)
             {
-                if(s.SupplierID == review.ForeignID)
+                if (s.SupplierID == review.ForeignID)
                 {
                     _fakeReviews.Add(review);
                     rowsAffected = 1;
                     break;
                 }
             }
-            if(rowsAffected == 0)
+            if (rowsAffected == 0)
             {
                 throw new ApplicationException("Invalid Supplier ID");
             }
             return rowsAffected;
+        }
+
         /// Christopher Repko
         /// Created: 2022/04/26
         /// 

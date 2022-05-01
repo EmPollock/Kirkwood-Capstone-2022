@@ -296,7 +296,8 @@ namespace LogicLayer
             try
             {
                 result = _supplierAccessor.SelectUnapprovedSuppliers();
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to retrieve pending supplier requests.", ex);
             }
