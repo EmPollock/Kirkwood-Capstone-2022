@@ -200,9 +200,9 @@ namespace MVCPresentationWithIdentity.Controllers
             {
                 return RedirectToAction("ViewVolunteers");
             }
-            List<Volunteer> volunteers = new List<Volunteer>();
-            List<Volunteer> volunteerReviews = new List<Volunteer>();
-            Volunteer selectedVolunteer = null;
+            List<DataObjects.Volunteer> volunteers = new List<DataObjects.Volunteer>();
+            List<DataObjects.Volunteer> volunteerReviews = new List<DataObjects.Volunteer>();
+            DataObjects.Volunteer selectedVolunteer = null;
             try
             {
                 int volunteerID = int.Parse(id);
