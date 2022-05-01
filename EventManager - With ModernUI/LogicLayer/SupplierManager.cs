@@ -371,6 +371,15 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/28
+        /// 
+        /// Description:
+        /// Function to retrieve a list of suppliers related to a specific user.
+        /// </summary>
+        /// <param name="userID">ID of user to look up.</param>
+        /// <returns>A list of suppliers related to a specific user.</returns>
         public List<Supplier> RetrieveSuppliersByUserID(int userID)
         {
             List<Supplier> result = new List<Supplier>();

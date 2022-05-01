@@ -388,6 +388,16 @@ namespace MVCPresentationWithIdentity.Controllers
             return ViewSupplierApplications();
         }
 
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/28
+        /// 
+        /// Description
+        /// Get handler for ViewUserSuppliers view
+        /// </summary>
+        /// <param name="userID">ID of user to use for lookup</param>
+        /// <param name="page">what page of results to show.</param>
+        /// <returns>The ViewSuppliers view with the suppliers related to a specific user loaded.</returns>
         [HttpGet]
         public ActionResult ViewUserSuppliers(int userID, int page=1)
         {
