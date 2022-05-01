@@ -849,5 +849,67 @@ namespace DataAccessLayer
 
             return result;
         }
+
+
+        /// <summary>
+        /// Christopher Repko
+        /// Created: 2022/04/29
+        /// 
+        /// Description:
+        /// Grabs a list of all suppliers with a given userID.
+        /// </summary>
+        /// <param name="userID">UserID to be searched for.</param>
+        /// <returns>a list of all suppliers with a given userID</returns>
+        public List<Supplier> SelectSuppliersByUserID(int userID)
+        {
+            List<Supplier> suppliers = new List<Supplier>();
+
+            var conn = DBConnection.GetConnection();
+            var cmdText = "sp_select_suppliers_by_userID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@UserID", SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        suppliers.Add(new Supplier()
+                        {
+                            SupplierID = reader.GetInt32(0),
+                            UserID = reader.GetInt32(1),
+                            Name = reader.GetString(2),
+                            Description = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Phone = reader.GetString(4),
+                            Email = reader.GetString(5),
+                            TypeID = reader.GetString(6),
+                            Address1 = reader.GetString(7),
+                            Address2 = reader.IsDBNull(8) ? null : reader.GetString(8),
+                            City = reader.GetString(9),
+                            State = reader.GetString(10),
+                            ZipCode = reader.GetString(11),
+                            Active = true,
+                            Approved = reader.IsDBNull(12) ? (bool?)null : reader.GetBoolean(12)
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return suppliers;
+        }
     }
 }
