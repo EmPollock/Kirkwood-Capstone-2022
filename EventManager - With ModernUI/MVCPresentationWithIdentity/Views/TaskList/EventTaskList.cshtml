@@ -97,7 +97,8 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            <a href="#">@item2.Name <i class="bi bi-box-arrow-up-right"></i></a>
+                                                            @Html.ActionLink(item2.Name, "../Volunteer/VolunteerDetails", new { id = item2.UserID })
+                                                            <a href="">@item2.Name <i class="bi bi-box-arrow-up-right"></i></a>
                                                         </td>
                                                         <td>
                                                             @item2.DateAssigned.ToString("d")

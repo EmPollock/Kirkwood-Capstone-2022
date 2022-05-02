@@ -246,7 +246,7 @@ CREATE PROCEDURE [dbo].[sp_insert_volunteer_review]
 )
 AS
 	BEGIN				
-		INSERT INTO [dbo].[LocationReview]
+		INSERT INTO [dbo].[VolunteerReview]
 		(
 			[ReviewID]
 			,[VolunteerID]

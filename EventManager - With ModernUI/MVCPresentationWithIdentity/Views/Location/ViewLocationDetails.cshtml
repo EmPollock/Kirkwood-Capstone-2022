@@ -266,9 +266,12 @@
                     </div>
                 }
             }
-            <div>
-                <p class="p-2"><a href="/Location/CreateReview?locationID=@Model.Location.LocationID">Leave a Review</a></p>
-            </div>
+            @if (User.IsInRole("Event Planner"))
+            {
+                <div>
+                    <p class="p-2"><a href="/Location/CreateReview?locationID=@Model.Location.LocationID">Leave a Review</a></p>
+                </div>
+            }
 
             <div class="d-flex flex-column">
                 <br />

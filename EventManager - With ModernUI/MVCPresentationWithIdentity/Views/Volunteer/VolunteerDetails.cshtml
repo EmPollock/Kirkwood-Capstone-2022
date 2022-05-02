@@ -85,12 +85,16 @@
             <div class="row">
                 <p>Location: &nbsp; @Html.DisplayFor(model => model.City), @Html.DisplayFor(model => model.State) </p>
             </div>
+            @if (User.IsInRole("Event Planner"))
+            {
+                <div class="row">
+                    <span class="mx-auto mt-4 btn btn-outline-dark w-50">
 
-            <div class="row">
-                <span class="mx-auto mt-4 btn btn-outline-dark w-50">
-                    <a href="/Volunteer/CreateReview?volunteerID=@Model.VolunteerID">Leave a Review</a>
-                </span>
+                        <a href="/Volunteer/CreateReview?volunteerID=@Model.VolunteerID">Leave a Review</a>
+                        
+                    </span>
+                </div>
+            }
             </div>
-        </div>
     </div>
 </div>

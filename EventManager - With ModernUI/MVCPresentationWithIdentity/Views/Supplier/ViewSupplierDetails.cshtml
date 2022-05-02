@@ -271,10 +271,12 @@
                         <p class="p-2"><a href="">See More Reviews</a></p>
                     </div>
                 }
-
-                <div>
-                    <p class="p-2"><a href="/Supplier/CreateReview?supplierID=@Model.Supplier.SupplierID">Leave a Review</a></p>
-                </div>
+                if (User.IsInRole("Event Planner"))
+                {
+                    <div>
+                        <p class="p-2"><a href="/Supplier/CreateReview?supplierID=@Model.Supplier.SupplierID">Leave a Review</a></p>
+                    </div>
+                }
             }
             @if (Model.Supplier.Approved == true)
             {

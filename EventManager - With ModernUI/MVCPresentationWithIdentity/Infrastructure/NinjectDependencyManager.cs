@@ -38,6 +38,7 @@ namespace MVCPresentationWithIdentity.Infrastructure
             kernel.Bind<IParkingLotManager>().To<ParkingLotManager>();
             kernel.Bind<IVolunteerApplicationsManager>().To<VolunteerApplicationsManager>();
             kernel.Bind<ITaskManager>().To<TaskManager>();
+            kernel.Bind<IVolunteerReviewManager>().To<VolunteerReviewManager>();
             //kernel.Bind<IEmailProvider>().To<EmailProvider>();
 
 

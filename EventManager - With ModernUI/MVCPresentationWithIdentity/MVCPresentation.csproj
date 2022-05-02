@@ -480,6 +480,7 @@
     <Content Include="Views\Event\Details.cshtml" />
     <Content Include="Views\Supplier\EditSupplierService.cshtml" />
     <Content Include="Views\TaskList\EventTaskList.cshtml" />
+    <Content Include="Views\Volunteer\VolunteerDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
