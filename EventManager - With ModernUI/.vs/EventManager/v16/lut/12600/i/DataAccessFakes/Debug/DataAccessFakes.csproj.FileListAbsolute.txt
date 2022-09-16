@@ -1,0 +1,5 @@
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\DataAccessFakes\bin\Debug\DataAccessFakes.dll
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\DataAccessFakes\Debug\DataAccessFakes.csproj.AssemblyReference.cache
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\DataAccessFakes\Debug\DataAccessFakes.csproj.CoreCompileInputs.cache
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\DataAccessFakes\Debug\DataAccessFakes.csproj.CopyComplete
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\DataAccessFakes\Debug\DataAccessFakes.dll

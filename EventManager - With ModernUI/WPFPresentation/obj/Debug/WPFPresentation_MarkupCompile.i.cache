@@ -1,0 +1,20 @@
+﻿WPFPresentation
+
+
+winexe
+C#
+.cs
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\WPFPresentation\obj\Debug\
+WPFPresentation
+none
+false
+DEBUG;TRACE
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\WPFPresentation\App.xaml
+34298109231
+
+42-679066643
+211-93668405
+CustomControls\TimeComboBoxes.xaml;Event\pgCreateActivity.xaml;Event\pgEventEditDetail.xaml;Event\pgEventFrame.xaml;Event\pgTaskListCreate.xaml;Event\pgTaskListEdit.xaml;Event\pgTaskListView.xaml;Event\pgViewActivityDetails.xaml;Event\pgViewEventDateActivities.xaml;Location\pgAddEditEntrance.xaml;Location\pgLocationDetails.xaml;Location\pgLocationEntrance.xaml;Location\pgLocationFrame.xaml;Location\pgLocationSchedule.xaml;Location\pgLocationSublocations.xaml;Location\pgParkingLot.xaml;Location\pgViewLocations.xaml;Event\pgViewActivities.xaml;MainWindow.xaml;Event\pgCreateEvent.xaml;Event\pgViewEvents.xaml;RegisterUser.xaml;SplashScreen.xaml;Supplier\pgSupplierDetails.xaml;Supplier\pgSupplierFrame.xaml;Supplier\pgSupplierPricing.xaml;Supplier\pgSupplierSchedule.xaml;Supplier\pgViewSupplierListing.xaml;Supplier\pgViewSuppliers.xaml;UpdatePasswordWindow.xaml;Volunteer\pgViewAllVolunteers.xaml;Volunteer\pgViewVolunteerDetails.xaml;Volunteer\pgViewVolunteerSchedule.xaml;Volunteer\pgVolunteerFrame.xaml;
+
+True
+

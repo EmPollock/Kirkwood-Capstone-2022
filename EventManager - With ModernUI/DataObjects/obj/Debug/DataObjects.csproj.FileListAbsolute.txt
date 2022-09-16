@@ -1,0 +1,6 @@
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\bin\Debug\DataObjects.dll
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\bin\Debug\DataObjects.pdb
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\obj\Debug\DataObjects.csproj.AssemblyReference.cache
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\obj\Debug\DataObjects.csproj.CoreCompileInputs.cache
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\obj\Debug\DataObjects.dll
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\DataObjects\obj\Debug\DataObjects.pdb

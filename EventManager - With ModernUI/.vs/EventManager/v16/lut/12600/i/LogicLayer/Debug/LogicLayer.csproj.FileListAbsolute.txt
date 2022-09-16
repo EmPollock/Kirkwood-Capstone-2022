@@ -1,0 +1,5 @@
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\b\LogicLayer\bin\Debug\LogicLayer.dll
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\LogicLayer\Debug\LogicLayer.csproj.AssemblyReference.cache
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\LogicLayer\Debug\LogicLayer.csproj.CoreCompileInputs.cache
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\LogicLayer\Debug\LogicLayer.csproj.CopyComplete
+C:\Users\Pollock\Capstone\Capstone-2022\EventManager - With ModernUI\.vs\EventManager\v16\lut\0\i\LogicLayer\Debug\LogicLayer.dll
